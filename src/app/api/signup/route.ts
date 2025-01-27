@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
         const imageUrl: any = await uploadOnCloudinary(avatar, "ecco_web")
 
-        const createdUser = await User.create(
+        const user = await User.create(
             {
                 name: name,
                 email: email,
@@ -38,6 +38,12 @@ export async function POST(request: NextRequest) {
                 avatar: imageUrl.secure_url || "",
             }
         )
+
+        if (!user) {
+            return NextResponse.json({ error: "Failed to register the user" }, { status: 402 })
+        }
+
+        const createdUser = await User.findById(user?._id).select("-password -isSeller -refreshToken")
 
         return NextResponse.json({ "data": createdUser }, { status: 200 })
 
