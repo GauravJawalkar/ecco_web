@@ -14,8 +14,29 @@ const productSchema = new Schema(
             trim: true,
             lowercase: true,
         },
+        price: {
+            type: Number,
+            required: [true, "Price cant be empty"],
+            trim: true,
+        },
+        discount: {
+            type: Number,
+            trim: true
+        },
+        prod_Image: [
+            {
+                type: String,
+                required: true
+            }
+        ],
+        size: {
+            type: Number,
+            required: true
+        }
     },
     {
         timestamps: true
     }
 )
+
+export const Product = mongoose.model('Product', productSchema)
