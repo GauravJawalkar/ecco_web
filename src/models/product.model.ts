@@ -36,6 +36,10 @@ const productSchema = new Schema(
         category: {
             type: Schema.Types.ObjectId,
             ref: "Category",
+        },
+        seller: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
         }
     },
     {

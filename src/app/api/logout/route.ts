@@ -1,6 +1,9 @@
+import connectDB from "@/db/dbConfig";
 import { auth } from "@/middlewares/auth.middleware";
 import { User } from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
+
+connectDB();
 
 export async function GET(request: NextRequest) {
     try {
@@ -9,7 +12,7 @@ export async function GET(request: NextRequest) {
         const reqUser = await auth(request);
 
         if (!reqUser) {
-            return NextResponse.json({ error: "No user found" })
+            return NextResponse.json({ error: "No user found" }, { status: 402 })
         }
 
         // collecting the id form the reqUser got from the auth() function and finding it in database, setting it's refreshToken as "" 
