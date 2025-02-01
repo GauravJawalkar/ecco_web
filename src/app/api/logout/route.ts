@@ -1,6 +1,7 @@
 import connectDB from "@/db/dbConfig";
 import { auth } from "@/middlewares/auth.middleware";
 import { User } from "@/models/user.model";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
@@ -27,17 +28,19 @@ export async function GET(request: NextRequest) {
             }
         )
 
-        const response = NextResponse.json({
-            message: "Logout Successful",
-            success: true
-        })
+        const cookieStore = await cookies();
 
-        response.cookies.set('accessToken', "", {
-            httpOnly: true,
-            expires: new Date(0)
-        });
+        cookieStore.set('accessToken', "");
+        cookieStore.set('refreshToken', "");
 
-        return response;
+        return NextResponse.json(
+            {
+                message: "Logout Successful",
+                success: true
+            },
+            {
+                status: 200
+            })
 
     } catch (error) {
         console.log(error)

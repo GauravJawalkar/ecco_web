@@ -20,8 +20,6 @@ export async function auth(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
         }
 
-        NextResponse.next();
-
         return user;
 
     } catch (error) {

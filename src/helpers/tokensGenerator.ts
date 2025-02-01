@@ -1,5 +1,4 @@
 import { User } from "@/models/user.model"
-import mongoose, { Mongoose } from "mongoose"
 import { NextResponse } from "next/server"
 
 export const generateAccessAndRefreshToken = async (userId: string) => {
