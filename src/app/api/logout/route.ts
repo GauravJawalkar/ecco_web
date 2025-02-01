@@ -1,23 +1,25 @@
 import connectDB from "@/db/dbConfig";
-import { auth } from "@/middlewares/auth.middleware";
 import { User } from "@/models/user.model";
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 connectDB();
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
 
-        // getting the user by finding it from the accessToken by decoding it through auth()
-        const reqUser = await auth(request);
+        const cookieStore = await cookies();
+
+        const token: any = cookieStore.get('accessToken')?.value
+
+        const reqUser: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string)
 
         if (!reqUser) {
             return NextResponse.json({ error: "No user found" }, { status: 402 })
         }
 
-        // collecting the id form the reqUser got from the auth() function and finding it in database, setting it's refreshToken as "" 
-        await User.findByIdAndUpdate(reqUser?._id,
+        const loggedOutUser = await User.findByIdAndUpdate(reqUser?._id,
             {
                 $set: {
                     refreshToken: "",
@@ -28,19 +30,18 @@ export async function GET(request: NextRequest) {
             }
         )
 
-        const cookieStore = await cookies();
+        if (!loggedOutUser) {
+            return NextResponse.json({ error: `Failed to logout the user ${reqUser.name}` },
+                { status: 401 })
+        }
 
         cookieStore.set('accessToken', "");
         cookieStore.set('refreshToken', "");
 
         return NextResponse.json(
-            {
-                message: "Logout Successful",
-                success: true
-            },
-            {
-                status: 200
-            })
+            { message: "Logout Successful", success: true, loggedOut: loggedOutUser },
+            { status: 200 }
+        )
 
     } catch (error) {
         console.log(error)
