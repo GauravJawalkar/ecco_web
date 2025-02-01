@@ -15,8 +15,6 @@ const Home = () => {
             if (!response) {
                 return `Unable to logout`
             }
-
-
             router.push('/login')
         } catch (error) {
             console.log("Logout Failed", error)
@@ -27,16 +25,11 @@ const Home = () => {
     async function getDetails() {
         try {
             const response: any = await axios.get('/api/logInDetails');
-
-            console.log(response.data.user)
             if (!response) {
                 return new Error("Failed to fetch your data")
             }
-
             const loggedUser = [response.data.user];
-
             setUser(loggedUser);
-
         } catch (error) {
             throw new Error(`Error getting user details : ${error}`)
         }

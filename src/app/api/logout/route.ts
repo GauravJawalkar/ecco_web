@@ -28,7 +28,7 @@ export async function GET() {
             {
                 new: true
             }
-        )
+        ).select("-password -isSeller ")
 
         if (!loggedOutUser) {
             return NextResponse.json({ error: `Failed to logout the user ${reqUser.name}` },
