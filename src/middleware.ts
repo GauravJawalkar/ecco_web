@@ -22,6 +22,8 @@ const middleware = async (request: NextRequest) => {
         return NextResponse.redirect(new URL('/login', request.nextUrl))
     }
 
+
+
 }
 
 export const config = {

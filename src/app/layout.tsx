@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,10 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-700 via-[#1a1a1a] to-black bg-no-repeat`}
+        className={`${inter.className} antialiased bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-zinc-700 via-[#1a1a1a] to-black bg-no-repeat`}
       >
         <div className="max-w-7xl mx-auto text-[#ededed]">
           {children}
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+          />
         </div>
       </body>
     </html>
