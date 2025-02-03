@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { MouseEvent, useEffect, useState } from 'react'
 
+
 const Home = () => {
     const router = useRouter();
 
@@ -31,6 +32,7 @@ const Home = () => {
             const loggedUser = [response.data.user];
             setUser(loggedUser);
         } catch (error) {
+            console.log(error)
             throw new Error(`Error getting user details : ${error}`)
         }
     }

@@ -32,6 +32,8 @@ const Login = () => {
                 return new Error('Failed to login')
             }
 
+            console.log(response.data)
+
             toast.success("Logged in")
 
             setLoading(false)
@@ -72,7 +74,7 @@ const Login = () => {
                                 "Login In"
                         }
                     </button>
-                    <span>Already have an account ? <Link href={'/signup'} className='text-blue-500 hover:text-blue-700'>Signup</Link> </span>
+                    <span>Create an account ? <Link href={'/signup'} className='text-blue-500 hover:text-blue-700'>Signup</Link> </span>
                 </form>
             </div >
         </section>

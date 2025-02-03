@@ -1,9 +1,12 @@
+import connectDB from "@/db/dbConfig";
 import { User } from "@/models/user.model";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+connectDB();
+
+export async function GET() {
     try {
 
         const cookieStore = await cookies();
@@ -16,7 +19,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 402 })
         }
 
-        const userLoggedId = decodedToken?._id;
+        const userLoggedId = await decodedToken?._id;
 
         const userDetails = await User.findById(userLoggedId).select("-password -refreshToken -accessToken ");
 

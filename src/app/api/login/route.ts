@@ -9,6 +9,10 @@ connectDB()
 export async function POST(request: NextRequest) {
 
     try {
+
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 7)
+
         const reqBody = await request.json();
 
         const { name, email, password } = reqBody;
@@ -39,12 +43,13 @@ export async function POST(request: NextRequest) {
 
         const options = {
             httpOnly: true,
-            secure: true
+            secure: true,
+            maxAge: 60 * 60 * 24,
         }
 
         const cookieStore = await cookies();
         cookieStore.set('accessToken', accessToken, options)
-        cookieStore.set('refreshToken', refreshToken)
+        cookieStore.set('refreshToken', refreshToken, options)
 
         return NextResponse.json(
             {
