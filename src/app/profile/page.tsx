@@ -1,5 +1,6 @@
 "use client"
 import axios from 'axios'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { MouseEvent, useEffect, useState } from 'react'
 
@@ -45,7 +46,7 @@ const Home = () => {
         <>
             <div>Profile</div>
             <div>User Details</div>
-            <div>{user.map(({ _id, name, email }: { _id: string, name: string, email: string }) => {
+            <div>{user.map(({ _id, name, email, avatar }: { _id: string, name: string, email: string, avatar: string }) => {
                 return (
                     <div key={_id}>
                         id:{_id}
@@ -53,6 +54,8 @@ const Home = () => {
                         name:{name}
                         <br />
                         email:{email}
+                        <br />
+                        <Image src={avatar} width={200} height={200} alt='' />
                     </div>
                 )
             })}</div>
