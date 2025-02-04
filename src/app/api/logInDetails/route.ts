@@ -8,7 +8,6 @@ connectDB();
 
 export async function GET() {
     try {
-
         const cookieStore = await cookies();
 
         const authToken: any = cookieStore.get('accessToken')?.value;
@@ -26,7 +25,6 @@ export async function GET() {
         if (!userDetails) {
             return NextResponse.json({ error: "" }, { status: 401 })
         }
-
         return NextResponse.json(
             {
                 message: "User Details",
