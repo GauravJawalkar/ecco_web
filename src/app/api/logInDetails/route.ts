@@ -12,6 +12,10 @@ export async function GET() {
 
         const authToken: any = cookieStore.get('accessToken')?.value;
 
+        if (!authToken) {
+            return NextResponse.json({ error: "User not logged in" }, { status: 402 })
+        }
+
         const decodedToken: any = jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET as string)
 
         if (!decodedToken) {

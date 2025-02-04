@@ -14,7 +14,6 @@ const Navbar = () => {
     const [dark, setDark] = useState(false)
     const [email, setEmail] = useState("")
 
-
     async function getProfile() {
         const response: any = await axios.get('/api/logInDetails');
         if (!response) {
@@ -52,11 +51,9 @@ const Navbar = () => {
         }
     }
 
-
     useEffect(() => {
-        getProfile()
+        getProfile();
     }, [])
-
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700'>
@@ -89,7 +86,8 @@ const Navbar = () => {
                             </li>
                             <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Details</Link>
                             <div>
-                                <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={handelLogout}>
+                                <p>{ }</p>
+                                <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={() => { handelLogout(), getProfile() }}>
                                     <LogOut className="h-5 w-5" />
                                     Logout
                                 </button>
