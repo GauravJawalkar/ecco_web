@@ -1,7 +1,7 @@
 "use client"
 
 import Loader from '@/components/Loader';
-import axios from 'axios';
+import { useUserStore } from '@/store/UserStore';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
@@ -13,6 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const router = useRouter();
+    const { login }: any = useUserStore()
 
     const handelSubmit = async () => {
         try {
@@ -25,14 +26,7 @@ const Login = () => {
                 password: password
             }
 
-            const response = await axios.post('/api/login', user)
-
-            if (!response) {
-                setLoading(false)
-                return new Error('Failed to login')
-            }
-
-            console.log(response.data)
+            await login(user)
 
             toast.success("Logged in")
 
@@ -42,7 +36,6 @@ const Login = () => {
             setPassword("");
 
             router.push('/')
-
         } catch (error) {
             console.log("error logging in", error)
         } finally {
