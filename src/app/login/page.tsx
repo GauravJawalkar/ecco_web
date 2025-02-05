@@ -35,6 +35,8 @@ const Login = () => {
             setEmail("");
             setPassword("");
 
+            localStorage.setItem("login", "true");
+
             router.push('/')
         } catch (error) {
             console.log("error logging in", error)
