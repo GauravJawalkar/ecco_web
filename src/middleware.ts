@@ -1,4 +1,3 @@
-
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,7 +10,7 @@ const middleware = async (request: NextRequest) => {
     const path = request.nextUrl.pathname;
 
     const publicPath = path === '/login' || path === "/signup"
-    const securePath = path === '/cart' || path === "/checkout" || path === '/profile' || path === '/orders'
+    const securePath = path === '/cart' || path === "/checkout" || path === '/profile' || path === '/orders' || path === '/dashboard'
 
     if (token && publicPath) {
         NextResponse.next()
@@ -22,8 +21,6 @@ const middleware = async (request: NextRequest) => {
         return NextResponse.redirect(new URL('/login', request.nextUrl))
     }
 
-
-
 }
 
 export const config = {
@@ -31,7 +28,8 @@ export const config = {
         '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
         "/",
         '/login',
-        '/signup'
+        '/signup',
+        '/dashboard'
     ]
 }
 

@@ -51,7 +51,7 @@ const Signup = () => {
     }
     return (
         <section className='flex items-center justify-center min-h-screen '>
-            <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl bg-white/5 backdrop-blur-md'>
+            <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
                 <form onSubmit={(e) => { e.preventDefault(); handelSubmit() }} className='flex items-center justify-center gap-5 flex-col min-w-full'>
                     <h1 className='text-center text-4xl uppercase font-semibold'>Sign Up</h1>
                     <div className='w-full'>
@@ -71,7 +71,7 @@ const Signup = () => {
                         <input type="file" className='text-black px-3 bg-white py-2 w-full rounded' placeholder='Choose File' required
                             onChange={(e: any) => setAvatar(e.target.files[0])} />
                     </div>
-                    <button type='submit' className='w-full bg-[#0a0a0a] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                    <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#2a2a2a] transition-all ease-linear duration-200'>
                         {
                             loading ?
                                 <Loader title='Creating...' /> :

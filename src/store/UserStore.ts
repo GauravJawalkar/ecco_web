@@ -14,7 +14,6 @@ export const useUserStore = create(
     persist(
         (set) => (
             {
-                isUserLoggedIn: false,
                 data: {},
                 login: async (user: User) => {
                     try {

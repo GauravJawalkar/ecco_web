@@ -35,7 +35,7 @@ export const Navbar = () => {
     }
 
     return (
-        <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700'>
+        <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-10 backdrop-blur-md'>
 
             {/* Logo or name */}
             <div className='w-[10%] flex items-center justify-start'>
@@ -51,7 +51,7 @@ export const Navbar = () => {
 
             {/* Account details ,Orders and Cart */}
             <div className='w-[25%] flex items-center justify-center gap-5'>
-                {dataLength !== 0 && data.isSeller ? <Link href={'/'} className="dark:text-neutral-300">Dashboard</Link> : "Become Seller"}
+                {dataLength !== 0 && data.isSeller ? <Link href={'/dashboard'} target="_blank" className="dark:text-neutral-300">Dashboard</Link> : "Become Seller"}
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
