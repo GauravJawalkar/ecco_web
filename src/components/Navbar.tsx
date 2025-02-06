@@ -1,11 +1,10 @@
 "use client"
 
 import { useUserStore } from "@/store/UserStore"
-import axios from "axios"
 import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import toast from "react-hot-toast"
 
 

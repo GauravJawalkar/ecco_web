@@ -17,9 +17,7 @@ const Login = () => {
 
     const handelSubmit = async () => {
         try {
-
             setLoading(true)
-
             const user = {
                 name: name,
                 email: email,
