@@ -25,7 +25,7 @@ const Home = () => {
     };
 
     return (
-        <section className="h-screen">
+        <section className="">
             <div className="flex gap-5 py-10 relative">
                 {/* User Image Div */}
                 <div className="w-[30%] ">
@@ -47,20 +47,39 @@ const Home = () => {
 
                 {/* Personal Information div */}
                 <div className="w-full bg-slate-400/5 dark:bg-white/5 p-10  border dark:border-[#5a5a5a] ">
-                    <div className="pb-6">
-                        <h1 className="text-lg uppercase font-bold">Personal Information</h1>
+                    <div className="pb-5">
+                        <div className="pb-6">
+                            <h1 className="text-xl uppercase font-bold">Personal Information</h1>
+                        </div>
+
+                        <div className="p-5 mb-4 border-slate-300 dark:border-[#5a5a5a] border rounded flex items-start flex-col justify-start gap-3">
+                            <div className="capitalize font-normal text-md">Unique Profile Id :</div>
+                            <div className="border dark:border-[#5a5a5a] w-1/3 p-3 border-slate-300 rounded-md hover:cursor-not-allowed">
+                                <h1 className="text-gray-500 capitalize font-normal">
+                                    {dataLength !== 0 && data._id}
+                                </h1>
+                            </div>
+                        </div>
+                        <UserInfoCard dataLength={dataLength} dataValue={data.name} cardTitle={'name'} />
+                        <UserInfoCard dataLength={dataLength} dataValue={data.email} cardTitle={"email"} />
                     </div>
 
-                    <div className="p-5 mb-4 border-slate-300 dark:border-[#5a5a5a] border rounded flex items-start flex-col justify-start gap-3">
-                        <div className="capitalize font-normal text-md">Unique Profile Id :</div>
-                        <div className="border dark:border-[#5a5a5a] w-1/3 p-3 border-slate-300 rounded-md hover:cursor-not-allowed">
-                            <h1 className="text-gray-500 capitalize font-normal">
-                                {dataLength !== 0 && data._id}
-                            </h1>
+                    {/* Account Settings */}
+                    <div>
+                        <div className="my-6">
+                            <h1 className="text-xl uppercase font-bold">Account Settings</h1>
                         </div>
+
+                        <div className="p-5 mb-4 border-slate-300 dark:border-[#5a5a5a] border rounded flex items-start flex-col justify-start gap-3">
+                            <div className="capitalize font-normal text-md">Is Seller :</div>
+                            <div className="border dark:border-[#5a5a5a] w-1/3 p-3 border-slate-300 rounded-md hover:cursor-not-allowed">
+                                <h1 className="text-gray-500 capitalize font-normal">
+                                    {dataLength !== 0 && data.isSeller === true ? "Yes" : "No"}
+                                </h1>
+                            </div>
+                        </div>
+                        <UserInfoCard dataLength={dataLength} dataValue={'**********'} cardTitle={'change password'} />
                     </div>
-                    <UserInfoCard dataLength={dataLength} dataValue={data.name} cardTitle={'name'} />
-                    <UserInfoCard dataLength={dataLength} dataValue={data.email} cardTitle={"email"} />
                 </div>
             </div>
         </section>
