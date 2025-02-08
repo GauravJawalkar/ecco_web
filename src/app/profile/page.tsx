@@ -2,7 +2,7 @@
 
 import UserInfoCard from "@/components/UserInfoCard";
 import { useUserStore } from "@/store/UserStore";
-import { Trash2 } from "lucide-react";
+import { LogOut, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
@@ -42,7 +42,7 @@ const Home = () => {
                         <div className="text-center py-3 ">
                             <h1 className="capitalize font-semibold text-xl">Hello 👋 {data.name}</h1>
                         </div>
-                        <button className="w-full bg-[#1a1a1a] py-2 text-[#ededed] dark:bg-[#3a3a3a] rounded" onClick={handleLogout}>Logout</button>
+                        <button className="w-full bg-[#1a1a1a] py-2 text-[#ededed] dark:bg-[#3a3a3a] rounded flex items-center justify-center gap-2" onClick={handleLogout}><LogOut className="h-5 w-5" />Logout</button>
                     </div>
                 </div>
 
