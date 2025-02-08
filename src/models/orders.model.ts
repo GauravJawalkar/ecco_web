@@ -24,6 +24,10 @@ const orderSchema = new Schema(
             type: Number,
             default: 1,
             required: true
+        },
+        orderAddress: {
+            type: String,
+            required: true,
         }
     },
     {
@@ -31,4 +35,4 @@ const orderSchema = new Schema(
     }
 )
 
-export const Order = mongoose.model('User', orderSchema);
+export const Order = mongoose.model('Order', orderSchema);
