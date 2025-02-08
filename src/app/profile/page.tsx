@@ -2,6 +2,7 @@
 
 import UserInfoCard from "@/components/UserInfoCard";
 import { useUserStore } from "@/store/UserStore";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
@@ -79,6 +80,12 @@ const Home = () => {
                             </div>
                         </div>
                         <UserInfoCard dataLength={dataLength} dataValue={'**********'} cardTitle={'change password'} />
+                        <div className="py-3">
+                            <button className="px-3 py-2 bg-red-500 rounded text-white hover:bg-red-600 transition-all ease-in-out duration-200 flex items-center justify-center gap-2">
+                                <Trash2 className="h-5 w-5" />
+                                Delete Account
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
