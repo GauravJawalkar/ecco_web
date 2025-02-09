@@ -23,7 +23,7 @@ const productSchema = new Schema(
             type: Number,
             trim: true
         },
-        prod_Images: [
+        images: [
             {
                 type: String,
                 required: true
@@ -34,8 +34,7 @@ const productSchema = new Schema(
             required: true
         },
         category: {
-            type: Schema.Types.ObjectId,
-            ref: "Category",
+            type: String,
         },
         seller: {
             type: Schema.Types.ObjectId,

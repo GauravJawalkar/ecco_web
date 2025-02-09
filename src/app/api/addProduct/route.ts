@@ -1,13 +1,18 @@
-import { error } from "console";
+import connectDB from "@/db/dbConfig";
+import { uploadOnCloudinary } from "@/helpers/uploadAssets";
+import { Product } from "@/models/product.model";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
+connectDB();
 
 export async function POST(request: NextRequest) {
     try {
 
         const cookiesStore = await cookies();
-        const encodedUser: any = cookiesStore.get('accessToken');
+
+        const encodedUser: any = cookiesStore.get('accessToken')?.value;
 
         if (!encodedUser) {
             return NextResponse.redirect(new URL('/login', request.nextUrl))
@@ -33,8 +38,29 @@ export async function POST(request: NextRequest) {
         const category = formData.get('category');
 
         if (seller !== userId) {
-            return NextResponse.json({ error: "Unauthorized Error" }, { status: 403 })
+            return NextResponse.json({ error: "Unauthorized User" }, { status: 403 })
         }
+
+        const imageUrls: any = await uploadOnCloudinary(images, "ecco_web")
+
+        const product = await Product.create({
+            name,
+            description,
+            price,
+            discount,
+            prod_Images: [imageUrls],
+            size,
+            category,
+            seller: userId
+        })
+
+        if (!product) {
+            return NextResponse.json({ error: "Failed to create the product" }, { status: 500 })
+        }
+
+        return NextResponse.json(
+            { product: product }, { status: 200 }
+        )
 
     } catch (error) {
         console.log('Error adding product : ', error);
