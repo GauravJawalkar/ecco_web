@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
         const formData = await request.formData();
 
-        const seller = formData.get('id');
+        const seller = formData.get('seller');
         const name = formData.get('name');
         const description = formData.get('description');
         const price = formData.get('price');
@@ -37,18 +37,29 @@ export async function POST(request: NextRequest) {
         const size = formData.get('size');
         const category = formData.get('category');
 
+        console.log(seller);
+
+
         if (seller !== userId) {
-            return NextResponse.json({ error: "Unauthorized User" }, { status: 403 })
+            return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        const imageUrls: any = await uploadOnCloudinary(images, "ecco_web")
+        console.log("Images are", images)
+        console.log("Images are", typeof images)
+
+
+        const imageUrls: any = await uploadOnCloudinary(images, 'ecco_web');
+
+        if (!imageUrls) {
+            return NextResponse.json({ error: "No Files uploaded on cloudinary" }, { status: 404 })
+        }
 
         const product = await Product.create({
             name,
             description,
             price,
             discount,
-            prod_Images: [imageUrls],
+            images: imageUrls?.secure_url || '',
             size,
             category,
             seller: userId
@@ -59,11 +70,10 @@ export async function POST(request: NextRequest) {
         }
 
         return NextResponse.json(
-            { product: product }, { status: 200 }
+            { data: product }, { status: 200 }
         )
 
     } catch (error) {
-        console.log('Error adding product : ', error);
         return NextResponse.json({ error: "Failed to add the product" }, { status: 500 })
     }
 }

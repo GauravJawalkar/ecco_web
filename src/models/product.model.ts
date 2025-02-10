@@ -23,12 +23,10 @@ const productSchema = new Schema(
             type: Number,
             trim: true
         },
-        images: [
-            {
-                type: String,
-                required: true
-            }
-        ],
+        images: {
+            type: String,
+            required: true
+        },
         size: {
             type: Number,
             required: true
