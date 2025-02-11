@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
 
+
 export async function POST(request: NextRequest) {
     try {
 
@@ -34,23 +35,25 @@ export async function POST(request: NextRequest) {
         const price = formData.get('price');
         const discount = formData.get('discount');
         const images = formData.get('images');
+        const primeImage = formData.get('primeImage');
+        const secondaryImage = formData.get('secondImage');
         const size = formData.get('size');
         const category = formData.get('category');
-
-        console.log(seller);
-
 
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        console.log("Images are", images)
-        console.log("Images are", typeof images)
 
+        const firstImageUrl: any = await uploadOnCloudinary(images, 'ecco_web');
+        const primeImageUrl: any = await uploadOnCloudinary(primeImage, 'ecco_web')
+        const secondaryImageUrl: any = await uploadOnCloudinary(secondaryImage, 'ecco_web')
 
-        const imageUrls: any = await uploadOnCloudinary(images, 'ecco_web');
+        const imageArray = [firstImageUrl?.secure_url, primeImageUrl?.secure_url, secondaryImageUrl?.secure_url];
 
-        if (!imageUrls) {
+        console.log("The url array is : ", imageArray)
+
+        if (!firstImageUrl) {
             return NextResponse.json({ error: "No Files uploaded on cloudinary" }, { status: 404 })
         }
 
@@ -59,7 +62,7 @@ export async function POST(request: NextRequest) {
             description,
             price,
             discount,
-            images: imageUrls?.secure_url || '',
+            images: imageArray || ['No image urls'],
             size,
             category,
             seller: userId

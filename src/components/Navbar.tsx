@@ -4,6 +4,7 @@ import { useUserStore } from "@/store/UserStore"
 import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
@@ -11,6 +12,8 @@ import toast from "react-hot-toast"
 export const Navbar = () => {
     const { data, logOut }: any = useUserStore();
     const [dark, setDark] = useState(false);
+    const router = useRouter();
+
 
     const dataLength = Object.keys(data).length
 
@@ -27,7 +30,10 @@ export const Navbar = () => {
     const handelLogout = async () => {
         try {
             logOut();
+            router.push('/login')
             toast.success('Logged Out');
+            localStorage.clear();
+
         } catch (error) {
             toast.error("Failed to logout the user")
             throw new Error('Error Logging out the user')

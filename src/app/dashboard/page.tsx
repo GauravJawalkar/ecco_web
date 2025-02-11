@@ -13,22 +13,31 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [images, setImages]: any = useState(null)
+    const [images, setImages]: any = useState("")
     const [price, setPrice]: any = useState(0)
     const [discount, setDiscount]: any = useState(0)
     const [size, setSize]: any = useState(0)
     const [category, setCategory] = useState("")
+    const [primeImage, setPrimeImage] = useState("");
+    const [secondImage, setSecondImage] = useState("");
+    const [imgArray, setImgArray] = useState([]);
 
 
-    const handelSubmit = async (e: any) => {
-
-        e.preventDefault();
+    const handelSubmit = async () => {
 
         try {
             setLoading(true);
 
+            if (imgArray.length >= 3) {
+                setImages(imgArray[0]);
+                setPrimeImage(imgArray[1]);
+                setSecondImage(imgArray[2]);
+            }
+
             const formData = new FormData();
             formData.append('images', images);
+            formData.append('primeImage', primeImage);
+            formData.append('secondImage', secondImage);
             formData.append('name', name);
             formData.append('seller', data._id);
             formData.append('description', description);
@@ -39,18 +48,23 @@ const Dashboard = () => {
 
             const response = await axios.post('/api/addProduct', formData);
 
-            if (!response.data) {
+            if (!response.data.data) {
                 setLoading(false)
                 toast.error('Error Adding Product')
             }
 
-            console.log(response.data)
+            console.log(response.data.data)
 
             toast.success("Product Added Successfully")
 
             setLoading(false);
             setName("")
             setDescription("")
+            setImages("")
+            setPrice('');
+            setDiscount('');
+            setSize('');
+            setCategory('');
 
         } catch (error) {
             setLoading(false)
@@ -64,7 +78,11 @@ const Dashboard = () => {
 
             <section className='flex items-center justify-center min-h-screen '>
                 <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
-                    <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
+                    <form onSubmit={(e: React.FormEvent) => {
+                        e.preventDefault();
+                        handelSubmit();
+                    }
+                    } className='flex items-center justify-center gap-5 flex-col min-w-full'>
                         <h1 className='text-center text-4xl uppercase font-semibold'>Add products</h1>
                         <div className='w-full'>
                             <label>Name :</label>
@@ -77,7 +95,7 @@ const Dashboard = () => {
                         <div className='w-full'>
                             <label>Images :</label>
                             <input type="file" className='text-black px-3 py-2 w-full rounded bg-white' placeholder='Images' required onChange={(e: any) => {
-                                setImages(e.target.files[0])
+                                setImgArray(Array.from(e.target.files));
                             }}
                                 multiple />
                         </div>

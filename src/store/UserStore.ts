@@ -28,8 +28,7 @@ export const useUserStore = create(
                 logOut: async () => {
                     try {
                         await axios.get('/api/logout')
-                        localStorage.removeItem('userLogin');
-                        localStorage.removeItem('login');
+                        localStorage.clear();
                         set(
                             () => ({ data: {} })
                         )
