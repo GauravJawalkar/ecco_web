@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
 
-
 export async function POST(request: NextRequest) {
     try {
 
@@ -50,8 +49,6 @@ export async function POST(request: NextRequest) {
         const secondaryImageUrl: any = await uploadOnCloudinary(secondaryImage, 'ecco_web')
 
         const imageArray = [firstImageUrl?.secure_url, primeImageUrl?.secure_url, secondaryImageUrl?.secure_url];
-
-        console.log("The url array is : ", imageArray)
 
         if (!firstImageUrl) {
             return NextResponse.json({ error: "No Files uploaded on cloudinary" }, { status: 404 })

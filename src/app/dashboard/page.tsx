@@ -5,34 +5,31 @@ import DashBoardStats from '@/components/DashBoardStats'
 import Loader from '@/components/Loader';
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
     const { data }: any = useUserStore();
     const [loading, setLoading] = useState(false)
+    const [imgArray, setImgArray] = useState([]);
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [images, setImages]: any = useState("")
+    const [images, setImages] = useState("")
     const [price, setPrice]: any = useState(0)
     const [discount, setDiscount]: any = useState(0)
     const [size, setSize]: any = useState(0)
     const [category, setCategory] = useState("")
     const [primeImage, setPrimeImage] = useState("");
     const [secondImage, setSecondImage] = useState("");
-    const [imgArray, setImgArray] = useState([]);
 
+    const handelFileChanges = async (e: any) => {
+        setImgArray(Array.from(e.target.files))
+    }
 
     const handelSubmit = async () => {
 
         try {
             setLoading(true);
-
-            if (imgArray.length >= 3) {
-                setImages(imgArray[0]);
-                setPrimeImage(imgArray[1]);
-                setSecondImage(imgArray[2]);
-            }
 
             const formData = new FormData();
             formData.append('images', images);
@@ -57,7 +54,6 @@ const Dashboard = () => {
 
             toast.success("Product Added Successfully")
 
-            setLoading(false);
             setName("")
             setDescription("")
             setImages("")
@@ -65,12 +61,20 @@ const Dashboard = () => {
             setDiscount('');
             setSize('');
             setCategory('');
+            setLoading(false);
 
         } catch (error) {
             setLoading(false)
-            throw new Error(`Failed to add Product : ${error}`)
+            console.log("Error in adding the product", error);
         }
     }
+
+    useEffect(() => {
+        setImages(imgArray[0]);
+        setPrimeImage(imgArray[1]);
+        setSecondImage(imgArray[2]);
+    }, [imgArray])
+
     return (
         <div className='h-screen'>
             <DashBoardStats />
@@ -80,7 +84,8 @@ const Dashboard = () => {
                 <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
                     <form onSubmit={(e: React.FormEvent) => {
                         e.preventDefault();
-                        handelSubmit();
+                        imgArray.length >= 3 ?
+                            handelSubmit() : null;
                     }
                     } className='flex items-center justify-center gap-5 flex-col min-w-full'>
                         <h1 className='text-center text-4xl uppercase font-semibold'>Add products</h1>
@@ -94,9 +99,7 @@ const Dashboard = () => {
                         </div>
                         <div className='w-full'>
                             <label>Images :</label>
-                            <input type="file" className='text-black px-3 py-2 w-full rounded bg-white' placeholder='Images' required onChange={(e: any) => {
-                                setImgArray(Array.from(e.target.files));
-                            }}
+                            <input type="file" className='text-black px-3 py-2 w-full rounded bg-white' placeholder='Images' required onChange={handelFileChanges}
                                 multiple />
                         </div>
                         <div className='w-full'>
