@@ -15,9 +15,9 @@ const Dashboard = () => {
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [images, setImages] = useState("")
-    const [price, setPrice]: any = useState(0)
-    const [discount, setDiscount]: any = useState(0)
-    const [size, setSize]: any = useState(0)
+    const [price, setPrice] = useState("")
+    const [discount, setDiscount] = useState("")
+    const [size, setSize] = useState("")
     const [category, setCategory] = useState("")
     const [primeImage, setPrimeImage] = useState("");
     const [secondImage, setSecondImage] = useState("");
@@ -48,20 +48,18 @@ const Dashboard = () => {
             if (!response.data.data) {
                 setLoading(false)
                 toast.error('Error Adding Product')
+            } else {
+                toast.success("Product Added Successfully")
+                setName("")
+                setDescription("")
+                setImages("")
+                setPrice("");
+                setDiscount("");
+                setSize("");
+                setCategory("");
+                setImgArray([]);
+                setLoading(false);
             }
-
-            console.log(response.data.data)
-
-            toast.success("Product Added Successfully")
-
-            setName("")
-            setDescription("")
-            setImages("")
-            setPrice('');
-            setDiscount('');
-            setSize('');
-            setCategory('');
-            setLoading(false);
 
         } catch (error) {
             setLoading(false)
