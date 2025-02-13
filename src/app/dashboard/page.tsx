@@ -26,8 +26,9 @@ const Dashboard = () => {
         setImgArray(Array.from(e.target.files))
     }
 
-    const handelSubmit = async () => {
+    const handelSubmit = async (e: React.FormEvent) => {
 
+        e.preventDefault();
         try {
             setLoading(true);
 
@@ -45,10 +46,8 @@ const Dashboard = () => {
 
             const response = await axios.post('/api/addProduct', formData);
 
-            if (!response.data.data) {
-                setLoading(false)
-                toast.error('Error Adding Product')
-            } else {
+            if (response.data.data) {
+
                 toast.success("Product Added Successfully")
                 setName("")
                 setDescription("")
@@ -59,6 +58,10 @@ const Dashboard = () => {
                 setCategory("");
                 setImgArray([]);
                 setLoading(false);
+
+            } else {
+                setLoading(false)
+                toast.error('Error Adding Product')
             }
 
         } catch (error) {
@@ -80,12 +83,7 @@ const Dashboard = () => {
 
             <section className='flex items-center justify-center min-h-screen '>
                 <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
-                    <form onSubmit={(e: React.FormEvent) => {
-                        e.preventDefault();
-                        imgArray.length >= 3 ?
-                            handelSubmit() : null;
-                    }
-                    } className='flex items-center justify-center gap-5 flex-col min-w-full'>
+                    <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
                         <h1 className='text-center text-4xl uppercase font-semibold'>Add products</h1>
                         <div className='w-full'>
                             <label>Name :</label>
