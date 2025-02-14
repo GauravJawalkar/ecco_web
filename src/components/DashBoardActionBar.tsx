@@ -1,11 +1,11 @@
 import React from 'react'
 
-const DashBoardActionBar = () => {
+const DashBoardActionBar = ({ isVisible }: any) => {
     return (
         <div className='flex items-center justify-around gap-4'>
             {/* My Products List */}
             <div>
-                <button className='bg-gray-50 px-4 py-2 rounded'>Add product</button>
+                <button className='bg-gray-50 px-4 py-2 rounded' onClick={() => { }}>Add product</button>
             </div>
 
             {/* Add A Product */}
