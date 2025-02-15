@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const imageUrl: any = await uploadOnCloudinary(avatar, "ecco_web")
+        const imageUrl: any = await uploadOnCloudinary(avatar, "ecco_web_user_avatars")
 
         const user = await User.create(
             {
