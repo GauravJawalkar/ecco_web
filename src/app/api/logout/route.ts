@@ -35,8 +35,8 @@ export async function GET() {
                 { status: 401 })
         }
 
-        cookieStore.set('accessToken', "");
-        cookieStore.set('refreshToken', "");
+        cookieStore.delete('accessToken');
+        cookieStore.delete('refreshToken');
 
         return NextResponse.json(
             { message: "Logout Successful", success: true, loggedOut: loggedOutUser },

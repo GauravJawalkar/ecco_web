@@ -12,8 +12,6 @@
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
-    "cookies-next": "^5.1.0",
-    "formidable": "^3.5.2",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.474.0",

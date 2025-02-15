@@ -5,15 +5,15 @@ import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import Cookies from 'js-cookie';
 
 
 export const Navbar = () => {
     const { data, logOut }: any = useUserStore();
     const [dark, setDark] = useState(false);
     const router = useRouter();
-
 
     const dataLength = Object.keys(data).length
 
@@ -39,6 +39,13 @@ export const Navbar = () => {
             throw new Error('Error Logging out the user')
         }
     }
+
+    useEffect(() => {
+        if (Cookies.get('accessToken') === undefined) {
+            localStorage.clear();
+        }
+    }, [])
+
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-10 backdrop-blur-md'>

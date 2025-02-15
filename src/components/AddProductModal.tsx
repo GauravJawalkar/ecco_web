@@ -55,6 +55,7 @@ const AddProductModal = ({ isVisible, onClose }: any) => {
                 setCategory("");
                 setImgArray([]);
                 setLoading(false);
+                onClose();
                 toast.success("Product Added Successfully");
             } else {
                 setLoading(false)
