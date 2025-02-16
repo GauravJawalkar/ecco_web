@@ -40,6 +40,8 @@ export const Navbar = () => {
         }
     }
 
+
+
     useEffect(() => {
         if (Cookies.get('accessToken') === undefined) {
             localStorage.clear();
@@ -73,7 +75,8 @@ export const Navbar = () => {
                     <div className={`inset-0 absolute top-10 w-fit hidden group-hover:block 
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 
                     ${dataLength === 0 ? "group-hover:hidden" : "block"}
-                    `}>
+                    `
+                    }>
                         <div className="border-b-[0.1px] backdrop-blur-md dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />

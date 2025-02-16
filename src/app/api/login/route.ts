@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
         }
 
         const cookieStore = await cookies();
-        cookieStore.set('accessToken', accessToken, options)
+        cookieStore.set('accessToken', accessToken)
         cookieStore.set('refreshToken', refreshToken, options)
 
         return NextResponse.json(
