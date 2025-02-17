@@ -40,8 +40,6 @@ export const Navbar = () => {
         }
     }
 
-
-
     useEffect(() => {
         if (Cookies.get('accessToken') === undefined) {
             localStorage.clear();
