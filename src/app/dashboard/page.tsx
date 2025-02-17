@@ -3,11 +3,12 @@
 import AddProductModal from '@/components/AddProductModal';
 import DashBoardActionBar from '@/components/DashBoardActionBar'
 import DashBoardStats from '@/components/DashBoardStats'
+import MyProducts from '@/components/MyProducts';
+import { useUserStore } from '@/store/UserStore';
 import { useState } from 'react';
 
 const Dashboard = () => {
     const [showProductModal, setShowProductModal] = useState(false);
-
     return (
         <div className='h-screen'>
             <DashBoardStats />
@@ -28,6 +29,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
+            <MyProducts />
         </div >
     )
 }

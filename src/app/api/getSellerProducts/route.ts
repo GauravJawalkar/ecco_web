@@ -1,10 +1,15 @@
+import connectDB from "@/db/dbConfig";
 import { Product } from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
+
+connectDB();
 
 export async function POST(request: NextRequest) {
     try {
 
         const reqBody = await request.json();
+
+        console.log("reqBody is : ", reqBody);
 
         const { sellerId } = reqBody;
 
