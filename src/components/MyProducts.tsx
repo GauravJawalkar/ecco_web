@@ -1,7 +1,7 @@
 "use client"
 
 import axios from 'axios';
-import { useEffect, useState } from 'react'
+import { Key, useEffect, useState } from 'react'
 
 const MyProducts = ({ sellerId }: { sellerId: string }) => {
 
@@ -26,12 +26,20 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
         <div>
             YOoo: {
                 prodData.length === 0 ? "No Products Found" :
-                    prodData.map(({ _id, name, description, images }) => {
+                    prodData.map(({ _id, name, description, images }: any) => {
                         return <div key={_id}>
                             {_id},
                             {name},
                             {description},
-                            {images}
+                            <br />
+                            {images.map((elem: string, index: Key | null | undefined) => {
+                                <br />
+                                return (
+                                    <div key={index}>
+                                        {elem}
+                                    </div>
+                                )
+                            })}
                         </div>
                     })}
         </div>

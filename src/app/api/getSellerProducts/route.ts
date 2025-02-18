@@ -9,8 +9,6 @@ export async function POST(request: NextRequest) {
 
         const reqBody = await request.json();
 
-        console.log("reqBody is : ", reqBody);
-
         const { sellerId } = reqBody;
 
         if (sellerId.trim() === "") {
@@ -25,7 +23,6 @@ export async function POST(request: NextRequest) {
         }
 
         return NextResponse.json({ data: sellerProducts }, { status: 200 })
-
 
     } catch (error) {
         return NextResponse.json({ error: error }, { status: 500 })
