@@ -1,13 +1,13 @@
 "use client"
 
 import AddProductModal from '@/components/AddProductModal';
-import DashBoardActionBar from '@/components/DashBoardActionBar'
 import DashBoardStats from '@/components/DashBoardStats'
 import MyProducts from '@/components/MyProducts';
 import { useUserStore } from '@/store/UserStore';
 import { useState } from 'react';
 
 const Dashboard = () => {
+    const { data }: any = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
     return (
         <div className='h-screen'>
@@ -29,7 +29,8 @@ const Dashboard = () => {
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
-            <MyProducts />
+            {data._id ? <MyProducts sellerId={data?._id} /> : ""}
+
         </div >
     )
 }

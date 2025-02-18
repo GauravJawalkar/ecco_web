@@ -1,38 +1,44 @@
 "use client"
-import { useUserStore } from '@/store/UserStore';
+
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useUserStore } from '@/store/UserStore';
 
-const MyProducts = () => {
+const MyProducts = ({ sellerId }: { sellerId: string }) => {
 
-    const { data }: any = useUserStore();
-    const [prodData, setProdData] = useState("");
+    const [prodData, setProdData] = useState([]);
+    // const sellerId = data?._id;
 
 
-    console.log("seller id is ", data._id);
+    const getSellerProducts = async () => {
 
-    async function getSellerProducts() {
         try {
-
-            const sellerId = await data._id;
-
             const response = await axios.post('/api/getSellerProducts', { sellerId });
             console.log("response is :", response);
-            setProdData(response.data.data);
+            setProdData(response.data.data)
 
         } catch (error) {
             console.log(error);
         }
-
     }
 
     useEffect(() => {
-        getSellerProducts();
+        getSellerProducts()
     }, [])
+
 
     return (
         <div>
-            {prodData}
+            YOoo: {
+                prodData.length === 0 ? "No Products Found" :
+                    prodData.map(({ _id, name, description, images }) => {
+                        return <div key={_id}>
+                            {_id},
+                            {name},
+                            {description},
+                            {images}
+                        </div>
+                    })}
         </div>
     )
 }
