@@ -10,7 +10,7 @@ const Dashboard = () => {
     const { data }: any = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
     return (
-        <div className='h-screen'>
+        <div>
             <DashBoardStats />
             <div className='flex items-center justify-around gap-4'>
                 {/* My Products List */}
@@ -30,7 +30,6 @@ const Dashboard = () => {
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
             {data._id ? <MyProducts sellerId={data?._id} /> : ""}
-
         </div >
     )
 }
