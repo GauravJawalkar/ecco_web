@@ -33,10 +33,10 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
 
                     prodData.map(
                         ({ _id, name, description, images, price, discount, category }: any) => {
-                            return <div key={_id} className='border p-5'>
+                            return <div key={_id} className='border p-5 dark:border-gray-500'>
                                 <div className=''>
                                     <Swiper modules={[EffectFade, Pagination]}
-                                        pagination={{ clickable: true }} spaceBetween={50} effect="card" className='border rounded'>
+                                        pagination={{ clickable: true }} spaceBetween={50} effect="card" className='border rounded dark:border-gray-500'>
                                         {images.map((elem: string, index: Key | null | undefined) => {
                                             return (
                                                 <SwiperSlide key={index} className=''>
@@ -52,15 +52,15 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
                                         {description}
                                     </p>
                                     <div className='py-2 flex items-center gap-5 justify-between'>
-                                        <h1 className='font-light uppercase'>
+                                        <h1 className='font-light '>
                                             <span className='font-semibold'> Price </span> - ₹ {price}
                                         </h1>
-                                        <h1 className='font-light uppercase'>
+                                        <h1 className='font-light '>
                                             <span className='font-semibold'>  Discount </span> - ₹ {discount}
                                         </h1>
                                     </div>
-                                    <div className='font-light uppercase'>
-                                        <span className='font-semibold'>  TOTAL </span> - ₹ {price - discount}
+                                    <div className='font-light '>
+                                        <span className='font-semibold'>  Total </span> - ₹ {price - discount}
                                     </div>
                                 </div>
                             </div>
