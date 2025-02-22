@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Pagination, } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { PenLine } from 'lucide-react';
+import { PenLine, Trash } from 'lucide-react';
 
 const MyProducts = ({ sellerId }: { sellerId: string }) => {
 
@@ -67,13 +67,13 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
                                         <span className='font-semibold'>  Total </span> ₹ {price - discount}
                                     </div>
                                     <div className='py-2 flex items-center gap-3'>
-                                        <button className='px-2 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-linear duration-200 rounded text-white flex items-center justify-center gap-2'>
+                                        <button className='px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2'>
                                             Edit
                                             <span><PenLine className='h-4 w-4' /></span>
                                         </button>
-                                        <button className='px-2 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-linear duration-200 rounded text-white flex items-center justify-center gap-2'>
+                                        <button className='px-3 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2'>
                                             Delete
-                                            <span><PenLine className='h-4 w-4' /></span>
+                                            <span><Trash className='h-4 w-4' /></span>
                                         </button>
                                     </div>
                                 </div>
