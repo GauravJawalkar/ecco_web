@@ -31,14 +31,19 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         try {
             setLoading(true)
             const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size });
+            if (response.data.data) {
+                toast.success("Updated Successfully")
+                setLoading(false);
+                onClose();
+            } else {
+                toast.error("Failed to update")
 
-            console.log(response.data.data);
-
-            toast.success("Updated Successfully")
+            }
 
         } catch (error) {
             setLoading(false)
             console.log("Error updating details : ", error)
+            toast.error("Failed to update")
         }
 
     }

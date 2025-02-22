@@ -1,6 +1,8 @@
+import connectDB from "@/db/dbConfig";
 import { Product } from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
 
+connectDB();
 export async function PUT(request: NextRequest) {
     try {
 
@@ -12,7 +14,11 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: "id is required" }, { status: 402 })
         }
 
-        if ([name, description, price, discount, size].some((field) => field.trim() === "")) {
+        String(price);
+        String(discount);
+        String(size);
+
+        if ([name, description].some((field) => field.trim() === "")) {
             return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 403 })
         }
 
