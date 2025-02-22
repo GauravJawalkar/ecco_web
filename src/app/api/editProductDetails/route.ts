@@ -6,13 +6,13 @@ export async function PUT(request: NextRequest) {
 
         const reqBody = await request.json();
 
-        const { id, name, description, price, discount } = reqBody;
+        const { id, name, description, price, discount, size } = reqBody;
 
         if (id.trim() === "") {
             return NextResponse.json({ error: "id is required" }, { status: 402 })
         }
 
-        if ([name, description, price, discount].some((field) => field.trim() === "")) {
+        if ([name, description, price, discount, size].some((field) => field.trim() === "")) {
             return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 403 })
         }
 
@@ -22,7 +22,8 @@ export async function PUT(request: NextRequest) {
                     name,
                     description,
                     price,
-                    discount
+                    discount,
+                    size
                 },
             },
             {

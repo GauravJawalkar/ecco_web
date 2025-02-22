@@ -8,11 +8,20 @@ import { EffectFade, Pagination, } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { PenLine, Trash } from 'lucide-react';
+import EditDetailsModal from './EditDetailsModal';
 
 const MyProducts = ({ sellerId }: { sellerId: string }) => {
 
     const [prodData, setProdData] = useState([]);
     const [update, setUpdate] = useState(0)
+    const [editModal, setEditModal] = useState(false)
+    const [oldName, setOldName] = useState("");
+    const [oldDescripion, setOldDescripion] = useState("");
+    const [oldPrice, setOldPrice] = useState("");
+    const [oldDiscount, setOldDiscount] = useState("");
+    const [oldSize, setOldSize] = useState("");
+    const [currentId, setCurrentId] = useState("");
+
 
     const getSellerProducts = async () => {
         try {
@@ -36,48 +45,68 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
                 prodData.length === 0 ? "No Products Found" :
 
                     prodData.map(
-                        ({ _id, name, description, images, price, discount, category }: any) => {
-                            return <div key={_id} className='border p-5 dark:border-gray-500'>
-                                <div className=''>
-                                    <Swiper modules={[EffectFade, Pagination]}
-                                        pagination={{ clickable: true }} spaceBetween={50} effect="card" className='border rounded dark:border-gray-500'>
-                                        {images.map((elem: string, index: Key | null | undefined) => {
-                                            return (
-                                                <SwiperSlide key={index} className=''>
-                                                    <Image src={elem} loading='lazy' alt='image prod' width={300} height={200} className='h-[300px] w-full object-cover rounded' />
-                                                </SwiperSlide>
-                                            )
-                                        })}
-                                    </Swiper>
-                                    <h1 className='capitalize text-xl font-bold antialiased py-2 line-clamp-2'>
-                                        {name}
-                                    </h1>
-                                    <p className='text-base text-gray-500 line-clamp-3'>
-                                        {description}
-                                    </p>
-                                    <div className='py-2 flex items-center gap-5 justify-between'>
-                                        <h1 className='font-light '>
-                                            <span className='font-semibold'> Price </span> ₹ {price}
+                        ({ _id, name, description, images, price, discount, size }: any) => {
+                            return (
+                                <div key={_id} className='border p-5 dark:border-gray-500'>
+                                    <div className=''>
+                                        <Swiper modules={[EffectFade, Pagination]}
+                                            pagination={{ clickable: true }} spaceBetween={50} effect="card" className='border rounded dark:border-gray-500'>
+                                            {images.map((elem: string, index: Key | null | undefined) => {
+                                                return (
+                                                    <SwiperSlide key={index} className=''>
+                                                        <Image src={elem} loading='lazy' alt='image prod' width={300} height={200} className='h-[300px] w-full object-cover rounded' />
+                                                    </SwiperSlide>
+                                                )
+                                            })}
+                                        </Swiper>
+                                        <h1 className='capitalize text-xl font-bold antialiased py-2 line-clamp-2'>
+                                            {name}
                                         </h1>
-                                        <h1 className='font-light '>
-                                            <span className='font-semibold'>  Discount </span> ₹ {discount}
-                                        </h1>
+                                        <p className='text-base text-gray-500 line-clamp-3'>
+                                            {description}
+                                        </p>
+                                        <div className='py-2 flex items-center gap-5 justify-between'>
+                                            <h1 className='font-light '>
+                                                <span className='font-semibold'> Price </span> ₹ {price}
+                                            </h1>
+                                            <h1 className='font-light '>
+                                                <span className='font-semibold'>  Discount </span> ₹ {discount}
+                                            </h1>
+                                        </div>
+                                        <div className='font-light '>
+                                            <span className='font-semibold'>  Total </span> ₹ {price - discount}
+                                        </div>
+                                        <div className='py-2 flex items-center gap-3'>
+                                            <button className='px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2' onClick={() => {
+                                                setEditModal(true)
+                                                setOldName(name);
+                                                setOldPrice(price);
+                                                setOldDescripion(description);
+                                                setOldDiscount(discount);
+                                                setOldSize(size);
+                                                setCurrentId(_id);
+                                            }}>
+                                                Edit
+                                                <span><PenLine className='h-4 w-4' /></span>
+                                            </button>
+                                            <button className='px-3 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2'>
+                                                Delete
+                                                <span><Trash className='h-4 w-4' /></span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className='font-light '>
-                                        <span className='font-semibold'>  Total </span> ₹ {price - discount}
-                                    </div>
-                                    <div className='py-2 flex items-center gap-3'>
-                                        <button className='px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2'>
-                                            Edit
-                                            <span><PenLine className='h-4 w-4' /></span>
-                                        </button>
-                                        <button className='px-3 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2'>
-                                            Delete
-                                            <span><Trash className='h-4 w-4' /></span>
-                                        </button>
-                                    </div>
+                                    <EditDetailsModal
+                                        isVisible={editModal}
+                                        onClose={() => { return setEditModal(false) }}
+                                        oldName={oldName}
+                                        oldDescripion={oldDescripion}
+                                        oldPrice={oldPrice}
+                                        oldDiscount={oldDiscount}
+                                        oldSize={oldSize}
+                                        id={currentId}
+                                    />
                                 </div>
-                            </div>
+                            )
                         }
                     )
             }
