@@ -13,11 +13,12 @@ interface editDetailsProps {
     oldDiscount: string;
     oldSize: string;
     isVisible: boolean;
-    id: string
+    id: string;
+    reRender: () => {};
 }
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
-    oldPrice, oldDiscount, oldSize, id }: editDetailsProps) => {
+    oldPrice, oldDiscount, oldSize, id, reRender }: editDetailsProps) => {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
@@ -35,6 +36,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                 toast.success("Updated Successfully")
                 setLoading(false);
                 onClose();
+                reRender();
             } else {
                 toast.error("Failed to update")
 
@@ -70,26 +72,58 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                     </div>
                     <div className='w-full'>
                         <label>Name :</label>
-                        <input type="text" value={name} className='text-black px-3 py-2 w-full rounded' placeholder='Name' required onChange={(e) => { setName(e.target.value) }} />
+                        <input
+                            type="text"
+                            value={name}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Name'
+                            required
+                            onChange={(e) => { setName(e.target.value) }} />
                     </div>
                     <div className='w-full'>
                         <label>Description :</label>
-                        <input type="text" value={description} className='text-black px-3 py-2 w-full rounded' placeholder='Description' required onChange={(e) => setDescription(e.target.value)} />
+                        <input
+                            type="text"
+                            value={description}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Description'
+                            required
+                            onChange={(e) => setDescription(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>Price :</label>
-                        <input type="number" value={price} className='text-black px-3 py-2 w-full rounded' placeholder='Price' required onChange={(e) => setPrice(e.target.value)} />
+                        <input
+                            type="number"
+                            value={price}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Price'
+                            required
+                            onChange={(e) => setPrice(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>Discount :</label>
-                        <input type="number" value={discount} className='text-black px-3 py-2 w-full rounded' placeholder='Discount' required onChange={(e) => setDiscount(e.target.value)} />
+                        <input
+                            type="number"
+                            value={discount}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Discount'
+                            required
+                            onChange={(e) => setDiscount(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>Size :</label>
-                        <input type="number" value={size} className='text-black px-3 py-2 w-full rounded' placeholder='Size' required onChange={(e) => setSize(e.target.value)} />
+                        <input
+                            type="number"
+                            value={size}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Size'
+                            required
+                            onChange={(e) => setSize(e.target.value)} />
                     </div>
 
-                    <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                    <button
+                        type='submit'
+                        className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {
                             loading ?
                                 <Loader title='Updating ' /> :

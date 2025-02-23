@@ -23,7 +23,7 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
     const [currentId, setCurrentId] = useState("");
 
 
-    const getSellerProducts = async () => {
+    async function getSellerProducts() {
         try {
             const response = await axios.post('/api/getSellerProducts', { sellerId });
             setProdData(response.data.data)
@@ -104,6 +104,7 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
                                         oldDiscount={oldDiscount}
                                         oldSize={oldSize}
                                         id={currentId}
+                                        reRender={() => { return getSellerProducts() }}
                                     />
                                 </div>
                             )
