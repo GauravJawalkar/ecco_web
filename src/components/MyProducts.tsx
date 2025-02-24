@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 import Image from 'next/image';
-import { Key, useCallback, useEffect, useState } from 'react'
+import { Key, useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Pagination, } from 'swiper/modules';
 import 'swiper/css';
