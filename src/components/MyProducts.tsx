@@ -22,7 +22,6 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
     const [oldDiscount, setOldDiscount] = useState("");
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
-    const [deleteLoader, setDeleteLoader] = useState(false);
 
     async function getSellerProducts() {
         try {
@@ -33,29 +32,20 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
         }
     }
 
-
     const handelDelete = async (productId: string) => {
 
-        console.log("The product id is : ", productId)
-
         try {
-            setDeleteLoader(true)
             const response = await axios.delete('/api/deleteProduct', { data: { sellerId, productId } })
 
             if (response.data.product) {
                 toast.success("Product Deleted");
             }
 
-            setDeleteLoader(false);
-
             getSellerProducts();
 
         } catch (error) {
-            setDeleteLoader(false)
             toast.error("Failed to delete the product. Try Again")
             console.log(error)
-        } finally {
-            setDeleteLoader(false)
         }
     }
 
