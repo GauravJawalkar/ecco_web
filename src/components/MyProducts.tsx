@@ -1,16 +1,15 @@
 "use client"
 
+import 'swiper/css';
 import axios from 'axios';
 import Image from 'next/image';
+import 'swiper/css/pagination';
+import toast from 'react-hot-toast';
+import { PenLine, Trash } from 'lucide-react';
 import { Key, useEffect, useState } from 'react'
+import EditDetailsModal from './EditDetailsModal';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Pagination, } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import { PenLine, Trash } from 'lucide-react';
-import EditDetailsModal from './EditDetailsModal';
-import toast from 'react-hot-toast';
-import Loader from './Loader';
 
 const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => {
 
@@ -41,7 +40,7 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
                 toast.success("Product Deleted");
             }
 
-            getSellerProducts();
+            await getSellerProducts();
 
         } catch (error) {
             toast.error("Failed to delete the product. Try Again")

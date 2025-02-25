@@ -38,6 +38,9 @@ export async function DELETE(request: NextRequest) {
         return NextResponse.json({ product: "Product Deletes Successfully" }, { status: 200 })
 
     } catch (error) {
+
+        console.log("Error Deleting Product : ", error)
         return NextResponse.json({ error: "Failed to delete the product" }, { status: 500 })
+
     }
 }
