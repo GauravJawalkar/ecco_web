@@ -9,6 +9,7 @@ import { useState } from 'react';
 const Dashboard = () => {
     const { data }: any = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
+    
     return (
         <div>
             <DashBoardStats />
@@ -29,7 +30,7 @@ const Dashboard = () => {
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
-            {data._id ? <MyProducts sellerId={data?._id} /> : ""}
+            {data._id ? <MyProducts load={showProductModal} sellerId={data?._id} /> : ""}
         </div >
     )
 }

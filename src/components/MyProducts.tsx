@@ -10,10 +10,9 @@ import 'swiper/css/pagination';
 import { PenLine, Trash } from 'lucide-react';
 import EditDetailsModal from './EditDetailsModal';
 
-const MyProducts = ({ sellerId }: { sellerId: string }) => {
+const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => {
 
     const [prodData, setProdData] = useState([]);
-    const [update, setUpdate] = useState(0)
     const [editModal, setEditModal] = useState(false)
     const [oldName, setOldName] = useState("");
     const [oldDescripion, setOldDescripion] = useState("");
@@ -22,21 +21,18 @@ const MyProducts = ({ sellerId }: { sellerId: string }) => {
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
 
-
     async function getSellerProducts() {
         try {
             const response = await axios.post('/api/getSellerProducts', { sellerId });
             setProdData(response.data.data)
-            setUpdate(update + 1);
         } catch (error) {
-            setUpdate(update)
             console.log(error);
         }
     }
 
     useEffect(() => {
         getSellerProducts()
-    }, [])
+    }, [load])
 
 
     return (
