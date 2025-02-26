@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Ecomm_Web",
-  description: "Gaaurav with ❤ by gaurav jawalkar",
+  description: "Made with ❤ by gaurav jawalkar",
 };
 
 export default function RootLayout({
