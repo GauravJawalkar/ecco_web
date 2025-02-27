@@ -13,7 +13,7 @@ const Dashboard = () => {
     return (
         <div>
             <DashBoardStats />
-            <div className='flex items-center justify-around gap-4'>
+            <div className='flex items-center justify-around gap-4 dark:text-neutral-800'>
                 {/* My Products List */}
                 <div>
                     <button className='bg-gray-50 px-4 py-2 rounded' onClick={() => { setShowProductModal(true) }}>Add product</button>
