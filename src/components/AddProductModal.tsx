@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import Loader from './Loader';
 import { CircleX } from 'lucide-react';
 
-const AddProductModal = ({ isVisible, onClose }: any) => {
+const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
 
 
     const { data }: any = useUserStore();
