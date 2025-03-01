@@ -54,7 +54,7 @@ const Login = () => {
                         <input type="password" className='text-black px-3 py-2 w-full rounded' placeholder='Password' required onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <div className='w-full'>
-                        <button className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200'>Forgot Password ?</button>
+                        <Link href={'/forgot-password'} className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200'>Forgot Password ?</Link>
                     </div>
                     <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {

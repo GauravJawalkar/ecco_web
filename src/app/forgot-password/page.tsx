@@ -1,0 +1,41 @@
+"use client"
+import Loader from '@/components/Loader';
+import Link from 'next/link';
+import React, { useState } from 'react'
+
+const ForgotPassword = () => {
+
+    const [password, setPassword] = useState("");
+    const [otp, setOtp] = useState("");
+    const [loading, setLoading] = useState(false)
+
+    const handelSubmit = () => {
+
+    }
+    return (
+        <section className='flex items-center justify-center min-h-screen '>
+            <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
+                <form onSubmit={(e) => { e.preventDefault(); handelSubmit() }} className='flex items-center justify-center gap-5 flex-col min-w-full'>
+                    <h1 className='text-center text-4xl uppercase font-semibold'>Forgot</h1>
+                    <div className='w-full'>
+                        <label>New Password :</label>
+                        <input type="password" className='text-black px-3 py-2 w-full rounded' placeholder='Password' required onChange={(e) => setPassword(e.target.value)} />
+                    </div>
+                    <div className='w-full'>
+                        <label>OTP :</label>
+                        <input type="password" className='text-black px-3 py-2 w-full rounded' placeholder='One Time Password' required onChange={(e) => setOtp(e.target.value)} />
+                    </div>
+                    <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                        {
+                            loading ?
+                                <Loader title='Setting...' /> :
+                                "Reset Password"
+                        }
+                    </button>
+                </form>
+            </div >
+        </section>
+    )
+}
+
+export default ForgotPassword

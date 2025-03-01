@@ -18,7 +18,10 @@ export async function mailValidator({ email, emailType, userId }: mailValidatorP
         }
 
         if (emailType === "forgotPassword") {
-            await User.findByIdAndUpdate(userId,
+            await User.findOneAndUpdate(
+                {
+                    email
+                },
                 {
                     $set: {
                         forgotPasswordOTP: validationOTP,
@@ -26,7 +29,7 @@ export async function mailValidator({ email, emailType, userId }: mailValidatorP
                     }
                 },
                 {
-                    new: true
+                    returnDocument: 'after'
                 }
             );
         }
