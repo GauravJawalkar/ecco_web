@@ -9,15 +9,15 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
 
     const { data }: any = useUserStore();
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [imgArray, setImgArray] = useState([]);
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [images, setImages] = useState("")
-    const [price, setPrice] = useState("")
-    const [discount, setDiscount] = useState("")
-    const [size, setSize] = useState("")
-    const [category, setCategory] = useState("")
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [images, setImages] = useState("");
+    const [price, setPrice] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [size, setSize] = useState("");
+    const [category, setCategory] = useState("");
     const [primeImage, setPrimeImage] = useState("");
     const [secondImage, setSecondImage] = useState("");
 

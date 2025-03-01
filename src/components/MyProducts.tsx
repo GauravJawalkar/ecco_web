@@ -21,6 +21,7 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
     const [oldDiscount, setOldDiscount] = useState("");
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
+    const [showMore, setShowMore] = useState(false);
 
     async function getSellerProducts() {
         try {
@@ -80,9 +81,15 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
                                                 <h1 className='capitalize text-xl font-bold antialiased py-2 line-clamp-2'>
                                                     {name}
                                                 </h1>
-                                                <p className='text-base text-gray-500 line-clamp-3'>
+                                                <p className={`text-base text-gray-500 
+                                                    ${showMore ? "line-clamp-4" : "line-clamp-2"}`}>
                                                     {description}
                                                 </p>
+                                                <button className='text-sm text-blue-700 hover:text-blue-500'
+                                                    onClick={() => setShowMore(
+                                                        (prev) => !prev)}>
+                                                    Show More
+                                                </button>
                                                 <div className='py-2 flex items-center gap-5 justify-between'>
                                                     <h1 className='font-light '>
                                                         <span className='font-semibold'> Price </span> ₹ {price}
