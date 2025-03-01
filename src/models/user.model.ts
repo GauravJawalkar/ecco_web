@@ -30,6 +30,12 @@ const userSchema = new Schema(
         },
         refreshToken: {
             type: String
+        },
+        forgotPasswordOTP: {
+            type: String
+        },
+        forgotPasswordOTPexpiry: {
+            type: Date,
         }
     },
     {

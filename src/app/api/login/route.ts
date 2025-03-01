@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
 
         const reqBody = await request.json();
 
-        const { name, email, password } = reqBody;
+        const { email, password } = reqBody;
 
-        if ([name, email, password].some((field) => field.trim() === "")) {
+        if ([email, password].some((field) => field.trim() === "")) {
             return NextResponse.json({ error: "name email and password are required" }, { status: 401 })
         }
 
