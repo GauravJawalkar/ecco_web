@@ -1,6 +1,9 @@
 "use client"
 import Loader from '@/components/Loader';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
 
@@ -8,9 +11,20 @@ const ForgotPassword = () => {
     const [newPassword, setnewPassword] = useState("");
     const [OTP, setOTP] = useState("");
     const [loading, setLoading] = useState(false)
+    const router = useRouter();
 
-    const handelSubmit = () => {
+    const handelSubmit = async () => {
+        try {
+            const response = await axios.post('/api/resetPassword', { email, newPassword, OTP });
 
+            if (response.data.data) {
+                toast.success("Password Reset SuccessFully");
+                router.push('/login')
+            }
+        } catch (error) {
+            toast.error("Error resetting password");
+            console.log("Error resetting password : ", error)
+        }
     }
     return (
         <section className='flex items-center justify-center min-h-screen '>

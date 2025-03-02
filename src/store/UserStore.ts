@@ -22,6 +22,7 @@ export const useUserStore = create(
                             () => ({ data: response.data.user })
                         );
                     } catch (error) {
+                        console.log("Error logging in : ", error)
                         throw new Error("Error logging in")
                     }
                 },
