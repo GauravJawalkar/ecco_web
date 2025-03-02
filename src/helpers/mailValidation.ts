@@ -5,10 +5,9 @@ import nodemailer from 'nodemailer'
 interface mailValidatorProps {
     email: string,
     emailType: string,
-    userId: string
 }
 
-export async function mailValidator({ email, emailType, userId }: mailValidatorProps) {
+export async function mailValidator({ email, emailType }: mailValidatorProps) {
     try {
 
         const validationOTP = Math.floor(Math.random() * 9000 + 1000);
