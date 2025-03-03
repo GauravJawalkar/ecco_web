@@ -24,7 +24,7 @@ export async function GET() {
 
         const userLoggedId = await decodedToken?._id;
 
-        const userDetails = await User.findById(userLoggedId).select("-password -refreshToken -accessToken ");
+        const userDetails = await User.findById(userLoggedId).select("-password -refreshToken -accessToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry");
 
         if (!userDetails) {
             return NextResponse.json({ error: "" }, { status: 401 })

@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
         const { accessToken, refreshToken }: any = await generateAccessAndRefreshToken(user._id)
 
-        const loggedUser = await User.findById(user._id).select("-password -refreshToken ")
+        const loggedUser = await User.findById(user._id).select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
 
         if (!loggedUser) {
             return NextResponse.json({ error: "Cannot find logged user" }, { status: 402 })

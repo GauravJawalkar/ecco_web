@@ -6,6 +6,7 @@ import { LogOut, Pencil, ShieldCheck, ShieldQuestion, Trash2 } from "lucide-reac
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
+import toast from "react-hot-toast";
 
 const Home = () => {
     const { data, logOut }: any = useUserStore();
@@ -24,6 +25,15 @@ const Home = () => {
             throw new Error("Failed to logout");
         }
     };
+
+    const handelEmailVerify = async () => {
+        try {
+
+        } catch (error) {
+            toast.error('Failed to verify the email')
+            console.log('Failed to verify the email', error)
+        }
+    }
 
     return (
         <section className="">
@@ -75,18 +85,18 @@ const Home = () => {
                                     Edit
                                 </button>
 
-                                <button className="text-green-500 border border-slate-300 hover:bg-gray-200 dark:hover:bg-[#3a3a3a] dark:border-[#5a5a5a] transition ease-in-out duration-200 px-4 py-1 rounded-sm text-base font-normal flex items-center justify-center gap-2">
+                                <div className="text-green-500 border border-slate-300 hover:bg-gray-200 dark:hover:bg-[#3a3a3a] dark:border-[#5a5a5a] transition ease-in-out duration-200 px-4 py-1 rounded-sm text-base font-normal flex items-center justify-center gap-2">
                                     {dataLength !== 0 && data.isEmailVerified ?
                                         <div className="font-normal flex items-center justify-center gap-2">
                                             <ShieldCheck className="h-5 w-5" />
                                             Verified
                                         </div> :
-                                        <div className="font-normal flex items-center justify-center gap-2">
+                                        <button onClick={() => handelEmailVerify()} className="font-normal flex items-center justify-center gap-2">
                                             <ShieldQuestion className="h-5 w-5" />
                                             Verify Now
-                                        </div>
+                                        </button>
                                     }
-                                </button>
+                                </div>
                             </div>
                         </div>
                     </div>

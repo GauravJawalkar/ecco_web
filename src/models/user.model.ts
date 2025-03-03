@@ -40,6 +40,12 @@ const userSchema = new Schema(
         },
         forgotPasswordOTPexpiry: {
             type: Date,
+        },
+        emailVerificationOTP: {
+            type: String,
+        },
+        emailVerificationOTPexpiry: {
+            type: Date,
         }
     },
     {
