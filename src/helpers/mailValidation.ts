@@ -33,6 +33,23 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
             );
         }
 
+        if (emailType === "verifyEmail") {
+            await User.findOneAndUpdate(
+                {
+                    email
+                },
+                {
+                    $set: {
+                        emailVerificationOTP: validationOTP,
+                        emailVerificationOTPexpiry: Date.now() + 3600000
+                    }
+                },
+                {
+                    returnDocument: 'after'
+                }
+            );
+        }
+
 
         const transport = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
@@ -48,7 +65,7 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
             to: email,
             subject: emailType === "forgotPassword" ? "OTP to Reset Your Password" : "Verify your credentials",
             html: `<p>
-            ${emailType === "forgotPassword" ? `Your 4 digit code to reset the password ${validationOTP}` : "Nothing"}
+            ${emailType === "verifyEmail" ? `Your 4 digit code to reset the password ${validationOTP}` : `Your 4 digit code to verify credentials ${validationOTP}`}
             </p>`
         }
 

@@ -1,19 +1,25 @@
 "use client"
 
 import UserInfoCard from "@/components/UserInfoCard";
+import VerifyEmailModal from "@/components/VerifyEmailModal";
+import { mailValidator } from "@/helpers/mailValidation";
 import { useUserStore } from "@/store/UserStore";
-import { LogOut, Pencil, ShieldCheck, ShieldQuestion, Trash2 } from "lucide-react";
+import axios from "axios";
+import { LoaderCircle, LogOut, Pencil, ShieldCheck, ShieldQuestion, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { MouseEvent } from "react";
+import React, { MouseEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 const Home = () => {
     const { data, logOut }: any = useUserStore();
-
     const dataLength = Object.keys(data).length;
+    const [loadOTP, setLoadOTP] = useState(false)
+    const email = dataLength !== 0 && data.email
+    const _id = dataLength !== 0 && data._id
 
     const router = useRouter();
+    const [verifyEmailModal, setVerifyEmailModal] = useState(false);
 
     const handleLogout = async (e: MouseEvent) => {
         e.preventDefault();
@@ -28,8 +34,15 @@ const Home = () => {
 
     const handelEmailVerify = async () => {
         try {
-
+            setLoadOTP(true)
+            const response = await axios.post('/api/emailOtpValidation', { _id, email })
+            if (response.data.data) {
+                toast.success('Check Email For OTP');
+                setLoadOTP(false);
+                setVerifyEmailModal(true);
+            }
         } catch (error) {
+            setLoadOTP(false)
             toast.error('Failed to verify the email')
             console.log('Failed to verify the email', error)
         }
@@ -92,11 +105,16 @@ const Home = () => {
                                             Verified
                                         </div> :
                                         <button onClick={() => handelEmailVerify()} className="font-normal flex items-center justify-center gap-2">
-                                            <ShieldQuestion className="h-5 w-5" />
+                                            {loadOTP ? <LoaderCircle className="h-5 w-5 animate-spin" /> : <ShieldQuestion className="h-5 w-5" />}
                                             Verify Now
                                         </button>
                                     }
                                 </div>
+                                <VerifyEmailModal
+                                    isVisible={verifyEmailModal}
+                                    onClose={() => { setVerifyEmailModal(false) }}
+                                    id={dataLength !== 0 && data?._id}
+                                />
                             </div>
                         </div>
                     </div>
