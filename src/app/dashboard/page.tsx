@@ -9,10 +9,10 @@ import { useState } from 'react';
 const Dashboard = () => {
     const { data }: any = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
-    
+
     return (
         <div>
-            <DashBoardStats />
+            {data._id ? <DashBoardStats sellerId={data._id} /> : ""}
             <div className='flex items-center justify-around gap-4 dark:text-neutral-800'>
                 {/* My Products List */}
                 <div>
