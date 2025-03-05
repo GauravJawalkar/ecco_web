@@ -4,7 +4,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
-const DashBoardStats = ({ sellerId }: { sellerId: string }) => {
+const DashBoardStats = ({ sellerId, load }: { sellerId: string, load: boolean }) => {
 
     const [totalProducts, setTotalProducts] = useState("")
 
@@ -28,7 +28,7 @@ const DashBoardStats = ({ sellerId }: { sellerId: string }) => {
         }
 
         getProductNumber();
-    }, [])
+    }, [load])
 
 
     return (
