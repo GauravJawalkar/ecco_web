@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
 
         if (!sellerProducts) {
             return NextResponse.json({ error: "This seller has no products uploaded" }, { status: 401 })
-
         }
 
         return NextResponse.json({ data: sellerProducts }, { status: 200 })
