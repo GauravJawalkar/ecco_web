@@ -38,10 +38,11 @@ const Dashboard = () => {
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
-            <CustomCategoryModal
+            {data._id ? <CustomCategoryModal
                 isVisible={showCustomCategoryModal}
                 onClose={() => setShowCustomCategoryModal(false)}
-            />
+                creator={data?._id}
+            /> : ""}
             {data._id ? <MyProducts load={showProductModal} sellerId={data?._id} /> : ""}
         </div >
     )

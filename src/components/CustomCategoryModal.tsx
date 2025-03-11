@@ -9,9 +9,10 @@ import axios from 'axios'
 interface CustomCategoryModalProps {
     onClose: () => void,
     isVisible: boolean,
+    creator: string
 }
 
-const CustomCategoryModal = ({ onClose, isVisible }: CustomCategoryModalProps) => {
+const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModalProps) => {
 
     const [categoryName, setCategoryName] = useState("")
     const [loading, setLoading] = useState(false)
@@ -22,7 +23,7 @@ const CustomCategoryModal = ({ onClose, isVisible }: CustomCategoryModalProps) =
             setLoading(true)
             if (categoryName.trim() !== "" && categoryName.length !== 0) {
                 setLoading(true)
-                const response = await axios.post('/api/addCategory', { categoryName })
+                const response = await axios.post('/api/addCategory', { categoryName, creator })
                 if (response.data.data) {
                     toast.success("Category Created");
                     setLoading(false)

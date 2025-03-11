@@ -5,9 +5,9 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { categoryName } = reqBody;
+        const { categoryName, creator } = reqBody;
 
-        if (!categoryName) {
+        if (!categoryName || !creator) {
             return NextResponse.json({ "error": "Category Name is required" }, { status: 401 })
         }
 
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
         const newCategory = await Category.create(
             {
                 categoryName: categoryName,
+                creator: creator
             }
         )
 
