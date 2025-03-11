@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loader from './Loader'
 import { CircleX } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -15,6 +15,7 @@ interface CustomCategoryModalProps {
 const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModalProps) => {
 
     const [categoryName, setCategoryName] = useState("")
+
     const [loading, setLoading] = useState(false)
 
     const handelSubmit = async (e: React.FormEvent) => {
@@ -40,6 +41,9 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
             onClose();
         }
     }
+
+
+
 
     if (!isVisible) return null;
     return (

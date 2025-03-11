@@ -20,6 +20,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [category, setCategory] = useState("");
     const [primeImage, setPrimeImage] = useState("");
     const [secondImage, setSecondImage] = useState("");
+    const [exCategories, setExCategories] = useState([]);
 
     const handelFileChanges = async (e: any) => {
         setImgArray(Array.from(e.target.files))
@@ -74,6 +75,23 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
         setSecondImage(imgArray[2]);
     }, [imgArray])
 
+    useEffect(() => {
+        async function getCategories() {
+            try {
+                const response = await axios.get('/api/getCategories')
+                if (response.data.data) {
+                    setExCategories(response.data.data)
+                } else {
+                    setExCategories([]);
+                }
+            } catch (error) {
+                console.log("Error fetching the categories : ", error)
+            }
+        }
+
+        getCategories()
+    }, [])
+
 
     if (!isVisible) return null;
 
@@ -117,8 +135,13 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                 <option>Category</option>
                                 <option>Plants</option>
                                 <option>Plants One</option>
-                                <option>Plants Two</option>
-                                <option>Plants Three</option>
+                                {
+                                    exCategories.length !== 0 && exCategories.map(({ categoryName, _id }: { categoryName: string, _id: string }) => {
+                                        return (
+                                            <option key={_id}>{categoryName}</option>
+                                        )
+                                    })
+                                }
                             </select>
                         </div>
 
