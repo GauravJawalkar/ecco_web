@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ "error": "Category Name is required" }, { status: 401 })
         }
 
-        const existingCategory = await Category.find({ categoryName });
+        const existingCategory = await Category.findOne({ categoryName });
 
         if (existingCategory) {
             return NextResponse.json({ "error": "Category Already Exists" }, { status: 402 })

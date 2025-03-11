@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Loader from './Loader'
 import { CircleX } from 'lucide-react'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 interface CustomCategoryModalProps {
     onClose: () => void,
@@ -15,12 +16,27 @@ const CustomCategoryModal = ({ onClose, isVisible }: CustomCategoryModalProps) =
     const [categoryName, setCategoryName] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const handelSubmit = () => {
+    const handelSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
-
+            setLoading(true)
+            if (categoryName.trim() !== "" && categoryName.length !== 0) {
+                setLoading(true)
+                const response = await axios.post('/api/addCategory', { categoryName })
+                if (response.data.data) {
+                    toast.success("Category Created");
+                    setLoading(false)
+                    onClose();
+                } else {
+                    setLoading(false)
+                    toast.error("Failed to upload a category");
+                    onClose();
+                }
+            }
         } catch (error) {
             toast.error("Failed to upload a category");
             console.log("Error is : ", error)
+            onClose();
         }
     }
 
