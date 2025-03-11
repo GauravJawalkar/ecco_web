@@ -113,7 +113,13 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
                         <div className='w-full'>
                             <label>Category :</label>
-                            <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Category' required onChange={(e) => setCategory(e.target.value)} />
+                            <select className='text-black px-3 py-2 w-full rounded' required onChange={(e) => setCategory(e.target.value)} >
+                                <option>Category</option>
+                                <option>Plants</option>
+                                <option>Plants One</option>
+                                <option>Plants Two</option>
+                                <option>Plants Three</option>
+                            </select>
                         </div>
 
                         <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
