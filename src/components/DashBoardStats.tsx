@@ -1,9 +1,10 @@
 "use client"
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
-const DashBoardStats = ({ sellerId, load }: { sellerId: string, load: boolean }) => {
+const DashBoardStats = ({ sellerId, load, isAdmin }: { sellerId: string, load: boolean, isAdmin: boolean }) => {
 
     const [totalProducts, setTotalProducts] = useState("")
 
@@ -31,7 +32,7 @@ const DashBoardStats = ({ sellerId, load }: { sellerId: string, load: boolean })
 
 
     return (
-        <div className='grid grid-cols-3 text-center my-10 gap-5 dark:text-neutral-800'>
+        <div className={`grid ${isAdmin ? "grid-cols-4" : "grid-cols-3"} text-center my-10 gap-5 dark:text-neutral-800`}>
             {/* Total No oF orders */}
             <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
                 Total Products : {totalProducts}
@@ -44,6 +45,9 @@ const DashBoardStats = ({ sellerId, load }: { sellerId: string, load: boolean })
             <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
                 Available Items 2
             </div>
+            {isAdmin ? <Link href={'/requests'} className='bg-gray-100 min-h-20 rounded-md place-content-center'>
+                Seller Requests
+            </Link> : ""}
         </div>
     )
 }

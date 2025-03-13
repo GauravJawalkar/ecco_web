@@ -15,7 +15,7 @@ const Dashboard = () => {
     return (
         <div>
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
-            {data._id ? <DashBoardStats sellerId={data._id} load={showProductModal} /> : ""}
+            {data._id ? <DashBoardStats sellerId={data._id} isAdmin={data?.isSuperAdmin} load={showProductModal} /> : ""}
             <div className='flex items-center justify-around gap-4 dark:text-neutral-800'>
                 {/* My Products List */}
                 <div>
