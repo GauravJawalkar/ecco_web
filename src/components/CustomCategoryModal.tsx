@@ -42,9 +42,6 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
         }
     }
 
-
-
-
     if (!isVisible) return null;
     return (
         <section className='inset-0 absolute flex items-center justify-center backdrop-blur-md z-10 h-screen'>
@@ -55,7 +52,7 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
                     </div>
                     <div className='w-full'>
                         <label>CUSTOM CATEGORY :</label>
-                        <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Custom Category Name' required onChange={(e) => setCategoryName(e.target.value)} />
+                        <input type="text" className='text-black px-3 my-3 py-2 w-full rounded' placeholder='Custom Category Name' required onChange={(e) => setCategoryName(e.target.value)} />
                     </div>
 
                     <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>

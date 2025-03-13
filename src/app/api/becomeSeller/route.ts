@@ -1,0 +1,49 @@
+import connectDB from "@/db/dbConfig";
+import { BecomeSeller } from "@/models/becomeSeller.model";
+import { NextRequest, NextResponse } from "next/server";
+
+connectDB();
+
+export async function POST(request: NextRequest) {
+    try {
+        const reqBody = await request.json();
+
+        console.log("The reqBody is : ", reqBody);
+
+        const { sellerId, isEmailVerified, email } = reqBody;
+
+        if (!sellerId || !email) {
+            return NextResponse.json(
+                { error: "Seller id & email is mandatory" },
+                { status: 402 }
+            );
+        }
+
+        // Check if already requested for becoming a seller
+        const existingRequest = await BecomeSeller.findOne({ email });
+
+        console.log("Existing request is : ", existingRequest)
+
+        if (existingRequest) {
+            return NextResponse.json({ error: "You have already requested for becoming an seller" }, { status: 400 })
+        }
+
+        const becomeSellerRequest = await BecomeSeller.create({
+            sellerId: sellerId,
+            isEmailVerified: isEmailVerified,
+            email: email
+        });
+
+        if (!becomeSellerRequest) {
+            return NextResponse.json({ error: "Failed to send the request to SuperAdmin" }, { status: 401 })
+        }
+
+        return NextResponse.json({ data: becomeSellerRequest }, { status: 200 })
+
+    } catch (error) {
+        return NextResponse.json(
+            { error: "Failed to send request" },
+            { status: 500 }
+        );
+    }
+}

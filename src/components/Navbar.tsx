@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import Cookies from 'js-cookie';
+import axios from "axios"
 
 
 export const Navbar = () => {
@@ -40,6 +41,26 @@ export const Navbar = () => {
         }
     }
 
+    const handelBecomeSeller = async () => {
+        const sellerId = data?._id;
+        const email = data?.email;
+        const isEmailVerified = data?.isEmailVerified
+        try {
+            const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified })
+
+            if (response.data.data) {
+                toast.success("Your request is being reviewed");
+                toast.success("Will get back to you shortly");
+            } else {
+                toast.error("Failed to send request to Admin")
+            }
+
+        } catch (error) {
+            toast.error("Failed to send request to Admin")
+            console.log("Error sending req to superAdmin", error)
+        }
+    }
+
     useEffect(() => {
         if (Cookies.get('accessToken') === undefined) {
             localStorage.clear();
@@ -64,7 +85,10 @@ export const Navbar = () => {
 
             {/* Account details ,Orders and Cart */}
             <div className='w-[25%] flex items-center justify-center gap-5'>
-                {dataLength !== 0 && data.isSeller ? <Link href={'/dashboard'} target="_blank" className="dark:text-neutral-300">Dashboard</Link> : "Become Seller"}
+                {dataLength !== 0 && data.isSeller ?
+                    <Link href={'/dashboard'} target="_blank" className="dark:text-neutral-300">
+                        Dashboard</Link> :
+                    <button onClick={handelBecomeSeller}>Become Seller</button>}
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
@@ -72,9 +96,7 @@ export const Navbar = () => {
                     </span>
                     <div className={`inset-0 absolute top-10 w-fit hidden group-hover:block 
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 
-                    ${dataLength === 0 ? "group-hover:hidden" : "block"}
-                    `
-                    }>
+                    ${dataLength === 0 ? "group-hover:hidden" : "block"}`}>
                         <div className="border-b-[0.1px] backdrop-blur-md dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />
