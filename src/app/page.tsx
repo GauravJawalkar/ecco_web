@@ -1,8 +1,11 @@
+"use client"
 
+import HomeHero from "@/components/HomeHero";
 
 export default function Home() {
   return (
-    <div className="h-screen">
+    <div className="">
+      <HomeHero />
     </div>
   );
 }
