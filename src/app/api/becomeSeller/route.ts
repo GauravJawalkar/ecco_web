@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
 
         console.log("The reqBody is : ", reqBody);
 
-        const { sellerId, isEmailVerified, email } = reqBody;
+        const { sellerId, isEmailVerified, email, avatar } = reqBody;
 
         if (!sellerId || !email) {
             return NextResponse.json(
@@ -31,7 +31,8 @@ export async function POST(request: NextRequest) {
         const becomeSellerRequest = await BecomeSeller.create({
             sellerId: sellerId,
             isEmailVerified: isEmailVerified,
-            email: email
+            email: email,
+            avatar: avatar
         });
 
         if (!becomeSellerRequest) {

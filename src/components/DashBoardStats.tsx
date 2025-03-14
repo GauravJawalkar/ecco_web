@@ -6,28 +6,44 @@ import toast from 'react-hot-toast';
 
 const DashBoardStats = ({ sellerId, load, isAdmin }: { sellerId: string, load: boolean, isAdmin: boolean }) => {
 
-    const [totalProducts, setTotalProducts] = useState("")
+    const [totalProducts, setTotalProducts] = useState("");
+    const [totalRequest, setTotalRequest] = useState("");
 
+
+    const getProductNumber = async () => {
+        try {
+            const response = await axios.post('/api/getSellerProducts', { sellerId })
+
+            if (response.data.data) {
+                setTotalProducts(response.data.data.length);
+                console.log(totalProducts);
+            } else {
+                toast.error("Error Calculating the number of products")
+            }
+        } catch (error) {
+            toast.error("Error Calculating the number of products")
+            console.log("Failed to get products", error)
+        }
+    }
+
+    const getSellerRequestNumber = async () => {
+        try {
+            const response = await axios.get('/api/getSellerRequests')
+
+            if (response.data.data) {
+                setTotalRequest(response.data.data.length)
+            } else {
+                toast.error("Error Fetching Seller Requests");
+            }
+        } catch (error) {
+            toast.error("Error Fetching Seller Requests")
+            console.log("Failed to get products", error)
+        }
+    }
 
     useEffect(() => {
-        console.log("Seller id is", sellerId)
-        const getProductNumber = async () => {
-            try {
-                const response = await axios.post('/api/getSellerProducts', { sellerId })
-
-                if (response.data.data) {
-                    setTotalProducts(response.data.data.length);
-                    console.log(totalProducts);
-                } else {
-                    toast.error("Error Calculating the number of products")
-                }
-            } catch (error) {
-                toast.error("Error Calculating the number of products")
-                console.log("Failed to get products", error)
-            }
-        }
-
         getProductNumber();
+        getSellerRequestNumber();
     }, [load])
 
 
@@ -45,8 +61,8 @@ const DashBoardStats = ({ sellerId, load, isAdmin }: { sellerId: string, load: b
             <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
                 Available Items 2
             </div>
-            {isAdmin ? <Link href={'/requests'} className='bg-gray-100 min-h-20 rounded-md place-content-center'>
-                Seller Requests
+            {isAdmin ? <Link href={'/dashboard/requests'} className='bg-gray-100 min-h-20 rounded-md place-content-center'>
+                Seller Requests <span className='text-red-500'>{totalRequest}</span>
             </Link> : ""}
         </div>
     )

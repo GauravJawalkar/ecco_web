@@ -2,6 +2,10 @@ import mongoose, { Schema } from "mongoose";
 
 const becomeSellerSchema = new Schema(
     {
+        avatar: {
+            type: String,
+            required: true
+        },
         sellerId: {
             type: String,
             required: true

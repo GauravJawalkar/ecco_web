@@ -44,9 +44,10 @@ export const Navbar = () => {
     const handelBecomeSeller = async () => {
         const sellerId = data?._id;
         const email = data?.email;
-        const isEmailVerified = data?.isEmailVerified
+        const isEmailVerified = data?.isEmailVerified;
+        const avatar = data?.avatar;
         try {
-            const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified })
+            const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified, avatar })
 
             if (response.data.data) {
                 toast.success("Your request is being reviewed");
