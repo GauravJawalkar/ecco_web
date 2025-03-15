@@ -29,16 +29,15 @@ const Login = () => {
             await login(user)
 
             toast.success("Logged in")
-
             setLoading(false)
             setEmail("");
             setPassword("");
-
             localStorage.setItem("login", "true");
-
             router.push('/')
+
+
         } catch (error) {
-            console.log("error logging in", error)
+            console.log("Error logging in", error)
         } finally {
             setLoading(false)
         }

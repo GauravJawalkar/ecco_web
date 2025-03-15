@@ -1,5 +1,6 @@
 "use client"
 import axios from "axios"
+import toast from "react-hot-toast";
 import { create } from "zustand"
 import { persist, createJSONStorage } from 'zustand/middleware';
 
@@ -21,7 +22,9 @@ export const useUserStore = create(
                         set(
                             () => ({ data: response.data.user })
                         );
+
                     } catch (error) {
+                        toast.error("Invalid Credentials");
                         console.log("Error logging in : ", error)
                         throw new Error("Error logging in")
                     }
