@@ -29,7 +29,7 @@ const HomeHero = () => {
                     disableOnInteraction: false,
                 }}
                 pagination={{
-                    clickable: false,
+                    el: '.swiper-paginationn', clickable: true
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
