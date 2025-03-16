@@ -20,7 +20,7 @@ const HomeHero = () => {
 
     return (
         // Full Screen Slider
-        <div>
+        <div className='hero'>
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -29,7 +29,7 @@ const HomeHero = () => {
                     disableOnInteraction: false,
                 }}
                 pagination={{
-                    el: '.swiper-paginationn', clickable: true
+                    clickable: true
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
@@ -54,7 +54,7 @@ const HomeHero = () => {
                     </div>
                 </SwiperSlide>
             </Swiper>
-        </div>
+        </div >
     )
 }
 

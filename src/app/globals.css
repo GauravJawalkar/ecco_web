@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.swiper-pagination {
+.prod-holder .swiper-pagination {
     display: none;
 }

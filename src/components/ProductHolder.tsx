@@ -6,7 +6,7 @@ import userProfile from '../../public/userProfile.png'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
-import 'swiper/css/pagination';
+// import 'swiper/css/pagination';
 import "../app/globals.css";
 
 
@@ -24,7 +24,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                 </div>
 
 
-                <div className='h-64 max-w-[87ch]'>
+                <div className='h-64 max-w-[87ch] prod-holder'>
 
                     {/* Product Card */}
                     <Swiper
@@ -34,7 +34,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                             disableOnInteraction: true,
                         }}
                         pagination={{
-                            clickable: false,
+                            clickable: true,
                         }}
                         navigation={false}
                         modules={[Autoplay, Pagination, Navigation]}
