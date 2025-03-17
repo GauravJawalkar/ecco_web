@@ -1,13 +1,13 @@
 "use client"
 
 import Image from 'next/image'
-import React from 'react'
 import userProfile from '../../public/userProfile.png'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import 'swiper/css';
-// import 'swiper/css/pagination';
 import "../app/globals.css";
+import { useRef } from 'react';
 
 
 
@@ -16,6 +16,7 @@ interface ProductHolderProps {
 }
 
 const ProductHolder = ({ rank }: ProductHolderProps) => {
+    const swiperRef: any = useRef(null);
     return (
         <div className='my-10'>
             <div className='grid grid-cols-[1fr_2fr] gap-10 h-64' dir={`${rank % 2 ? "ltr" : "rtl"}`} >
@@ -24,23 +25,18 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                 </div>
 
 
-                <div className='h-64 max-w-[87ch] prod-holder'>
+                <div className='h-64 max-w-[87ch] prod-holder relative'>
 
                     {/* Product Card */}
                     <Swiper
                         slidesPerView={4}
-                        autoplay={{
-                            delay: 2000,
-                            disableOnInteraction: true,
-                        }}
-                        pagination={{
-                            clickable: true,
-                        }}
+                        pagination={{ clickable: true, }}
                         navigation={false}
-                        modules={[Autoplay, Pagination, Navigation]}
-                    >
+                        modules={[Pagination, Navigation]}
+                        loop={true}
+                        onSwiper={(swiper) => { swiperRef.current = swiper }}>
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -55,7 +51,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -70,7 +66,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -85,7 +81,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -100,7 +96,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -115,7 +111,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -130,7 +126,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                         </SwiperSlide>
 
                         <SwiperSlide>
-                            <div className=' border content-center flex items-center justify-center flex-col w-fit'>
+                            <div className=' border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit'>
                                 <Image
                                     src={userProfile}
                                     alt='prodImage'
@@ -146,6 +142,15 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
 
                     </Swiper>
 
+                    {rank % 2 ? <button
+                        onClick={() => swiperRef.current.slideNext()}
+                        className='absolute top-1/2 -right-5 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 z-10 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500'>
+                        <ChevronRight />
+                    </button> : <button
+                        onClick={() => swiperRef.current.slideNext()}
+                        className='absolute top-1/2 left-5 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 z-10 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500'>
+                        <ChevronLeft />
+                    </button>}
                 </div>
             </div>
         </div >
