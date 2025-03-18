@@ -44,8 +44,8 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     height={'180'}
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
-                                    <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <p className='font-normal capitalize text-md'>Flowering Plants</p>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -60,7 +60,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -75,7 +75,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -90,7 +90,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -105,7 +105,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -120,7 +120,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>
@@ -135,7 +135,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
                                     className='bg-white object-cover h-auto w-auto border-b' />
                                 <div className='text-center py-1'>
                                     <p className='font-normal capitalize text-[16px]'>Flowering Plants</p>
-                                    <h1 className='font-semibold uppercase text-lg'>From $200</h1>
+                                    <h1 className='font-semibold uppercase text-lg'>From $ 200</h1>
                                 </div>
                             </div>
                         </SwiperSlide>

@@ -7,7 +7,7 @@ import RecommendedProducts from "@/components/RecommendedProducts";
 
 export default function Home() {
   return (
-    <div className="">
+    <div className="h-full">
       <HomeHero />
       <ProductHolder rank={1} />
       <ProductHolder rank={2} />
