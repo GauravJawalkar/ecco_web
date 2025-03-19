@@ -36,6 +36,11 @@ const Dashboard = () => {
                 <div>
                     <button className='bg-gray-50 px-4 py-2 rounded' onClick={() => setShowCustomCategoryModal(true)}>Add Category</button>
                 </div>
+
+                {/* Orders Completed */}
+                <div>
+                    <button className='bg-gray-50 px-4 py-2 rounded'>Special Appearence</button>
+                </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
             {data._id ? <CustomCategoryModal
