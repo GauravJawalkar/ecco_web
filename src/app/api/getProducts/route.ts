@@ -10,8 +10,8 @@ export async function GET() {
 
         const products = await Product.find();
 
-        if (products.length === 0) {
-            return NextResponse.json({ error: "No products found" }, { status: 402 })
+        if (!products) {
+            return NextResponse.json({ error: "Failed to fetch the products" }, { status: 402 })
         }
 
         return NextResponse.json({ data: products }, { status: 200 })

@@ -16,30 +16,30 @@ const Dashboard = () => {
         <div>
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
             {data._id ? <DashBoardStats sellerId={data._id} isAdmin={data?.isSuperAdmin} load={showProductModal} /> : ""}
-            <div className='flex items-center justify-around gap-4 dark:text-neutral-800'>
+            <div className='flex items-center border p-3 rounded justify-start gap-3 dark:text-neutral-800'>
                 {/* My Products List */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded' onClick={() => { setShowProductModal(true) }}>Add product</button>
+                    <button className='bg-gray-50 px-4 py-2 rounded border' onClick={() => { setShowProductModal(true) }}>Add product</button>
                 </div>
 
                 {/* Add A Product */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded'>Orders Processing</button>
+                    <button className='bg-gray-50 px-4 py-2 rounded border'>Orders Processing</button>
                 </div>
 
                 {/* Orders Completed */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded'>Orders Completed</button>
+                    <button className='bg-gray-50 px-4 py-2 rounded border'>Orders Completed</button>
                 </div>
 
                 {/* Custom Category */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded' onClick={() => setShowCustomCategoryModal(true)}>Add Category</button>
+                    <button className='bg-gray-50 px-4 py-2 rounded border' onClick={() => setShowCustomCategoryModal(true)}>Add Category</button>
                 </div>
 
                 {/* Orders Completed */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded'>Special Appearence</button>
+                    <button className='bg-gray-50 px-4 py-2 rounded border'>Special Appearence</button>
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
