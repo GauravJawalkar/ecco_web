@@ -5,6 +5,7 @@ import CustomCategoryModal from '@/components/CustomCategoryModal';
 import DashBoardStats from '@/components/DashBoardStats'
 import MyProducts from '@/components/MyProducts';
 import { useUserStore } from '@/store/UserStore';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const Dashboard = () => {
@@ -39,7 +40,7 @@ const Dashboard = () => {
 
                 {/* Orders Completed */}
                 <div>
-                    <button className='bg-gray-50 px-4 py-2 rounded border'>Special Appearence</button>
+                    <Link href={'/selectSpecialAppearence'} className='bg-gray-50 px-4 py-2 rounded border'>Special Appearence</Link>
                 </div>
             </div>
             <AddProductModal isVisible={showProductModal} onClose={() => { setShowProductModal(false) }} />
