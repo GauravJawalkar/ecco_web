@@ -11,6 +11,16 @@ import EditDetailsModal from './EditDetailsModal';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Pagination, } from 'swiper/modules';
 
+interface reqSpecialAppearenceProps {
+    _id: string
+    name: string,
+    description: string,
+    price: number,
+    images: [string],
+    discount: number,
+    sellerId: string,
+}
+
 const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => {
 
     const [prodData, setProdData] = useState([]);
@@ -22,6 +32,7 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
     const [showMore, setShowMore] = useState(false);
+    const [reqLoader, setReqLoader] = useState(false);
 
     async function getSellerProducts() {
         try {
@@ -49,6 +60,19 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
         }
     }
 
+    const reqSpecialAppearence = async ({ _id, name, description, price, images, discount, sellerId, }: reqSpecialAppearenceProps) => {
+        try {
+            setReqLoader(true)
+
+
+        } catch (error) {
+            setReqLoader(false)
+            console.log("Error requesting ", error)
+            toast.error("Failed To Request for special Appearence")
+        }
+
+    }
+
     useEffect(() => {
         getSellerProducts()
     }, [load])
@@ -64,7 +88,7 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
                     <div className='grid grid-cols-4 py-10 gap-10'>
                         {
                             prodData.map(
-                                ({ _id, name, description, images, price, discount, size }: any) => {
+                                ({ _id, name, description, images, price, discount, size, sellerId }: any) => {
                                     return (
                                         <div key={_id} className='border p-5 dark:border-gray-500'>
                                             <div className=''>
@@ -78,30 +102,58 @@ const MyProducts = ({ sellerId, load }: { sellerId: string, load: boolean }) => 
                                                         )
                                                     })}
                                                 </Swiper>
-                                                <h1 className='capitalize text-xl font-bold antialiased py-2 line-clamp-2'>
-                                                    {name}
-                                                </h1>
-                                                <p className={`text-base text-gray-500 
-                                                    ${showMore ? "line-clamp-4" : "line-clamp-2"}`}>
-                                                    {description}
-                                                </p>
-                                                <button className='text-sm text-blue-700 hover:text-blue-500'
-                                                    onClick={() => setShowMore(
-                                                        (prev) => !prev)}>
-                                                    Show More
-                                                </button>
-                                                <div className='py-2 flex items-center gap-5 justify-between'>
-                                                    <h1 className='font-light '>
-                                                        <span className='font-semibold'> Price </span> ₹ {price}
+                                                <div >
+                                                    <h1 className='capitalize text-xl font-bold antialiased line-clamp-2 p-2 border  my-3'>
+                                                        {name}
                                                     </h1>
-                                                    <h1 className='font-light '>
-                                                        <span className='font-semibold'>  Discount </span> ₹ {discount}
-                                                    </h1>
+                                                    <p className={`text-base text-gray-500 
+                                                    ${showMore ? "line-clamp-2" : "hidden"}`}>
+                                                        {description}
+                                                    </p>
                                                 </div>
-                                                <div className='font-light '>
-                                                    <span className='font-semibold'>  Total </span> ₹ {price - discount}
+                                                <div className='grid grid-cols-2 px-2'>
+                                                    <div className='place-items-start '>
+                                                        <button className='text-sm text-blue-700 hover:text-blue-500'
+                                                            title='Show Description'
+                                                            onClick={() => setShowMore(
+                                                                (prev) => !prev)}>
+                                                            Show Desc..
+                                                        </button>
+                                                    </div>
+                                                    <div className='place-items-end '>
+                                                        <button className='text-sm text-blue-700 hover:text-blue-500'
+                                                            title='Request for special appearence'
+                                                            onClick={
+                                                                () => {
+                                                                    reqSpecialAppearence(
+                                                                        { _id, name, description, price, images, discount, sellerId }
+                                                                    )
+                                                                }
+                                                            }>
+                                                            Req Appe..
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div className='py-2 flex items-center gap-3'>
+
+                                                <div className='grid grid-cols-3 p-2 border gap-2 place-items-center my-3'>
+                                                    <div className='font-light '>
+                                                        <label className='font-semibold'> MRP </label>
+                                                        <h1>₹ {price}</h1>
+                                                    </div>
+                                                    <div className='font-light '>
+                                                        <label className='font-semibold'>  Discount
+                                                        </label>
+                                                        <h1>- ₹ {discount}</h1>
+                                                    </div>
+                                                    <div className='font-light '>
+                                                        <label className='font-semibold'>
+                                                            Total </label>
+                                                        <h1>₹ {price - discount}</h1>
+                                                    </div>
+                                                </div>
+
+                                                {/* Functionality buttons */}
+                                                <div className='py-2 grid grid-cols-2 gap-3'>
                                                     <button className='px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2' onClick={() => {
                                                         setEditModal(true)
                                                         setOldName(name);
