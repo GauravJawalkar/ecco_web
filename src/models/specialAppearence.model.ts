@@ -6,6 +6,10 @@ const specialAppearenceSchema = new Schema(
             type: String,
             required: true
         },
+        prodDesc: {
+            type: String,
+            required: true
+        },
         prodPrice: {
             type: String,
             required: true
