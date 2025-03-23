@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 connectDB();
 export async function GET() {
     try {
-        const requests = await SpecialAppearence.find();
+        const requests = await SpecialAppearence.find().sort({ timestamp: -1 });
 
         if (!requests) {
             return NextResponse.json({ error: "Failed to find the requests from the database" }, { status: 402 })
