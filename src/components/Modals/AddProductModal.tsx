@@ -2,8 +2,9 @@ import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import Loader from './Loader';
+
 import { CircleX } from 'lucide-react';
+import Loader from '../Loaders/Loader';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
 

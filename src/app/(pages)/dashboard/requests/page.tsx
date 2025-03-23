@@ -1,6 +1,6 @@
 "use client"
 
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loaders/Loader';
 import axios from 'axios'
 import Image from 'next/image';
 import React, { FormEvent, useEffect, useState } from 'react'

@@ -1,10 +1,10 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
-import Loader from './Loader'
+import React, { useState } from 'react'
 import { CircleX } from 'lucide-react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import Loader from '../Loaders/Loader'
 
 interface CustomCategoryModalProps {
     onClose: () => void,

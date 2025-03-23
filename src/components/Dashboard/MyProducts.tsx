@@ -1,13 +1,13 @@
 "use client";
 
 import "swiper/css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Image from "next/image";
 import "swiper/css/pagination";
 import toast from "react-hot-toast";
 import { LoaderCircle, PenLine, Trash } from "lucide-react";
 import { Key, useEffect, useState } from "react";
-import EditDetailsModal from "./EditDetailsModal";
+import EditDetailsModal from "../Modals/EditDetailsModal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules";
 
@@ -92,13 +92,22 @@ const MyProducts = ({
                 toast.success("Request Sent");
                 setReqLoader(false);
             } else {
+                console.log("logging ", response.data.error);
                 setReqLoader(false);
-                toast.error("Failed To Request for special Appearence");
             }
-        } catch (error) {
+
+            if (response.data.status === 401) {
+                console.log("logging ", response.data.error);
+                toast.success("already requested");
+            }
+        } catch (error: any) {
             setReqLoader(false);
             console.log("Error requesting ", error);
-            toast.error("Failed To Request for special Appearence");
+            if (error.response.data.error === "You have already requested for this product") {
+                toast.success("Already requested For This Product");
+            } else {
+                toast.error("Failed To Request for special Appearence");
+            }
         }
     };
 
@@ -153,7 +162,7 @@ const MyProducts = ({
                                             )}
                                         </Swiper>
                                         <div>
-                                            <h1 className="capitalize text-xl font-bold antialiased line-clamp-2 p-2 border  my-3">
+                                            <h1 className="capitalize text-xl font-bold antialiased line-clamp-2 p-2 border dark:border-neutral-500 my-3">
                                                 {name}
                                             </h1>
                                             <p
@@ -167,7 +176,7 @@ const MyProducts = ({
                                             </p>
                                         </div>
                                         <div className="grid grid-cols-2 px-2">
-                                            <div className="place-items-start ">
+                                            <div>
                                                 <button
                                                     className="text-sm text-blue-700 hover:text-blue-500"
                                                     title="Show Description"
@@ -176,7 +185,7 @@ const MyProducts = ({
                                                     Show Desc..
                                                 </button>
                                             </div>
-                                            <div className="place-items-end ">
+                                            <div>
                                                 <button
                                                     className="text-sm text-blue-700 hover:text-blue-500"
                                                     title="Request for special appearence"
@@ -198,13 +207,13 @@ const MyProducts = ({
                                                             "Req.."
                                                         </span>
                                                     ) : (
-                                                        "Req Appe.."
+                                                        <span>Req Appear ?</span>
                                                     )}
                                                 </button>
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-3 p-2 border gap-2 place-items-center my-3">
+                                        <div className="grid grid-cols-3 p-2 border gap-2 place-items-center my-3 dark:border-neutral-500">
                                             <div className="font-light ">
                                                 <label className="font-semibold"> MRP </label>
                                                 <h1>₹ {price}</h1>

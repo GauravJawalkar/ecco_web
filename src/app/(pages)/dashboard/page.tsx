@@ -1,9 +1,10 @@
 "use client";
 
-import AddProductModal from "@/components/AddProductModal";
-import CustomCategoryModal from "@/components/CustomCategoryModal";
-import DashBoardStats from "@/components/DashBoardStats";
-import MyProducts from "@/components/MyProducts";
+
+import AddProductModal from "@/components/Modals/AddProductModal";
+import CustomCategoryModal from "@/components/Modals/CustomCategoryModal";
+import DashBoardStats from "@/components/Dashboard/DashBoardStats";
+import MyProducts from "@/components/Dashboard/MyProducts";
 import { useUserStore } from "@/store/UserStore";
 import Link from "next/link";
 import { useState } from "react";

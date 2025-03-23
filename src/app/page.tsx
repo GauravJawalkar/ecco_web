@@ -1,9 +1,9 @@
 "use client"
 
-import HomeHero from "@/components/HomeHero";
-import ProductHolder from "@/components/ProductHolder";
-import ProductShowCase from "@/components/ProductShowCase";
-import RecommendedProducts from "@/components/RecommendedProducts";
+import HomeHero from "@/components/Home/HomeHero";
+import ProductHolder from "@/components/Home/ProductHolder";
+import ProductShowCase from "@/components/Home/ProductShowCase";
+import RecommendedProducts from "@/components/Home/RecommendedProducts";
 
 export default function Home() {
   return (

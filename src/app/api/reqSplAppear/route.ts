@@ -7,14 +7,16 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        console.log(reqBody)
-
         const { _id, name, description, price, images, discount, seller } = reqBody.data;
-
-        console.log("id is ", _id);
 
         if (!_id || !name || !description || !seller) {
             return NextResponse.json({ error: "Didnt get all the required information" }, { status: 402 })
+        }
+
+        const checkExistingReq = await SpecialAppearence.find({ productId: _id })
+
+        if (checkExistingReq) {
+            return NextResponse.json({ error: "You have already requested for this product" }, { status: 401 })
         }
 
         const splReq = await SpecialAppearence.create(

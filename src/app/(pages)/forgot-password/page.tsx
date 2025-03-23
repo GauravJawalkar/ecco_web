@@ -1,5 +1,5 @@
 "use client"
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loaders/Loader';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'

@@ -1,7 +1,7 @@
 "use client"
 
-import UserInfoCard from "@/components/UserInfoCard";
-import VerifyEmailModal from "@/components/VerifyEmailModal";
+import UserInfoCard from "@/components/Navigation/UserInfoCard";
+import VerifyEmailModal from "@/components/Modals/VerifyEmailModal";
 import { mailValidator } from "@/helpers/mailValidation";
 import { useUserStore } from "@/store/UserStore";
 import axios from "axios";

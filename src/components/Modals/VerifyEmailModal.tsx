@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import Loader from './Loader';
+import Loader from '../Loaders/Loader';
 import { CircleX } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
