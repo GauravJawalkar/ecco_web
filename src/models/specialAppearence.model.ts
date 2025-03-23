@@ -38,6 +38,18 @@ const specialAppearenceSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true
+        },
+        sellerName: {
+            type: String,
+            required: true
+        },
+        isSellerVerified: {
+            type: Boolean,
+            required: true
+        },
+        sellerAvatar: {
+            type: String,
+            required: true
         }
     },
     {
