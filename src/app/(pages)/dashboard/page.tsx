@@ -65,13 +65,13 @@ const Dashboard = () => {
 
 
                 {/* specialShow button */}
-                <div>
+                {data?.isSuperAdmin ? <div>
                     <button className="bg-gray-50 px-4 py-2 rounded border">
                         <Link href={"/dashboard/specialShow"} >
                             Special Appearence
                         </Link>
                     </button>
-                </div>
+                </div> : ""}
 
             </div>
             <AddProductModal
