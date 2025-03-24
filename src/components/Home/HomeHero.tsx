@@ -2,15 +2,16 @@
 
 import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SliderOneImage from '../../public/SliderOneImage.png'
-import SliderTwoImage from '../../public/SliderTwoImage.png'
-import SliderThreeImage from '../../public/SliderThreeImage.png'
+import SliderOneImage from '../../../public/SliderOneImage.png'
+import SliderTwoImage from '../../../public/SliderTwoImage.png'
+import SliderThreeImage from '../../../public/SliderThreeImage.png'
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import "../app/globals.css";
+import "../../app/globals.css";
+
 
 // import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';

@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import userProfile from "../../public/userProfile.png";
+import userProfile from "../../../public/userProfile.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
-import "../app/globals.css";
+import "../../app/globals.css";
 import { useRef } from "react";
 
 interface ProductHolderProps {
