@@ -94,7 +94,6 @@ const SpecialShowCase = () => {
             {data.length! >= 0 && data.map(({ _id, prodName, prodPrice, prodImages, prodDiscount, sellerAvatar, sellerName, isSellerVerified, setActive }: mapDataProps) => {
                 return (
                     <div key={_id} >
-
                         <div className='grid grid-cols-10 gap-4 border px-4 py-2  '>
 
                             <div className='col-span-2'>
