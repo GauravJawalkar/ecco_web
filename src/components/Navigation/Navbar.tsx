@@ -87,7 +87,7 @@ export const Navbar = () => {
             {/* Account details ,Orders and Cart */}
             <div className='w-[25%] flex items-center justify-center gap-5'>
                 {dataLength !== 0 && data.isSeller ?
-                    <Link href={'/dashboard'} target="_blank" className="dark:text-neutral-300">
+                    <Link href={'/dashboard'} className="dark:text-neutral-300">
                         Dashboard</Link> :
                     <button onClick={handelBecomeSeller}>Become Seller</button>}
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
