@@ -7,6 +7,7 @@ export async function PUT(request: NextRequest) {
 
         const { _id } = reqBody;
 
+        console.log("Id of product to update : ", _id)
         if (!_id) {
             return NextResponse.json({ error: "ID not found" }, { status: 402 })
         }
@@ -30,6 +31,7 @@ export async function PUT(request: NextRequest) {
 
 
     } catch (error) {
+        console.log("Failed to set the products for special appearence", error)
         return NextResponse.json({ error: "Failed to set the products for special appearence" }, { status: 500 })
     }
 }

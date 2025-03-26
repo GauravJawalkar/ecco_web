@@ -24,31 +24,25 @@ interface mapDataProps {
 
 const SpecialShowCase = () => {
     const [data, setData] = useState([]);
-    const [backupData, setBackupData] = useState([]);
 
     async function getSpecialAppearReq() {
         try {
             const response = await axios.get('../api/getSplAppReq')
             if (response.data.data) {
                 setData(response.data.data)
-                setBackupData(response.data)
-                toast.success("Requests Fetched Successfully");
             }
         } catch (error) {
             console.log("Error Fetching the requests", error)
             toast.error("Error Fetching requests")
         }
     }
-    console.log("Filtered products ", data)
 
     const handelSplReq = async (_id: string) => {
         try {
             const response = await axios.put('../api/setSplAppearence', { _id })
-
-            getSpecialAppearReq();
             if (response.data.data) {
                 toast.success("Special Product Updated")
-                setData(data.filter((product: any) => { product.setActive === false }));
+                getSpecialAppearReq()
             } else {
                 toast.error("Error setting special");
             }
@@ -58,13 +52,15 @@ const SpecialShowCase = () => {
         }
     }
 
+    console.log(data);
+
     const handelUnsetSplReq = async (_id: string) => {
         try {
             const response = await axios.put('../api/unSetSplAppearence', { _id })
 
             if (response.data.data) {
                 toast.success("Special Product Removed")
-                getSpecialAppearReq();
+                getSpecialAppearReq()
             } else {
                 toast.error("Error setting special");
             }
@@ -93,7 +89,7 @@ const SpecialShowCase = () => {
                     <h1> Seller Name</h1>
                 </div>
                 <div className='col-span-1 font-semibold'>Verified</div>
-                <div className='col-span-1 font-semibold'>Set Appearence</div>
+                <div className='col-span-1 font-semibold'>Set Special</div>
             </div>
             {data.length! >= 0 && data.map(({ _id, prodName, prodPrice, prodImages, prodDiscount, sellerAvatar, sellerName, isSellerVerified, setActive }: mapDataProps) => {
                 return (
@@ -154,22 +150,24 @@ const SpecialShowCase = () => {
                             </div>
 
                             <div className='col-span-1  place-items-center'>
-                                {setActive ?
-                                    <button
-                                        onClick={() => handelSplReq(_id)}
-                                        className=' py-1 px-4 rounded text-white bg-green-500 hover:bg-green-600'>Set</button> : <button
-                                            onClick={() => handelUnsetSplReq(_id)}
-                                            className=' py-1 px-4 rounded text-white bg-red-500 hover:bg-red-600'>Unset</button>
+                                {
+                                    !setActive === true ?
+                                        (
+                                            <button
+                                                onClick={() => handelSplReq(_id)}
+                                                className=' py-1 px-4 rounded text-white bg-green-500 hover:bg-green-600'>Set</button>
+                                        ) : (
+                                            <button
+                                                onClick={() => handelUnsetSplReq(_id)}
+                                                className=' py-1 px-4 rounded text-white bg-red-500 hover:bg-red-600'>Unset</button>
+                                        )
                                 }
-
                             </div>
                         </div>
-
                     </div>
                 )
             })
             }
-
         </>
     )
 }
