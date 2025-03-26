@@ -36,7 +36,7 @@ const MyProducts = ({
     const [oldDiscount, setOldDiscount] = useState("");
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
-    const [showMore, setShowMore] = useState(false);
+    const [showMore, setShowMore] = useState(null);
     const [reqLoader, setReqLoader] = useState(false);
 
     async function getSellerProducts() {
@@ -168,7 +168,7 @@ const MyProducts = ({
                                             </h1>
                                             <p
                                                 className={`text-base text-gray-500 
-                                                    ${showMore
+                                                    ${showMore===_id
                                                         ? "line-clamp-2"
                                                         : "hidden"
                                                     }`}
@@ -181,7 +181,7 @@ const MyProducts = ({
                                                 <button
                                                     className="text-sm text-blue-700 hover:text-blue-500"
                                                     title="Show Description"
-                                                    onClick={() => setShowMore((prev) => !prev)}
+                                                    onClick={() => setShowMore(showMore === _id ? null : _id)}
                                                 >
                                                     Show Desc..
                                                 </button>
