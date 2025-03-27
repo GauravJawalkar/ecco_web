@@ -166,12 +166,11 @@ const MyProducts = ({
                                             <h1 className="capitalize text-xl font-bold antialiased line-clamp-2 p-2 border dark:border-neutral-500 my-3">
                                                 {name}
                                             </h1>
-                                            <p
-                                                className={`text-base text-gray-500 
-                                                    ${showMore===_id
-                                                        ? "line-clamp-2"
-                                                        : "hidden"
-                                                    }`}
+                                            <p className={`text-base text-gray-500 
+                                                    ${showMore === _id
+                                                    ? "line-clamp-2"
+                                                    : "hidden"
+                                                }`}
                                             >
                                                 {description}
                                             </p>
