@@ -9,11 +9,10 @@ const ProductShowCase = () => {
 
   async function getSpecialShowCaseProducts() {
     try {
-      const response = await axios.get('../api/getSplAppReq');
+      const response = await axios.get('../api/getSplProducts');
 
       if (response.data.data) {
         setData(response.data.data)
-        console.log(data)
         toast.success("Special Products are here")
       }
     } catch (error) {
@@ -21,6 +20,7 @@ const ProductShowCase = () => {
       toast.error("Failed to fetch the special products")
     }
   }
+  console.log(data)
 
   useEffect(() => {
     getSpecialShowCaseProducts()
