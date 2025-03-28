@@ -103,12 +103,14 @@ const MyProducts = ({
         } catch (error: any) {
             setReqLoader(false);
             console.log("Error requesting ", error);
-            if (error.response.data.error === "You have already requested for this product") {
+            if (
+                error.response.data.error ===
+                "You have already requested for this product"
+            ) {
                 toast.success("Already requested For This Product");
             } else {
                 toast.error("Failed To Request for special Appearence");
             }
-
         }
     };
 
@@ -155,7 +157,7 @@ const MyProducts = ({
                                                                 alt="image prod"
                                                                 width={300}
                                                                 height={200}
-                                                                className="h-[300px] w-full object-cover rounded"
+                                                                className="h-[300px] w-full object-fill rounded"
                                                             />
                                                         </SwiperSlide>
                                                     );
@@ -163,14 +165,15 @@ const MyProducts = ({
                                             )}
                                         </Swiper>
                                         <div>
-                                            <h1 className="capitalize text-xl font-bold antialiased line-clamp-2 p-2 border dark:border-neutral-500 my-3">
+                                            <h1 className="capitalize text-xl font-bold antialiased truncate p-2 border dark:border-neutral-500 my-3">
                                                 {name}
                                             </h1>
-                                            <p className={`text-base text-gray-500 
+                                            <p
+                                                className={`text-base text-gray-500 
                                                     ${showMore === _id
-                                                    ? "line-clamp-2"
-                                                    : "hidden"
-                                                }`}
+                                                        ? "line-clamp-2"
+                                                        : "hidden"
+                                                    }`}
                                             >
                                                 {description}
                                             </p>
@@ -180,7 +183,9 @@ const MyProducts = ({
                                                 <button
                                                     className="text-sm text-blue-700 hover:text-blue-500"
                                                     title="Show Description"
-                                                    onClick={() => setShowMore(showMore === _id ? null : _id)}
+                                                    onClick={() =>
+                                                        setShowMore(showMore === _id ? null : _id)
+                                                    }
                                                 >
                                                     Show Desc..
                                                 </button>
@@ -229,7 +234,7 @@ const MyProducts = ({
                                         </div>
 
                                         {/* Functionality buttons */}
-                                        <div className="py-2 grid grid-cols-2 gap-3">
+                                        <div className="py-2 grid grid-cols-2 gap-3 bottom-0">
                                             <button
                                                 className="px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2"
                                                 onClick={() => {
