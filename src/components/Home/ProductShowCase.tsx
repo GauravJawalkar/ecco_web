@@ -20,7 +20,6 @@ const ProductShowCase = () => {
       toast.error("Failed to fetch the special products")
     }
   }
-  console.log(data)
 
   useEffect(() => {
     getSpecialShowCaseProducts()
