@@ -34,8 +34,7 @@ const HomeHero = () => {
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper"
-            >
+                className="mySwiper">
                 <SwiperSlide className='h-screen'>
                     <div>
                         <Image src={SliderOneImage}

@@ -8,8 +8,6 @@ export async function GET() {
 
         const splProducts = await SpecialAppearence.find({ setActive: true });
 
-        console.log(splProducts);
-        
         if (!splProducts) {
             return NextResponse.json({ error: "No SPl products from DB" }, { status: 402 })
         }
