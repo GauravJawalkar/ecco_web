@@ -39,6 +39,10 @@ const ProductShowCase = () => {
 
   return (
     <div className="my-10">
+
+      <div className="flex items-center justify-center py-10">
+        <h1 className="text-3xl font-bold"> Today's Special Appearence</h1>
+      </div>
       <div className="grid grid-cols-2 gap-10">
         <div className="h-auto border p-5">
           <div className="grid grid-cols-2 gap-5">
