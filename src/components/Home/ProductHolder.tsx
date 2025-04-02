@@ -6,13 +6,8 @@ import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
-import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
+import { useRef } from "react";
 
-interface ProductHolderProps {
-  rank: number;
-}
 
 interface holderProps {
   _id: string,
@@ -21,31 +16,8 @@ interface holderProps {
   images: [string]
 }
 
-const ProductHolder = ({ rank }: ProductHolderProps) => {
+const ProductHolder = ({ rank, data }: { rank: number, data: any }) => {
   const swiperRef: any = useRef(null);
-  const [holderData, setHolderData] = useState([]);
-
-  async function getProducts() {
-    try {
-      const response = await axios.get('../api/getProducts');
-
-      if (response.data.data) {
-        toast.success("Products Fetched Successfully")
-        setHolderData(response.data.data.filter((product: any) => product?.price > 200))
-      } else {
-        toast.error("Failed to Fetch the Products")
-      }
-
-    } catch (error) {
-      toast.error("Failed to Fetch the Products")
-      console.log("Error fetching the products ", error)
-    }
-  }
-
-  console.log(holderData.length)
-  useEffect(() => {
-    getProducts()
-  }, [])
 
   return (
     <div className="my-10">
@@ -55,7 +27,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
       >
         <div className="border p-5 bg-red-100 ">1</div>
 
-        <div className="h-64 max-w-[87ch] prod-holder relative">
+        <div className="h-auto max-w-[87ch] prod-holder relative">
           {/* Product Card */}
           <Swiper
             slidesPerView={4}
@@ -68,8 +40,7 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
             }}
           >
             {
-              holderData.length !== 0 &&
-              holderData.map(({ _id, name, price, images }: holderProps) => {
+              data.map(({ _id, name, price, images }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2" key={_id}>
                     <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
