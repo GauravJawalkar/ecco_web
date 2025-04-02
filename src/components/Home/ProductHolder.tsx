@@ -1,20 +1,52 @@
 "use client";
 
 import Image from "next/image";
-import userProfile from "../../../public/userProfile.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 interface ProductHolderProps {
   rank: number;
 }
 
+interface holderProps {
+  _id: string,
+  name: string,
+  price: number,
+  images: [string]
+}
+
 const ProductHolder = ({ rank }: ProductHolderProps) => {
   const swiperRef: any = useRef(null);
+  const [holderData, setHolderData] = useState([]);
+
+  async function getProducts() {
+    try {
+      const response = await axios.get('../api/getProducts');
+
+      if (response.data.data) {
+        toast.success("Products Fetched Successfully")
+        setHolderData(response.data.data.filter((product: any) => product?.price > 200))
+      } else {
+        toast.error("Failed to Fetch the Products")
+      }
+
+    } catch (error) {
+      toast.error("Failed to Fetch the Products")
+      console.log("Error fetching the products ", error)
+    }
+  }
+
+  console.log(holderData.length)
+  useEffect(() => {
+    getProducts()
+  }, [])
+
   return (
     <div className="my-10">
       <div
@@ -35,145 +67,51 @@ const ProductHolder = ({ rank }: ProductHolderProps) => {
               swiperRef.current = swiper;
             }}
           >
-            <SwiperSlide>
+            {
+              holderData.length !== 0 &&
+              holderData.map(({ _id, name, price, images }: holderProps) => {
+                return (
+                  <SwiperSlide className="px-2" key={_id}>
+                    <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
+                      <Image
+                        src={images[0]}
+                        alt="prodImage"
+                        width={"180"}
+                        height={"180"}
+                        className="bg-white object-cover h-auto w-auto border-b"
+                      />
+                      <div className="text-center py-1 mx-2">
+                        <p title={name} className="font-normal capitalize text-md line-clamp-1">
+                          {name}
+                        </p>
+                        <h1 className="font-semibold uppercase text-lg">
+                          From ₹ {price}
+                        </h1>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                )
+              })
+            }
+
+            <SwiperSlide className="px-2" key={Math.floor(Math.random() * 1000)}>
               <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
                 <Image
-                  src={userProfile}
+                  src={'/happy.svg'}
                   alt="prodImage"
                   width={"180"}
                   height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
+                  className="bg-white object-cover h-52 w-auto border-b animate-pulse"
                 />
                 <div className="text-center py-1">
-                  <p className="font-normal capitalize text-md">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
+
+                  <h1 className="font-semibold uppercase text-lg text-yellow-600 animate-pulse">
+                    HAPPY SHOPPING
                   </h1>
                 </div>
               </div>
             </SwiperSlide>
 
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
-
-            <SwiperSlide>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={userProfile}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-auto w-auto border-b"
-                />
-                <div className="text-center py-1">
-                  <p className="font-normal capitalize text-[16px]">
-                    Flowering Plants
-                  </p>
-                  <h1 className="font-semibold uppercase text-lg">
-                    From $ 200
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide>
           </Swiper>
 
           {rank % 2 ? (

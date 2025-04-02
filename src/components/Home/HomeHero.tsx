@@ -21,7 +21,7 @@ const HomeHero = () => {
 
     return (
         // Full Screen Slider
-        <div className='hero'>
+        <div className='h-auto'>
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -35,19 +35,19 @@ const HomeHero = () => {
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper">
-                <SwiperSlide className='h-screen'>
+                <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderOneImage}
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
-                <SwiperSlide className='h-screen'>
+                <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderTwoImage} height={200} width={200}
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
-                <SwiperSlide className='h-screen'>
+                <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderThreeImage} height={200} width={200}
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
