@@ -1,3 +1,4 @@
+"use client"
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -5,9 +6,10 @@ import toast from 'react-hot-toast';
 
 import { CircleX } from 'lucide-react';
 import Loader from '../Loaders/Loader';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
-
+    const queryClient = useQueryClient();
 
     const { data }: any = useUserStore();
     const [loading, setLoading] = useState(false);
@@ -27,9 +29,19 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
         setImgArray(Array.from(e.target.files))
     }
 
-    const handelSubmit = async (e: React.FormEvent) => {
+    const mutation = useMutation({
+        mutationFn: addProduct,
+        onSuccess: () => {
+            queryClient.invalidateQueries();
+        },
+    })
 
+    const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        mutation.mutate();
+    }
+
+    async function addProduct() {
         try {
             setLoading(true);
 
@@ -47,7 +59,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
             const response = await axios.post('/api/addProduct', formData);
 
-            if (await response.data.data) {
+            if (response.data.data) {
                 setName("");
                 setDescription("");
                 setImages("");
@@ -59,6 +71,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                 setLoading(false);
                 onClose();
                 toast.success("Product Added Successfully");
+                return response.data.data
             } else {
                 setLoading(false)
                 toast.error('Error Adding Product')
@@ -92,6 +105,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
         getCategories()
     }, [])
+
 
 
     if (!isVisible) return null;
