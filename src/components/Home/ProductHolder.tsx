@@ -40,7 +40,7 @@ const ProductHolder = ({ rank, data }: { rank: number, data: any }) => {
             }}
           >
             {
-              data.map(({ _id, name, price, images }: holderProps) => {
+              data?.map(({ _id, name, price, images }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2" key={_id}>
                     <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
