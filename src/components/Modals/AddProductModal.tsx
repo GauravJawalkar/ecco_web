@@ -3,7 +3,6 @@ import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-
 import { CircleX } from 'lucide-react';
 import Loader from '../Loaders/Loader';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -32,13 +31,13 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const mutation = useMutation({
         mutationFn: addProduct,
         onSuccess: () => {
-            queryClient.invalidateQueries();
+            queryClient.invalidateQueries({ queryKey: ['myData'] });
         },
     })
 
     const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        mutation.mutate();
+        mutation.mutate()
     }
 
     async function addProduct() {

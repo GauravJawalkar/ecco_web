@@ -6,13 +6,10 @@ import ProductShowCase from "@/components/Home/ProductShowCase";
 import RecommendedProducts from "@/components/Home/RecommendedProducts";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
-
-  const [holderDataOne, setHolderDataOne] = useState([]);
-  const [holderDataTwo, setHolderDataTwo] = useState([])
 
   async function getProducts() {
     try {
@@ -31,7 +28,9 @@ export default function Home() {
     }
   }
 
-  const { data: myData } = useQuery({ queryKey: ["myData"], queryFn: getProducts })
+  const { data: myData = [] } = useQuery({
+    queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
+  })
 
   useEffect(() => {
     getProducts()
@@ -43,11 +42,6 @@ export default function Home() {
       <ProductHolder rank={1} data={myData} />
       <ProductHolder rank={2} data={myData?.filter((product: any) => product.price > 600)} />
       <ProductShowCase />
-      {myData?.map((prod: any, index: number | null | undefined) => {
-        return (
-          <h1 key={index}>{prod.name}</h1>
-        )
-      })}
       <RecommendedProducts />
     </div>
   );
