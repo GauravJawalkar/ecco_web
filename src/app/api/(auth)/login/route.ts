@@ -1,8 +1,8 @@
 import connectDB from "@/db/dbConfig";
 import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
-import { User } from "@/models/user.model";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import User from "@/models/user.model"
 
 connectDB()
 

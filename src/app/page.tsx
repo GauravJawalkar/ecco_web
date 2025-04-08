@@ -35,14 +35,15 @@ export default function Home() {
   useEffect(() => {
     getProducts()
   }, [])
-
+ 
   return (
     <div className="h-full">
       <HomeHero />
-      <ProductHolder rank={1} data={myData} />
-      <ProductHolder rank={2} data={myData?.filter((product: any) => product.price > 600)} />
+      <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} />
+      <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} />
       <ProductShowCase />
       <RecommendedProducts />
     </div>
   );
 }
+ 

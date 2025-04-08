@@ -57,4 +57,4 @@ const specialAppearenceSchema = new Schema(
     }
 )
 
-export const SpecialAppearence = mongoose.model("SpecialAppearence", specialAppearenceSchema)
+export const SpecialAppearence = mongoose.models.SpecialAppearence || mongoose.model("SpecialAppearence", specialAppearenceSchema)

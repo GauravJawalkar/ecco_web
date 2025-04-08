@@ -24,4 +24,4 @@ const becomeSellerSchema = new Schema(
     }
 )
 
-export const BecomeSeller = mongoose.model("BecomeSeller", becomeSellerSchema)
+export const BecomeSeller = mongoose.models.BecomeSeller || mongoose.model("BecomeSeller", becomeSellerSchema)
