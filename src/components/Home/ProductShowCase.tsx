@@ -1,6 +1,8 @@
 "use cliet";
 
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { Loader, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -14,28 +16,29 @@ interface dataProps {
 }
 
 const ProductShowCase = () => {
-  const [data, setData] = useState([]);
 
   async function getSpecialShowCaseProducts() {
     try {
       const response = await axios.get('../api/getSplProducts');
 
       if (response.data.data) {
-        setData(response.data.data)
-        toast.success("Special Products are here")
+        return response.data.data
+      } else {
+        console.log("Failed to get special products");
       }
+
+      return [];
     } catch (error) {
       console.log(error);
-      toast.error("Failed to fetch the special products")
+      return [];
     }
   }
 
-  const firstTwoProducts = data.slice(0, 2);
-  const lastTwoProducts = data.slice(2, 4);
+  const { data: specialProducts = [], isLoading, isError } = useQuery({ queryFn: getSpecialShowCaseProducts, queryKey: ['specialProducts'], refetchOnWindowFocus: false })
 
-  useEffect(() => {
-    getSpecialShowCaseProducts()
-  }, [])
+  const firstTwoProducts = specialProducts?.slice(0, 2);
+  const lastTwoProducts = specialProducts?.slice(2, 4);
+
 
   return (
     <div className="my-10">
@@ -46,6 +49,12 @@ const ProductShowCase = () => {
       <div className="grid grid-cols-2 gap-10">
         <div className="h-auto border p-5">
           <div className="grid grid-cols-2 gap-5">
+            {isLoading && <div className="flex items-center justify-center">
+              <Loader2 className="animate-spin" /></div>}
+            {(!isLoading && firstTwoProducts.length === 0) && <div className="flex items-center justify-center">
+              <h1>No Products Here</h1></div>}
+            {isError && <div className="flex items-center justify-center">
+              <h1>Something Went Wrong</h1></div>}
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
                 return (
@@ -65,6 +74,12 @@ const ProductShowCase = () => {
         </div>
         <div className="h-auto border p-5">
           <div className="grid grid-cols-2 gap-5">
+            {isLoading && <div className="flex items-center justify-center">
+              <Loader2 className="animate-spin" /></div>}
+            {(!isLoading && lastTwoProducts.length === 0) && <div className="flex items-center justify-center">
+              <h1>No Products Here</h1></div>}
+            {isError && <div className="flex items-center justify-center">
+              <h1>Something Went Wrong</h1></div>}
             {
               lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
                 return (

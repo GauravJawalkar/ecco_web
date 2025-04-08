@@ -16,14 +16,12 @@ export default function Home() {
       const response = await axios.get('../api/getProducts');
 
       if (response.data.data) {
-        toast.success("Products Fetched Successfully")
         return response.data.data
       } else {
         toast.error("Failed to Fetch the Products")
       }
 
     } catch (error) {
-      toast.error("Failed to Fetch the Products")
       console.log("Error fetching the products ", error)
     }
   }
@@ -32,10 +30,7 @@ export default function Home() {
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
-  useEffect(() => {
-    getProducts()
-  }, [])
- 
+
   return (
     <div className="h-full">
       <HomeHero />
@@ -46,4 +41,3 @@ export default function Home() {
     </div>
   );
 }
- 

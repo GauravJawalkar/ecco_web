@@ -1,8 +1,8 @@
 import connectDB from "@/db/dbConfig";
 import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
+import { User } from "@/models/user.model";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import User from "@/models/user.model"
 
 connectDB()
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "name email and password are required" }, { status: 401 })
         }
 
-        const user: any = await User.findOne({ email })
+        const user = await User.findOne({ email })
 
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 500 });
