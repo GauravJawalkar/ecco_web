@@ -2,10 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 interface dataProps {
   _id: string,
