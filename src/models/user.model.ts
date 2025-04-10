@@ -21,6 +21,9 @@ const userSchema = new Schema(
             type: String,
             required: true
         },
+        googleId: {
+            type: String,
+        },
         isSeller: {
             type: Boolean,
             default: false,
