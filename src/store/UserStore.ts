@@ -53,7 +53,13 @@ export const useUserStore = create(
                     } catch (error) {
                         throw new Error("Error getting login details")
                     }
-                }
+                },
+                googleLogin: async () => {
+                    window.location.href = '/api/auth/google';
+                },
+                setUser: (user: any) => set(() => ({ data: user }))
+
+
             }
         ),
         {

@@ -48,6 +48,14 @@ export async function GET(request: NextRequest) {
         // Set cookie (HttpOnly)
         (await
             cookies()).set({
+                name: 'user',
+                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar, token: user.accessToken }),
+                httpOnly: true,
+                path: '/',
+            });
+
+        (await
+            cookies()).set({
                 name: 'accessToken',
                 value: token,
                 httpOnly: true,
@@ -55,7 +63,12 @@ export async function GET(request: NextRequest) {
             });
 
 
-        return NextResponse.json({ user: user });
+        return new Response(null, {
+            status: 302,
+            headers: {
+                Location: '/post-auth-redirect',
+            },
+        });
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: 'Auth failed' }, { status: 500 });

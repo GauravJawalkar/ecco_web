@@ -37,6 +37,7 @@ export async function GET() {
 
         cookieStore.delete('accessToken');
         cookieStore.delete('refreshToken');
+        cookieStore.delete('user');
 
         return NextResponse.json(
             { message: "Logout Successful", success: true, loggedOut: loggedOutUser },

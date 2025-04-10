@@ -15,7 +15,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false)
     const [forgotLoading, setForgotLoading] = useState(false)
     const [required, setRequired] = useState(true);
-    const { login }: any = useUserStore()
+    const { login, googleLogin }: any = useUserStore()
     const router = useRouter()
 
     const handelSubmit = async () => {
@@ -59,8 +59,12 @@ const Login = () => {
         }
     }
 
-    const handelGoogleLogin=()=>{
-        
+    const handelGoogleLogin = async () => {
+        try {
+            await googleLogin();
+        } catch (error) {
+
+        }
     }
 
     return (
@@ -92,7 +96,7 @@ const Login = () => {
                 </form>
                 <div className='my-4'>
                     <button className='py-2 px-4 gap-3 rounded border flex items-center justify-center'
-                        onClick={() => (window.location.href = "/api/auth/google")}
+                        onClick={handelGoogleLogin}
                     >
                         <span> Continue with Google</span>
                         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className='h-8 w-8 ' viewBox="0 0 48 48">
