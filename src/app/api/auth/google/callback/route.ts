@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         (await
             cookies()).set({
                 name: 'user',
-                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar, token: user.accessToken }),
+                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin }),
                 httpOnly: true,
                 path: '/',
             });

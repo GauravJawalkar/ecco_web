@@ -11,36 +11,17 @@ export async function GET() {
 
         const cookieStore = await cookies();
 
-        const token: any = cookieStore.get('accessToken')?.value
+        const accessToken: any = cookieStore.get('accessToken')?.value
+        const refreshToken: any = cookieStore.get('refreshToken')?.value
+        const user: any = cookieStore.get('user')?.value
 
-        const reqUser: any = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string)
 
-        if (!reqUser) {
-            return NextResponse.json({ error: "No user found" }, { status: 402 })
-        }
-
-        const loggedOutUser = await User.findByIdAndUpdate(reqUser?._id,
-            {
-                $set: {
-                    refreshToken: "",
-                }
-            },
-            {
-                new: true
-            }
-        ).select("-password -isSeller ")
-
-        if (!loggedOutUser) {
-            return NextResponse.json({ error: `Failed to logout the user ${reqUser.name}` },
-                { status: 401 })
-        }
-
-        cookieStore.delete('accessToken');
-        cookieStore.delete('refreshToken');
-        cookieStore.delete('user');
+        accessToken && cookieStore.delete('accessToken');
+        refreshToken && cookieStore.delete('refreshToken');
+        user && cookieStore.delete('user');
 
         return NextResponse.json(
-            { message: "Logout Successful", success: true, loggedOut: loggedOutUser },
+            { data: "Logout Successful" },
             { status: 200 }
         )
 

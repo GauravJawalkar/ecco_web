@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
+import Loader from '@/components/Loaders/Loader';
 
 export default function PostAuthRedirectPage() {
     const { setUser }: any = useUserStore();
@@ -25,5 +26,9 @@ export default function PostAuthRedirectPage() {
         fetchUser();
     }, []);
 
-    return <p>Logging you in...</p>;
+    return (
+        <div className='flex items-center justify-center py-10 text-2xl'>
+            <Loader title={'Logging you in...'} />
+        </div>
+    )
 }

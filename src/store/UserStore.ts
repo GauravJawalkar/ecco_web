@@ -57,9 +57,7 @@ export const useUserStore = create(
                 googleLogin: async () => {
                     window.location.href = '/api/auth/google';
                 },
-                setUser: (user: any) => set(() => ({ data: user }))
-
-
+                setUser: (user: any) => set({ data: user })
             }
         ),
         {

@@ -62,12 +62,6 @@ export const Navbar = () => {
         }
     }
 
-    useEffect(() => {
-        if (Cookies.get('accessToken') === undefined) {
-            localStorage.clear();
-        }
-    }, [])
-
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-10 backdrop-blur-md'>
