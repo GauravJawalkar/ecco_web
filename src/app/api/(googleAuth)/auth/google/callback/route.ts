@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET,
         GOOGLE_REDIRECT_URI,
-        JWT_SECRET,
+        ACCESS_TOKEN_SECRET,
     } = process.env;
 
     try {
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, JWT_SECRET as string, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET as string, { expiresIn: '7d' });
 
         // Set cookie (HttpOnly)
         (await

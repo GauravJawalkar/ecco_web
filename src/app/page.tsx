@@ -26,7 +26,7 @@ export default function Home() {
     }
   }
 
-  const { data: myData = [] } = useQuery({
+  const { data: myData = [], isLoading } = useQuery({
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
@@ -34,8 +34,8 @@ export default function Home() {
   return (
     <div className="h-full">
       <HomeHero />
-      <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} />
-      <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} />
+      <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
+      <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
       <ProductShowCase />
       <RecommendedProducts />
     </div>

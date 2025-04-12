@@ -18,13 +18,14 @@ export async function POST(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.nextUrl))
         }
 
+
         const decodedUser: any = jwt.verify(encodedUser, process.env.ACCESS_TOKEN_SECRET as string)
 
         if (decodedUser.isSeller === false) {
             return NextResponse.json({ error: "Unauthorized User: Your are not a seller" }, { status: 401 })
         }
 
-        const userId = decodedUser?._id;
+        const userId = decodedUser?.id;
 
         const formData = await request.formData();
 
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
         const secondaryImage = formData.get('secondImage');
         const size = formData.get('size');
         const category = formData.get('category');
+
 
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })

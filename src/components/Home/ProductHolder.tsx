@@ -7,16 +7,17 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
 import { useRef } from "react";
+import Loader from "../Loaders/Loader";
 
 
 interface holderProps {
   _id: string,
   name: string,
   price: number,
-  images: [string]
+  images: [string],
 }
 
-const ProductHolder = ({ rank, data }: { rank: number, data: any }) => {
+const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loading: boolean }) => {
   const swiperRef: any = useRef(null);
 
   return (
@@ -27,7 +28,12 @@ const ProductHolder = ({ rank, data }: { rank: number, data: any }) => {
       >
         <div className="border p-5 bg-red-100 ">1</div>
 
-        <div className="h-auto max-w-[87ch] prod-holder relative">
+        <div className="h-auto max-w-[87ch] prod-holder relative ">
+
+          {loading && <div className="flex items-center justify-center">
+            <Loader title={"Fetching..."} />
+          </div>}
+
           {/* Product Card */}
           <Swiper
             slidesPerView={4}
@@ -39,6 +45,8 @@ const ProductHolder = ({ rank, data }: { rank: number, data: any }) => {
               swiperRef.current = swiper;
             }}
           >
+
+
             {
               data?.map(({ _id, name, price, images }: holderProps) => {
                 return (
