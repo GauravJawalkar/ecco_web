@@ -64,7 +64,7 @@ export const Navbar = () => {
 
 
     return (
-        <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-10 backdrop-blur-md'>
+        <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>
 
             {/* Logo or name */}
             <div className='w-[10%] flex items-center justify-start'>

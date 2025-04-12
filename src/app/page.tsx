@@ -6,7 +6,6 @@ import ProductShowCase from "@/components/Home/ProductShowCase";
 import RecommendedProducts from "@/components/Home/RecommendedProducts";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {

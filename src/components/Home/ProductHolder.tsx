@@ -96,14 +96,14 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
           {rank % 2 ? (
             <button
               onClick={() => swiperRef.current.slideNext()}
-              className="absolute top-1/2 -right-5 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 z-10 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
+              className="absolute top-1/2 -right-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
             >
               <ChevronRight />
             </button>
           ) : (
             <button
               onClick={() => swiperRef.current.slideNext()}
-              className="absolute top-1/2 left-5 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 z-10 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
+              className="absolute top-1/2 left-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
             >
               <ChevronLeft />
             </button>
