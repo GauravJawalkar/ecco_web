@@ -54,6 +54,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
             {
                 user: loggedUser, accessToken, refreshToken,
+            },
+            {
+                status: 200
             }
         )
 

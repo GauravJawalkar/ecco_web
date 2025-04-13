@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const password = formData.get('password')
         const avatar = formData.get('avatar')
 
-        if (!name && !email && !password) {
+        if (!name || !email || !password) {
             return NextResponse.json({ "error": "All the above fields are required" }, { status: 401 })
         }
 
