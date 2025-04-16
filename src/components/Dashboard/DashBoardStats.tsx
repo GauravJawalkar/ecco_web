@@ -50,18 +50,18 @@ const DashBoardStats = ({ sellerId, load, isAdmin }: { sellerId: string, load: b
     return (
         <div className={`grid ${isAdmin ? "grid-cols-4" : "grid-cols-3"} text-center my-10 gap-5 dark:text-neutral-800`}>
             {/* Total No oF orders */}
-            <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
-                Total Products : {totalProducts}
+            <div className='border min-h-20 rounded-md place-content-center'>
+                Total Products : <span className='text-red-600'>{totalProducts}</span>
             </div>
             {/* Revenue Generated */}
-            <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
+            <div className='border min-h-20 rounded-md place-content-center'>
                 Revenue Generated : ₹2000
             </div>
             {/* Stock Availabel */}
-            <div className='bg-gray-100 min-h-20 rounded-md place-content-center'>
+            <div className='border min-h-20 rounded-md place-content-center'>
                 Available Items 2
             </div>
-            {isAdmin ? <Link href={'/dashboard/requests'} className='bg-gray-100 min-h-20 rounded-md place-content-center'>
+            {isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center'>
                 Seller Requests <span className='text-red-500'>{totalRequest}</span>
             </Link> : ""}
         </div>

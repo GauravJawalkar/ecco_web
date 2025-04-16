@@ -16,6 +16,9 @@ const Dashboard = () => {
 
     return (
         <div>
+
+            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 ">🏪 {data?.name}'s Store</h1>
+
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
             {data._id ? (
                 <DashBoardStats
