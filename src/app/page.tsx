@@ -6,6 +6,7 @@ import ProductShowCase from "@/components/Home/ProductShowCase";
 import RecommendedProducts from "@/components/Home/RecommendedProducts";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
@@ -28,6 +29,23 @@ export default function Home() {
   const { data: myData = [], isLoading } = useQuery({
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
+
+  useEffect(() => {
+    async function checkVaildCookies() {
+      try {
+        const response = await axios.get('api/sessionCookies');
+
+        if (!response.data.user) {
+          localStorage.clear();
+        }
+
+      } catch (error) {
+        console.log("Error clearing the localStorage", error)
+      }
+    }
+
+    checkVaildCookies();
+  }, [])
 
 
   return (
