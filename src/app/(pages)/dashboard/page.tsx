@@ -1,6 +1,4 @@
 "use client";
-
-
 import AddProductModal from "@/components/Modals/AddProductModal";
 import CustomCategoryModal from "@/components/Modals/CustomCategoryModal";
 import DashBoardStats from "@/components/Dashboard/DashBoardStats";
