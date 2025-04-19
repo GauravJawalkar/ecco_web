@@ -8,6 +8,7 @@ import "swiper/css";
 import "../../app/globals.css";
 import { useRef } from "react";
 import Loader from "../Loaders/Loader";
+import Link from "next/link";
 
 
 interface holderProps {
@@ -20,6 +21,7 @@ interface holderProps {
 const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loading: boolean }) => {
   const swiperRef: any = useRef(null);
 
+  const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="my-10">
       <div
@@ -51,7 +53,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
               data?.map(({ _id, name, price, images }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2" key={_id}>
-                    <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
+                    <Link href={`/products/${slugify(name)}?id=${_id}`} className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit cursor-pointer">
                       <Image
                         src={images[0]}
                         alt="prodImage"
@@ -63,11 +65,11 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                         <p title={name} className="font-normal capitalize text-md line-clamp-1">
                           {name}
                         </p>
-                        <h1 className="font-semibold uppercase text-lg">
+                        <p className="font-semibold uppercase text-lg">
                           From ₹ {price}
-                        </h1>
+                        </p>
                       </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 )
               })
