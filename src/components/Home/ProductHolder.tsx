@@ -59,7 +59,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                         alt="prodImage"
                         width={"180"}
                         height={"180"}
-                        className="bg-white object-cover h-auto w-auto border-b"
+                        className="bg-white object-cover h-52 w-auto border-b"
                       />
                       <div className="text-center py-1 mx-2">
                         <p title={name} className="font-normal capitalize text-md line-clamp-1">
@@ -92,7 +92,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                 </div>
               </div>
             </SwiperSlide>
-
+            
           </Swiper>
 
           {rank % 2 ? (

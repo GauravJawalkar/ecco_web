@@ -45,7 +45,7 @@ const ProductShowCase = () => {
         <h1 className="text-3xl font-bold"> Today's Special Appearence</h1>
       </div>
       <div className="grid grid-cols-2 gap-10">
-        <div className="h-auto border p-5">
+        <div className="h-auto border p-5 dark:border-neutral-500">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -56,7 +56,7 @@ const ProductShowCase = () => {
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
                 return (
-                  <div key={_id} className="border p-4">
+                  <div key={_id} className="border p-4 dark:border-neutral-500">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
@@ -70,7 +70,7 @@ const ProductShowCase = () => {
             }
           </div>
         </div>
-        <div className="h-auto border p-5">
+        <div className="h-auto border p-5 dark:border-neutral-500">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -81,7 +81,7 @@ const ProductShowCase = () => {
             {
               lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
                 return (
-                  <div key={_id} className="border p-4">
+                  <div key={_id} className="border p-4 dark:border-neutral-500">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
