@@ -1,16 +1,16 @@
-"use cliet";
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface dataProps {
   _id: string,
   prodImages: [string],
   sellerName: string,
-  prodName: string
-
+  prodName: string,
 }
 
 const ProductShowCase = () => {
@@ -36,7 +36,7 @@ const ProductShowCase = () => {
 
   const firstTwoProducts = specialProducts?.slice(0, 2);
   const lastTwoProducts = specialProducts?.slice(2, 4);
-
+  const slugify = (prodName: string) => prodName.toLowerCase().replace(/\s+/g, '-');
 
   return (
     <div className="my-10">
@@ -56,7 +56,7 @@ const ProductShowCase = () => {
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
                 return (
-                  <div key={_id} className="border p-4 dark:border-neutral-500">
+                  <Link href={`/products/${slugify(prodName)}?id=${_id}`} key={_id} className="border p-4 dark:border-neutral-500">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
@@ -64,7 +64,7 @@ const ProductShowCase = () => {
                       className="w-full h-64 object-cover" />
                     <h1 className="capitalize font-semibold text-lg py-2 line-clamp-1">{prodName}</h1>
                     <h1 className="capitalize text-base text-gray-500">Seller : {sellerName}</h1>
-                  </div>
+                  </Link>
                 )
               })
             }

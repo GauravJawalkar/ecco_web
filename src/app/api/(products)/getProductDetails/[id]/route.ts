@@ -2,11 +2,11 @@ import connectDB from "@/db/dbConfig";
 import { Product } from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET({ params }: { params: { id: string } }) {
     await connectDB();
 
     try {
-        const { id } =await params;
+        const { id } = await params;
 
         console.log(id)
 
@@ -15,6 +15,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         }
 
         const product = await Product.findById(id);
+
+        console.log("Product is : ", product)
 
         if (!product) {
             return NextResponse.json({ error: "Product Not found in the database" }, { status: 402 })
