@@ -11,6 +11,7 @@ interface dataProps {
   prodImages: [string],
   sellerName: string,
   prodName: string,
+  productId: string
 }
 
 const ProductShowCase = () => {
@@ -54,9 +55,9 @@ const ProductShowCase = () => {
             {isError && <div className="flex items-center justify-center">
               <h1>Something Went Wrong</h1></div>}
             {
-              firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
+              firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${_id}`} key={_id} className="border p-4 dark:border-neutral-500">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-500">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
@@ -79,9 +80,9 @@ const ProductShowCase = () => {
             {isError && <div className="flex items-center justify-center">
               <h1>Something Went Wrong</h1></div>}
             {
-              lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName }: dataProps) => {
+              lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <div key={_id} className="border p-4 dark:border-neutral-500">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-500">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
@@ -89,7 +90,7 @@ const ProductShowCase = () => {
                       className="w-full h-64 object-cover" />
                     <h1 className="capitalize font-semibold text-lg py-2 line-clamp-1">{prodName}</h1>
                     <h1 className="capitalize text-base text-gray-500">Seller : {sellerName}</h1>
-                  </div>
+                  </Link>
                 )
               })
             }
