@@ -96,12 +96,7 @@ const Login = () => {
                         <label>Password :</label>
                         <input type="password" className='text-black px-3 py-2 w-full rounded' placeholder='Password' required={required} onChange={(e) => setPassword(e.target.value)} />
                     </div>
-                    <div className='w-full'>
-                        <button onClick={() => { setLoading(false); handelOTP() }} className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200 flex items-center justify-center gap-3'>
-                            Forgot Password {
-                                forgotLoading ? <LoaderCircle className='animate-spin h-5 w-5' /> : "?"
-                            }</button>
-                    </div>
+
                     <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {
                             loading ?
@@ -110,7 +105,14 @@ const Login = () => {
                         }
                     </button>
                 </form>
-
+                <div className='w-full '>
+                    <button type='button' onClick={() => { handelOTP() }} className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200 gap-3 text-center'>
+                        Forgot Password
+                        {
+                            forgotLoading ? <LoaderCircle className='animate-spin h-5 w-5' /> : "?"
+                        }
+                    </button>
+                </div>
 
                 <div >
                     <span>Create an account ? <Link href={'/signup'} className='text-blue-500 hover:text-blue-700'>Signup</Link> </span>

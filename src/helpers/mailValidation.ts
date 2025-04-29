@@ -53,7 +53,6 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
 
         const transport = nodemailer.createTransport({
             host: process.env.MAIL_HOST,
-            port: 2525,
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_USER_PASSWORD
@@ -61,7 +60,7 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
         });
 
         const mailOptions = {
-            from: 'gauravjawalkar8@gmail.com',
+            from: process.env.MAIL_USER,
             to: email,
             subject: emailType === "forgotPassword" ? "OTP to Reset Your Password" : "Verify your credentials",
             html: `<p>
@@ -69,9 +68,16 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
             </p>`
         }
 
-        const mailResponse = await transport.sendMail(mailOptions);
+        try {
 
-        return mailResponse;
+            const mailResponse = await transport.sendMail(mailOptions);
+            console.log(mailResponse);
+            return mailResponse;
+
+        } catch (error) {
+            console.error("Error sending Mail : ", error)
+        }
+
 
 
     } catch (error: any) {
