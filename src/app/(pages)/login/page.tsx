@@ -105,11 +105,10 @@ const Login = () => {
                         }
                     </button>
                 </form>
-                <div className='w-full '>
-                    <button type='button' onClick={() => { handelOTP() }} className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200 gap-3 text-center'>
-                        Forgot Password
+                <div className='w-full text-start my-2'>
+                    <button type='button' onClick={() => { handelOTP() }} className='text-gray-500 hover:text-gray-700 transition-all ease-linear duration-200 gap-3 '>
                         {
-                            forgotLoading ? <LoaderCircle className='animate-spin h-5 w-5' /> : "?"
+                            forgotLoading ? <LoaderCircle className='animate-spin h-5 w-5' /> : <span>Forgot Password ?</span>
                         }
                     </button>
                 </div>
