@@ -38,7 +38,7 @@ const HomeHero = () => {
                 <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderOneImage}
-                            height={200} width={200}
+                            height={2000} width={2000}
                             priority
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
                     </div>
@@ -46,7 +46,7 @@ const HomeHero = () => {
                 <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderTwoImage}
-                            height={200} width={200}
+                            height={2000} width={2000}
                             priority
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
                     </div>
@@ -54,7 +54,7 @@ const HomeHero = () => {
                 <SwiperSlide className='h-'>
                     <div>
                         <Image src={SliderThreeImage}
-                            height={200} width={200}
+                            height={2000} width={2000}
                             priority
                             className="w-full h-64 object-cover" alt={'SliderOneImage'} />
                     </div>
