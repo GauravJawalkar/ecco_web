@@ -1,6 +1,5 @@
 "use client"
 
-import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SliderOneImage from '../../../public/SliderOneImage.png'
 import SliderTwoImage from '../../../public/SliderTwoImage.png'
