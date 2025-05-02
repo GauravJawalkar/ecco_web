@@ -65,7 +65,8 @@ const Product = () => {
             {isLoading && <div className='flex items-center justify-center'>
                 <Loader title='Fetching...' />
             </div>}
-            <div className='grid grid-cols-[0.5fr_3fr_3fr] w-full gap-5'>
+
+            {(!isLoading && !isError) && <div className='grid grid-cols-[0.5fr_3fr_3fr] w-full gap-5'>
 
                 {/* Images Tray For More Clear Inspection */}
                 <div>
@@ -200,7 +201,8 @@ const Product = () => {
                     </div>
                     <button className='px-4 py-3 bg-red-400 rounded text-white w-full' >Buy Now</button>
                 </div>
-            </div>
+            </div>}
+
         </section >
     )
 }
