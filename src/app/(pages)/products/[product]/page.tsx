@@ -229,8 +229,8 @@ const Product = () => {
                         <button
                             className='px-4 py-3 border dark:border-neutral-500 rounded w-full flex items-center justify-center gap-4'
                             onClick={handelCart}>
-                            <ShoppingCart />
-                            Add To Cart
+                            {addToCartMutation.isPending ? <Loader title='Adding...' /> : (<span className='flex items-center justify-center gap-4'><ShoppingCart />
+                                Add To Cart</span>)}
                         </button>
                         <button className='px-4 py-3 border dark:border-neutral-500 rounded'>
                             <Heart />

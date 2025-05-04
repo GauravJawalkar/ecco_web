@@ -5,9 +5,8 @@ import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import toast from "react-hot-toast"
-import Cookies from 'js-cookie';
 import axios from "axios"
 
 

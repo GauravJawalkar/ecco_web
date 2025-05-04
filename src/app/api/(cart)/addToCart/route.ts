@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
             });
 
             return NextResponse.json(
-                { data: "Cart created and item added" },
+                { data: `"Cart created and item added": ${newCart}` },
                 { status: 201 }
             );
         }
