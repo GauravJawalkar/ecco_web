@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
 import axios from "axios"
+import { useQuery } from "@tanstack/react-query"
 
 
 export const Navbar = () => {
@@ -61,6 +62,29 @@ export const Navbar = () => {
         }
     }
 
+    const cartOwnerId = data?._id
+
+    async function getCartItems() {
+        try {
+
+            let cartOwnerId = data?._id;
+            const response = await axios.get(`api/getCart/${cartOwnerId}`);
+            if (response.data.data) {
+                return response.data.data
+            }
+            return [];
+        } catch (error) {
+            console.error("Error getting the cart details :", error);
+            return [];
+        }
+    }
+
+    const { data: userCart = [] } = useQuery({
+        queryFn: getCartItems,
+        queryKey: ['userCart', cartOwnerId],
+        enabled: !!cartOwnerId,
+        refetchOnWindowFocus: false,
+    })
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>
@@ -108,7 +132,7 @@ export const Navbar = () => {
                     </div>
                 </div>
                 <Link href={'/cart'} className="text-neutral-300 relative">
-                    <span className="absolute -top-3 right-0 px-1 text-xs font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? 9 : "?"}</span>
+                    <span className="absolute -top-3 right-0 px-1 text-xs font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? `${userCart?.cartItems?.length}` : "?"}</span>
                     <ShoppingCart className="h-6 w-6 text-slate-700 dark:text-slate-200" />
                 </Link>
                 <button onClick={toogleTheme}>
