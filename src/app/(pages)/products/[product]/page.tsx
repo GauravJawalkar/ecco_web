@@ -1,18 +1,21 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
 import { discountPercentage } from '@/helpers/discountPercentage';
-import { useQuery } from '@tanstack/react-query';
+import { useUserStore } from '@/store/UserStore';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 
 
 const Product = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const [mainImage, setMainImage] = useState(0)
+    const { data }: any = useUserStore();
 
     async function getSpecificProduct(id: string) {
         try {
@@ -41,7 +44,22 @@ const Product = () => {
         }
     }
 
-
+    async function addToCart() {
+        try {
+            const cartOwner = data?._id;
+            const name = product?.name;
+            const price = product?.price;
+            const image = product?.images[0];
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image });
+            if (response.data.data) {
+                return response.data.data
+            }
+            return []
+        } catch (error) {
+            console.error("Error Adding the product to cart ", error);
+            toast.error("Error Adding the product to cart ");
+        }
+    }
 
     const { data: product = [], isLoading, isError } = useQuery(
         {
@@ -59,6 +77,18 @@ const Product = () => {
             refetchOnWindowFocus: false
         }
     )
+
+    const addToCartMutation = useMutation({
+        mutationFn: async () => await addToCart(),
+        onSuccess: () => {
+            toast.success("Item Added To Cart");
+        }
+    })
+
+    const handelCart = () => {
+        console.log("Add to Cart clicked");
+        addToCartMutation.mutate();
+    }
 
     return (
         <section className='py-10'>
@@ -196,8 +226,15 @@ const Product = () => {
                     </div>
                     {/* Add to cart and buy now button */}
                     <div className="flex items-center justify-between w-full gap-4">
-                        <button className='px-4 py-3 border dark:border-neutral-500 rounded w-full flex items-center justify-center gap-4'><ShoppingCart /> Add To Cart</button>
-                        <button className='px-4 py-3 border dark:border-neutral-500 rounded'><Heart /></button>
+                        <button
+                            className='px-4 py-3 border dark:border-neutral-500 rounded w-full flex items-center justify-center gap-4'
+                            onClick={handelCart}>
+                            <ShoppingCart />
+                            Add To Cart
+                        </button>
+                        <button className='px-4 py-3 border dark:border-neutral-500 rounded'>
+                            <Heart />
+                        </button>
                     </div>
                     <button className='px-4 py-3 bg-red-400 rounded text-white w-full' >Buy Now</button>
                 </div>
