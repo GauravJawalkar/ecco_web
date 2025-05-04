@@ -1,6 +1,5 @@
 import connectDB from "@/db/dbConfig";
 import { Cart } from "@/models/cart.model";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, params: { params: { id: string } }) {

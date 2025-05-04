@@ -22,7 +22,7 @@ const Cart = () => {
         try {
 
             let cartOwnerId = data?._id;
-            const response = await axios.get(`api/getCart/${cartOwnerId}`);
+            const response = await axios.get(`../api/getCart/${cartOwnerId}`);
             if (response.data.data) {
                 return response.data.data
             }

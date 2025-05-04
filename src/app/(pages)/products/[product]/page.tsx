@@ -2,7 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import { discountPercentage } from '@/helpers/discountPercentage';
 import { useUserStore } from '@/store/UserStore';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import Image from 'next/image';
@@ -16,6 +16,7 @@ const Product = () => {
     const id = searchParams.get('id');
     const [mainImage, setMainImage] = useState(0)
     const { data }: any = useUserStore();
+    const queryClient = useQueryClient();
 
     async function getSpecificProduct(id: string) {
         try {
@@ -82,6 +83,7 @@ const Product = () => {
         mutationFn: async () => await addToCart(),
         onSuccess: () => {
             toast.success("Item Added To Cart");
+            queryClient.invalidateQueries({ queryKey: ['userCart'] })
         }
     })
 
