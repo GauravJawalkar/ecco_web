@@ -17,6 +17,7 @@ const Product = () => {
     const [mainImage, setMainImage] = useState(0)
     const { data }: any = useUserStore();
     const queryClient = useQueryClient();
+    const cartOwnerId = data?._id
 
     async function getSpecificProduct(id: string) {
         try {
@@ -83,7 +84,7 @@ const Product = () => {
         mutationFn: async () => await addToCart(),
         onSuccess: () => {
             toast.success("Item Added To Cart");
-            queryClient.invalidateQueries({ queryKey: ['userCart'] })
+            queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] })
         }
     })
 

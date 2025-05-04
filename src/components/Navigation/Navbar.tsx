@@ -66,8 +66,6 @@ export const Navbar = () => {
 
     async function getCartItems() {
         try {
-
-            let cartOwnerId = data?._id;
             const response = await axios.get(`api/getCart/${cartOwnerId}`);
             if (response.data.data) {
                 return response.data.data
