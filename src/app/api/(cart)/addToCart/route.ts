@@ -7,7 +7,10 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image } = reqBody;
+        const { cartOwner, name, price, image, sellerName, discount } = reqBody;
+
+        console.log("sellerName is ", sellerName)
+        console.log("discount is ", discount)
 
         const quantity = 1;
 
@@ -15,17 +18,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!name || !price || !image) {
+        if (!name || !price || !image || !sellerName || !discount) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
 
-        let existingCart = await Cart.findOne({ cartOwner });
+        const existingCart = await Cart.findOne({ cartOwner });
 
         // Create new cart if none exists
         if (!existingCart) {
             const newCart = await Cart.create({
                 cartOwner,
-                cartItems: [{ name, price, image, quantity }],
+                cartItems: [{ name, price, image, quantity, sellerName, discount }],
             });
 
             return NextResponse.json(
@@ -44,7 +47,7 @@ export async function POST(request: NextRequest) {
             existingCart.cartItems[existingItemIndex].quantity += quantity;
         } else {
             // Add new item
-            existingCart.cartItems.push({ name, price, image, quantity });
+            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName });
         }
 
         const updatedCart = await existingCart.save();

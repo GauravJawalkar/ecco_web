@@ -52,11 +52,13 @@ const Product = () => {
             const name = product?.name;
             const price = product?.price;
             const image = product?.images[0];
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image });
+            const discount = product?.discount;
+            const sellerName = seller?.name;
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount });
             if (response.data.data) {
-                return response.data.data
+                return response.data.data;
             }
-            return []
+            return [];
         } catch (error) {
             console.error("Error Adding the product to cart ", error);
             toast.error("Error Adding the product to cart ");
@@ -84,7 +86,7 @@ const Product = () => {
         mutationFn: async () => await addToCart(),
         onSuccess: () => {
             toast.success("Item Added To Cart");
-            queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] })
+            queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
         }
     })
 

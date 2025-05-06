@@ -6,7 +6,7 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
     await connectDB();
 
     try {
-        const { id } = params.params;
+        const { id } = await params.params;
 
         console.log(id)
 

@@ -2,8 +2,8 @@ import connectDB from "@/db/dbConfig";
 import { Cart } from "@/models/cart.model";
 import { NextRequest, NextResponse } from "next/server";
 
+connectDB();
 export async function GET(_: NextRequest, params: { params: { id: string } }) {
-    await connectDB();
     try {
         const { id } = await params?.params;
 
