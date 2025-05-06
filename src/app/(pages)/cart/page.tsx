@@ -1,25 +1,26 @@
 "use client";
 
 import { useUserStore } from "@/store/UserStore";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
 interface cartMappingProps {
+    _id: string;
     name: string;
     price: number;
     image: string;
     quantity: number;
     discount: number;
     sellerName: string;
-    _id: string
 }
 
 const Cart = () => {
     const { data }: any = useUserStore();
     const cartOwnerId = data?._id;
+    const queryClient = useQueryClient();
 
     async function getCartItems() {
         try {
@@ -43,16 +44,34 @@ const Cart = () => {
 
     async function removeCartItem(_id: string) {
         try {
+            const cartId = userCart?._id;
+            const response = await axios.put('/api/removeCartItem',
+                { data: { cartId, _id, } });
+            if (response.data.data) {
+                return response.data.data
+            };
 
+            return [];
         } catch (error) {
             console.error("Failed to remove the item from the cart : ", error);
-            toast.error("Failed to remove the item");
+            return [];
         }
     }
 
-    const handelRemoveItem = (_id: string) => {
+    const removeItemMutation = useMutation({
+        mutationFn: removeCartItem,
+        onSuccess: () => {
+            toast.success("Item Removed");
+            queryClient.invalidateQueries({ queryKey: ['userCart'] })
+        }
+    })
 
+    const handelRemoveItem = (_id: string) => {
+        removeItemMutation.mutate(_id);
     }
+
+
+
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
@@ -100,7 +119,7 @@ const Cart = () => {
                                                     <button className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                         <Minus className="h-4 w-4" />
                                                     </button>
-                                                    <button onClick={() => { handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
+                                                    <button onClick={(e) => { e.preventDefault(); handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
                                                 </div>
                                             </div>
                                         </div>
