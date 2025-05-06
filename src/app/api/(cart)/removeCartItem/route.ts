@@ -15,14 +15,12 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: "cartId and itemId is required" }, { status: 400 })
         }
 
+
         const cart = await Cart.updateOne({ _id: cartId },
             {
                 $pull: {
                     cartItems: { _id: { $in: [_id] } }
                 }
-            },
-            {
-                new: true
             }
         );
 

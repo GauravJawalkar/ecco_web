@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface cartMappingProps {
@@ -21,6 +22,7 @@ const Cart = () => {
     const { data }: any = useUserStore();
     const cartOwnerId = data?._id;
     const queryClient = useQueryClient();
+    const [quantityOperation, setQuantityOperation] = useState("")
 
     async function getCartItems() {
         try {
@@ -70,6 +72,32 @@ const Cart = () => {
         removeItemMutation.mutate(_id);
     }
 
+    async function addItemQuantity(_id: string, quantity: number) {
+        try {
+            const cartId = userCart?._id;
+            const response = await axios.put('api/updateCart', { data: { _id, quantityOperation, cartId, quantity } });
+            if (response.data.data) {
+                return response.data.data
+            }
+            return [];
+        } catch (error) {
+            console.error("Error updating the quantity : ", error);
+        }
+    }
+
+    const addQuantityMutation = useMutation(
+        {
+            mutationFn: ({ _id, quantity }: { _id: string, quantity: number }) => addItemQuantity(_id, quantity),
+            onSuccess: () => {
+                toast.success("Item Added");
+                queryClient.invalidateQueries({ queryKey: ['userCart'] });
+            }
+        }
+    )
+
+    const handelAddItemQuantity = (_id: string, quantity: number) => {
+        addQuantityMutation.mutate({ _id, quantity });
+    }
 
 
     return (
@@ -112,11 +140,19 @@ const Cart = () => {
                                                     Delivery: Free 😊
                                                 </h1>
                                                 <div className="py-3 flex items-center gap-3">
-                                                    <button className="p-1 border-2 rounded-full dark:border-neutral-700">
+                                                    <button onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setQuantityOperation("+");
+                                                        handelAddItemQuantity(_id, quantity)
+                                                    }} className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                         <Plus className="h-4 w-4" />
                                                     </button>
                                                     <h1 className="text-sm py-1 px-2 dark:border-neutral-700 rounded border">{quantity}</h1>
-                                                    <button className="p-1 border-2 rounded-full dark:border-neutral-700">
+                                                    <button onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setQuantityOperation("-");
+                                                        handelAddItemQuantity(_id, quantity)
+                                                    }} className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                         <Minus className="h-4 w-4" />
                                                     </button>
                                                     <button onClick={(e) => { e.preventDefault(); handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
@@ -128,9 +164,9 @@ const Cart = () => {
                             }
                         )}
                 </div>
-                <div className="w-full p-5 border rounded my-3 dark:border-neutral-700">Cart Total</div>
+                <div className="w-full p-5 border rounded my-3 uppercase dark:border-neutral-700">Cart Total : 0</div>
             </div>
-        </section>
+        </section >
     );
 };
 
