@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -24,6 +25,7 @@ const Cart = () => {
     const queryClient = useQueryClient();
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
+    const router = useRouter();
 
     async function getCartItems() {
         try {
@@ -100,8 +102,18 @@ const Cart = () => {
         addQuantityMutation.mutate({ _id, quantity });
     }
 
+    useEffect(() => {
+        if (userCart?.cartItems?.length > 0) {
+            const subtotal = userCart.cartItems.reduce((total: number, item: cartMappingProps) => {
+                return total + (item.price - item.discount) * item.quantity;
+            }, 0);
+            setCartTotal(subtotal);
+        } else {
+            setCartTotal(0);
+        }
+    }, [userCart]);
     return (
-        <section>
+        <section className="h-auto">
             {userCart?.cartItems?.length > 0 ? (
                 <div className="text-2xl font-semibold text-center uppercase py-10">
                     My Shopping Cart
@@ -117,9 +129,7 @@ const Cart = () => {
                         userCart?.cartItems?.map(
                             ({ name, price, image, quantity, discount, sellerName, _id }: cartMappingProps) => {
                                 return (
-                                    <div className="p-5 border rounded dark:border-neutral-700 gap-3 my-3 relative"
-                                        onLoad={() => { setCartTotal((cartTotal + (price - discount) * quantity)) }}
-                                        key={name + price}>
+                                    <div className="p-5 border rounded dark:border-neutral-700 gap-3 my-3 relative h-fit" key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
                                                 <Image
@@ -152,7 +162,7 @@ const Cart = () => {
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             setQuantityOperation("-");
-                                                            handelAddItemQuantity(_id, quantity)
+                                                            handelAddItemQuantity(_id, quantity);
                                                         }} className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                             <Minus className="h-4 w-4" />
                                                         </button>
@@ -161,7 +171,7 @@ const Cart = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="bg-white rounded-full absolute -top-3 -right-2">
+                                        <div className="bg-white dark:bg-[#1a1a1a] rounded-full absolute -top-3 -right-2">
                                             <h1 className="py-[2px] px-2 border text-green-500 border-green-500">In Stock</h1>
                                         </div>
                                     </div>
@@ -169,18 +179,28 @@ const Cart = () => {
                             }
                         )}
                 </div>
-                <div className="w-full p-5 border rounded my-3  dark:border-neutral-700">
-                    <h1 className="font-semibold uppercase">
-                        Cart Summary :
+                <div className="w-full p-5 border rounded my-3  dark:border-neutral-700 h-fit sticky top-24">
+                    <h1 className="font-semibold uppercase text-lg">
+                        Summary :
                     </h1>
 
-                    <div className="pt-5 flex items-center justify-between">
+                    <div className="pt-10 flex items-center justify-between">
                         <h1>Subtotal</h1>
                         <h1>₹ {cartTotal}</h1>
                     </div>
-                    <div className="py-2 flex items-center justify-between">
+                    <div className="py-3 flex items-center justify-between">
                         <h1>Shipping</h1>
-                        <h1>₹0.0</h1>
+                        <h1>₹ 0.0</h1>
+                    </div>
+                    <br />
+                    <hr />
+                    <br />
+                    <div className="py-2 flex items-center justify-between font-semibold uppercase">
+                        <h1>Total</h1>
+                        <h1>₹ {cartTotal}</h1>
+                    </div>
+                    <div className="py-4">
+                        <button className="w-full bg-gray-200 py-2 rounded dark:text-black">Check Out</button>
                     </div>
                 </div>
             </div>

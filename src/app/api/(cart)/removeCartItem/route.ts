@@ -9,8 +9,6 @@ export async function PUT(request: NextRequest) {
 
         const { _id, cartId } = reqBody.data;
 
-        console.log(reqBody.data)
-
         if (!cartId || !_id) {
             return NextResponse.json({ error: "cartId and itemId is required" }, { status: 400 })
         }
@@ -27,8 +25,6 @@ export async function PUT(request: NextRequest) {
         if (!cart) {
             return NextResponse.json({ error: "Cart with the given cartId not found" }, { status: 401 })
         }
-
-        console.log(cart)
 
         return NextResponse.json({ data: cart }, { status: 200 });
 
