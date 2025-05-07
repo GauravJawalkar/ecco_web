@@ -23,6 +23,7 @@ const Cart = () => {
     const cartOwnerId = data?._id;
     const queryClient = useQueryClient();
     const [quantityOperation, setQuantityOperation] = useState("");
+    const [cartTotal, setCartTotal] = useState(0);
 
     async function getCartItems() {
         try {
@@ -99,7 +100,6 @@ const Cart = () => {
         addQuantityMutation.mutate({ _id, quantity });
     }
 
-
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
@@ -118,6 +118,7 @@ const Cart = () => {
                             ({ name, price, image, quantity, discount, sellerName, _id }: cartMappingProps) => {
                                 return (
                                     <div className="p-5 border rounded dark:border-neutral-700 gap-3 my-3 relative"
+                                        onLoad={() => { setCartTotal((cartTotal + (price - discount) * quantity)) }}
                                         key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
@@ -175,7 +176,7 @@ const Cart = () => {
 
                     <div className="pt-5 flex items-center justify-between">
                         <h1>Subtotal</h1>
-                        <h1>₹ {0}</h1>
+                        <h1>₹ {cartTotal}</h1>
                     </div>
                     <div className="py-2 flex items-center justify-between">
                         <h1>Shipping</h1>

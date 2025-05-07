@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
                 cartOwner,
                 cartItems: [{ name, price, image, quantity, sellerName, discount }],
             });
+            await newCart.save();
 
             return NextResponse.json(
                 { data: `"Cart created and item added": ${newCart}` },
