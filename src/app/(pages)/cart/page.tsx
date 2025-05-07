@@ -103,68 +103,78 @@ const Cart = () => {
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
-                <div className="text-2xl font-semibold text-center py-10">
-                    Your Cart
+                <div className="text-2xl font-semibold text-center uppercase py-10">
+                    My Shopping Cart
                 </div>
             ) : (
-                <div className="text-2xl font-semibold text-center py-10">
+                <div className="text-2xl font-semibold uppercase text-center py-10">
                     Your Cart Is Empty
                 </div>
             )}
             <div className="grid grid-cols-[3fr_1fr] gap-4">
-                <div>
+                <div className="grid grid-cols-2 gap-3">
                     {userCart?.cartItems?.length > 0 &&
                         userCart?.cartItems?.map(
                             ({ name, price, image, quantity, discount, sellerName, _id }: cartMappingProps) => {
                                 return (
-                                    <div
-                                        className="flex items-start justify-start flex-col p-5 border rounded dark:border-neutral-700 gap-3 my-3"
+                                    <div className="p-5 border rounded dark:border-neutral-700 gap-3 my-3 relative"
                                         key={name + price}>
-                                        <div className="flex gap-3">
-                                            <Image
-                                                width={200}
-                                                height={200}
-                                                src={image || "/userProfile.png"}
-                                                alt={"cartImage"}
-                                                className="h-24 w-20 rounded border-2 object-cover"
-                                            />
-                                            <div className="flex items-start justify-start flex-col ">
-                                                <h1 className="capitalize text-xl font-semibold">{name}</h1>
-                                                <h1 className="text-md text-gray-500">
-                                                    Price: ₹ {price - discount}
-                                                </h1>
-                                                <h1 className="text-md text-gray-500 capitalize">
-                                                    Seller: {sellerName}
-                                                </h1>
-                                                <h1 className="text-md text-gray-500">
-                                                    Delivery: Free 😊
-                                                </h1>
-                                                <div className="py-3 flex items-center gap-3">
-                                                    <button onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setQuantityOperation("+");
-                                                        handelAddItemQuantity(_id, quantity)
-                                                    }} className="p-1 border-2 rounded-full dark:border-neutral-700">
-                                                        <Plus className="h-4 w-4" />
-                                                    </button>
-                                                    <h1 className="text-sm py-1 px-2 dark:border-neutral-700 rounded border">{quantity}</h1>
-                                                    <button onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setQuantityOperation("-");
-                                                        handelAddItemQuantity(_id, quantity)
-                                                    }} className="p-1 border-2 rounded-full dark:border-neutral-700">
-                                                        <Minus className="h-4 w-4" />
-                                                    </button>
-                                                    <button onClick={(e) => { e.preventDefault(); handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
+                                        <div>
+                                            <div className="flex gap-3">
+                                                <Image
+                                                    width={200}
+                                                    height={200}
+                                                    src={image || "/userProfile.png"}
+                                                    alt={"cartImage"}
+                                                    className="h-auto w-28 rounded border-2 object-cover"
+                                                />
+                                                <div className="flex items-start justify-start flex-col">
+                                                    <h1 className="capitalize text-xl font-semibold line-clamp-1" title={name}>{name}</h1>
+                                                    <h1 className="text-md text-gray-500">
+                                                        Price: ₹ {price - discount}
+                                                    </h1>
+                                                    <h1 className="text-md text-gray-500 capitalize">
+                                                        Seller: {sellerName}
+                                                    </h1>
+                                                    <h1 className="text-md text-gray-500">
+                                                        Delivery: Free 😊
+                                                    </h1>
+                                                    <div className="py-3 flex items-center gap-3">
+                                                        <button onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setQuantityOperation("+");
+                                                            handelAddItemQuantity(_id, quantity)
+                                                        }} className="p-1 border-2 rounded-full dark:border-neutral-700">
+                                                            <Plus className="h-4 w-4" />
+                                                        </button>
+                                                        <h1 className="text-sm py-1 px-2 dark:border-neutral-700 rounded border">{quantity}</h1>
+                                                        <button onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setQuantityOperation("-");
+                                                            handelAddItemQuantity(_id, quantity)
+                                                        }} className="p-1 border-2 rounded-full dark:border-neutral-700">
+                                                            <Minus className="h-4 w-4" />
+                                                        </button>
+                                                        <button onClick={(e) => { e.preventDefault(); handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div className="bg-white rounded-full absolute -top-3 -right-2">
+                                            <h1 className="py-[2px] px-2 border text-green-500 border-green-500">In Stock</h1>
                                         </div>
                                     </div>
                                 );
                             }
                         )}
                 </div>
-                <div className="w-full p-5 border rounded my-3 uppercase dark:border-neutral-700">Cart Total : 0</div>
+                <div className="w-full p-5 border rounded my-3 uppercase dark:border-neutral-700">
+                    <h1 className="font-semibold">
+                        Cart Summary :
+                    </h1>
+
+                    <div></div>
+                </div>
             </div>
         </section >
     );
