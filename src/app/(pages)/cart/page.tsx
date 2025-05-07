@@ -5,7 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 interface cartMappingProps {
@@ -22,7 +22,7 @@ const Cart = () => {
     const { data }: any = useUserStore();
     const cartOwnerId = data?._id;
     const queryClient = useQueryClient();
-    const [quantityOperation, setQuantityOperation] = useState("")
+    const [quantityOperation, setQuantityOperation] = useState("");
 
     async function getCartItems() {
         try {
@@ -143,7 +143,7 @@ const Cart = () => {
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             setQuantityOperation("+");
-                                                            handelAddItemQuantity(_id, quantity)
+                                                            handelAddItemQuantity(_id, quantity);
                                                         }} className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                             <Plus className="h-4 w-4" />
                                                         </button>
@@ -168,12 +168,19 @@ const Cart = () => {
                             }
                         )}
                 </div>
-                <div className="w-full p-5 border rounded my-3 uppercase dark:border-neutral-700">
-                    <h1 className="font-semibold">
+                <div className="w-full p-5 border rounded my-3  dark:border-neutral-700">
+                    <h1 className="font-semibold uppercase">
                         Cart Summary :
                     </h1>
 
-                    <div></div>
+                    <div className="pt-5 flex items-center justify-between">
+                        <h1>Subtotal</h1>
+                        <h1>₹ {0}</h1>
+                    </div>
+                    <div className="py-2 flex items-center justify-between">
+                        <h1>Shipping</h1>
+                        <h1>₹0.0</h1>
+                    </div>
                 </div>
             </div>
         </section >
