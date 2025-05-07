@@ -36,23 +36,11 @@ const cartSchema = new Schema(
                     type: String,
                 }
             }
-        ],
-        cartSubTotal: {
-            type: Number,
-            default: 0,
-            required: true
-        }
+        ]
     },
     {
         timestamps: true
     }
 )
-
-cartSchema.pre('save', async function (next) {
-    this.cartSubTotal = await this.cartItems.reduce((total, item) => {
-        return (total + ((item.price - item.discount) * item.quantity));
-    }, 0);
-    next();
-});
 
 export const Cart = mongoose.models.Cart || mongoose.model('Cart', cartSchema)
