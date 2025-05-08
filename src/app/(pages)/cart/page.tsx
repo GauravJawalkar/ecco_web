@@ -26,6 +26,7 @@ const Cart = () => {
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
     const router = useRouter();
+    const [loading, setLoading] = useState(false);
 
     async function getCartItems() {
         try {
@@ -101,6 +102,60 @@ const Cart = () => {
     const handelAddItemQuantity = (_id: string, quantity: number) => {
         addQuantityMutation.mutate({ _id, quantity });
     }
+
+    const handlePayment = async () => {
+        setLoading(true);
+
+        try {
+            console.log("cart Total is : ", cartTotal)
+            // Create Razorpay order
+            const { data: order } = await axios.post('/api/razorpay/order', {
+                amount: cartTotal,
+                receipt: 'receipt_001',
+            });
+
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                amount: order.amount,
+                currency: order.currency,
+                name: 'Your Store',
+                description: 'Test Transaction',
+                order_id: order.id,
+                handler: async function (response: any) {
+                    // Verify payment signature
+                    const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature,
+                    });
+
+                    if (verifyData.success) {
+                        toast.success('✅ Payment successful and verified!');
+                    } else {
+                        toast.error('❌ Payment verification failed.');
+                    }
+                },
+                theme: {
+                    color: '#3399cc',
+                },
+            };
+
+            const razor = new (window as any).Razorpay(options);
+            razor.open();
+        } catch (err) {
+            console.error('Error in Razorpay flow:', err);
+            toast.error('Payment failed to initiate.');
+        }
+
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        document.body.appendChild(script);
+    }, []);
 
     useEffect(() => {
         if (userCart?.cartItems?.length > 0) {
@@ -181,7 +236,7 @@ const Cart = () => {
                 </div>
                 <div className="w-full p-5 border rounded my-3  dark:border-neutral-700 h-fit sticky top-24">
                     <h1 className="font-semibold uppercase text-lg">
-                        Summary :
+                        CART Summary :
                     </h1>
 
                     <div className="pt-10 flex items-center justify-between">
@@ -200,7 +255,9 @@ const Cart = () => {
                         <h1>₹ {cartTotal}</h1>
                     </div>
                     <div className="py-4">
-                        <button className="w-full bg-gray-200 py-2 rounded dark:text-black">Check Out</button>
+                        <button type="button" onClick={handlePayment} className="w-full bg-green-500 py-2 rounded dark:text-black text-white">
+                            {loading ? 'Processing...' : 'Checkout'}
+                        </button>
                     </div>
                 </div>
             </div>
