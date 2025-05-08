@@ -7,10 +7,7 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, sellerName, discount } = reqBody;
-
-        console.log("sellerName is ", sellerName)
-        console.log("discount is ", discount)
+        const { cartOwner, name, price, image, sellerName, discount } = reqBody
 
         const quantity = 1;
 
