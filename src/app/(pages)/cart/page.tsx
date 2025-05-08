@@ -5,7 +5,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -25,7 +24,6 @@ const Cart = () => {
     const queryClient = useQueryClient();
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     async function getCartItems() {
@@ -107,7 +105,6 @@ const Cart = () => {
         setLoading(true);
 
         try {
-            console.log("cart Total is : ", cartTotal)
             // Create Razorpay order
             const { data: order } = await axios.post('/api/razorpay/order', {
                 amount: cartTotal,
