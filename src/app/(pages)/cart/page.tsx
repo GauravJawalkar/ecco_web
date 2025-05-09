@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/Loaders/Loader";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -253,7 +254,7 @@ const Cart = () => {
                     </div>
                     <div className="py-4">
                         <button type="button" onClick={handlePayment} className="w-full bg-green-500 py-2 rounded dark:text-black text-white">
-                            {loading ? 'Processing...' : 'Checkout'}
+                            {loading ? <Loader title="Processing..." /> : 'Checkout'}
                         </button>
                     </div>
                 </div>
