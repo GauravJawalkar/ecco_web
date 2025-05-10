@@ -18,14 +18,12 @@ const Dashboard = () => {
             <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 ">🏪 {data?.name}'s Store</h1>
 
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
-            {data._id ? (
+            {data._id && (
                 <DashBoardStats
                     sellerId={data._id}
                     isAdmin={data?.isSuperAdmin}
                     load={showProductModal}
                 />
-            ) : (
-                ""
             )}
             <div className="flex items-center border p-3 rounded justify-start gap-3 dark:text-neutral-800">
                 {/* My Products List */}
@@ -66,13 +64,13 @@ const Dashboard = () => {
 
 
                 {/* specialShow button */}
-                {data?.isSuperAdmin ? <div>
+                {data?.isSuperAdmin && <div>
                     <button className="bg-gray-50 px-4 py-2 rounded border">
                         <Link href={"/dashboard/specialShow"} >
                             Special Appearence
                         </Link>
                     </button>
-                </div> : ""}
+                </div>}
 
             </div>
             <AddProductModal
@@ -82,22 +80,13 @@ const Dashboard = () => {
                 }}
             />
             {
-                data._id ? (
-                    <CustomCategoryModal
-                        isVisible={showCustomCategoryModal}
-                        onClose={() => setShowCustomCategoryModal(false)}
-                        creator={data?._id}
-                    />
-                ) : (
-                    ""
-                )
+                data._id && <CustomCategoryModal
+                    isVisible={showCustomCategoryModal}
+                    onClose={() => setShowCustomCategoryModal(false)}
+                    creator={data?._id} />
             }
             {
-                data._id ? (
-                    <MyProducts load={showProductModal} sellerId={data?._id} />
-                ) : (
-                    ""
-                )
+                data._id && <MyProducts load={showProductModal} sellerId={data?._id} />
             }
         </div >
     );

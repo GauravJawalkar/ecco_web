@@ -21,13 +21,12 @@ interface reqSpecialAppearenceProps {
     seller: string;
 }
 
-const MyProducts = ({
-    sellerId,
-    load,
-}: {
+interface MyProductsProps {
     sellerId: string;
     load: boolean;
-}) => {
+}
+
+const MyProducts = ({ sellerId, load }: MyProductsProps) => {
     const [prodData, setProdData] = useState([]);
     const [editModal, setEditModal] = useState(false);
     const [oldName, setOldName] = useState("");
@@ -218,7 +217,7 @@ const MyProducts = ({
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-3 p-2 border gap-2 place-items-center my-3 dark:border-neutral-500">
+                                        <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-500">
                                             <div className="font-light ">
                                                 <label className="font-semibold"> MRP </label>
                                                 <h1>₹ {price}</h1>
