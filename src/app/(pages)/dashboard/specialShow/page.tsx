@@ -154,11 +154,11 @@ const SpecialShowCase = () => {
                                         (
                                             <button
                                                 onClick={() => handelSplReq(_id)}
-                                                className=' py-1 px-4 rounded text-white bg-green-500 hover:bg-green-600'>Set</button>
+                                                className=' py-1 px-4 rounded text-white bg-green-500 hover:bg-green-600 text-sm'>Set</button>
                                         ) : (
                                             <button
                                                 onClick={() => handelUnsetSplReq(_id)}
-                                                className=' py-1 px-4 rounded text-white bg-red-500 hover:bg-red-600'>Unset</button>
+                                                className=' py-1 px-4 rounded text-white bg-red-500 hover:bg-red-600 text-sm'>Unset</button>
                                         )
                                 }
                             </div>
