@@ -40,13 +40,13 @@ const ProductShowCase = () => {
   const slugify = (prodName: string) => prodName.toLowerCase().replace(/\s+/g, '-');
 
   return (
-    <div className="my-10">
+    <div>
 
-      <div className="flex items-center justify-center py-10">
+      <div className="flex items-center justify-center pb-10">
         <h1 className="text-3xl font-bold"> Today's Special Appearence</h1>
       </div>
       <div className="grid grid-cols-2 gap-10">
-        <div className="h-auto border p-5 dark:border-neutral-500">
+        <div className="h-auto border p-5 dark:border-neutral-700 dark:bg-neutral-950">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -57,21 +57,21 @@ const ProductShowCase = () => {
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-500">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-600">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
                       height={200} width={200}
                       className="w-full h-64 object-cover" />
                     <h1 className="capitalize font-semibold text-lg py-2 line-clamp-1">{prodName}</h1>
-                    <h1 className="capitalize text-base text-gray-500">Seller : {sellerName}</h1>
+                    <h1 className="capitalize text-base text-gray-400">Seller : {sellerName}</h1>
                   </Link>
                 )
               })
             }
           </div>
         </div>
-        <div className="h-auto border p-5 dark:border-neutral-500">
+        <div className="h-auto border p-5 dark:border-neutral-700 dark:bg-neutral-950">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -82,14 +82,14 @@ const ProductShowCase = () => {
             {
               lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-500">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border p-4 dark:border-neutral-600">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
                       height={200} width={200}
                       className="w-full h-64 object-cover" />
                     <h1 className="capitalize font-semibold text-lg py-2 line-clamp-1">{prodName}</h1>
-                    <h1 className="capitalize text-base text-gray-500">Seller : {sellerName}</h1>
+                    <h1 className="capitalize text-base text-gray-400">Seller : {sellerName}</h1>
                   </Link>
                 )
               })

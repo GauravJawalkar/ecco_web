@@ -53,7 +53,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
               data?.map(({ _id, name, price, images }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2" key={_id}>
-                    <Link href={`/products/${slugify(name)}?id=${_id}`} className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit cursor-pointer">
+                    <Link href={`/products/${slugify(name)}?id=${_id}`} className=" border dark:border-neutral-700 content-center flex items-center justify-center flex-col w-fit cursor-pointer dark:bg-neutral-950">
                       <Image
                         src={images[0]}
                         alt="prodImage"
@@ -61,7 +61,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                         height={"180"}
                         className="bg-white object-cover h-52 w-auto border-b"
                       />
-                      <div className="text-center py-1 mx-2">
+                      <div className="text-center py-4 mx-2">
                         <p title={name} className="font-normal capitalize text-md line-clamp-1">
                           {name}
                         </p>
@@ -92,7 +92,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                 </div>
               </div>
             </SwiperSlide>
-            
+
           </Swiper>
 
           {rank % 2 ? (
