@@ -232,7 +232,7 @@ const Cart = () => {
                             }
                         )}
                 </div>
-                <div className="w-full p-5 border rounded my-3  dark:border-neutral-700 h-fit sticky top-24">
+                <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded my-3  dark:border-neutral-700 h-fit sticky top-24"}`}>
                     <h1 className="font-semibold uppercase text-lg">
                         CART Summary :
                     </h1>
