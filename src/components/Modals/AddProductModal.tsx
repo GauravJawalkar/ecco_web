@@ -9,7 +9,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
     const queryClient = useQueryClient();
-
     const { data }: any = useUserStore();
     const [loading, setLoading] = useState(false);
     const [imgArray, setImgArray] = useState([]);
@@ -111,7 +110,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     return (
         <>
-            <section className='inset-0 absolute flex items-center justify-center backdrop-blur-md z-10 h-screen'>
+            <section className='inset-0 absolute top-20 flex items-center justify-center backdrop-blur-md z-10 h-screen'>
                 <div className='w-[500px] flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
                     <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
                         <div className='text-end'>

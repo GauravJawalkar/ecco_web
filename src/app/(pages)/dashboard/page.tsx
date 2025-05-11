@@ -6,16 +6,18 @@ import MyProducts from "@/components/Dashboard/MyProducts";
 import { useUserStore } from "@/store/UserStore";
 import Link from "next/link";
 import { useState } from "react";
+import { LayoutGrid, LayoutList } from "lucide-react";
 
 const Dashboard = () => {
     const { data }: any = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
     const [showCustomCategoryModal, setShowCustomCategoryModal] = useState(false);
+    const [listView, setListView] = useState("list");
 
     return (
         <div>
 
-            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 ">🏪 {data?.name}'s Store</h1>
+            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 dark:text-black">🏪 {data?.name}'s Store</h1>
 
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
             {data._id && (
@@ -25,11 +27,11 @@ const Dashboard = () => {
                     load={showProductModal}
                 />
             )}
-            <div className="flex items-center border p-3 rounded justify-start gap-3 dark:text-neutral-800">
+            <div className="flex items-center border dark:border-neutral-700 p-3 rounded justify-start gap-3 dark:text-white">
                 {/* My Products List */}
                 <div>
                     <button
-                        className="bg-gray-50 px-4 py-2 rounded border"
+                        className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
                         onClick={() => {
                             setShowProductModal(true);
                         }}
@@ -40,14 +42,14 @@ const Dashboard = () => {
 
                 {/* Add A Product */}
                 <div>
-                    <button className="bg-gray-50 px-4 py-2 rounded border">
+                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
                         Orders Processing
                     </button>
                 </div>
 
                 {/* Orders Completed */}
                 <div>
-                    <button className="bg-gray-50 px-4 py-2 rounded border">
+                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
                         Orders Completed
                     </button>
                 </div>
@@ -55,7 +57,7 @@ const Dashboard = () => {
                 {/* Custom Category */}
                 <div>
                     <button
-                        className="bg-gray-50 px-4 py-2 rounded border"
+                        className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
                         onClick={() => setShowCustomCategoryModal(true)}
                     >
                         Add Category
@@ -65,7 +67,7 @@ const Dashboard = () => {
 
                 {/* specialShow button */}
                 {data?.isSuperAdmin && <div>
-                    <button className="bg-gray-50 px-4 py-2 rounded border">
+                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
                         <Link href={"/dashboard/specialShow"} >
                             Special Appearence
                         </Link>
@@ -73,12 +75,20 @@ const Dashboard = () => {
                 </div>}
 
             </div>
-            <AddProductModal
+            <div className=" flex items-center justify-end gap-3 pt-4">
+                <button onClick={() => { setListView("grid") }} className="p-2 border rounded dark:border-neutral-700">
+                    <LayoutGrid className="text-gray-600 dark:text-white h-5 w-5" />
+                </button>
+                <button onClick={() => { setListView("list") }} className="p-2 border rounded dark:border-neutral-700 ">
+                    <LayoutList className="text-gray-600 dark:text-white h-5 w-5" />
+                </button>
+            </div>
+            {data._id && <AddProductModal
                 isVisible={showProductModal}
                 onClose={() => {
                     setShowProductModal(false);
                 }}
-            />
+            />}
             {
                 data._id && <CustomCategoryModal
                     isVisible={showCustomCategoryModal}
@@ -86,7 +96,7 @@ const Dashboard = () => {
                     creator={data?._id} />
             }
             {
-                data._id && <MyProducts load={showProductModal} sellerId={data?._id} />
+                data._id && <MyProducts load={showProductModal} view={listView} sellerId={data?._id} />
             }
         </div >
     );
