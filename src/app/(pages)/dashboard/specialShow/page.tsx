@@ -75,11 +75,11 @@ const SpecialShowCase = () => {
     }, [])
 
     return (
-        <>
+        <section className='py-10'>
             <div className='flex items-center justify-center py-10'>
                 <h1 className='text-3xl font-semibold capitalize'>set Products for Special Appearence</h1>
             </div>
-            <div className='grid grid-cols-10 place-items-start w-full border px-4 py-2 '>
+            <div className='grid grid-cols-10 place-items-start w-full border dark:border-neutral-700 px-4 py-2'>
                 <div className='col-span-2 font-semibold'>Product Name</div>
                 <div className='col-span-2 font-semibold'>Images</div>
                 <div className='col-span-1 font-semibold'>Price</div>
@@ -94,7 +94,7 @@ const SpecialShowCase = () => {
             {data.length! >= 0 && data.map(({ _id, prodName, prodPrice, prodImages, prodDiscount, sellerAvatar, sellerName, isSellerVerified, setActive }: mapDataProps) => {
                 return (
                     <div key={_id} >
-                        <div className='grid grid-cols-10 gap-4 border px-4 py-2  '>
+                        <div className='grid grid-cols-10 gap-4 border dark:border-neutral-700 px-4 py-2  '>
 
                             <div className='col-span-2'>
                                 <h1 className='w-full line-clamp-1 capitalize'>{prodName}</h1>
@@ -167,7 +167,7 @@ const SpecialShowCase = () => {
                 )
             })
             }
-        </>
+        </section>
     )
 }
 
