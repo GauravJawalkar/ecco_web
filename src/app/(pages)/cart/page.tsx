@@ -182,7 +182,7 @@ const Cart = () => {
                         userCart?.cartItems?.map(
                             ({ name, price, image, quantity, discount, sellerName, _id }: cartMappingProps) => {
                                 return (
-                                    <div className="p-5 border rounded dark:border-neutral-700 gap-3 my-3 relative h-fit" key={name + price}>
+                                    <div className="p-5 border rounded-2xl dark:border-neutral-700 gap-3 my-3 relative h-fit" key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
                                                 <Image
@@ -190,7 +190,7 @@ const Cart = () => {
                                                     height={200}
                                                     src={image || "/userProfile.png"}
                                                     alt={"cartImage"}
-                                                    className="h-36 w-28 rounded border-2 object-cover"
+                                                    className="h-36 w-28 rounded-xl border-2 object-cover"
                                                 />
                                                 <div className="flex items-start justify-start flex-col">
                                                     <h1 className="capitalize text-xl font-semibold line-clamp-1" title={name}>{name}</h1>
@@ -225,14 +225,14 @@ const Cart = () => {
                                             </div>
                                         </div>
                                         <div className="bg-white dark:bg-[#1a1a1a] rounded-full absolute -top-3 -right-2">
-                                            <h1 className="py-[2px] px-2 border text-green-500 border-green-500">In Stock</h1>
+                                            <h1 className="py-[2px] px-2 border rounded-lg text-green-500 border-green-500">In Stock</h1>
                                         </div>
                                     </div>
                                 );
                             }
                         )}
                 </div>
-                <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded my-3  dark:border-neutral-700 h-fit sticky top-24"}`}>
+                <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded-2xl my-3  dark:border-neutral-700 h-fit sticky top-24"}`}>
                     <h1 className="font-semibold uppercase text-lg">
                         CART Summary :
                     </h1>
@@ -253,7 +253,7 @@ const Cart = () => {
                         <h1>₹ {cartTotal}</h1>
                     </div>
                     <div className="py-4">
-                        <button type="button" onClick={handlePayment} className="w-full bg-green-500 py-2 rounded dark:text-black text-white">
+                        <button type="button" onClick={handlePayment} className="w-full bg-green-500 py-2 rounded-full dark:text-black text-white">
                             {loading ? <Loader title="Processing..." /> : 'Checkout'}
                         </button>
                     </div>
