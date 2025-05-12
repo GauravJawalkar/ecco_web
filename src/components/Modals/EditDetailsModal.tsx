@@ -64,7 +64,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
 
     return (
-        <section className='inset-0 fixed bg-opacity-5 opacity-1 h-screen flex items-center justify-center z-10 backdrop-blur'>
+        <section className='inset-4 fixed h-screen flex items-center justify-center z-10 backdrop-blur '>
             <div className='w-[500px] flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 '>
                 <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
                     <div className='text-end'>

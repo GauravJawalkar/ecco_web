@@ -58,8 +58,7 @@ const Dashboard = () => {
                 <div>
                     <button
                         className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
-                        onClick={() => setShowCustomCategoryModal(true)}
-                    >
+                        onClick={() => setShowCustomCategoryModal(true)}>
                         Add Category
                     </button>
                 </div>
@@ -89,12 +88,10 @@ const Dashboard = () => {
                     setShowProductModal(false);
                 }}
             />}
-            {
-                data._id && <CustomCategoryModal
-                    isVisible={showCustomCategoryModal}
-                    onClose={() => setShowCustomCategoryModal(false)}
-                    creator={data?._id} />
-            }
+            {data._id && <CustomCategoryModal
+                isVisible={showCustomCategoryModal}
+                onClose={() => setShowCustomCategoryModal(false)}
+                creator={data?._id} />}
             {
                 data._id && <MyProducts load={showProductModal} view={listView} sellerId={data?._id} />
             }

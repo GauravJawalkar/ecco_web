@@ -34,28 +34,28 @@ const HomeHero = () => {
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper">
-                <SwiperSlide className='h-'>
+                <SwiperSlide>
                     <div>
                         <Image src={SliderOneImage}
                             height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover" alt={'SliderOneImage'} />
+                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
-                <SwiperSlide className='h-'>
+                <SwiperSlide>
                     <div>
                         <Image src={SliderTwoImage}
                             height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover" alt={'SliderOneImage'} />
+                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
-                <SwiperSlide className='h-'>
+                <SwiperSlide>
                     <div>
                         <Image src={SliderThreeImage}
                             height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover" alt={'SliderOneImage'} />
+                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
             </Swiper>

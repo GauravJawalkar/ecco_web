@@ -52,14 +52,17 @@ export default function Home() {
   return (
     <div className="h-full">
       <HomeHero />
-      <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
-      <br />
-      <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
-      <br />
-      <br />
-      <ProductShowCase />
-      <br />
-      <br />
+      <div className="py-10">
+
+        <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
+      </div>
+      <div className="py-20">
+        <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
+      </div>
+      <div className="py-20">
+        <ProductShowCase />
+      </div>
+
       <RecommendedProducts />
     </div>
   );

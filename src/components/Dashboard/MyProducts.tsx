@@ -112,10 +112,10 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                             &&
                             <div className="grid grid-cols-4 py-4 gap-10">
                                 {prodData.map(
-                                    ({ _id, name, description, images, price, discount, size, seller, }: any) => {
+                                    ({ _id, name, description, images, price, discount, size, seller }: any) => {
                                         return (
                                             <div key={_id} className="border p-5 dark:border-neutral-600 dark:bg-neutral-800">
-                                                <div className="">
+                                                <div>
                                                     <Swiper
                                                         modules={[EffectFade, Pagination]}
                                                         pagination={{ clickable: true }}
@@ -221,8 +221,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                 setOldDiscount(discount);
                                                                 setOldSize(size);
                                                                 setCurrentId(_id);
-                                                            }}
-                                                        >
+                                                            }}>
                                                             Edit
                                                             <span>
                                                                 <PenLine className="h-4 w-4" />
@@ -232,8 +231,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                             className="px-3 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2"
                                                             onClick={() => {
                                                                 handelDelete(_id);
-                                                            }}
-                                                        >
+                                                            }}>
                                                             Delete
                                                             <span>
                                                                 <Trash className="h-4 w-4" />
@@ -260,15 +258,14 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                         );
                                     }
                                 )}
-                            </div >
-                        }
+                            </div >}
 
                         {/* List View Table Format */}
                         {
                             view === "list" &&
                             <div className="py-4">
                                 <table className="min-w-full table-auto border border-gray-300 rounded-xl">
-                                    <thead >
+                                    <thead>
                                         <tr>
                                             <th className="px-4 py-2 border dark:border-neutral-700 text-start">Name</th>
                                             <th className="px-4 py-2 border dark:border-neutral-700 text-start">Description</th>
