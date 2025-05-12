@@ -190,7 +190,7 @@ const Cart = () => {
                                                     height={200}
                                                     src={image || "/userProfile.png"}
                                                     alt={"cartImage"}
-                                                    className="h-auto w-28 rounded border-2 object-cover"
+                                                    className="h-36 w-28 rounded border-2 object-cover"
                                                 />
                                                 <div className="flex items-start justify-start flex-col">
                                                     <h1 className="capitalize text-xl font-semibold line-clamp-1" title={name}>{name}</h1>

@@ -46,7 +46,6 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
             }}
           >
 
-
             {
               data?.map(({ _id, name, price, images }: holderProps) => {
                 return (
@@ -69,7 +68,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                           {name}
                         </h1>
                         <div className="flex items-center justify-between pt-2">
-                          <button className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
+                          <button type="button" className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
                           <h1 className="font-semibold text-lg uppercase ">
                             ₹ {price}
                           </h1>
