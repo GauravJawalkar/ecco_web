@@ -166,7 +166,7 @@ const Cart = () => {
         }
     }, [userCart]);
     return (
-        <section className="h-auto">
+        <section>
             {userCart?.cartItems?.length > 0 ? (
                 <div className="text-2xl font-semibold text-center uppercase py-10">
                     My Shopping Cart
@@ -190,7 +190,7 @@ const Cart = () => {
                                                     height={200}
                                                     src={image || "/userProfile.png"}
                                                     alt={"cartImage"}
-                                                    className="h-36 w-28 rounded-xl border-2 object-cover"
+                                                    className="h-36 w-28 rounded-xl border-2 object-cover dark:border-neutral-700"
                                                 />
                                                 <div className="flex items-start justify-start flex-col">
                                                     <h1 className="capitalize text-xl font-semibold line-clamp-1" title={name}>{name}</h1>
@@ -246,7 +246,7 @@ const Cart = () => {
                         <h1>₹ 0.0</h1>
                     </div>
                     <br />
-                    <hr />
+                    <hr className="dark:border-neutral-700" />
                     <br />
                     <div className="py-2 flex items-center justify-between font-semibold uppercase">
                         <h1>Total</h1>

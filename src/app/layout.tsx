@@ -23,7 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased `}>
         <Provider>
-          <div className="bg-white text-[#1a1a1a] dark:bg-[#1a1a1a] dark:text-[#ededed]">
+          <div className="bg-white text-[#1a1a1a] dark:bg-[#1a1a1a] dark:text-[#ededed] min-h-screen">
             <div className="max-w-[85rem] mx-auto ">
               <Navbar />
               {children}
