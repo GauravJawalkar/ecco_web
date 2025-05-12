@@ -114,7 +114,8 @@ const Product = () => {
                                             alt='product_image'
                                             src={image}
                                             height={200}
-                                            width={200} className='h-auto w-auto mb-5 rounded border dark:border-neutral-500 object-contain cursor-pointer' />
+                                            width={200}
+                                            className='h-auto w-auto mb-5 rounded border dark:border-neutral-500 object-contain cursor-pointer' />
                                     </div>
                                 )
                             })
@@ -129,8 +130,8 @@ const Product = () => {
                             <Image
                                 src={product?.images?.[mainImage] || "/userProfile.png"}
                                 alt='product_image'
-                                height={200}
-                                width={200}
+                                height={2000}
+                                width={2000}
                                 className='w-full h-auto rounded border dark:border-neutral-500 hover:cursor-grab hover:scale-150 transition-all ease-linear duration-200 ' />}
                     </div>
                 </div>

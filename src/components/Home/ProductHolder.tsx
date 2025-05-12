@@ -15,7 +15,7 @@ interface holderProps {
   _id: string,
   name: string,
   price: number,
-  images: [string],
+  images: ["", "", ""],
 }
 
 const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loading: boolean }) => {
@@ -54,11 +54,11 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                     <Link href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                       <div className="w-full py-3">
                         <Image
-                          src={images[0]}
+                          src={images?.[2] || ""}
                           alt="prodImage"
                           width={"180"}
                           height={"180"}
-                          className="bg-white object-cover h-64 w-full border-b" />
+                          className="object-contain h-64 w-full" />
                       </div>
                       <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
                         <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
@@ -69,7 +69,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                           {name}
                         </h1>
                         <div className="flex items-center justify-between pt-2">
-                          <button className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
+                          <button className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 hover:bg-neutral-800"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
                           <h1 className="font-semibold text-lg uppercase ">
                             ₹ {price}
                           </h1>
@@ -81,14 +81,14 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
               })
             }
 
-            <SwiperSlide className="px-2" key={Math.floor(Math.random() * 1000)}>
+            {/* <SwiperSlide className="px-2 " key={Math.floor(Math.random() * 1000)}>
               <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
                 <Image
                   src={'/happy.svg'}
                   alt="prodImage"
                   width={"180"}
                   height={"180"}
-                  className="bg-white object-cover h-52 w-auto border-b animate-pulse"
+                  className="bg-white object-cover h-full w-full border-b animate-pulse"
                 />
                 <div className="text-center py-1">
 
@@ -97,7 +97,7 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                   </h1>
                 </div>
               </div>
-            </SwiperSlide>
+            </SwiperSlide> */}
 
           </Swiper>
 
