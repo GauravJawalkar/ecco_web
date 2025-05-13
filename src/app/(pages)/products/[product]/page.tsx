@@ -17,7 +17,7 @@ const Product = () => {
     const [mainImage, setMainImage] = useState(0)
     const { data }: any = useUserStore();
     const queryClient = useQueryClient();
-    const cartOwnerId = data?._id
+    const cartOwnerId = data?._id;
 
     async function getSpecificProduct(id: string) {
         try {

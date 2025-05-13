@@ -54,10 +54,10 @@ export default function Home() {
       <HomeHero />
       <div className="py-10">
 
-        <ProductHolder rank={1} data={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
+        <ProductHolder rank={1} prodData={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
       </div>
       <div className="py-20">
-        <ProductHolder rank={2} data={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
+        <ProductHolder rank={2} prodData={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
       </div>
       <div className="py-20">
         <ProductShowCase />

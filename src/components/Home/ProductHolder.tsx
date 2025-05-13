@@ -6,9 +6,13 @@ import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, ShoppingCart, Star } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Loader from "../Loaders/Loader";
 import Link from "next/link";
+import { useUserStore } from "@/store/UserStore";
+import axios from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 
 interface holderProps {
@@ -16,12 +20,72 @@ interface holderProps {
   name: string,
   price: number,
   images: ["", "", ""],
+  discount: number,
+  seller: string
 }
 
-const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loading: boolean }) => {
+const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: any, loading: boolean }) => {
   const swiperRef: any = useRef(null);
-
   const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+  const { data }: any = useUserStore();
+  const cartOwnerId = data?._id;
+  const queryClient = useQueryClient();
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [image, setImage] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [sellerId, setSellerId] = useState("");
+  const [vikreta, setVikreta] = useState("");
+
+  async function addToCart() {
+    try {
+      const cartOwner = data?._id;
+      const sellerName = vikreta;
+      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount });
+      if (response.data.data) {
+        return response.data.data;
+      }
+      return [];
+    } catch (error) {
+      console.error("Error Adding the product to cart ", error);
+      toast.error("Error Adding the product to cart ");
+    }
+  }
+
+  async function getSellerDetails(id: string) {
+    try {
+      const response = await axios.get(`../api/getSelletDetails/${id}`);
+      if (response.data.data) {
+        return response.data.data
+      }
+      return [];
+    } catch (error) {
+      console.log(`Error getting the user details : `, error)
+      return [];
+    }
+  }
+
+  const { data: sellerDet = [] } = useQuery(
+    {
+      queryFn: () => getSellerDetails(sellerId),
+      queryKey: ['seller', sellerId],
+      enabled: !!sellerId,
+      refetchOnWindowFocus: false
+    }
+  )
+
+  const addToCartMutation = useMutation({
+    mutationFn: async () => await addToCart(),
+    onSuccess: () => {
+      toast.success("Item Added To Cart");
+      queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
+    },
+  });
+
+  const handelCart = async () => {
+    addToCartMutation.mutate();
+  }
+
   return (
     <div className="my-10">
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"
@@ -47,10 +111,10 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
           >
 
             {
-              data?.map(({ _id, name, price, images }: holderProps) => {
+              prodData?.map(({ _id, name, price, images, discount, seller }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2 w-full " key={_id}>
-                    <Link href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
+                    <Link onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                       <div className="w-full py-3">
                         <Image
                           src={images?.[2] || ""}
@@ -68,7 +132,16 @@ const ProductHolder = ({ rank, data, loading }: { rank: number, data: any, loadi
                           {name}
                         </h1>
                         <div className="flex items-center justify-between pt-2">
-                          <button type="button" className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
+                          <button type="button" onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            setName(name);
+                            setImage(images?.[0]);
+                            setPrice(price);
+                            setDiscount(discount);
+                            setVikreta(sellerDet?.name);
+                            handelCart();
+                          }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
                           <h1 className="font-semibold text-lg uppercase ">
                             ₹ {price}
                           </h1>
