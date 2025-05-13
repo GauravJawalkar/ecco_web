@@ -1,5 +1,6 @@
 "use client"
 
+import HomeFilter from "@/components/Filters/HomeFilter";
 import HomeHero from "@/components/Home/HomeHero";
 import ProductHolder from "@/components/Home/ProductHolder";
 import ProductShowCase from "@/components/Home/ProductShowCase";
@@ -50,10 +51,12 @@ export default function Home() {
 
 
   return (
-    <div className="h-full">
+    <div>
       <HomeHero />
+      <div className="pt-10">
+        <HomeFilter />
+      </div>
       <div className="py-10">
-
         <ProductHolder rank={1} prodData={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
       </div>
       <div className="py-20">

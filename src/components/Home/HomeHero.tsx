@@ -20,12 +20,12 @@ const HomeHero = () => {
 
     return (
         // Full Screen Slider
-        <div className='h-auto'>
+        <div className='pt-4'>
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
                 autoplay={{
-                    delay: 2500,
+                    delay: 3500,
                     disableOnInteraction: false,
                 }}
                 pagination={{
@@ -33,29 +33,26 @@ const HomeHero = () => {
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper">
+                className="mySwiper h-fit">
                 <SwiperSlide>
-                    <div>
+                    <div >
                         <Image src={SliderOneImage}
-                            height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
+                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div>
+                    <div className='w-full overflow-hidden'>
                         <Image src={SliderTwoImage}
-                            height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
+                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div>
                         <Image src={SliderThreeImage}
-                            height={2000} width={2000}
                             priority
-                            className="w-full h-64 object-cover rounded-2xl" alt={'SliderOneImage'} />
+                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
             </Swiper>

@@ -121,8 +121,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         pagination={{ clickable: true }}
                                                         spaceBetween={50}
                                                         effect="card"
-                                                        className="border rounded dark:border-neutral-700"
-                                                    >
+                                                        className="border rounded dark:border-neutral-700">
                                                         {images.map(
                                                             (elem: string, index: Key | null | undefined) => {
                                                                 return (
@@ -133,24 +132,19 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                             alt="image prod"
                                                                             width={300}
                                                                             height={200}
-                                                                            className="h-[300px] w-full object-fill rounded"
-                                                                        />
-                                                                    </SwiperSlide>
-                                                                );
-                                                            }
-                                                        )}
+                                                                            className="h-[300px] w-full object-contain rounded" />
+                                                                    </SwiperSlide>);
+                                                            })}
                                                     </Swiper>
                                                     <div>
                                                         <h1 className="capitalize text-xl font-bold antialiased truncate p-2 border dark:border-neutral-700 my-3">
                                                             {name}
                                                         </h1>
-                                                        <p
-                                                            className={`text-base text-gray-500 
+                                                        <p className={`text-base text-gray-500 
                                                         ${showMore === _id
-                                                                    ? "line-clamp-2"
-                                                                    : "hidden"
-                                                                }`}
-                                                        >
+                                                                ? "line-clamp-2"
+                                                                : "hidden"
+                                                            }`}>
                                                             {description}
                                                         </p>
                                                     </div>
@@ -277,15 +271,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {prodData.map(({
-                                            _id,
-                                            name,
-                                            description,
-                                            images,
-                                            price,
-                                            discount,
-                                            size,
-                                        }: any) => {
+                                        {prodData.map(({ _id, name, description, images, price, discount, size, }: any) => {
                                             return (
                                                 <tr key={_id}>
                                                     <td className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
@@ -295,8 +281,8 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                             < Image src={images[0]} alt="product-image" height={40} width={40} className="flex" />
                                                             < Image src={images[1]} alt="product-image" height={40} width={40} className="flex" />
                                                             < Image src={images[2]} alt="product-image" height={40} width={40} className="flex" />
-                                                        </div>
-                                                    }</td>
+                                                        </div>}
+                                                    </td>
                                                     <td className="px-4 py-2 border dark:border-neutral-700 text-center">{price}</td>
                                                     <td className="px-4 py-2 border dark:border-neutral-700 text-center">{discount}</td>
                                                     <td className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{price - discount}</td>
@@ -344,8 +330,6 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                     </>
                 )
             }
-
-
         </>
     );
 };
