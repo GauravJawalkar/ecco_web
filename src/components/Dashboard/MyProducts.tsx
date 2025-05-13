@@ -121,7 +121,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         pagination={{ clickable: true }}
                                                         spaceBetween={50}
                                                         effect="card"
-                                                        className="border rounded dark:border-neutral-800"
+                                                        className="border rounded dark:border-neutral-700"
                                                     >
                                                         {images.map(
                                                             (elem: string, index: Key | null | undefined) => {
@@ -141,7 +141,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         )}
                                                     </Swiper>
                                                     <div>
-                                                        <h1 className="capitalize text-xl font-bold antialiased truncate p-2 border dark:border-neutral-500 my-3">
+                                                        <h1 className="capitalize text-xl font-bold antialiased truncate p-2 border dark:border-neutral-700 my-3">
                                                             {name}
                                                         </h1>
                                                         <p
@@ -194,7 +194,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-500">
+                                                    <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-700">
                                                         <div className="font-light ">
                                                             <label className="font-semibold"> MRP </label>
                                                             <h1>₹ {price}</h1>

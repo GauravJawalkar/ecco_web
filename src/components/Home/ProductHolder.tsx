@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
-import { ChevronLeft, ChevronRight, ShoppingCart, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, ShoppingCart, Star } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
 import { useRef, useState } from "react";
@@ -141,7 +141,10 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                             setDiscount(discount);
                             setVikreta(sellerDet?.name);
                             handelCart();
-                          }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100"><ShoppingCart className="h-5 w-5" /> Add To Cart</button>
+                          }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                            <ShoppingCart className="h-5 w-5" />
+                            <span>Add To Cart</span>
+                          </button>
                           <h1 className="font-semibold text-lg uppercase ">
                             ₹ {price}
                           </h1>
