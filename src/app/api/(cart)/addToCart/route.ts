@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, sellerName, discount } = reqBody;
+        const { cartOwner, name, price, image, sellerName, discount, stock } = reqBody;
 
         console.log("reqBody is : ", reqBody);
 
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         if (!existingCart) {
             const newCart = await Cart.create({
                 cartOwner,
-                cartItems: [{ name, price, image, quantity, sellerName, discount }],
+                cartItems: [{ name, price, image, quantity, sellerName, discount, stock: stock }],
             });
             await newCart.save();
 
@@ -47,10 +47,12 @@ export async function POST(request: NextRequest) {
             existingCart.cartItems[existingItemIndex].quantity += quantity;
         } else {
             // Add new item
-            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName });
+            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName, stock: stock });
         }
 
         const updatedCart = await existingCart.save();
+
+        console.log(updatedCart);
 
         return NextResponse.json(
             { data: updatedCart },

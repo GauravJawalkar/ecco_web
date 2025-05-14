@@ -15,6 +15,7 @@ interface cartMappingProps {
     price: number;
     image: string;
     quantity: number;
+    stock: number;
     discount: number;
     sellerName: string;
 }
@@ -148,6 +149,7 @@ const Cart = () => {
         setLoading(false);
     };
 
+    // RazorPay UseEffect for their payment UI portal and Scripts
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://checkout.razorpay.com/v1/checkout.js';
@@ -155,6 +157,8 @@ const Cart = () => {
         document.body.appendChild(script);
     }, []);
 
+
+    // useEffect to calculate the total cart checkout
     useEffect(() => {
         if (userCart?.cartItems?.length > 0) {
             const subtotal = userCart.cartItems.reduce((total: number, item: cartMappingProps) => {
@@ -180,7 +184,7 @@ const Cart = () => {
                 <div className="grid grid-cols-2 gap-3">
                     {userCart?.cartItems?.length > 0 &&
                         userCart?.cartItems?.map(
-                            ({ name, price, image, quantity, discount, sellerName, _id }: cartMappingProps) => {
+                            ({ name, price, image, quantity, discount, sellerName, _id, stock }: cartMappingProps) => {
                                 return (
                                     <div className="p-5 border rounded-2xl dark:border-neutral-700 gap-3 my-3 relative h-fit" key={name + price}>
                                         <div>
@@ -225,7 +229,11 @@ const Cart = () => {
                                             </div>
                                         </div>
                                         <div className="bg-white dark:bg-[#1a1a1a] rounded-full absolute -top-3 -right-2">
-                                            <h1 className="py-[2px] px-2 border rounded-lg text-green-500 border-green-500">In Stock</h1>
+                                            {
+                                                stock >= 10 ? (<h1 className="py-[2px] px-2 border rounded-lg text-green-500 border-green-500 text-sm bg-green-100">In Stock</h1>) : (
+                                                    stock === 0 ? <h1 className="py-[2px] px-2 border rounded-lg text-red-500 border-red-500 text-sm bg-red-100">Out Of Stock</h1> :
+                                                        <h1 className="py-[2px] px-2 border rounded-lg text-amber-500 border-amber-500 text-sm bg-amber-100">Few Left</h1>)
+                                            }
                                         </div>
                                     </div>
                                 );

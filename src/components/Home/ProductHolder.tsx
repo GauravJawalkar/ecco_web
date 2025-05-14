@@ -21,7 +21,8 @@ interface holderProps {
   price: number,
   images: ["", "", ""],
   discount: number,
-  seller: string
+  seller: string,
+  stock: number
 }
 
 const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: any, loading: boolean }) => {
@@ -34,6 +35,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [stock, setStock] = useState(0);
   const [sellerId, setSellerId] = useState("");
   const [vikreta, setVikreta] = useState("");
 
@@ -41,7 +43,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     try {
       const cartOwner = data?._id;
       const sellerName = vikreta;
-      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount });
+      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
       if (response.data.data) {
         return response.data.data;
       }
@@ -111,7 +113,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
           >
 
             {
-              prodData?.map(({ _id, name, price, images, discount, seller }: holderProps) => {
+              prodData?.map(({ _id, name, price, images, discount, seller, stock }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2 w-full " key={_id}>
                     <Link onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
@@ -138,6 +140,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                             setName(name);
                             setImage(images?.[0]);
                             setPrice(price);
+                            setStock(stock);
                             setDiscount(discount);
                             setVikreta(sellerDet?.name);
                             handelCart();

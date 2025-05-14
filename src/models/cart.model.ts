@@ -32,6 +32,9 @@ const cartSchema = new Schema(
                     type: Number,
                     required: true,
                 },
+                stock: {
+                    type: Number,
+                },
                 sellerName: {
                     type: String,
                 }

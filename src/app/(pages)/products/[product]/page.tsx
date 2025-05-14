@@ -54,7 +54,8 @@ const Product = () => {
             const image = product?.images[0];
             const discount = product?.discount;
             const sellerName = seller?.name;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount });
+            const stock = product?.stock;
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
             if (response.data.data) {
                 return response.data.data;
             }
