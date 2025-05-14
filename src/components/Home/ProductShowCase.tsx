@@ -57,7 +57,7 @@ const ProductShowCase = () => {
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border dark:border-neutral-700  rounded-3xl">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border dark:border-neutral-700 rounded-3xl">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"

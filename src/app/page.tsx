@@ -21,7 +21,7 @@ export default function Home() {
       } else {
         toast.error("Failed to Fetch the Products")
       }
-      return []
+      return [];
     } catch (error) {
       console.log("Error fetching the products ", error)
       return []
