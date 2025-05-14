@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
         const primeImage = formData.get('primeImage');
         const secondaryImage = formData.get('secondImage');
         const size = formData.get('size');
+        const stock = formData.get('stock');
         const category = formData.get('category');
 
 
@@ -63,6 +64,7 @@ export async function POST(request: NextRequest) {
             discount,
             images: imageArray || ['No image urls'],
             size,
+            stock,
             category,
             seller: userId
         })

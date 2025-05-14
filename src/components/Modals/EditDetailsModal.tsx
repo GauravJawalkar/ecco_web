@@ -11,6 +11,7 @@ interface editDetailsProps {
     oldDescripion: string;
     oldPrice: string;
     oldDiscount: string;
+    oldStock: string;
     oldSize: string;
     isVisible: boolean;
     id: string;
@@ -18,20 +19,21 @@ interface editDetailsProps {
 }
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
-    oldPrice, oldDiscount, oldSize, id, reRender }: editDetailsProps) => {
+    oldPrice, oldDiscount, oldSize, oldStock, id, reRender }: editDetailsProps) => {
 
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [price, setPrice] = useState("")
-    const [discount, setDiscount] = useState("")
-    const [size, setSize] = useState("")
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [size, setSize] = useState("");
     const [loading, setLoading] = useState(false);
+    const [stock, setStock] = useState("");
 
     const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             setLoading(true)
-            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size });
+            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock });
             if (response.data.data) {
                 toast.success("Updated Successfully")
                 setLoading(false);
@@ -55,8 +57,9 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         setDescription(oldDescripion);
         setPrice(oldPrice);
         setDiscount(oldDiscount);
-        setSize(oldSize)
-    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id])
+        setSize(oldSize);
+        setStock(oldStock);
+    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock])
 
 
 
@@ -109,6 +112,16 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                             placeholder='Discount'
                             required
                             onChange={(e) => setDiscount(e.target.value)} />
+                    </div>
+                    <div className='w-full'>
+                        <label>Stock :</label>
+                        <input
+                            type="number"
+                            value={stock}
+                            className='text-black px-3 py-2 w-full rounded'
+                            placeholder='Discount'
+                            required
+                            onChange={(e) => setStock(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>Size :</label>

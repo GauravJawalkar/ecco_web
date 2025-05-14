@@ -18,6 +18,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
     const [size, setSize] = useState("");
+    const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
     const [primeImage, setPrimeImage] = useState("");
     const [secondImage, setSecondImage] = useState("");
@@ -53,6 +54,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
             formData.append('price', price);
             formData.append('discount', discount);
             formData.append('size', size);
+            formData.append('stock', stock);
+            formData.append('stock', stock);
             formData.append('category', category);
 
             const response = await axios.post('/api/addProduct', formData);
@@ -64,6 +67,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                 setPrice("");
                 setDiscount("");
                 setSize("");
+                setStock("");
                 setCategory("");
                 setImgArray([]);
                 setLoading(false);
@@ -97,57 +101,60 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                     setExCategories([]);
                 }
             } catch (error) {
-                console.log("Error fetching the categories : ", error)
+                console.log("Error fetching the categories : ", error);
+                return [];
             }
         }
 
         getCategories()
     }, [])
 
-
-
     if (!isVisible) return null;
 
     return (
         <>
-            <section className='inset-0 absolute top-20 flex items-center justify-center backdrop-blur-md z-10 h-screen'>
-                <div className='w-[500px] flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
-                    <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
-                        <div className='text-end'>
-                            <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
-                        </div>
+            <section className='inset-0 absolute top-20 flex items-center justify-center backdrop-blur-md z-10'>
+                <div className='w-1/2 flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md relative'>
+                    <div className='text-end absolute -top-3 -right-2'>
+                        <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
+                    </div>
+                    <form onSubmit={handelSubmit} className='grid grid-cols-2 gap-5 min-w-full'>
                         <div className='w-full'>
                             <label>Name :</label>
-                            <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Name' required onChange={(e) => setName(e.target.value)} />
+                            <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Name' required onChange={(e) => setName(e.target.value)} />
                         </div>
-                        <div className='w-full'>
-                            <label>Description :</label>
-                            <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Description' required onChange={(e) => setDescription(e.target.value)} />
-                        </div>
+
                         <div className='w-full'>
                             <label>Images :</label>
-                            <input type="file" className='text-black px-3 py-2 w-full rounded bg-white' placeholder='Images' required onChange={handelFileChanges}
+                            <input type="file" className='text-black file:px-3 file:py-2  file:border-0 file:bg-gray-300 file:text-white file:mr-2 w-full rounded bg-white file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={handelFileChanges}
                                 multiple />
                         </div>
                         <div className='w-full'>
+                            <label>Description :</label>
+                            <textarea rows={1} className='text-black px-3 py-2 w-full rounded' placeholder='Enter Description' required onChange={(e) => setDescription(e.target.value)} />
+                        </div>
+                        <div className='w-full'>
+                            <label>Stock :</label>
+                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Stock' required onChange={(e) => setStock(e.target.value)} />
+                        </div>
+                        <div className='w-full'>
                             <label>Price :</label>
-                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Price' required onChange={(e) => setPrice(e.target.value)} />
+                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Price' required onChange={(e) => setPrice(e.target.value)} />
                         </div>
                         <div className='w-full'>
                             <label>Discount :</label>
-                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Discount' required onChange={(e) => setDiscount(e.target.value)} />
+                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Discount' required onChange={(e) => setDiscount(e.target.value)} />
                         </div>
+
                         <div className='w-full'>
                             <label>Size :</label>
-                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Size' required onChange={(e) => setSize(e.target.value)} />
+                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Size' required onChange={(e) => setSize(e.target.value)} />
                         </div>
 
                         <div className='w-full'>
                             <label>Category :</label>
                             <select className='text-black px-3 py-2 w-full rounded' required onChange={(e) => setCategory(e.target.value)} >
-                                <option>Category</option>
-                                <option>Plants</option>
-                                <option>Plants One</option>
+                                <option>Select Category</option>
                                 {
                                     exCategories.length !== 0 && exCategories.map(({ categoryName, _id }: { categoryName: string, _id: string }) => {
                                         return (
@@ -157,14 +164,15 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                 }
                             </select>
                         </div>
-
-                        <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
-                            {
-                                loading ?
-                                    <Loader title='Adding ' /> :
-                                    "Add products"
-                            }
-                        </button>
+                        <div className='w-full'>
+                            <button type='submit' className='w-full py-2 bg-[#0a0a0a] text-[#ededed]  rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                                {
+                                    loading ?
+                                        <Loader title='Adding...' /> :
+                                        "Add product"
+                                }
+                            </button>
+                        </div>
                     </form>
                 </div >
             </section >

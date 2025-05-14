@@ -17,7 +17,7 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen">
 
-            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 dark:text-black">🏪 {data?.name}'s Store</h1>
+            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 dark:text-black">🏪 {data?.name}'<span className="lowercase">s</span> Store</h1>
 
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
             {data._id && (

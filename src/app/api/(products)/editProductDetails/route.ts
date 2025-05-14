@@ -8,7 +8,7 @@ export async function PUT(request: NextRequest) {
 
         const reqBody = await request.json();
 
-        const { id, name, description, price, discount, size } = reqBody;
+        const { id, name, description, price, discount, size, stock } = reqBody;
 
         if (id.trim() === "") {
             return NextResponse.json({ error: "id is required" }, { status: 402 })
@@ -17,6 +17,7 @@ export async function PUT(request: NextRequest) {
         String(price);
         String(discount);
         String(size);
+        String(stock);
 
         if ([name, description].some((field) => field.trim() === "")) {
             return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 403 })
@@ -29,6 +30,7 @@ export async function PUT(request: NextRequest) {
                     description,
                     price,
                     discount,
+                    stock,
                     size
                 },
             },

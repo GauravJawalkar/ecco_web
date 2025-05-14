@@ -10,14 +10,15 @@ import { Key, useEffect, useState } from "react";
 import EditDetailsModal from "../Modals/EditDetailsModal";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules"
+import Loader from "../Loaders/Loader";
 
 interface reqSpecialAppearenceProps {
     _id: string;
     name: string;
     description: string;
-    price: number;
-    images: [string];
-    discount: number;
+    price: string;
+    images: ["", "", ""];
+    discount: string;
     seller: string;
 }
 
@@ -27,24 +28,45 @@ interface MyProductsProps {
     view: string;
 }
 
+interface prodDataProps {
+    _id: string;
+    name: string;
+    description: string;
+    seller: string;
+    images: ["", "", ""];
+    price: string;
+    discount: string;
+    size: string;
+    stock: string;
+}
+
 const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
     const [prodData, setProdData] = useState([]);
     const [editModal, setEditModal] = useState(false);
     const [oldName, setOldName] = useState("");
     const [oldDescripion, setOldDescripion] = useState("");
     const [oldPrice, setOldPrice] = useState("");
+    const [oldStock, setOldStock] = useState("");
     const [oldDiscount, setOldDiscount] = useState("");
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
-    const [showMore, setShowMore] = useState(null);
+    const [showMore, setShowMore] = useState<string | null>(null);
     const [reqLoader, setReqLoader] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     async function getSellerProducts() {
         try {
+            setLoading(true)
             const response = await axios.post("/api/getSellerProducts", { sellerId });
-            setProdData(response.data.data);
+            if (response.data.data) {
+                setLoading(false)
+                setProdData(response.data.data);
+            }
+            setLoading(false);
+            return [];
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
@@ -102,17 +124,18 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
     return (
         <>
             {
-                prodData.length === 0 ? (
-                    <div className="text-center w-full py-5 animate-pulse font-semibold text-lg antialiased">
-                        No Products Found
-                    </div>
-                ) : (
-                    <>
+                prodData.length === 0 ?
+                    (loading ? <div>
+                        <Loader title="Fetching..." /></div> :
+                        <div className="text-center w-full py-5 animate-pulse font-semibold text-lg antialiased">
+                            No Products Found
+                        </div >)
+                    : (<>
                         {view === "grid"
                             &&
                             <div className="grid grid-cols-4 py-4 gap-10">
                                 {prodData.map(
-                                    ({ _id, name, description, images, price, discount, size, seller }: any) => {
+                                    ({ _id, name, description, images, price, discount, size, seller, stock }: prodDataProps) => {
                                         return (
                                             <div key={_id} className="border p-5 dark:border-neutral-600 dark:bg-neutral-800">
                                                 <div>
@@ -174,8 +197,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                         discount,
                                                                         seller,
                                                                     });
-                                                                }}
-                                                            >
+                                                                }}>
                                                                 {reqLoader ? (
                                                                     <span className="flex items-center justify-center gap-2">
                                                                         <LoaderCircle className="animate-spin text-blue-500" />
@@ -199,7 +221,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         </div>
                                                         <div className="font-light ">
                                                             <label className="font-semibold">Total </label>
-                                                            <h1>₹ {price - discount}</h1>
+                                                            <h1>₹ {Number(price) - Number(discount)}</h1>
                                                         </div>
                                                     </div>
 
@@ -211,6 +233,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                 setEditModal(true);
                                                                 setOldName(name);
                                                                 setOldPrice(price);
+                                                                setOldStock(stock);
                                                                 setOldDescripion(description);
                                                                 setOldDiscount(discount);
                                                                 setOldSize(size);
@@ -241,6 +264,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                     oldName={oldName}
                                                     oldDescripion={oldDescripion}
                                                     oldPrice={oldPrice}
+                                                    oldStock={oldStock}
                                                     oldDiscount={oldDiscount}
                                                     oldSize={oldSize}
                                                     id={currentId}
@@ -261,32 +285,40 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                 <table className="min-w-full table-auto border border-gray-300 rounded-xl">
                                     <thead>
                                         <tr>
-                                            <th className="px-4 py-2 border dark:border-neutral-700 text-start">Name</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700 text-start">Description</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700">Images</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700">MRP</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700">Discount</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700">Total</th>
-                                            <th className="px-4 py-2 border dark:border-neutral-700">Action</th>
+                                            <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start">Name</th>
+                                            <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start">Description</th>
+                                            <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700">Images</th>
+                                            <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Stock</th>
+                                            <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">MRP</th>
+                                            <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Discount</th>
+                                            <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Total</th>
+                                            <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {prodData.map(({ _id, name, description, images, price, discount, size, }: any) => {
+                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock }: prodDataProps) => {
                                             return (
                                                 <tr key={_id}>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-start w-1/5">{description}</td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-center">{
-                                                        <div className="flex items-center justify-center gap-2">
-                                                            < Image src={images[0]} alt="product-image" height={40} width={40} className="flex" />
-                                                            < Image src={images[1]} alt="product-image" height={40} width={40} className="flex" />
-                                                            < Image src={images[2]} alt="product-image" height={40} width={40} className="flex" />
-                                                        </div>}
+                                                    <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
+                                                    <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize ">
+                                                        <div className="line-clamp-2">
+                                                            {description}
+                                                        </div>
                                                     </td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-center">{price}</td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-center">{discount}</td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{price - discount}</td>
-                                                    <td className="px-4 py-2 border dark:border-neutral-700 text-center">
+                                                    <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-center w-1/6">
+                                                        {
+                                                            <div className="flex items-center justify-center gap-2 w-full">
+                                                                < Image src={images[0]} alt="product-image" height={40} width={40} />
+                                                                < Image src={images[1]} alt="product-image" height={40} width={40} />
+                                                                < Image src={images[2]} alt="product-image" height={40} width={40} />
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{stock}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{price}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{discount}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{Number(price) - Number(discount)}</td>
+                                                    <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-center">
                                                         <div className="flex items-center justify-center gap-2">
                                                             <Edit
                                                                 className="cursor-pointer text-green-500 hover:text-green-600"
@@ -297,6 +329,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                     setOldDescripion(description);
                                                                     setOldDiscount(discount);
                                                                     setOldSize(size);
+                                                                    setOldStock(stock);
                                                                     setCurrentId(_id);
                                                                 }} />
                                                             <Trash2 onClick={() => {
@@ -306,29 +339,23 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                     </td>
                                                 </tr>
                                             )
-                                        })
-                                        }
+                                        })}
                                     </tbody>
                                 </table>
                                 <EditDetailsModal
                                     isVisible={editModal}
-                                    onClose={() => {
-                                        return setEditModal(false);
-                                    }}
+                                    onClose={() => { return setEditModal(false) }}
                                     oldName={oldName}
                                     oldDescripion={oldDescripion}
                                     oldPrice={oldPrice}
                                     oldDiscount={oldDiscount}
+                                    oldStock={oldStock}
                                     oldSize={oldSize}
                                     id={currentId}
-                                    reRender={() => {
-                                        return getSellerProducts();
-                                    }}
-                                />
+                                    reRender={() => { return getSellerProducts() }} />
                             </div>
                         }
-                    </>
-                )
+                    </>)
             }
         </>
     );
