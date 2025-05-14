@@ -20,7 +20,7 @@ const HomeHero = () => {
 
     return (
         // Full Screen Slider
-        <div className='pt-4'>
+        <div className='pt-4 '>
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -33,26 +33,32 @@ const HomeHero = () => {
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}
-                className="mySwiper h-fit">
+                className="mySwiper">
                 <SwiperSlide>
-                    <div >
-                        <Image src={SliderOneImage}
+                    <div>
+                        <Image src={'/Slider/1.png'}
                             priority
-                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className='w-full overflow-hidden'>
-                        <Image src={SliderTwoImage}
-                            priority
-                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
+                            width={2000}
+                            height={2000}
+                            className="w-full h-full rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
                     <div>
-                        <Image src={SliderThreeImage}
+                        <Image src={'/Slider/2.png'}
                             priority
-                            className="w-full h-[400px] rounded-2xl" alt={'SliderOneImage'} />
+                            width={2000}
+                            height={2000}
+                            className="w-full h-full rounded-2xl" alt={'SliderOneImage'} />
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <div>
+                        <Image src={'/Slider/4.png'}
+                            priority
+                            width={2000}
+                            height={2000}
+                            className="w-full h-full rounded-2xl" alt={'SliderOneImage'} />
                     </div>
                 </SwiperSlide>
             </Swiper>

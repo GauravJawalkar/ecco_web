@@ -92,7 +92,9 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     <div className="my-10">
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"
         dir={`${rank % 2 ? "ltr" : "rtl"}`}>
-        <div className="border p-5 bg-red-100 rounded-3xl place-content-center text-center">1</div>
+        <div className="place-content-center text-center p-3 py-0 ">
+          <Image src={"/Ads/Ad-1.png"} alt={"advertisement"} width={2000} height={1000} className="w-full h-full rounded-3xl" />
+        </div>
 
         <div className="h-auto max-w-[87ch] prod-holder relative ">
 
