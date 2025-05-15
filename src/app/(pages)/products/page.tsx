@@ -5,7 +5,7 @@ import axios from 'axios';
 import React, { use, useEffect } from 'react'
 import toast from 'react-hot-toast';
 interface searchParams {
-    category?: string | "all";
+    category?: string | "";
 }
 
 interface productsProps {

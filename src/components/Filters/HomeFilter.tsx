@@ -1,3 +1,4 @@
+import { ChevronLeft } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -44,7 +45,7 @@ export const Filters = [
 
 const HomeFilter = () => {
     return (
-        <div className='p-5'>
+        <div className='p-5 relative'>
             <div className='grid grid-cols-7 gap-7'>
                 {
                     Filters.map(({ _id, category, imageLink }) => {
@@ -58,6 +59,12 @@ const HomeFilter = () => {
                         )
                     })
                 }
+            </div>
+            <div className='absolute -top-5 right-0 group'>
+                <Link href={'/products'} className='bg-gray-200 px-3 py-2 rounded-l-full group-hover:font-semibold flex items-center justify-center transition-all ease-linear duration-200'>
+                    <ChevronLeft className='hidden group-hover:flex -translate-x-1 h-5 w-5 transition-all ease-linear duration-400' />
+                    <span className=''>Sell All</span>
+                </Link>
             </div>
         </div >
     )
