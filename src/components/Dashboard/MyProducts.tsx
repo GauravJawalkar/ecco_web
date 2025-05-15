@@ -3,11 +3,11 @@
 import "swiper/css";
 import axios from "axios";
 import Image from "next/image";
-import "swiper/css/pagination";
 import toast from "react-hot-toast";
 import { Edit, LoaderCircle, PenLine, Trash, Trash2 } from "lucide-react";
 import { Key, useEffect, useState } from "react";
 import EditDetailsModal from "../Modals/EditDetailsModal";
+import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules"
 import Loader from "../Loaders/Loader";

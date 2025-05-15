@@ -1,11 +1,17 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { ChevronDown, ChevronLeftCircle } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
-import React, { use, useEffect } from 'react'
+import React, { Key, use, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Pagination } from "swiper/modules"
+import "swiper/css";
+import { useUserStore } from '@/store/UserStore';
 interface searchParams {
     category?: string | "";
 }
@@ -73,6 +79,16 @@ export const AllFilters = [
 const ProductsPage = ({ searchParams }: any) => {
     const searchParamsData: searchParams = use(searchParams);
     const category = searchParamsData?.category;
+    const [sellerId, setSellerId] = useState("");
+    const { data }: any = useUserStore();
+    const cartOwnerId = data?._id;
+    const queryClient = useQueryClient();
+    const [name, setName] = useState("");
+    const [price, setPrice] = useState(0);
+    const [image, setImage] = useState("");
+    const [discount, setDiscount] = useState(0);
+    const [stock, setStock] = useState(0);
+    const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
 
@@ -126,6 +142,57 @@ const ProductsPage = ({ searchParams }: any) => {
         queryKey: ['allProducts']
     });
 
+    // Add to cart functionality here
+
+    async function addToCart() {
+        try {
+            const cartOwner = data?._id;
+            const sellerName = vikreta;
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
+            if (response.data.data) {
+                return response.data.data;
+            }
+            return [];
+        } catch (error) {
+            console.error("Error Adding the product to cart ", error);
+            toast.error("Error Adding the product to cart ");
+        }
+    }
+
+    async function getSellerDetails(id: string) {
+        try {
+            const response = await axios.get(`../api/getSelletDetails/${id}`);
+            if (response.data.data) {
+                return response.data.data
+            }
+            return [];
+        } catch (error) {
+            console.log(`Error getting the user details : `, error)
+            return [];
+        }
+    }
+
+    const { data: sellerDet = [] } = useQuery(
+        {
+            queryFn: () => getSellerDetails(sellerId),
+            queryKey: ['seller', sellerId],
+            enabled: !!sellerId,
+            refetchOnWindowFocus: false
+        }
+    )
+
+    const addToCartMutation = useMutation({
+        mutationFn: async () => await addToCart(),
+        onSuccess: () => {
+            toast.success("Item Added To Cart");
+            queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
+        },
+    });
+
+    const handelCart = async () => {
+        addToCartMutation.mutate();
+    }
+
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -154,46 +221,134 @@ const ProductsPage = ({ searchParams }: any) => {
                     <h1>Filter One</h1>
                     <h1>Filter One</h1>
                 </div>
-                <div className=' grid grid-cols-4 gap-3'>
+                <div className=' grid grid-cols-4 gap-5'>
                     {
-                        products?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
+                        products?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                             return (
-                                <div key={_id}>
-                                    <h1>{_id}</h1>
-                                    <h1>{name}</h1>
-                                    <h1>{description}</h1>
-                                    <h1>{images[0]}</h1>
-                                    <h1>{price}</h1>
-                                    <h1>{discount}</h1>
-                                    <h1>{stock}</h1>
-                                    <h1>{size}</h1>
-                                    <h1>{seller}</h1>
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-                                </div>
-
+                                <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
+                                    <div className="w-full py-3">
+                                        <Swiper
+                                            modules={[EffectFade, Pagination]}
+                                            pagination={{ clickable: true }}
+                                            navigation={true}
+                                            spaceBetween={50}
+                                            effect="card">
+                                            {images.map(
+                                                (elem: string, index: Key | null | undefined) => {
+                                                    return (
+                                                        <SwiperSlide key={index} className="">
+                                                            <Image
+                                                                src={elem}
+                                                                loading="lazy"
+                                                                alt="product-image"
+                                                                width={180}
+                                                                height={180}
+                                                                className="h-64 w-full object-contain rounded" />
+                                                        </SwiperSlide>);
+                                                })}
+                                        </Swiper>
+                                    </div>
+                                    <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
+                                        <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
+                                            <h1>Plants</h1>
+                                            <h1>⭐ (4.5)</h1>
+                                        </div>
+                                        <h1 title={name} className="font-semibold capitalize text-start text-lg truncate">
+                                            {name}
+                                        </h1>
+                                        <div className="flex items-center justify-between pt-2">
+                                            <div className='flex items-center justify-start gap-3'>
+                                                <button type="button" onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    setName(name);
+                                                    setImage(images?.[0]);
+                                                    setPrice(price);
+                                                    setStock(stock);
+                                                    setDiscount(discount);
+                                                    setVikreta(sellerDet?.name);
+                                                    handelCart();
+                                                }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                                                    <ShoppingCart className="h-5 w-5" />
+                                                </button>
+                                                <button type="button" onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                                                    <Heart className="h-5 w-5" />
+                                                </button>
+                                            </div>
+                                            <h1 className="font-semibold text-lg uppercase ">
+                                                ₹ {price}
+                                            </h1>
+                                        </div>
+                                    </div>
+                                </Link>
                             )
                         })
                     }
 
-                    {!category && allProducts?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
+                    {!category && allProducts?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                         return (
-                            <Link href={`/products/${slugify(name)}?id=${_id}`} key={_id}>
-                                <h1>{_id}</h1>
-                                <h1>{name}</h1>
-                                <h1>{description}</h1>
-                                <h1 className='w-full truncate'>{images[0]}</h1>
-                                <h1>{price}</h1>
-                                <h1>{discount}</h1>
-                                <h1>{stock}</h1>
-                                <h1>{size}</h1>
-                                <h1>{seller}</h1>
-                                <br />
-                                <br />
+                            <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
+                                <div className="w-full py-3">
+                                    <Swiper
+                                        modules={[EffectFade, Pagination]}
+                                        pagination={{ clickable: true }}
+                                        navigation={true}
+                                        spaceBetween={50}
+                                        effect="card">
+                                        {images.map(
+                                            (elem: string, index: Key | null | undefined) => {
+                                                return (
+                                                    <SwiperSlide key={index} className="">
+                                                        <Image
+                                                            src={elem}
+                                                            loading="lazy"
+                                                            alt="product-image"
+                                                            width={180}
+                                                            height={180}
+                                                            className="h-64 w-full object-contain rounded" />
+                                                    </SwiperSlide>);
+                                            })}
+                                    </Swiper>
+                                </div>
+                                <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
+                                    <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
+                                        <h1>Plants</h1>
+                                        <h1>⭐ (4.5)</h1>
+                                    </div>
+                                    <h1 title={name} className="font-semibold capitalize text-start text-lg truncate">
+                                        {name}
+                                    </h1>
+                                    <div className="flex items-center justify-between pt-2">
+                                        <div className='flex items-center justify-start gap-3'>
+                                            <button type="button" onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                setName(name);
+                                                setImage(images?.[0]);
+                                                setPrice(price);
+                                                setStock(stock);
+                                                setDiscount(discount);
+                                                setVikreta(sellerDet?.name);
+                                                handelCart();
+                                            }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                                                <ShoppingCart className="h-5 w-5" />
+                                            </button>
+                                            <button type="button" onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                            }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                                                <Heart className="h-5 w-5" />
+                                            </button>
+                                        </div>
+                                        <h1 className="font-semibold text-lg uppercase ">
+                                            ₹ {price}
+                                        </h1>
+                                    </div>
+                                </div>
                             </Link>
-
                         )
                     })}
                 </div>
