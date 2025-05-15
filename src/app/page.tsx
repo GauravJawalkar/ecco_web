@@ -56,10 +56,10 @@ export default function Home() {
       <div className="pt-10">
         <HomeFilter />
       </div>
-      <div className="py-10">
+      <div className="py-10 mb-10">
         <ProductHolder rank={1} prodData={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
       </div>
-      <div className="py-20">
+      <div className="py-20 mb-10">
         <ProductHolder rank={2} prodData={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
       </div>
       <div className="py-20">
