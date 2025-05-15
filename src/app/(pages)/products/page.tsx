@@ -2,6 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { ChevronDown, ChevronLeftCircle } from 'lucide-react';
 import Link from 'next/link';
 import React, { use, useEffect } from 'react'
 import toast from 'react-hot-toast';
@@ -57,11 +58,23 @@ export const AllFilters = [
         category: 'climber plants',
         name: "Climber"
     },
+    {
+        _id: 8,
+        category: 'climber plants',
+        name: "Fertilizers"
+    },
+    {
+        _id: 9,
+        category: 'climber plants',
+        name: "Accessories"
+    },
 ]
 
 const ProductsPage = ({ searchParams }: any) => {
     const searchParamsData: searchParams = use(searchParams);
     const category = searchParamsData?.category;
+    const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+
 
     async function getFilteredData(category: string) {
         try {
@@ -85,13 +98,13 @@ const ProductsPage = ({ searchParams }: any) => {
 
     const { mutate, data: products, isPending, isError } = filterProductMutation();
 
-    if (category?.trim() !== "") {
-        useEffect(() => {
+    useEffect(() => {
+        if (category?.trim() !== "") {
             if (category) {
                 mutate(category);
             }
-        }, [category, mutate]);
-    }
+        }
+    }, [category, mutate]);
 
     { isError && <div>Failed to fetch products</div> }
 
@@ -115,8 +128,8 @@ const ProductsPage = ({ searchParams }: any) => {
 
     return (
         <>
-            <div className=''>
-                <div className="w-full flex items-center justify-start gap-3 py-5 overflow-x-auto">
+            <div className=" py-5 overflow-x-auto ">
+                <div className='border dark:border-neutral-700 rounded-full p-3 gap-2 flex w-full items-center justify-start'>
                     <Link href={`/products`} className='px-3 py-2 bg-gray-100 rounded-full capitalize dark:bg-neutral-800 hover:font-semibold hover:-translate-y-1 transition-all ease-linear duration-200'>
                         All
                     </Link>
@@ -131,57 +144,72 @@ const ProductsPage = ({ searchParams }: any) => {
                     }
                 </div>
             </div>
+
+            {/* Filters On the right */}
+            <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
+                <div className='p-3 border rounded-2xl h-fit sticky top-24'>
+                    <h1>Price Select</h1>
+                    <h1>Store</h1>
+                    <h1>Discount</h1>
+                    <h1>Filter One</h1>
+                    <h1>Filter One</h1>
+                </div>
+                <div className=' grid grid-cols-4 gap-3'>
+                    {
+                        products?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
+                            return (
+                                <div key={_id}>
+                                    <h1>{_id}</h1>
+                                    <h1>{name}</h1>
+                                    <h1>{description}</h1>
+                                    <h1>{images[0]}</h1>
+                                    <h1>{price}</h1>
+                                    <h1>{discount}</h1>
+                                    <h1>{stock}</h1>
+                                    <h1>{size}</h1>
+                                    <h1>{seller}</h1>
+                                    <br />
+                                    <br />
+                                    <br />
+                                    <br />
+                                </div>
+
+                            )
+                        })
+                    }
+
+                    {!category && allProducts?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
+                        return (
+                            <Link href={`/products/${slugify(name)}?id=${_id}`} key={_id}>
+                                <h1>{_id}</h1>
+                                <h1>{name}</h1>
+                                <h1>{description}</h1>
+                                <h1 className='w-full truncate'>{images[0]}</h1>
+                                <h1>{price}</h1>
+                                <h1>{discount}</h1>
+                                <h1>{stock}</h1>
+                                <h1>{size}</h1>
+                                <h1>{seller}</h1>
+                                <br />
+                                <br />
+                            </Link>
+
+                        )
+                    })}
+                </div>
+            </div>
+
             {/* CategoryWise Sorting queries here */}
             {(products && products.length === 0) && <div>No Products Found</div>}
             {isPending && <div><Loader title='Loading...' /></div>}
-            {
-                products?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
-                    return (
-                        <div key={_id}>
-                            <h1>{_id}</h1>
-                            <h1>{name}</h1>
-                            <h1>{description}</h1>
-                            <h1>{images[0]}</h1>
-                            <h1>{price}</h1>
-                            <h1>{discount}</h1>
-                            <h1>{stock}</h1>
-                            <h1>{size}</h1>
-                            <h1>{seller}</h1>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                        </div>
 
-                    )
-                })
-            }
 
 
 
 
 
             {/* When There is no category all products here */}
-            {!category && allProducts?.map(({ _id, name, description, images, price, discount, stock, size, seller }: productsProps) => {
-                return (
-                    <div key={_id}>
-                        <h1>{_id}</h1>
-                        <h1>{name}</h1>
-                        <h1>{description}</h1>
-                        <h1>{images[0]}</h1>
-                        <h1>{price}</h1>
-                        <h1>{discount}</h1>
-                        <h1>{stock}</h1>
-                        <h1>{size}</h1>
-                        <h1>{seller}</h1>
-                        <br />
-                        <br />
-                        <br />
-                        <br />
-                    </div>
 
-                )
-            })}
         </>
     )
 }
