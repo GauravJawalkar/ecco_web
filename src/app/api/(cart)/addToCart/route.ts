@@ -9,8 +9,6 @@ export async function POST(request: NextRequest) {
 
         const { cartOwner, name, price, image, sellerName, discount, stock } = reqBody;
 
-        console.log("reqBody is : ", reqBody);
-
         const quantity = 1;
 
         if (!cartOwner) {

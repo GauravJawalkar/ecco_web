@@ -2,7 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Filter, Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { Key, use, useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules"
 import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
+import { useRouter } from 'next/navigation';
 interface searchParams {
     category?: string | "";
 }
@@ -90,6 +91,8 @@ const ProductsPage = ({ searchParams }: any) => {
     const [stock, setStock] = useState(0);
     const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+    const [sortOrder, setSortOrder] = useState('high');
+
 
 
     async function getFilteredData(category: string) {
@@ -139,8 +142,14 @@ const ProductsPage = ({ searchParams }: any) => {
 
     const { data: allProducts = [] } = useQuery({
         queryFn: getAllProducts,
-        queryKey: ['allProducts']
+        queryKey: ['allProducts'],
     });
+
+    const sortedProducts = [...allProducts].sort((a, b) => {
+        return sortOrder === 'high' ? b.price - a.price : a.price - b.price;
+    });
+
+
 
     // Add to cart functionality here
 
@@ -193,6 +202,11 @@ const ProductsPage = ({ searchParams }: any) => {
         addToCartMutation.mutate();
     }
 
+    const sortHighToLow = async () => {
+        await [...products]?.sort((a: any, b: any) => b?.price - a?.price);
+
+    }
+
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -212,16 +226,42 @@ const ProductsPage = ({ searchParams }: any) => {
                 </div>
             </div>
 
+            {(products && products.length === 0) && <div>No Products Found</div>}
+            {isPending && <div><Loader title='Loading...' /></div>}
+
             {/* Filters On the right */}
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
-                <div className='p-3 border rounded-2xl h-fit sticky top-24'>
-                    <h1>Price Select</h1>
-                    <h1>Store</h1>
-                    <h1>Discount</h1>
-                    <h1>Filter One</h1>
-                    <h1>Filter One</h1>
+                <div className='p-3 border dark:border-neutral-700 rounded-2xl h-fit sticky top-24 flex items-center justify-center flex-col gap-3'>
+                    <div className='mt-8 w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
+                        <h1 className='pb-2 text-start'>Sort By Price :</h1>
+                        <h1 onClick={() => { setSortOrder('low') }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                            Low To High
+                        </h1>
+                        <h1 onClick={() => { setSortOrder('high') }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                            High To Low
+                        </h1>
+                    </div>
+
+                    <div className='w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
+                        <h1 className='pb-2 text-start'>Sort By Discount :</h1>
+                        <h1 className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                            Low To High
+                        </h1>
+                        <h1 className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                            High To Low
+                        </h1>
+                    </div>
+
+                    <div className='w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
+                        <h1 className='pb-2 text-start'>Search By Store :</h1>
+                        <input type='text' placeholder='Enter Store Name...' className='border py-1 px-3 cursor-text text-sm rounded-full mb-2 outline-none' />
+                    </div>
+
+
+                    <h1 className='absolute top-0 right-0 px-3 py-1 rounded-tr-2xl rounded-bl-2xl bg-gray-100 flex items-center justify-center gap-1 dark:bg-neutral-800'><Filter className='h-4 w-4' /> Filter Products</h1>
                 </div>
                 <div className=' grid grid-cols-4 gap-5'>
+                    {/* CategoryWise product sorting here */}
                     {
                         products?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                             return (
@@ -230,7 +270,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                         <Swiper
                                             modules={[EffectFade, Pagination]}
                                             pagination={{ clickable: true }}
-                                            navigation={true}
+                                            navigation={false}
                                             spaceBetween={50}
                                             effect="card">
                                             {images.map(
@@ -288,14 +328,15 @@ const ProductsPage = ({ searchParams }: any) => {
                         })
                     }
 
-                    {!category && allProducts?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
+                    {/* When There is no category all products here */}
+                    {!category && sortedProducts?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                         return (
                             <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                                 <div className="w-full py-3">
                                     <Swiper
                                         modules={[EffectFade, Pagination]}
                                         pagination={{ clickable: true }}
-                                        navigation={true}
+                                        navigation={false}
                                         spaceBetween={50}
                                         effect="card">
                                         {images.map(
@@ -352,19 +393,7 @@ const ProductsPage = ({ searchParams }: any) => {
                         )
                     })}
                 </div>
-            </div>
-
-            {/* CategoryWise Sorting queries here */}
-            {(products && products.length === 0) && <div>No Products Found</div>}
-            {isPending && <div><Loader title='Loading...' /></div>}
-
-
-
-
-
-
-            {/* When There is no category all products here */}
-
+            </div >
         </>
     )
 }
