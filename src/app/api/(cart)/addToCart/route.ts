@@ -50,7 +50,9 @@ export async function POST(request: NextRequest) {
 
         const updatedCart = await existingCart.save();
 
-        console.log(updatedCart);
+        if (!updatedCart) {
+            return NextResponse.json({ error: "Failed to update the cart in the database" }, { status: 404 })
+        }
 
         return NextResponse.json(
             { data: updatedCart },
