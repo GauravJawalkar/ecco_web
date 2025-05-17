@@ -92,6 +92,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
     const [sortOrder, setSortOrder] = useState('high');
+    const [sortDisc, setSortDisc] = useState("highDisc");
 
 
 
@@ -145,11 +146,13 @@ const ProductsPage = ({ searchParams }: any) => {
         queryKey: ['allProducts'],
     });
 
-    const sortedProducts = [...allProducts].sort((a, b) => {
+    let sortedProducts = [...allProducts].sort((a, b) => {
         return sortOrder === 'high' ? b.price - a.price : a.price - b.price;
     });
 
-
+    sortedProducts = [...allProducts].sort((a, b) => {
+        return sortDisc === "highDisc" ? b.discount - a.discount : a.discount - b.discount
+    })
 
     // Add to cart functionality here
 
@@ -202,11 +205,6 @@ const ProductsPage = ({ searchParams }: any) => {
         addToCartMutation.mutate();
     }
 
-    const sortHighToLow = async () => {
-        await [...products]?.sort((a: any, b: any) => b?.price - a?.price);
-
-    }
-
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -244,10 +242,10 @@ const ProductsPage = ({ searchParams }: any) => {
 
                     <div className='w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Discount :</h1>
-                        <h1 className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1 onClick={() => { setSortDisc("lowDisc") }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
-                        <h1 className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1 onClick={() => { setSortDisc("highDisc") }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>
                     </div>
