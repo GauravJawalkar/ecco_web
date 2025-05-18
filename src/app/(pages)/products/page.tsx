@@ -1,7 +1,7 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { Filter, Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -91,9 +91,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const [stock, setStock] = useState(0);
     const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
-    const [sortOrder, setSortOrder] = useState('high');
-    const [sortDisc, setSortDisc] = useState("highDisc");
-
+    const [sortedProducts, setSortedProducts] = useState([]);
 
 
     async function getFilteredData(category: string) {
@@ -141,18 +139,19 @@ const ProductsPage = ({ searchParams }: any) => {
         }
     }
 
-    const { data: allProducts = [] } = useQuery({
-        queryFn: getAllProducts,
-        queryKey: ['allProducts'],
-    });
+    const { data: allProducts = [], isSuccess } = useQuery(
+        {
+            queryFn: getAllProducts,
+            queryKey: ['allProducts'],
+        }
+    );
 
-    let sortedProducts = [...allProducts].sort((a, b) => {
-        return sortOrder === 'high' ? b.price - a.price : a.price - b.price;
-    });
+    useEffect(() => {
+        if (isSuccess) {
+            setSortedProducts(allProducts);
+        }
+    }, [isSuccess, allProducts]);
 
-    sortedProducts = [...allProducts].sort((a, b) => {
-        return sortDisc === "highDisc" ? b.discount - a.discount : a.discount - b.discount
-    })
 
     // Add to cart functionality here
 
@@ -232,20 +231,32 @@ const ProductsPage = ({ searchParams }: any) => {
                 <div className='p-3 border dark:border-neutral-700 rounded-2xl h-fit sticky top-24 flex items-center justify-center flex-col gap-3'>
                     <div className='mt-8 w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Price :</h1>
-                        <h1 onClick={() => { setSortOrder('low') }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1 onClick={() => {
+                            setSortedProducts([...allProducts].sort((a, b) => { return a.price - b.price }));
+                        }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
-                        <h1 onClick={() => { setSortOrder('high') }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1 onClick={() => {
+                            setSortedProducts([...allProducts].sort((a, b) => { return b.price - a.price }))
+                        }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>
                     </div>
 
                     <div className='w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Discount :</h1>
-                        <h1 onClick={() => { setSortDisc("lowDisc") }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1
+                            onClick={() => {
+                                setSortedProducts(() => [...allProducts].sort((a, b) => { return a.discount - b.discount }))
+                            }}
+                            className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
-                        <h1 onClick={() => { setSortDisc("highDisc") }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1
+                            onClick={() => {
+                                setSortedProducts(() => [...allProducts].sort((a, b) => { return b.discount - a.discount }))
+                            }}
+                            className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>
                     </div>
