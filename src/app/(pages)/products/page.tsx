@@ -91,7 +91,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const [stock, setStock] = useState(0);
     const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
-    const [sortedProducts, setSortedProducts] = useState([]);
+    const [sortedProducts, setSortedProducts] = useState<any[]>([]);
 
 
     async function getFilteredData(category: string) {
@@ -232,12 +232,12 @@ const ProductsPage = ({ searchParams }: any) => {
                     <div className='mt-8 w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Price :</h1>
                         <h1 onClick={() => {
-                            setSortedProducts([...allProducts].sort((a, b) => { return a.price - b.price }));
+                            setSortedProducts(() => [...allProducts].sort((a, b) => { return a.price - b.price }));
                         }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
                         <h1 onClick={() => {
-                            setSortedProducts([...allProducts].sort((a, b) => { return b.price - a.price }))
+                            setSortedProducts(() => [...allProducts].sort((a, b) => { return b.price - a.price }))
                         }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>
