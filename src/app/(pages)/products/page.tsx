@@ -1,7 +1,7 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, { all } from 'axios';
+import axios from 'axios';
 import { Filter, Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,7 +12,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules"
 import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
-import { useRouter } from 'next/navigation';
 import { discountPercentage } from '@/helpers/discountPercentage';
 interface searchParams {
     category?: string | "";
