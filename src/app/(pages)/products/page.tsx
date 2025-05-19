@@ -13,6 +13,7 @@ import { EffectFade, Pagination } from "swiper/modules"
 import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
 import { useRouter } from 'next/navigation';
+import { discountPercentage } from '@/helpers/discountPercentage';
 interface searchParams {
     category?: string | "";
 }
@@ -148,9 +149,9 @@ const ProductsPage = ({ searchParams }: any) => {
 
     useEffect(() => {
         if (isSuccess) {
-            setSortedProducts(allProducts);
+            setSortedProducts([...allProducts]);
         }
-    }, [isSuccess, allProducts]);
+    }, [isSuccess]);
 
 
     // Add to cart functionality here
@@ -275,7 +276,7 @@ const ProductsPage = ({ searchParams }: any) => {
                         products?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                             return (
                                 <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
-                                    <div className="w-full py-3">
+                                    <div className="w-full py-3 relative">
                                         <Swiper
                                             modules={[EffectFade, Pagination]}
                                             pagination={{ clickable: true }}
@@ -296,6 +297,9 @@ const ProductsPage = ({ searchParams }: any) => {
                                                         </SwiperSlide>);
                                                 })}
                                         </Swiper>
+                                        <div className='absolute top-0 right-0 z-10'>
+                                            <h1 className='px-3 bg-green-600 rounded-tr-xl text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
+                                        </div>
                                     </div>
                                     <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
                                         <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
@@ -341,7 +345,7 @@ const ProductsPage = ({ searchParams }: any) => {
                     {!category && sortedProducts?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                         return (
                             <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
-                                <div className="w-full py-3">
+                                <div className="w-full py-3 relative">
                                     <Swiper
                                         modules={[EffectFade, Pagination]}
                                         pagination={{ clickable: true }}
@@ -358,10 +362,13 @@ const ProductsPage = ({ searchParams }: any) => {
                                                             alt="product-image"
                                                             width={180}
                                                             height={180}
-                                                            className="h-64 w-full object-contain rounded" />
+                                                            className="h-64 w-full object-contain rounded -z-10" />
                                                     </SwiperSlide>);
                                             })}
                                     </Swiper>
+                                    <div className='absolute -top-2 -right-2 z-10'>
+                                        <h1 className='px-3 bg-green-600/80 rounded-full text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
+                                    </div>
                                 </div>
                                 <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
                                     <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
