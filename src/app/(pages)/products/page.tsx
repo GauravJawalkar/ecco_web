@@ -68,12 +68,12 @@ export const AllFilters = [
     },
     {
         _id: 8,
-        category: 'climber plants',
+        category: 'fertilizers',
         name: "Fertilizers"
     },
     {
         _id: 9,
-        category: 'climber plants',
+        category: 'accessories',
         name: "Accessories"
     },
 ]
