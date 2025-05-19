@@ -89,8 +89,8 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
     return (
         <section className='inset-0 fixed h-auto flex items-center justify-center z-10 backdrop-blur '>
-            <div className='w-[600px]  px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 '>
-                <div className='flex items-center justify-center py-3'>
+            <div className='w-[600px]  px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 relative '>
+                <div className='absolute -right-2 -top-3'>
                     <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
                 </div>
                 <form onSubmit={handelSubmit} className=' gap-5 flex-col min-w-full grid grid-cols-2'>
