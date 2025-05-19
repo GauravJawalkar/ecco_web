@@ -309,7 +309,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                                 })}
                                         </Swiper>
                                         <div className='absolute top-0 right-0 z-10'>
-                                            <h1 className='px-3 bg-green-600 rounded-tr-xl text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
+                                            <h1 className='px-3 bg-green-600 rounded-tr-xl rounded-bl-xl text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
                                         </div>
                                     </div>
                                     <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
@@ -377,8 +377,8 @@ const ProductsPage = ({ searchParams }: any) => {
                                                     </SwiperSlide>);
                                             })}
                                     </Swiper>
-                                    <div className='absolute -top-2 -right-2 z-10'>
-                                        <h1 className='px-3 bg-green-600/80 rounded-full text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
+                                    <div className='absolute top-0 right-0 z-10'>
+                                        <h1 className='px-3 bg-green-600 rounded-tr-xl rounded-bl-xl text-white'>{Math.round(discountPercentage(price, discount))} % Off</h1>
                                     </div>
                                 </div>
                                 <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
