@@ -1,7 +1,7 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { Filter, Heart, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,6 +13,7 @@ import { EffectFade, Pagination } from "swiper/modules"
 import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
 import { discountPercentage } from '@/helpers/discountPercentage';
+import { useRouter } from 'next/navigation';
 interface searchParams {
     category?: string | "";
 }
@@ -92,7 +93,8 @@ const ProductsPage = ({ searchParams }: any) => {
     const [vikreta, setVikreta] = useState("");
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
     const [sortedProducts, setSortedProducts] = useState<any[]>([]);
-
+    const router = useRouter();
+    const [categoryProduct, setCategoryProduct] = useState([])
 
     async function getFilteredData(category: string) {
         try {
@@ -139,7 +141,7 @@ const ProductsPage = ({ searchParams }: any) => {
         }
     }
 
-    const { data: allProducts = [], isSuccess } = useQuery(
+    const { data: allProducts = [], isSuccess, isLoading } = useQuery(
         {
             queryFn: getAllProducts,
             queryKey: ['allProducts'],
@@ -148,9 +150,13 @@ const ProductsPage = ({ searchParams }: any) => {
 
     useEffect(() => {
         if (isSuccess) {
-            setSortedProducts([...allProducts]);
+            setSortedProducts([...new Set(allProducts)]);
         }
     }, [isSuccess]);
+
+    useEffect(() => {
+        setCategoryProduct(products);
+    }, [products])
 
 
     // Add to cart functionality here
@@ -204,13 +210,18 @@ const ProductsPage = ({ searchParams }: any) => {
         addToCartMutation.mutate();
     }
 
+    const handelAllProductCategory = () => {
+        setCategoryProduct([]);
+        router.push('/products');
+    }
+
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
                 <div className='border dark:border-neutral-700 rounded-full p-3 gap-2 flex w-full items-center justify-start'>
-                    <Link href={`/products`} className='px-3 py-2 bg-gray-100 rounded-full capitalize dark:bg-neutral-800 hover:font-semibold hover:-translate-y-1 transition-all ease-linear duration-200'>
+                    <div onClick={handelAllProductCategory} className='px-3 py-2 bg-gray-100 rounded-full capitalize dark:bg-neutral-800 hover:font-semibold hover:-translate-y-1 transition-all ease-linear duration-200 cursor-pointer'>
                         All
-                    </Link>
+                    </div>
                     {
                         AllFilters.map(({ _id, name, category }) => {
                             return (
@@ -225,6 +236,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
             {(products && products.length === 0) && <div>No Products Found</div>}
             {isPending && <div><Loader title='Loading...' /></div>}
+            {isLoading && <div><Loader title='Loading...' /></div>}
 
             {/* Filters On the right */}
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
@@ -272,7 +284,7 @@ const ProductsPage = ({ searchParams }: any) => {
                 <div className=' grid grid-cols-4 gap-5'>
                     {/* CategoryWise product sorting here */}
                     {
-                        products?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
+                        categoryProduct?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                             return (
                                 <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                                     <div className="w-full py-3 relative">

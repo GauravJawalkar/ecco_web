@@ -186,7 +186,7 @@ const Cart = () => {
                         userCart?.cartItems?.map(
                             ({ name, price, image, quantity, discount, sellerName, _id, stock }: cartMappingProps) => {
                                 return (
-                                    <div className="p-5 border rounded-2xl dark:border-neutral-700 gap-3 my-3 relative h-fit" key={name + price}>
+                                    <div className="p-5 border rounded-2xl dark:border-neutral-700 dark:bg-neutral-700/20 gap-3 my-3 relative h-fit" key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
                                                 <Image

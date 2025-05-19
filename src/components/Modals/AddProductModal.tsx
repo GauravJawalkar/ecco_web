@@ -113,7 +113,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     return (
         <>
-            <section className='inset-0 absolute top-20 flex items-center justify-center backdrop-blur-md z-10'>
+            <section className='inset-0 fixed flex items-center justify-center backdrop-blur-md z-10'>
                 <div className='w-1/2 flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md relative'>
                     <div className='text-end absolute -top-3 -right-2'>
                         <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
