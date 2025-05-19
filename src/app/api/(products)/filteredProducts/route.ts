@@ -9,6 +9,7 @@ export async function POST(request: NextRequest) {
 
         const { category } = reqBody;
 
+        console.log(category);
 
         if (category.trim() === "") {
             return NextResponse.json({ error: "Invalid category value" }, { status: 400 })

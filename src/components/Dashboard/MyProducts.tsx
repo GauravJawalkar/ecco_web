@@ -37,6 +37,7 @@ interface prodDataProps {
     price: string;
     discount: string;
     size: string;
+    category: string;
     stock: string;
 }
 
@@ -50,6 +51,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
     const [oldDiscount, setOldDiscount] = useState("");
     const [oldSize, setOldSize] = useState("");
     const [currentId, setCurrentId] = useState("");
+    const [oldCategory, setOldCategory] = useState("");
     const [showMore, setShowMore] = useState<string | null>(null);
     const [reqLoader, setReqLoader] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -135,7 +137,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                             &&
                             <div className="grid grid-cols-4 py-4 gap-10">
                                 {prodData.map(
-                                    ({ _id, name, description, images, price, discount, size, seller, stock }: prodDataProps) => {
+                                    ({ _id, name, description, images, price, discount, size, seller, category, stock }: prodDataProps) => {
                                         return (
                                             <div key={_id} className="border p-5 dark:border-neutral-600 dark:bg-neutral-800">
                                                 <div>
@@ -238,6 +240,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                 setOldDiscount(discount);
                                                                 setOldSize(size);
                                                                 setCurrentId(_id);
+                                                                setOldCategory(category)
                                                             }}>
                                                             Edit
                                                             <span>
@@ -261,6 +264,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                     onClose={() => {
                                                         return setEditModal(false);
                                                     }}
+                                                    oldCategory={oldCategory}
                                                     oldName={oldName}
                                                     oldDescripion={oldDescripion}
                                                     oldPrice={oldPrice}
@@ -296,7 +300,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock }: prodDataProps) => {
+                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock, category }: prodDataProps) => {
                                             return (
                                                 <tr key={_id}>
                                                     <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
@@ -331,6 +335,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                     setOldSize(size);
                                                                     setOldStock(stock);
                                                                     setCurrentId(_id);
+                                                                    setOldCategory(category)
                                                                 }} />
                                                             <Trash2 onClick={() => {
                                                                 handelDelete(_id);
@@ -344,6 +349,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                 </table>
                                 <EditDetailsModal
                                     isVisible={editModal}
+                                    oldCategory={oldCategory}
                                     onClose={() => { return setEditModal(false) }}
                                     oldName={oldName}
                                     oldDescripion={oldDescripion}

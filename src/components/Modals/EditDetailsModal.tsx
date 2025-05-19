@@ -4,6 +4,7 @@ import Loader from '../Loaders/Loader'
 import { CircleX } from 'lucide-react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useQuery } from '@tanstack/react-query';
 
 interface editDetailsProps {
     onClose: () => void;
@@ -13,13 +14,14 @@ interface editDetailsProps {
     oldDiscount: string;
     oldStock: string;
     oldSize: string;
+    oldCategory: string;
     isVisible: boolean;
     id: string;
     reRender: () => {};
 }
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
-    oldPrice, oldDiscount, oldSize, oldStock, id, reRender }: editDetailsProps) => {
+    oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, reRender }: editDetailsProps) => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -28,12 +30,13 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
     const [size, setSize] = useState("");
     const [loading, setLoading] = useState(false);
     const [stock, setStock] = useState("");
+    const [category, setCategory] = useState("");
 
     const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             setLoading(true)
-            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock });
+            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock, category });
             if (response.data.data) {
                 toast.success("Updated Successfully")
                 setLoading(false);
@@ -52,27 +55,45 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
     }
 
+    async function getCategories() {
+        try {
+            const response = await axios.get('/api/getCategories')
+            if (response.data.data) {
+                return response.data.data
+            } else {
+                return [];
+            }
+        } catch (error) {
+            console.log("Error fetching the categories : ", error);
+            return [];
+        }
+    }
+
     useEffect(() => {
         setName(oldName);
         setDescription(oldDescripion);
         setPrice(oldPrice);
         setDiscount(oldDiscount);
+        setCategory(oldCategory);
         setSize(oldSize);
         setStock(oldStock);
-    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock])
+    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock, oldCategory])
 
-
+    const { data: fetchedCategories = [] } = useQuery({
+        queryKey: ['fetchedCategories'],
+        queryFn: getCategories
+    })
 
     if (!isVisible) return null;
 
 
     return (
-        <section className='inset-4 fixed h-screen flex items-center justify-center z-10 backdrop-blur '>
-            <div className='w-[500px] flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 '>
-                <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
-                    <div className='text-end'>
-                        <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
-                    </div>
+        <section className='inset-0 fixed h-auto flex items-center justify-center z-10 backdrop-blur '>
+            <div className='w-[600px]  px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 '>
+                <div className='flex items-center justify-center py-3'>
+                    <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
+                </div>
+                <form onSubmit={handelSubmit} className=' gap-5 flex-col min-w-full grid grid-cols-2'>
                     <div className='w-full'>
                         <label>Name :</label>
                         <input
@@ -134,9 +155,27 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                             onChange={(e) => setSize(e.target.value)} />
                     </div>
 
+                    <div className='w-full'>
+                        <label>Category :</label>
+                        <select
+                            value={category}
+                            className='text-black px-3 py-2 w-full rounded'
+                            required
+                            onChange={(e) => setCategory(e.target.value)} >
+                            <option>Select Category</option>
+                            {
+                                fetchedCategories.length !== 0 && fetchedCategories?.map(({ categoryName, _id }: { categoryName: string, _id: string }) => {
+                                    return (
+                                        <option key={_id}>{categoryName}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div>
+
                     <button
                         type='submit'
-                        className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                        className='w-full h-fit py-2 bg-[#0a0a0a] text-[#ededed] rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {
                             loading ?
                                 <Loader title='Updating ' /> :
