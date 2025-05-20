@@ -1,7 +1,7 @@
 "use client"
 
 import { useUserStore } from "@/store/UserStore"
-import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
+import { Heart, ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -113,14 +113,14 @@ export const Navbar = () => {
                     <div className={`inset-0 absolute top-10 w-fit hidden group-hover:block 
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 
                     ${dataLength === 0 ? "group-hover:hidden" : "block"}`}>
-                        <div className="border-b-[0.1px] backdrop-blur-md dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
+                        <div className="border-b-[0.1px]  dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />
                                 <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed]">{dataLength !== 0 && data.name.split(" ")[0]}</h1>
                             </li>
                             <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Details</Link>
                             <div>
-                                <p>{ }</p>
+                                <Link href={'/wishlist'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <Heart className="h-5 w-5" />Wishlist</Link>
                                 <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={() => { handelLogout() }}>
                                     <LogOut className="h-5 w-5" />
                                     Logout

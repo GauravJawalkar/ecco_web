@@ -10,7 +10,6 @@ import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
-
 const Product = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
