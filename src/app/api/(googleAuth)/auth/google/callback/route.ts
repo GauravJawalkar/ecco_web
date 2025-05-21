@@ -60,6 +60,7 @@ export async function GET(request: NextRequest) {
                 value: token,
                 httpOnly: true,
                 path: '/',
+                maxAge: 60 * 60 * 24
             });
 
 

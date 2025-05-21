@@ -48,14 +48,8 @@ export async function POST(request: NextRequest) {
         }
 
         const cookieStore = await cookies();
-        cookieStore.set('accessToken', accessToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            path: '/',
-            maxAge: 60 * 60 * 24
-        })
-        cookieStore.set('refreshToken', refreshToken, options)
+        cookieStore.set('accessToken', accessToken, options);
+        cookieStore.set('refreshToken', refreshToken, options);
 
         return NextResponse.json(
             {

@@ -82,7 +82,7 @@ userSchema.methods.generateAccessToken = function () {
         },
         process.env.ACCESS_TOKEN_SECRET as string,
         {
-            expiresIn: '2d'
+            expiresIn: '4d'
         }
     )
 }
