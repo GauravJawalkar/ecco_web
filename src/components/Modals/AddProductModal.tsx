@@ -43,7 +43,6 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     async function addProduct() {
         try {
             setLoading(true);
-
             const formData = new FormData();
             formData.append('images', images);
             formData.append('primeImage', primeImage);

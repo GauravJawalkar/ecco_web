@@ -94,7 +94,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
     const [sortedProducts, setSortedProducts] = useState<any[]>([]);
     const router = useRouter();
-    const [categoryProduct, setCategoryProduct] = useState([])
+    const [categoryProduct, setCategoryProduct] = useState<any[]>([]);
 
     async function getFilteredData(category: string) {
         try {
@@ -243,13 +243,16 @@ const ProductsPage = ({ searchParams }: any) => {
                 <div className='p-3 border dark:border-neutral-700 rounded-2xl h-fit sticky top-24 flex items-center justify-center flex-col gap-3'>
                     <div className='mt-8 w-full bg-gray-100 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Price :</h1>
-                        <h1 onClick={() => {
-                            setSortedProducts(() => [...allProducts].sort((a, b) => { return a.price - b.price }));
-                        }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
+                        <h1 onClick={
+                            () => {
+                                setSortedProducts(() => [...allProducts].sort((a, b) => { return a.price - b.price }));
+                                setCategoryProduct(() => [...products].sort((a, b) => { return a.price - b.price }))
+                            }} className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
                         <h1 onClick={() => {
-                            setSortedProducts(() => [...allProducts].sort((a, b) => { return b.price - a.price }))
+                            setSortedProducts(() => [...allProducts].sort((a, b) => { return b.price - a.price }));
+                            setCategoryProduct(() => [...products].sort((a, b) => { return b.price - a.price }))
                         }} className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>
@@ -259,7 +262,7 @@ const ProductsPage = ({ searchParams }: any) => {
                         <h1 className='pb-2 text-start'>Sort By Discount :</h1>
                         <h1
                             onClick={() => {
-                                setSortedProducts(() => [...allProducts].sort((a, b) => { return a.discount - b.discount }))
+                                setSortedProducts(() => [...allProducts].sort((a, b) => { return a.discount - b.discount }));
                             }}
                             className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-200 dark:hover:bg-neutral-700'>
                             Low To High
