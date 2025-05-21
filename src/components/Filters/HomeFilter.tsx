@@ -69,7 +69,7 @@ const HomeFilter = () => {
             {/* All Products Page Tag */}
             <div className='absolute -top-8 right-0 group'>
                 <Link href={'/products'} className='bg-gray-100 px-3 py-2 rounded-l-full group-hover:font-semibold flex items-center justify-center transition-transform ease-linear duration-200 dark:bg-neutral-800'>
-                    <span>See All Products</span>
+                    <span>All Products</span>
                     <ChevronRight className='hidden group-hover:flex translate-x-1 h-5 w-5 transition-transform ease-linear duration-400' />
                 </Link>
             </div>
