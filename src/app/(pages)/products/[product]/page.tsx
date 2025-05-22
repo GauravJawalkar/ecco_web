@@ -17,6 +17,7 @@ const Product = () => {
     const { data }: any = useUserStore();
     const queryClient = useQueryClient();
     const cartOwnerId = data?._id;
+    const [fill, setFill] = useState(false)
 
     async function getSpecificProduct(id: string) {
         try {
@@ -95,6 +96,14 @@ const Product = () => {
         addToCartMutation.mutate();
     }
 
+    const handelOrder = () => {
+        try {
+
+        } catch (error) {
+            console.error("Error setting up the order : ", error)
+        }
+    }
+
     return (
         <section className='py-10'>
             {isLoading && <div className='flex items-center justify-center'>
@@ -168,7 +177,7 @@ const Product = () => {
                             <div className='uppercase font-semibold text-lg line-through decoration-gray-500 decoration-[1px] text-gray-500'>
                                 ₹{product?.price}
                             </div>
-                            <span className='text-xl font-semibold text-green-600'> {Math.round(discountPercentage(product.price, product.discount))}% off</span>
+                            <span className='text-2xl font-semibold text-green-600'> {Math.round(discountPercentage(product.price, product.discount))}% off</span>
                         </div>
                     </div>
 
@@ -238,11 +247,11 @@ const Product = () => {
                             {addToCartMutation.isPending ? <Loader title='Adding...' /> : (<span className='flex items-center justify-center gap-4'><ShoppingCart />
                                 Add To Cart</span>)}
                         </button>
-                        <button className='px-4 py-3 border dark:border-neutral-500 rounded'>
-                            <Heart />
+                        <button onClick={() => { setFill(!fill) }} className='p-3 border dark:border-neutral-500 rounded-full'>
+                            <Heart className={`${fill ? "fill-red-500 text-red-500" : "fill-none"} `} />
                         </button>
                     </div>
-                    <button className='px-4 py-3 bg-red-400 rounded text-white w-full' >Buy Now</button>
+                    <button onClick={handelOrder} className='px-4 py-3 bg-green-500 rounded text-white w-full'>Buy Now</button>
                 </div>
             </div>}
 

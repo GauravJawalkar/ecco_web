@@ -20,12 +20,16 @@ const orderSchema = new Schema(
             type: Number,
             required: true
         },
+        orderDiscount: {
+            type: Number,
+            required: true
+        },
         orderQuantity: {
             type: Number,
             default: 1,
             required: true
         },
-        orderAddress: {
+        deliveryAddress: {
             type: String,
             required: true,
         }
