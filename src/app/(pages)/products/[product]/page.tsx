@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
@@ -251,7 +252,7 @@ const Product = () => {
                             <Heart className={`${fill ? "fill-red-500 text-red-500" : "fill-none"} `} />
                         </button>
                     </div>
-                    <button onClick={handelOrder} className='px-4 py-3 bg-green-500 rounded text-white w-full'>Buy Now</button>
+                    <Link href={`/checkout?id=${product?._id}`} className='px-4 py-3 bg-green-500 rounded text-white w-full text-center'>Buy Now</Link>
                 </div>
             </div>}
 

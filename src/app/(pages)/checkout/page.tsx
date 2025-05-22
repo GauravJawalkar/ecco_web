@@ -1,9 +1,18 @@
+"use client"
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react'
 
-const Checkout = () => {
+const page = () => {
+    const searchParams = useSearchParams();
+    const prodId = searchParams.get('id');
+    const router = useRouter();
+
+    if (!prodId) {
+        return router.back();
+    }
     return (
-        <div>Checkout</div>
+        <div>page:{prodId}</div>
     )
 }
 
-export default Checkout
+export default page

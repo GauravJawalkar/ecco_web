@@ -16,6 +16,11 @@ const orderSchema = new Schema(
             ref: 'User',
             required: true
         },
+        contactNumber: {
+            type: Number,
+            min: 10,
+            required: true
+        },
         orderPrice: {
             type: Number,
             required: true
