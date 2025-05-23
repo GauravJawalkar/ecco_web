@@ -25,6 +25,14 @@ const orderSchema = new Schema(
             type: Number,
             required: true
         },
+        pinCode: {
+            type: String,
+            required: true
+        },
+        landMark: {
+            type: String,
+            required: true
+        },
         orderDiscount: {
             type: Number,
             required: true
@@ -37,6 +45,16 @@ const orderSchema = new Schema(
         deliveryAddress: {
             type: String,
             required: true,
+        },
+        paymentMethod: {
+            type: String,
+            enum: ["Online", "COD"],
+            required: true
+        },
+        paymentStatus: {
+            type: String,
+            enum: ["Done", "COD"],
+            required: true
         }
     },
     {
