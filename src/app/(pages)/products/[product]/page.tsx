@@ -252,7 +252,7 @@ const Product = () => {
                             <Heart className={`${fill ? "fill-red-500 text-red-500" : "fill-none"} `} />
                         </button>
                     </div>
-                    <Link href={`/checkout?id=${product?._id}`} className='px-4 py-3 bg-green-500 rounded text-white w-full text-center'>Buy Now</Link>
+                    <Link href={`/checkout?id=${product?._id}`} className='px-4 py-3 bg-green-500 rounded text-white w-full text-center hover:bg-green-500/80'>Buy Now</Link>
                 </div>
             </div>}
 

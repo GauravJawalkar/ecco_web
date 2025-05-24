@@ -24,6 +24,8 @@ const page = () => {
     const [contactNumber, setContactNumber] = useState("");
     const [select, setSelect] = useState("");
     const [isCOD, setIsCOD] = useState(false);
+    const [upiLoading, setUpiLoading] = useState(false);
+    const [cardLoading, setCardLoading] = useState(false);
     const { data }: any = useUserStore();
     const userId = data?._id;
 
@@ -101,14 +103,14 @@ const page = () => {
             // Create Razorpay order
             const { data: order } = await axios.post('/api/razorpay/order', {
                 amount: ((productDetails?.price - productDetails?.discount) * quantity),
-                receipt: 'receipt_001',
+                receipt: 'reciept-001',
             });
 
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
                 amount: order.amount,
                 currency: order.currency,
-                name: 'Your Store',
+                name: `${sellerDetails?.name}'s Store`,
                 description: 'Test Transaction',
                 order_id: order.id,
                 handler: async function (response: any) {
@@ -132,6 +134,7 @@ const page = () => {
                         const response = await axios.post("/api/createOrder", { orderDetails });
                         if (response.data.data) {
                             toast.success('✅ Ordered! Check Orders');
+                            router.push('/orders');
                         }
                         return [];
                     } else {
@@ -145,9 +148,13 @@ const page = () => {
 
             const razor = new (window as any).Razorpay(options);
             razor.open();
+            setUpiLoading(false);
+            setCardLoading(false);
         } catch (err) {
             console.error('Error in Razorpay flow:', err);
             toast.error('Payment failed to initiate.');
+            setUpiLoading(false);
+            setCardLoading(false);
         }
 
     };
@@ -185,7 +192,6 @@ const page = () => {
     const createOrderMutation = useMutation({
         mutationFn: createOrder,
         onSuccess: () => {
-            toast.success("Check Orders");
             router.push('/orders');
         }
     })
@@ -235,8 +241,11 @@ const page = () => {
 
                 {/* Address Details */}
                 <div className='flex items-center justify-between pt-10'>
-                    <h1 className='uppercase font-semibold text-start text-lg '>Delivery Address</h1>
-                    <button className='uppercase font-semibold hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 Add New Address</button>
+                    <div>
+                        <h1 className='uppercase font-semibold text-start text-lg '>Delivery Address</h1>
+                        <p className='text-sm text-gray-600'>Select your delivery address below</p>
+                    </div>
+                    <button className='uppercase font-semibold hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 New Address</button>
                 </div>
                 {isPending && <div className='flex items-center justify-center w-full'><Loader title='Fetching...' /></div>}
                 <div className='w-full'>
@@ -268,22 +277,25 @@ const page = () => {
                     <AddAddressModal isVisible={showModal} onClose={() => { setShowModal(false) }} />
                 </div>
 
-                <div className='flex items-center justify-start py-5 '>
+                <div className='py-5 '>
                     <h1 className='uppercase font-semibold text-start text-lg'>Payment Options</h1>
+                    <p className='text-sm text-gray-600'>Select a payment type below</p>
                 </div>
                 <div className='w-full flex items-center justify-between gap-4'>
                     {/* UPI */}
-                    <button className='p-5 border dark:border-neutral-700 w-full rounded-xl' type='button' onClick={handlePayment}>
-                        UPI
+                    <button disabled={select.trim() === ""} className={`p-5 border dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'
+                        onClick={() => { setUpiLoading(true); handlePayment(); }}>
+                        {upiLoading ? <Loader title='Processing...' /> : "UPI"}
                     </button>
 
                     {/* Credit/Debit Card */}
-                    <button className='p-5 border dark:border-neutral-700 w-full rounded-xl' type='button' onClick={handlePayment}>
-                        Credit / Debit Card
+                    <button disabled={select.trim() === ""} className={`p-5 border dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"} `} type='button'
+                        onClick={() => { setCardLoading(true); handlePayment(); }}>
+                        {cardLoading ? <Loader title='Processing...' /> : "Credit / Debit Card"}
                     </button>
 
                     {/* Cash on Delivery */}
-                    <button onClick={() => { setIsCOD((prev) => !prev) }} className='p-5 border dark:border-neutral-700 w-full rounded-xl relative' type='button'>
+                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 border dark:border-neutral-700 w-full rounded-xl relative ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'>
                         Cash On Delivery
                         {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500'><CheckCircle2 /></span>}
                     </button>
@@ -294,9 +306,9 @@ const page = () => {
             </div>
 
             {/* Grid Second half */}
-            <div className='border p-5 rounded-xl sticky top-24 h-fit'>
-                <h1 className='uppercase font-semibold '>Price Details</h1>
-                <hr className='my-2' />
+            <div className='border dark:border-neutral-700 p-5 rounded-xl sticky top-24 h-fit'>
+                <h1 className='uppercase font-semibold pb-2'>Price Details</h1>
+                <hr className='my-2 dark:text-neutral-700' />
                 <div className='space-y-5 py-4'>
                     <div className='flex items-center justify-between'>
                         <h1>Price ({quantity} item)</h1>
@@ -304,13 +316,13 @@ const page = () => {
                     </div>
                     <div className='flex items-center justify-between'>
                         <h1>Platform Fee</h1>
-                        <p>₹ 0</p>
+                        <p>₹ 0.0</p>
                     </div>
                     <div className='flex items-center justify-between'>
                         <h1>Delivery Charges</h1>
                         <h1>Free</h1>
                     </div>
-                    <hr className='my-2' />
+                    <hr className='my-2 dark:text-neutral-700' />
                     <div className='flex items-center justify-between'>
                         <h1>Toatal Payable</h1>
                         <h1>₹{(productDetails?.price - productDetails?.discount) * quantity || 0}</h1>
