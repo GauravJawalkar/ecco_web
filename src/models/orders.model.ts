@@ -55,6 +55,11 @@ const orderSchema = new Schema(
             type: String,
             enum: ["Done", "COD"],
             required: true
+        },
+        seller: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         }
     },
     {

@@ -128,8 +128,9 @@ const page = () => {
                         const orderDiscount = productDetails?.discount;
                         const paymentStatus = "Done";
                         const paymentMethod = "Online";
+                        const sellerId = sellerDetails?._id;
                         const orderDetails = {
-                            orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId
+                            orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId
                         };
                         const response = await axios.post("/api/createOrder", { orderDetails });
                         if (response.data.data) {
@@ -175,8 +176,9 @@ const page = () => {
             const orderDiscount = productDetails?.discount;
             const paymentStatus = "COD";
             const paymentMethod = "COD";
+            const sellerId = sellerDetails?._id;
             const orderDetails = {
-                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId
+                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId
             };
             const response = await axios.post("/api/createOrder", { orderDetails });
             if (response.data.data) {
