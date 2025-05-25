@@ -5,7 +5,7 @@ import { discountPercentage } from '@/helpers/discountPercentage';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { BadgeCheck, Check, CheckCircle2, Minus, Plus } from 'lucide-react';
+import { CheckCircle2, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -207,33 +207,33 @@ const page = () => {
         <div className='grid grid-cols-[3fr_1fr] py-5 gap-4'>
 
             <div className='p-5 border dark:border-neutral-700 rounded-xl'>
-                <h1 className='pb-5 uppercase font-semibold text-start text-lg'>Order Summary</h1>
+                <h1 className='pb-5 text-lg font-semibold uppercase text-start'>Order Summary</h1>
                 {isPending && <div className='flex items-center justify-center w-full'><Loader title='Loading...' /></div>}
                 <div className={`w-full grid grid-cols-[1fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-5`}>
                     {(!isPending && !isError) &&
                         <>
                             <div className={`${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-3`}>
-                                <Image src={productDetails?.images?.[0] || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='rounded-xl h-36 w-full object-contain' />
+                                <Image src={productDetails?.images?.[0] || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='object-contain w-full rounded-xl h-36' />
                                 <div className='flex items-center justify-center gap-3'>
-                                    <button disabled={quantity <= 1} onClick={() => { setQuantity(quantity - 1) }} className='p-2 border dark:border-neutral-700 rounded-full'><Minus className='h-4 w-4' /></button>
+                                    <button disabled={quantity <= 1} onClick={() => { setQuantity(quantity - 1) }} className='p-2 border rounded-full dark:border-neutral-700'><Minus className='w-4 h-4' /></button>
                                     <span>{quantity}</span>
-                                    <button onClick={() => { setQuantity(quantity + 1) }} className='p-2 border dark:border-neutral-700 rounded-full'><Plus className='h-4 w-4' /></button>
+                                    <button onClick={() => { setQuantity(quantity + 1) }} className='p-2 border rounded-full dark:border-neutral-700'><Plus className='w-4 h-4' /></button>
                                 </div>
                             </div>
 
-                            <div className='space-y-3 content-center'>
-                                <h1 className='capitalize text-xl font-semibold line-clamp-2'>{productDetails?.name}</h1>
-                                <h1 className='text-sm line-clamp-3 capitalize text-gray-600 dark:text-gray-400'>{productDetails?.description}</h1>
+                            <div className='content-center space-y-3'>
+                                <h1 className='text-xl font-semibold capitalize line-clamp-2'>{productDetails?.name}</h1>
+                                <h1 className='text-sm text-gray-600 capitalize line-clamp-3 dark:text-gray-400'>{productDetails?.description}</h1>
                                 <h1 className='font-semibold'>
                                     <span className='text-gray-500 line-through'>₹ {productDetails?.price}</span>
-                                    <span className='text-xl px-3'>
+                                    <span className='px-3 text-xl'>
                                         ₹ {productDetails?.price - productDetails?.discount}
                                     </span>
                                     <span className='text-green-500'>{Math.round(discountPercentage(productDetails?.price, productDetails?.discount))} % off</span>
                                 </h1>
                                 <div>
-                                    <h1 className='capitalize text-sm'>Seller : 🧑‍🦰 {sellerDetails?.name}</h1>
-                                    <h1 className='capitalize text-sm'>Store : 🏪 {sellerDetails?.name}'s Store</h1>
+                                    <h1 className='text-sm capitalize'>Seller : 🧑‍🦰 {sellerDetails?.name}</h1>
+                                    <h1 className='text-sm capitalize'>Store : 🏪 {sellerDetails?.name}'s Store</h1>
                                     <h1 className='text-sm'>Email : 📧 {sellerDetails?.email}</h1>
                                 </div>
                             </div>
@@ -244,15 +244,15 @@ const page = () => {
                 {/* Address Details */}
                 <div className='flex items-center justify-between pt-10'>
                     <div>
-                        <h1 className='uppercase font-semibold text-start text-lg '>Delivery Address</h1>
+                        <h1 className='text-lg font-semibold uppercase text-start '>Delivery Address</h1>
                         <p className='text-sm text-gray-600'>Select your delivery address below</p>
                     </div>
-                    <button className='uppercase font-semibold hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 New Address</button>
+                    <button className='font-semibold uppercase hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 New Address</button>
                 </div>
                 {isPending && <div className='flex items-center justify-center w-full'><Loader title='Fetching...' /></div>}
                 <div className='w-full'>
                     <div>
-                        {userAddresses?.[0].addresses?.length <= 0 && <h1 className='capitalize text-xl font-semibold'>No Addresses Saved. Add One</h1>}
+                        {userAddresses?.[0].addresses?.length <= 0 && <h1 className='text-xl font-semibold capitalize'>No Addresses Saved. Add One</h1>}
                         {
                             userAddresses?.[0].addresses?.map(({ _id, mainAddress, pinCode, landMark, contactNumber }: any) => {
                                 return (
@@ -263,7 +263,7 @@ const page = () => {
                                         setLandMark(landMark);
                                         setContactNumber(contactNumber);
                                         setOrderImage(productDetails?.images?.[0]);
-                                    }} key={_id} className='space-y-1 py-3 border dark:border-neutral-700 p-5 rounded-xl my-4 cursor-pointer relative'>
+                                    }} key={_id} className='relative p-5 py-3 my-4 space-y-1 border cursor-pointer dark:border-neutral-700 rounded-xl'>
                                         <h1 title='main address of street city village'>🗺️ : {mainAddress}</h1>
                                         <h1 title='pincode of the area'>📍 : {pinCode}</h1>
                                         <h1 title='landmark of the area'>🌍 : {landMark}</h1>
@@ -280,10 +280,10 @@ const page = () => {
                 </div>
 
                 <div className='py-5 '>
-                    <h1 className='uppercase font-semibold text-start text-lg'>Payment Options</h1>
+                    <h1 className='text-lg font-semibold uppercase text-start'>Payment Options</h1>
                     <p className='text-sm text-gray-600'>Select a payment type below</p>
                 </div>
-                <div className='w-full flex items-center justify-between gap-4'>
+                <div className='flex items-center justify-between w-full gap-4'>
                     {/* UPI */}
                     <button disabled={select.trim() === ""} className={`p-5 border dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'
                         onClick={() => { setUpiLoading(true); handlePayment(); }}>
@@ -302,16 +302,16 @@ const page = () => {
                         {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500'><CheckCircle2 /></span>}
                     </button>
                 </div>
-                {(isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='my-5 border p-3 w-fit rounded-full text-sm bg-green-500 text-white hover:bg-green-500/80'>
+                {(isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='p-3 my-5 text-sm text-white bg-green-500 border rounded-full w-fit hover:bg-green-500/80'>
                     Confirm Order
                 </button>}
             </div>
 
             {/* Grid Second half */}
-            <div className='border dark:border-neutral-700 p-5 rounded-xl sticky top-24 h-fit'>
-                <h1 className='uppercase font-semibold pb-2'>Price Details</h1>
+            <div className='sticky p-5 border dark:border-neutral-700 rounded-xl top-24 h-fit'>
+                <h1 className='pb-2 font-semibold uppercase'>Price Details</h1>
                 <hr className='my-2 dark:text-neutral-700' />
-                <div className='space-y-5 py-4'>
+                <div className='py-4 space-y-5'>
                     <div className='flex items-center justify-between'>
                         <h1>Price ({quantity} item)</h1>
                         <p>₹{(productDetails?.price - productDetails?.discount) * quantity || 0}</p>

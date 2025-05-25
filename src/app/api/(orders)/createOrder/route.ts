@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
 
         const { orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId } = reqBody.orderDetails;
 
-        console.log(reqBody.orderDetails);
 
         if ([orderName, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId].some((elem: string) => { elem.trim() === "" })) {
             return NextResponse.json({ error: "Required Fields cannot be empty" }, { status: 400 });

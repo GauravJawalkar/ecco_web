@@ -55,27 +55,27 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
 
     if (!isVisible) return null;
     return (
-        <section className='inset-0 fixed flex items-center justify-center backdrop-blur-md z-10'>
-            <div className='w-1/2 flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md relative'>
-                <div className='text-end absolute -top-3 -right-2'>
-                    <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
+        <section className='fixed inset-0 z-10 flex items-center justify-center backdrop-blur-md'>
+            <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
+                <div className='absolute text-end -top-3 -right-2'>
+                    <CircleX className='w-8 h-8 cursor-pointer ' onClick={onClose} />
                 </div>
-                <form onSubmit={handelAddress} className='grid grid-cols-2 gap-5 min-w-full'>
+                <form onSubmit={handelAddress} className='grid min-w-full grid-cols-2 gap-5'>
                     <div className='w-full'>
                         <label>Address :</label>
-                        <textarea rows={1} className='text-black px-3 py-2 w-full rounded' placeholder='Enter Your Full Address' required onChange={(e) => setAddress(e.target.value)} />
+                        <textarea rows={1} className='w-full px-3 py-2 text-black rounded' placeholder='Enter Your Full Address' required onChange={(e) => setAddress(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>PinCode :</label>
-                        <input type='text' className='text-black px-3 py-2 w-full rounded' placeholder='Enter Your Pincode' required onChange={(e) => setPinCode(e.target.value)} />
+                        <input type='text' className='w-full px-3 py-2 text-black rounded' placeholder='Enter Your Pincode' required onChange={(e) => setPinCode(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>LandMark :</label>
-                        <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Stock' required onChange={(e) => setLandMark(e.target.value)} />
+                        <input type="text" className='w-full px-3 py-2 text-black rounded' placeholder='Enter Stock' required onChange={(e) => setLandMark(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <label>Contact Number :</label>
-                        <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Discount' required onChange={(e) => setContactNumber(e.target.value)} />
+                        <input type="number" className='w-full px-3 py-2 text-black rounded' placeholder='Enter Discount' required onChange={(e) => setContactNumber(e.target.value)} />
                     </div>
                     <div className='w-full'>
                         <button type='submit' className='w-full py-2 bg-[#0a0a0a] text-[#ededed]  rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
