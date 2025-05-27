@@ -32,26 +32,23 @@ const Dashboard = () => {
                 <div>
                     <button
                         className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
-                        onClick={() => {
-                            setShowProductModal(true);
-                        }}
-                    >
+                        onClick={() => { setShowProductModal(true) }}>
                         Add product
                     </button>
                 </div>
 
                 {/* Add A Product */}
                 <div>
-                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Orders Processing
-                    </button>
+                    <Link href={'/dashboard/ordersProcess'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
+                        Process Orders
+                    </Link>
                 </div>
 
                 {/* Orders Completed */}
                 <div>
-                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Orders Completed
-                    </button>
+                    <Link href={'/dashboard/ordersAction'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
+                        Orders Actions
+                    </Link>
                 </div>
 
                 {/* Custom Category */}
