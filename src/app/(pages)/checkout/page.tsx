@@ -177,8 +177,9 @@ const page = () => {
             const paymentStatus = "COD";
             const paymentMethod = "COD";
             const sellerId = sellerDetails?._id;
+            const orderConfirmation = "Order Confirmed";
             const orderDetails = {
-                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId
+                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation
             };
             const response = await axios.post("/api/createOrder", { orderDetails });
             if (response.data.data) {

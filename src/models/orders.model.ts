@@ -60,6 +60,10 @@ const orderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true
+        },
+        processingStatus: {
+            type: String,
+            enum: ['Order Confirmed', 'Shipped', 'Processing', 'Out For Delivery']
         }
     },
     {

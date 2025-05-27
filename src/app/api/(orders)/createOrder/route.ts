@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId } = reqBody.orderDetails;
+        const { orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation } = reqBody.orderDetails;
 
 
-        if ([orderName, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId].some((elem: string) => { elem.trim() === "" })) {
+        if ([orderName, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation].some((elem: string) => { elem.trim() === "" })) {
             return NextResponse.json({ error: "Required Fields cannot be empty" }, { status: 400 });
         }
 
@@ -27,7 +27,8 @@ export async function POST(request: NextRequest) {
             landMark,
             paymentMethod,
             paymentStatus,
-            seller: sellerId
+            seller: sellerId,
+            processingStatus: orderConfirmation
         })
 
         if (!order) {
