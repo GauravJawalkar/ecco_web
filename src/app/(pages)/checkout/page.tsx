@@ -123,6 +123,7 @@ const page = () => {
 
                     if (verifyData.success) {
                         toast.success('✅ Payment successful and verified!');
+                        const productId = productDetails?._id;
                         const orderName = productDetails?.name;
                         const orderPrice = productDetails?.price;
                         const orderDiscount = productDetails?.discount;
@@ -130,7 +131,7 @@ const page = () => {
                         const paymentMethod = "Online";
                         const sellerId = sellerDetails?._id;
                         const orderDetails = {
-                            orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId
+                            orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, productId
                         };
                         const response = await axios.post("/api/createOrder", { orderDetails });
                         if (response.data.data) {
@@ -171,15 +172,16 @@ const page = () => {
 
     async function createOrder() {
         try {
+            const productId = productDetails?._id;
             const orderName = productDetails?.name;
             const orderPrice = productDetails?.price;
             const orderDiscount = productDetails?.discount;
-            const paymentStatus = "COD";
+            const paymentStatus = "Pending";
             const paymentMethod = "COD";
             const sellerId = sellerDetails?._id;
             const orderConfirmation = "Order Confirmed";
             const orderDetails = {
-                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation
+                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation, productId
             };
             const response = await axios.post("/api/createOrder", { orderDetails });
             if (response.data.data) {

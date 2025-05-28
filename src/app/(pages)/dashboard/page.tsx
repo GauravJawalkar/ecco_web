@@ -47,7 +47,7 @@ const Dashboard = () => {
                 {/* Orders Completed */}
                 <div>
                     <Link href={'/dashboard/ordersAction'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Orders Actions
+                        Order Actions
                     </Link>
                 </div>
 

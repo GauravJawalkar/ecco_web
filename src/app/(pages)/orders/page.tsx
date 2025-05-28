@@ -60,7 +60,7 @@ const page = () => {
                         <div key={_id} className='grid grid-cols-[2fr_1fr_1.5fr] gap-3 border dark:border-neutral-700 rounded-xl my-4'>
                             <div className='flex items-start justify-start p-3 text-center gap-3'>
                                 <div className='w-[25%]'>
-                                    <Image src={orderImage || '/happy.svg'} alt='order-image' height={800} width={800} className='object-contain w-full h-auto border dark:border-neutral-700 rounded-xl' />
+                                    <Image src={orderImage || '/happy.svg'} alt='order-image' height={800} width={800} className='object-contain border dark:border-neutral-700 rounded-xl h-28 w-28' />
                                 </div>
                                 <div className='w-full space-y-2 '>
                                     <h1 className='font-semibold capitalize line-clamp-2 text-start'>{orderName}</h1>

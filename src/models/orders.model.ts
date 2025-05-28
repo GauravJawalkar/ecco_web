@@ -1,8 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 
-
 const orderSchema = new Schema(
     {
+        productId: {
+            type: String,
+            required: true
+        },
         orderName: {
             type: String,
             required: true
@@ -53,7 +56,7 @@ const orderSchema = new Schema(
         },
         paymentStatus: {
             type: String,
-            enum: ["Done", "COD"],
+            enum: ["Done", "Pending"],
             required: true
         },
         seller: {
