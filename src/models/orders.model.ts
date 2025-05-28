@@ -66,7 +66,7 @@ const orderSchema = new Schema(
         },
         processingStatus: {
             type: String,
-            enum: ['Order Confirmed', 'Shipped', 'Processing', 'Out For Delivery']
+            enum: ['Order Confirmed', 'Order Shipped', 'Order Processing', 'Out For Delivery']
         }
     },
     {
