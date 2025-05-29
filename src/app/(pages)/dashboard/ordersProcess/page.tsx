@@ -86,8 +86,9 @@ const page = () => {
                             <div className="flex items-center justify-between p-3">
                                 <h1>Order Id : {_id}</h1>
                                 <div className="space-x-2">
-                                    <button className="p-1 rounded border dark:border-neutral-700">Generate Invoice</button>
-                                    <button className="p-1 rounded border dark:border-neutral-700"
+                                    <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm">
+                                        Generate Invoice</button>
+                                    <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm"
                                         onClick={() => handelShowDetails(_id)}
                                     >{showDetails ? "Show Details" : "Hide Details"}</button>
                                 </div>
