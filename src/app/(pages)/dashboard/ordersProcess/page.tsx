@@ -12,6 +12,7 @@ const page = () => {
     const { data }: any = useUserStore();
     const [processState, setProcessState] = useState("");
     const [orderID, setOrderID] = useState("");
+    const [showDetails, setShowDetails] = useState("");
     const id = data?._id;
     const queryClient = useQueryClient();
 
@@ -52,12 +53,19 @@ const page = () => {
         updateOrderMutation.mutate();
     }
 
-    const { data: sellerOrders = [], isPending, isError, isLoading } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
+    const handelShowDetails = (_id: string) => {
+        setShowDetails(_id);
+        if (showDetails.trim() !== "") {
+            setShowDetails("");
+        }
+    }
+
+    const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
     return (
         <section className="my-6">
             <div className="flex items-center justify-between">
-                <h1>Toatal Orders : {sellerOrders.length}</h1>
-                <h1>Order Processing</h1>
+                <h1 className="uppercase font-semibold">Toatal Orders : {sellerOrders.length}</h1>
+                <h1>Order Status</h1>
             </div>
 
             {isPending && <div className="flex items-center justify-center py-5">
@@ -74,13 +82,18 @@ const page = () => {
             {
                 sellerOrders?.map(({ _id, processingStatus }: { _id: string, processingStatus: string }) => {
                     return (
-                        <div key={_id} className="p-3 border dark:border-neutral-700 rounded-lg my-4 dark:bg-neutral-900/80">
+                        <div key={_id} className="p-3 border dark:border-neutral-700 rounded my-4 dark:bg-neutral-900/80">
                             <div className="flex items-center justify-between p-3">
                                 <h1>Order Id : {_id}</h1>
-                                <button>Show Details</button>
+                                <div className="space-x-2">
+                                    <button className="p-1 rounded border dark:border-neutral-700">Generate Invoice</button>
+                                    <button className="p-1 rounded border dark:border-neutral-700"
+                                        onClick={() => handelShowDetails(_id)}
+                                    >{showDetails ? "Show Details" : "Hide Details"}</button>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between flex-grow gap-3">
-                                <div className="w-full p-3 border dark:border-neutral-700 rounded-xl relative">
+                            <div className={` items-center justify-between flex-grow gap-3 ${showDetails === _id ? "flex" : "hidden"}`}>
+                                <div className="w-full p-3 border dark:border-neutral-700 rounded relative">
                                     <h1 className="text-center">Order Confirmed</h1>
                                     <div className="absolute -right-2 -top-3">
                                         <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" />
@@ -88,7 +101,7 @@ const page = () => {
                                 </div>
                                 <MoveRight className="w-20 h-20" />
 
-                                <div className="w-full p-3 border dark:border-neutral-700 rounded-xl relative">
+                                <div className="w-full p-3 border dark:border-neutral-700 rounded relative">
                                     <h1 className="text-center">Order Processing</h1>
                                     <div className="absolute -right-2 -top-3">
                                         {(processingStatus === "Out For Delivery" || processingStatus === "Order Processing" || processingStatus === "Order Shipped") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
@@ -96,12 +109,12 @@ const page = () => {
                                                 e.preventDefault();
                                                 setOrderID(_id); setProcessState("Processing");
                                                 handelOrderUpdate();
-                                            }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Process ?</button>
+                                            }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Processed ?</button>
                                         }
                                     </div>
                                 </div>
                                 <MoveRight className="w-20 h-20" />
-                                <div className="w-full p-3 border dark:border-neutral-700 rounded-xl relative">
+                                <div className="w-full p-3 border dark:border-neutral-700 rounded relative">
                                     <h1 className="text-center">Order Shipped</h1>
                                     <div className="absolute -right-2 -top-3">
                                         {(processingStatus === "Order Shipped" || processingStatus === "Out For Delivery") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
@@ -109,12 +122,12 @@ const page = () => {
                                                 e.preventDefault();
                                                 setOrderID(_id); setProcessState("Ship");
                                                 handelOrderUpdate();
-                                            }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Ship ?</button>
+                                            }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Shipped ?</button>
                                         }
                                     </div>
                                 </div>
                                 <MoveRight className="w-20 h-20" />
-                                <div className="w-full p-3 border dark:border-neutral-700 rounded-xl relative">
+                                <div className="w-full p-3 border dark:border-neutral-700 rounded relative">
                                     <h1 className="text-center">Out For Delivery</h1>
                                     <div className="absolute -right-2 -top-3">
                                         {processingStatus === "Out For Delivery" ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :

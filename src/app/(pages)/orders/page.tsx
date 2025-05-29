@@ -30,7 +30,6 @@ const page = () => {
             if (response.data.data) {
                 return response.data.data
             }
-
             return [];
         } catch (error) {
             console.error("Error fetching the user orders: ", error);
@@ -82,15 +81,14 @@ const page = () => {
                                 </div>
                             </div>
                             <div className='p-3 text-center '>
-                                <h1 className='text-start text-sm'> <span className='font-semibold text-base'>🗺️ Address</span> : {deliveryAddress}</h1>
-                                <h1 className='text-start text-sm'><span className='font-semibold text-base'>📍 Pincode </span> : {pinCode}</h1>
-                                <h1 className='text-start text-sm'><span className='font-semibold text-base'>🟢 Order Status </span> : {processingStatus}</h1>
-                                <h1 className='text-start text-sm'> <span className='font-semibold text-base'>💸 Payment Status</span> : {paymentStatus}</h1>
+                                <h1 className='text-start text-sm'>🗺️ : {deliveryAddress}</h1>
+                                <h1 className='text-start text-sm'>📍 : {pinCode}</h1>
+                                <h1 className='text-start text-sm'>🟢 : {processingStatus}</h1>
+                                <h1 className='text-start text-sm'>💸 : {paymentStatus}</h1>
                             </div>
                         </div>
                     )
                 })
-
             }
         </section >
     )

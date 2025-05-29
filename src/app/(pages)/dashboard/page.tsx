@@ -37,20 +37,6 @@ const Dashboard = () => {
                     </button>
                 </div>
 
-                {/* Add A Product */}
-                <div>
-                    <Link href={'/dashboard/ordersProcess'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Process Orders
-                    </Link>
-                </div>
-
-                {/* Orders Completed */}
-                <div>
-                    <Link href={'/dashboard/ordersAction'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Order Actions
-                    </Link>
-                </div>
-
                 {/* Custom Category */}
                 <div>
                     <button
@@ -60,7 +46,6 @@ const Dashboard = () => {
                     </button>
                 </div>
 
-
                 {/* specialShow button */}
                 {data?.isSuperAdmin && <div>
                     <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
@@ -69,6 +54,13 @@ const Dashboard = () => {
                         </Link>
                     </button>
                 </div>}
+
+                {/* Add A Product */}
+                <div>
+                    <Link href={'/dashboard/ordersProcess'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
+                        Process Orders
+                    </Link>
+                </div>
 
             </div>
             <div className=" flex items-center justify-end gap-3 pt-4">
