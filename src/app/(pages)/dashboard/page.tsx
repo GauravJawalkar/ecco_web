@@ -32,7 +32,7 @@ const Dashboard = () => {
                 <div>
                     <button
                         className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
-                        onClick={() => { setShowProductModal(true) }}>
+                        onClick={() => { setShowProductModal(true) }}>clea
                         Add product
                     </button>
                 </div>
