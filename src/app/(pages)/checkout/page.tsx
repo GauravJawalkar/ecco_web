@@ -89,7 +89,7 @@ const page = () => {
         }
     )
 
-    const { data: userAddresses } = useQuery({
+    const { data: userAddresses, isLoading } = useQuery({
         queryKey: ['userAddresses'],
         queryFn: () => getUserAddress(),
         enabled: !!userId,
@@ -252,9 +252,9 @@ const page = () => {
                     </div>
                     <button className='font-semibold uppercase hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 New Address</button>
                 </div>
-                {isPending && <div className='flex items-center justify-center w-full'><Loader title='Fetching...' /></div>}
                 <div className='w-full'>
                     <div>
+                        {isLoading && <div className='flex items-center justify-center'><Loader title='Loading...' /></div>}
                         {userAddresses?.[0].addresses?.length <= 0 && <h1 className='text-xl font-semibold capitalize'>No Addresses Saved. Add One</h1>}
                         {
                             userAddresses?.[0].addresses?.map(({ _id, mainAddress, pinCode, landMark, contactNumber }: any) => {
