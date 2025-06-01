@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 const page = () => {
     const { data }: any = useUserStore();
     const [processState, setProcessState] = useState("");
+    const [orderDocId, setOrderDocId] = useState("");
     const [orderID, setOrderID] = useState("");
     const [showDetails, setShowDetails] = useState("");
     const id = data?._id;
@@ -30,7 +31,7 @@ const page = () => {
 
     async function updateOrderState() {
         try {
-            const response = await axios.put('/api/updateSellerOrderState', { processState, orderID });
+            const response = await axios.put('/api/updateSellerOrderState', { processState, orderID, orderDocId });
             if (response.data.data) {
                 return response.data.data
             }
@@ -60,7 +61,9 @@ const page = () => {
         }
     }
 
+
     const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
+
     return (
         <section className="my-6">
             <div className="flex items-center justify-between">
@@ -80,7 +83,7 @@ const page = () => {
                 </div>
             }
             {
-                sellerOrders?.map(({ _id, processingStatus }: { _id: string, processingStatus: string }) => {
+                sellerOrders[0]?.orders?.map(({ _id, processingStatus }: { _id: string, processingStatus: string }) => {
                     return (
                         <div key={_id} className="p-3 border dark:border-neutral-700 rounded my-4 dark:bg-neutral-900/80">
                             <div className="flex items-center justify-between p-3">
@@ -89,7 +92,7 @@ const page = () => {
                                     <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm">
                                         Generate Invoice</button>
                                     <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm"
-                                        onClick={() => handelShowDetails(_id)}
+                                        onClick={() => { handelShowDetails(_id) }}
                                     >{showDetails ? "Show Details" : "Hide Details"}</button>
                                 </div>
                             </div>
@@ -108,7 +111,9 @@ const page = () => {
                                         {(processingStatus === "Out For Delivery" || processingStatus === "Order Processing" || processingStatus === "Order Shipped") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
                                             <button onClick={(e) => {
                                                 e.preventDefault();
-                                                setOrderID(_id); setProcessState("Processing");
+                                                setOrderDocId(sellerOrders?._id);
+                                                setOrderID(_id);
+                                                setProcessState("Processing");
                                                 handelOrderUpdate();
                                             }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Processed ?</button>
                                         }
@@ -121,7 +126,9 @@ const page = () => {
                                         {(processingStatus === "Order Shipped" || processingStatus === "Out For Delivery") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
                                             <button onClick={(e) => {
                                                 e.preventDefault();
-                                                setOrderID(_id); setProcessState("Ship");
+                                                setOrderDocId(sellerOrders?._id);
+                                                setOrderID(_id);
+                                                setProcessState("Ship");
                                                 handelOrderUpdate();
                                             }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Shipped ?</button>
                                         }
@@ -134,7 +141,9 @@ const page = () => {
                                         {processingStatus === "Out For Delivery" ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
                                             <button onClick={(e) => {
                                                 e.preventDefault();
-                                                setOrderID(_id); setProcessState("Deliver");
+                                                setOrderDocId(sellerOrders?._id);
+                                                setOrderID(_id);
+                                                setProcessState("Deliver");
                                                 handelOrderUpdate();
                                             }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Delivered ?</button>
                                         }

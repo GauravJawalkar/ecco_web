@@ -6,17 +6,22 @@ export async function PUT(request: NextRequest) {
     await connectDB();
     try {
         const reqBody = await request.json();
-        const { processState, orderID } = reqBody;
+        const { processState, orderID, orderDocId } = reqBody;
 
         if (processState === "Processing") {
-            const processState = await Order.findByIdAndUpdate(orderID, {
+            const processState = await Order.updateOne(orderDocId, {
                 $set: {
-                    processingStatus: "Order Processing",
+                    "orders.$[order].processingStatus": "Order Processing",
                 }
             },
                 {
-                    new: true
-                })
+                    arrayFilters: [
+                        {
+                            "order._id": orderID
+                        }
+                    ]
+                }
+            )
 
             if (!processState) {
                 return NextResponse.json({ error: "Failed to update the process state" }, { status: 402 })
@@ -24,14 +29,19 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json({ data: "Processed" }, { status: 200 })
         } else if (processState === "Ship") {
-            const processState = await Order.findByIdAndUpdate(orderID, {
+            const processState = await Order.updateOne(orderDocId, {
                 $set: {
-                    processingStatus: "Order Shipped",
+                    "orders.$[order].processingStatus": "Order Shipped",
                 }
             },
                 {
-                    new: true
-                })
+                    arrayFilters: [
+                        {
+                            "order._id": orderID
+                        }
+                    ]
+                }
+            )
 
             if (!processState) {
                 return NextResponse.json({ error: "Failed to update the process state" }, { status: 402 })
@@ -39,14 +49,19 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json({ data: "Shipped" }, { status: 200 })
         } else if (processState === "Deliver") {
-            const processState = await Order.findByIdAndUpdate(orderID, {
+            const processState = await Order.updateOne(orderDocId, {
                 $set: {
-                    processingStatus: "Out For Delivery",
+                    "orders.$[order].processingStatus": "Out For Delivery",
                 }
             },
                 {
-                    new: true
-                })
+                    arrayFilters: [
+                        {
+                            "order._id": orderID
+                        }
+                    ]
+                }
+            )
 
             if (!processState) {
                 return NextResponse.json({ error: "Failed to update the process state" }, { status: 402 })

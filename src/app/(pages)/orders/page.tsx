@@ -43,6 +43,7 @@ const page = () => {
         enabled: !!data?._id,
         refetchOnWindowFocus: false
     })
+
     return (
         <section >
             <div className='relative my-5'>
@@ -52,9 +53,9 @@ const page = () => {
             </div>
             {isPending && <Loader title='Just A Second...' />}
             {isError && <h1>Something Went Wrong</h1>}
-            {(!isPending && myOrders?.length === 0) && <h1>No Orders Found</h1>}
+            {(!isPending && myOrders?.length === 0) && <h1 className='text-center py-10 font-semibold text-xl border rounded'>No Orders Found</h1>}
             {
-                myOrders?.map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity }: myOrdersProps) => {
+                myOrders[0]?.orders?.map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity }: myOrdersProps) => {
                     return (
                         <div key={_id} className='grid grid-cols-[2fr_1fr_1.5fr] gap-3 border dark:border-neutral-700 rounded-xl my-4'>
                             <div className='flex items-start justify-start p-3 text-center gap-3'>

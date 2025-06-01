@@ -10,7 +10,7 @@ const middleware = async (request: NextRequest) => {
     const path = request.nextUrl.pathname;
 
     const publicPath = path === '/login' || path === "/signup"
-    const securePath = path === '/cart' || path === "/checkout" || path === '/profile' || path === '/orders' || path === '/dashboard' || path === '/dashboard/specialShow' || path === '/dashboard/requests' || path === '/wishlist'
+    const securePath = path === '/cart' || path === "/checkout" || path === '/profile' || path === '/orders' || path === '/dashboard' || path === '/dashboard/specialShow' || path === '/dashboard/requests' || path === '/checkout' || path === '/dashboard/ordersProcess'
 
     if (token && publicPath) {
         NextResponse.next()

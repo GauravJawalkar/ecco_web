@@ -39,6 +39,7 @@ export default function Home() {
 
         if (!response.data.user) {
           localStorage.clear();
+          location.reload();
         }
 
       } catch (error) {
