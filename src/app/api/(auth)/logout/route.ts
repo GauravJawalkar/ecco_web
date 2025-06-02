@@ -1,6 +1,4 @@
 import connectDB from "@/db/dbConfig";
-import { User } from "@/models/user.model";
-import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -26,7 +24,7 @@ export async function GET() {
         )
 
     } catch (error) {
-        console.log(error)
+        console.error(error)
         return NextResponse.json({ error: error }, { status: 500 })
     }
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useUserStore } from "@/store/UserStore"
-import { Heart, ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
+import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"

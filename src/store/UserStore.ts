@@ -32,13 +32,14 @@ export const useUserStore = create(
                 },
                 logOut: async () => {
                     try {
-                        await axios.get('/api/logout')
+                        await axios.get('/api/logout');
                         localStorage.clear();
-                        Cookies.remove('accessToken')
+                        Cookies.remove('accessToken');
                         set(
                             () => ({ data: {} })
-                        )
+                        );
                     } catch (error) {
+                        console.error("Error logging out : ", error)
                         throw new Error("Error logging out")
                     }
                 },

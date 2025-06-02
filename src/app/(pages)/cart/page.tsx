@@ -28,7 +28,6 @@ const Cart = () => {
     const queryClient = useQueryClient();
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
-    const [loading, setLoading] = useState(false);
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
     async function getCartItems() {
@@ -50,6 +49,7 @@ const Cart = () => {
         enabled: !!cartOwnerId,
         refetchOnWindowFocus: false,
     });
+
 
     async function removeCartItem(_id: string) {
         try {
@@ -106,61 +106,6 @@ const Cart = () => {
         addQuantityMutation.mutate({ _id, quantity });
     }
 
-    const handlePayment = async () => {
-        setLoading(true);
-
-        try {
-            // Create Razorpay order
-            const { data: order } = await axios.post('/api/razorpay/order', {
-                amount: cartTotal,
-                receipt: 'receipt_001',
-            });
-
-            const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
-                currency: order.currency,
-                name: 'Your Store',
-                description: 'Test Transaction',
-                order_id: order.id,
-                handler: async function (response: any) {
-                    // Verify payment signature
-                    const { data: verifyData } = await axios.post('/api/razorpay/verify', {
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_signature: response.razorpay_signature,
-                    });
-
-                    if (verifyData.success) {
-                        toast.success('✅ Payment successful and verified!');
-                    } else {
-                        toast.error('❌ Payment verification failed.');
-                    }
-                },
-                theme: {
-                    color: '#3399cc',
-                },
-            };
-
-            const razor = new (window as any).Razorpay(options);
-            razor.open();
-        } catch (err) {
-            console.error('Error in Razorpay flow:', err);
-            toast.error('Payment failed to initiate.');
-        }
-
-        setLoading(false);
-    };
-
-    // RazorPay UseEffect for their payment UI portal and Scripts
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.async = true;
-        document.body.appendChild(script);
-    }, []);
-
-
     // useEffect to calculate the total cart checkout
     useEffect(() => {
         if (userCart?.cartItems?.length > 0) {
@@ -172,6 +117,8 @@ const Cart = () => {
             setCartTotal(0);
         }
     }, [userCart]);
+
+    // For checking out the whole cart : The Approach :-> Just take the whole array of cartItems and save it in the database then map it in the checkout page and create an order depending on the number of product present
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
@@ -232,7 +179,7 @@ const Cart = () => {
                                                             e.preventDefault();
                                                             e.stopPropagation();
                                                             handelRemoveItem(_id)
-                                                        }} className="text-sm">REMOVE ITEM</button>
+                                                        }} className="text-sm border dark:border-neutral-700 py-1 px-2 rounded">REMOVE ITEM</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -268,11 +215,6 @@ const Cart = () => {
                     <div className="py-2 flex items-center justify-between font-semibold uppercase">
                         <h1>Total</h1>
                         <h1>₹ {cartTotal}</h1>
-                    </div>
-                    <div className="py-4">
-                        <button type="button" onClick={handlePayment} className="w-full bg-green-500 py-2 rounded-full dark:text-black text-white">
-                            {loading ? <Loader title="Processing..." /> : 'Checkout'}
-                        </button>
                     </div>
                 </div>
             </div>

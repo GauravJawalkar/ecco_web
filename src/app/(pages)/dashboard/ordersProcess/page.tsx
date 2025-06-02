@@ -67,7 +67,7 @@ const page = () => {
     return (
         <section className="my-6">
             <div className="flex items-center justify-between">
-                <h1 className="uppercase font-semibold">Toatal Orders : {sellerOrders.length}</h1>
+                <h1 className="uppercase font-semibold">Toatal Orders : {sellerOrders[0]?.orders.length}</h1>
                 <h1>Order Status</h1>
             </div>
 
@@ -93,7 +93,7 @@ const page = () => {
                                         Generate Invoice</button>
                                     <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm"
                                         onClick={() => { handelShowDetails(_id) }}
-                                    >{showDetails ? "Show Details" : "Hide Details"}</button>
+                                    >{showDetails === _id ? "Hide Details" : "Show Details"}</button>
                                 </div>
                             </div>
                             <div className={` items-center justify-between flex-grow gap-3 ${showDetails === _id ? "flex" : "hidden"}`}>
