@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, sellerName, discount, stock } = reqBody;
+        const { cartOwner, name, price, image, sellerName, discount, stock, productId } = reqBody;
 
         const quantity = 1;
 
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!name || !price || !image || !sellerName || !discount) {
+        if (!name || !price || !image || !sellerName || !discount || !productId) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
 
@@ -23,10 +23,12 @@ export async function POST(request: NextRequest) {
 
         // Create new cart if none exists
         if (!existingCart) {
-            const newCart = await Cart.create({
-                cartOwner,
-                cartItems: [{ name, price, image, quantity, sellerName, discount, stock: stock }],
-            });
+            const newCart = await Cart.create(
+                {
+                    cartOwner,
+                    cartItems: [{ name, price, image, quantity, sellerName, discount, stock: stock, productId: productId }],
+                }
+            );
             await newCart.save();
 
             return NextResponse.json(
@@ -45,7 +47,7 @@ export async function POST(request: NextRequest) {
             existingCart.cartItems[existingItemIndex].quantity += quantity;
         } else {
             // Add new item
-            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName, stock: stock });
+            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName, stock: stock, productId });
         }
 
         const updatedCart = await existingCart.save();

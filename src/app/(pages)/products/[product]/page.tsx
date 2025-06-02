@@ -18,7 +18,7 @@ const Product = () => {
     const { data }: any = useUserStore();
     const queryClient = useQueryClient();
     const cartOwnerId = data?._id;
-    const [fill, setFill] = useState(false)
+    const [fill, setFill] = useState(false);
 
     async function getSpecificProduct(id: string) {
         try {
@@ -56,7 +56,8 @@ const Product = () => {
             const discount = product?.discount;
             const sellerName = seller?.name;
             const stock = product?.stock;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
+            const productId = product?._id;
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
             if (response.data.data) {
                 return response.data.data;
             }
@@ -93,7 +94,6 @@ const Product = () => {
     })
 
     const handelCart = () => {
-        console.log("Add to Cart clicked");
         addToCartMutation.mutate();
     }
 

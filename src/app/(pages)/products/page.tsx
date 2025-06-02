@@ -14,7 +14,6 @@ import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
 import { discountPercentage } from '@/helpers/discountPercentage';
 import { useRouter } from 'next/navigation';
-import { Icon } from "@iconify/react";
 interface searchParams {
     category?: string | "";
 }
@@ -96,6 +95,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const [sortedProducts, setSortedProducts] = useState<any[]>([]);
     const router = useRouter();
     const [categoryProduct, setCategoryProduct] = useState<any[]>([]);
+    const [productId, setProductId] = useState("");
 
     async function getFilteredData(category: string) {
         try {
@@ -166,7 +166,7 @@ const ProductsPage = ({ searchParams }: any) => {
         try {
             const cartOwner = data?._id;
             const sellerName = vikreta;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
             if (response.data.data) {
                 return response.data.data;
             }
@@ -341,6 +341,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                                     setStock(stock);
                                                     setDiscount(discount);
                                                     setVikreta(sellerDet?.name);
+                                                    setProductId(_id);
                                                     handelCart();
                                                 }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
                                                     <ShoppingCart className="h-5 w-5" />
@@ -409,6 +410,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                             setStock(stock);
                                             setDiscount(discount);
                                             setVikreta(sellerDet?.name);
+                                            setProductId(_id);
                                             handelCart();
                                         }} className="p-2 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
                                             <ShoppingCart className="h-5 w-5 text-gray-700" />

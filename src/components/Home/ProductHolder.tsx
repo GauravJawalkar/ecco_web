@@ -39,12 +39,13 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
   const [stock, setStock] = useState(0);
   const [sellerId, setSellerId] = useState("");
   const [vikreta, setVikreta] = useState("");
+  const [productId, setProductId] = useState("");
 
   async function addToCart() {
     try {
       const cartOwner = data?._id;
       const sellerName = vikreta;
-      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock });
+      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
       if (response.data.data) {
         return response.data.data;
       }
@@ -149,6 +150,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                             setStock(stock);
                             setDiscount(discount);
                             setVikreta(sellerDet?.name);
+                            setProductId(_id);
                             handelCart();
                           }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
                             <ShoppingCart className="h-5 w-5" />

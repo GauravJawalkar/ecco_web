@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -18,6 +19,7 @@ interface cartMappingProps {
     stock: number;
     discount: number;
     sellerName: string;
+    productId: string
 }
 
 const Cart = () => {
@@ -27,6 +29,7 @@ const Cart = () => {
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
     const [loading, setLoading] = useState(false);
+    const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
 
     async function getCartItems() {
         try {
@@ -184,9 +187,9 @@ const Cart = () => {
                 <div className="grid grid-cols-2 gap-3">
                     {userCart?.cartItems?.length > 0 &&
                         userCart?.cartItems?.map(
-                            ({ name, price, image, quantity, discount, sellerName, _id, stock }: cartMappingProps) => {
+                            ({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => {
                                 return (
-                                    <div className="p-5 border rounded-2xl dark:border-neutral-700 dark:bg-neutral-700/20 gap-3 my-3 relative h-fit" key={name + price}>
+                                    <Link href={`/products/${slugify(name)}?id=${productId}`} className="p-5 border rounded-2xl dark:border-neutral-700 dark:bg-neutral-700/20 gap-3 my-3 relative h-fit" key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
                                                 <Image
@@ -210,6 +213,7 @@ const Cart = () => {
                                                     <div className="py-3 flex items-center gap-3">
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
+                                                            e.stopPropagation();
                                                             setQuantityOperation("+");
                                                             handelAddItemQuantity(_id, quantity);
                                                         }} className="p-1 border-2 rounded-full dark:border-neutral-700">
@@ -218,12 +222,17 @@ const Cart = () => {
                                                         <h1 className="text-sm py-1 px-2 dark:border-neutral-700 rounded border">{quantity}</h1>
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
+                                                            e.stopPropagation();
                                                             setQuantityOperation("-");
                                                             handelAddItemQuantity(_id, quantity);
                                                         }} className="p-1 border-2 rounded-full dark:border-neutral-700">
                                                             <Minus className="h-4 w-4" />
                                                         </button>
-                                                        <button onClick={(e) => { e.preventDefault(); handelRemoveItem(_id) }} className="text-sm">REMOVE ITEM</button>
+                                                        <button onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            handelRemoveItem(_id)
+                                                        }} className="text-sm">REMOVE ITEM</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -235,7 +244,7 @@ const Cart = () => {
                                                         <h1 className="py-[2px] px-2 border rounded-lg text-amber-500 border-amber-500 text-sm bg-amber-100">Few Left</h1>)
                                             }
                                         </div>
-                                    </div>
+                                    </Link>
                                 );
                             }
                         )}

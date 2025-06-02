@@ -47,18 +47,18 @@ const page = () => {
     return (
         <section >
             <div className='relative my-5'>
-                <input type="search" className='w-full p-2 rounded ring-1 ring-gray-200 dark:ring-neutral-700 focus:outline-none' placeholder='Search Your Orders Here' />
-                <button className='absolute top-0 right-0 flex items-center justify-center gap-2 p-2 text-white bg-blue-500  hover:bg-blue-500/80'>
+                <input type="search" className='w-full p-2 rounded ring-1 ring-gray-200 dark:bg-neutral-800 dark:ring-neutral-700 focus:outline-none' placeholder='Search Your Orders Here' />
+                <button className='absolute top-0 right-0 flex items-center justify-center gap-2 p-2 text-white bg-blue-500 hover:bg-blue-500/80'>
                     <Search className='w-5 h-5' />  Search Orders</button>
             </div>
             {isPending && <Loader title='Just A Second...' />}
             {isError && <h1>Something Went Wrong</h1>}
-            {(!isPending && myOrders?.length === 0) && <h1 className='text-center py-10 font-semibold text-xl border rounded'>No Orders Found</h1>}
+            {(!isPending && myOrders?.length === 0) && <h1 className='py-10 text-xl font-semibold text-center border rounded'>No Orders Found</h1>}
             {
                 myOrders[0]?.orders?.map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity }: myOrdersProps) => {
                     return (
-                        <div key={_id} className='grid grid-cols-[2fr_1fr_1.5fr] gap-3 border dark:border-neutral-700 rounded-xl my-4'>
-                            <div className='flex items-start justify-start p-3 text-center gap-3'>
+                        <div key={_id} className='grid grid-cols-[2fr_1fr_1.5fr] gap-3 border dark:border-neutral-700 rounded-xl my-4 dark:bg-neutral-900/40'>
+                            <div className='flex items-start justify-start gap-3 p-3 text-center'>
                                 <div className='w-[25%]'>
                                     <Image src={orderImage || '/happy.svg'} alt='order-image' height={800} width={800} className='object-contain border dark:border-neutral-700 rounded-xl h-28 w-28' />
                                 </div>
@@ -82,10 +82,10 @@ const page = () => {
                                 </div>
                             </div>
                             <div className='p-3 text-center '>
-                                <h1 className='text-start text-sm'>🗺️ : {deliveryAddress}</h1>
-                                <h1 className='text-start text-sm'>📍 : {pinCode}</h1>
-                                <h1 className='text-start text-sm'>🟢 : {processingStatus}</h1>
-                                <h1 className='text-start text-sm'>💸 : {paymentStatus}</h1>
+                                <h1 className='text-sm text-start'>🗺️ : {deliveryAddress}</h1>
+                                <h1 className='text-sm text-start'>📍 : {pinCode}</h1>
+                                <h1 className='text-sm text-start'>🟢 : {processingStatus}</h1>
+                                <h1 className='text-sm text-start'>💸 : {paymentStatus}</h1>
                             </div>
                         </div>
                     )
