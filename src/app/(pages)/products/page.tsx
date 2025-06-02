@@ -330,32 +330,29 @@ const ProductsPage = ({ searchParams }: any) => {
                                         <h1 title={name} className="font-semibold capitalize text-start text-lg truncate">
                                             {name}
                                         </h1>
-                                        <div className="flex items-center justify-between pt-2">
-                                            <div className='flex items-center justify-start gap-3'>
-                                                <button type="button" onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                    setName(name);
-                                                    setImage(images?.[0]);
-                                                    setPrice(price);
-                                                    setStock(stock);
-                                                    setDiscount(discount);
-                                                    setVikreta(sellerDet?.name);
-                                                    setProductId(_id);
-                                                    handelCart();
-                                                }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
-                                                    <ShoppingCart className="h-5 w-5" />
-                                                </button>
-                                                <button type="button" onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                }} className="p-3 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
-                                                    <Heart className="h-5 w-5" />
-                                                </button>
+                                        <div className="flex items-center justify-between pt-3">
+                                            <button type="button" onClick={(e) => {
+                                                e.stopPropagation();
+                                                e.preventDefault();
+                                                setName(name);
+                                                setImage(images?.[0]);
+                                                setPrice(price);
+                                                setStock(stock);
+                                                setDiscount(discount);
+                                                setVikreta(sellerDet?.name);
+                                                setProductId(_id);
+                                                handelCart();
+                                            }} className="p-2 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
+                                                <ShoppingCart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                                            </button>
+                                            <div className='flex items-center justify-center gap-3 text-md'>
+                                                <h1 className='line-through text-gray-500' >
+                                                    ₹ {price}
+                                                </h1>
+                                                <h1 className="font-semibold text-lg uppercase ">
+                                                    ₹ {price - discount}
+                                                </h1>
                                             </div>
-                                            <h1 className="font-semibold text-lg uppercase ">
-                                                ₹ {price - discount}
-                                            </h1>
                                         </div>
                                     </div>
                                 </Link>
@@ -413,7 +410,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                             setProductId(_id);
                                             handelCart();
                                         }} className="p-2 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
-                                            <ShoppingCart className="h-5 w-5 text-gray-700" />
+                                            <ShoppingCart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                                         </button>
                                         <div className='flex items-center justify-center gap-3 text-md'>
                                             <h1 className='line-through text-gray-500' >
