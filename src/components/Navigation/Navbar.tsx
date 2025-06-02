@@ -110,7 +110,7 @@ export const Navbar = () => {
                     <span>
                         {dataLength !== 0 && data.avatar.length > 3 ? < Image src={data.avatar || ''} height={10} width={10} alt="Pro-Img" className="h-10 w-10 object-contain rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
                     </span>
-                    <div className={`inset-0 absolute top-10 w-fit hidden group-hover:block 
+                    <div className={` absolute top-10  w-fit hidden group-hover:block py-1
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 
                     ${dataLength === 0 ? "group-hover:hidden" : "block"}`}>
                         <div className="border-b-[0.1px]  dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
@@ -120,7 +120,6 @@ export const Navbar = () => {
                             </li>
                             <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Details</Link>
                             <div>
-                                <Link href={'/wishlist'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <Heart className="h-5 w-5" />Wishlist</Link>
                                 <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={() => { handelLogout() }}>
                                     <LogOut className="h-5 w-5" />
                                     Logout
