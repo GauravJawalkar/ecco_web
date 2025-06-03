@@ -25,6 +25,7 @@ const Dashboard = () => {
                     sellerId={data._id}
                     isAdmin={data?.isSuperAdmin}
                     load={showProductModal}
+                    kycVerified={data?.bankDetails.status}
                 />
             )}
             <div className="flex items-center border dark:border-neutral-700 p-3 rounded justify-start gap-3 dark:text-white">

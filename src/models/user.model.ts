@@ -37,13 +37,30 @@ const userSchema = new Schema(
             default: false
         },
         bankDetails: {
-            name: { type: String },
-            account_number: { type: String },
-            ifsc: { type: String },
-            razorpayFundAccountId: { type: String, },
+            account_holder_name: {
+                type: String,
+                default: ""
+            },
+            account_number: {
+                type: String,
+                default: ""
+            },
+            ifsc: {
+                type: String,
+                default: ""
+            },
+            razorpayFundAccountId: {
+                type: String,
+                default: ""
+            },
+            razorpayAccountId: {
+                type: String,
+                default: ""
+            },
             status: {
-                type: Boolean,
-                default: false
+                type: String,
+                default: "Pending",
+                enum: ["Pending", "Verified"]
             }
         },
         avatar: {

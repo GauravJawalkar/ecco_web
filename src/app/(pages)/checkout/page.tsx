@@ -100,75 +100,101 @@ const page = () => {
     const handlePayment = async () => {
 
         try {
-            // Create Razorpay order
+            const orderAmount = (productDetails.price - productDetails.discount) * quantity;
+
+            // Create order with commission details
             const { data: order } = await axios.post('/api/razorpay/order', {
-                amount: ((productDetails?.price - productDetails?.discount) * quantity),
-                receipt: 'reciept-001',
+                amount: orderAmount,
+                sellerId: sellerDetails?._id,
             });
 
-            const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-                amount: order.amount,
-                currency: order.currency,
-                name: `${sellerDetails?.name}'s Store`,
-                description: 'Test Transaction',
-                order_id: order.id,
-                handler: async function (response: any) {
-                    // Verify payment signature
-                    const { data: verifyData } = await axios.post('/api/razorpay/verify', {
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_signature: response.razorpay_signature,
-                    });
+            // Load Razorpay script dynamically
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.async = true;
+            script.onload = () => {
+                const options = {
+                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                    amount: order.amount,
+                    currency: order.currency,
+                    name: `${sellerDetails.name}'s Store`,
+                    description: `Payment for ${productDetails.name}`,
+                    order_id: order.id,
+                    handler: async (response: any) => {
+                        try {
+                            // Verify payment
+                            const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                            });
 
-                    if (verifyData.success) {
-                        toast.success('✅ Payment successful and verified!');
-                        const productId = productDetails?._id;
-                        const orderName = productDetails?.name;
-                        const orderPrice = productDetails?.price;
-                        const orderDiscount = productDetails?.discount;
-                        const paymentStatus = "Done";
-                        const paymentMethod = "Online";
-                        const sellerId = sellerDetails?._id;
-                        const orderDetails = {
-                            orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, productId
-                        };
-                        const response = await axios.post("/api/createOrder", { orderDetails });
-                        if (response.data.data) {
-                            toast.success('✅ Ordered! Check Orders');
-                            router.push('/orders');
+                            if (verifyData.success) {
+                                // Save order to database
+                                const orderDetails = {
+                                    orderName: productDetails.name,
+                                    orderPrice: productDetails.price,
+                                    orderDiscount: productDetails.discount,
+                                    quantity,
+                                    contactNumber,
+                                    address,
+                                    pinCode,
+                                    landMark,
+                                    orderImage,
+                                    paymentMethod: "Online",
+                                    paymentStatus: "Done",
+                                    userId,
+                                    sellerId: sellerDetails._id,
+                                    productId: productDetails._id,
+                                    razorpayOrderId: response.razorpay_order_id,
+                                    razorpayPaymentId: response.razorpay_payment_id,
+                                    commission: orderAmount * 0.02,
+                                    sellerAmount: orderAmount * 0.98,
+                                };
+
+                                const orderResponse = await axios.post('/api/orders', { orderDetails });
+
+                                if (orderResponse.data.success) {
+                                    toast.success('Payment successful! Commission deducted');
+                                    router.push('/orders');
+                                }
+                            } else {
+                                toast.error('Payment verification failed');
+                            }
+                        } catch (error) {
+                            console.error('Order processing error:', error);
+                            toast.error('Order processing failed');
                         }
-                        return [];
-                    } else {
-                        toast.error('❌ Payment verification failed.');
-                    }
-                },
-                theme: {
-                    color: '#3399cc',
-                },
-            };
+                    },
+                    prefill: {
+                        name: data?.name, // Replace with actual user name
+                        email: data?.email, // Replace with user email
+                        contact: contactNumber,
+                    },
+                    theme: {
+                        color: '#3399cc',
+                    },
+                };
 
-            const razor = new (window as any).Razorpay(options);
-            razor.open();
+                const rzp = new (window as any).Razorpay(options);
+                rzp.on('payment.failed', (response: any) => {
+                    toast.error(`Payment failed: ${response.error.description}`);
+                });
+                rzp.open();
+                setUpiLoading(false);
+                setCardLoading(false);
+            };
+            document.body.appendChild(script);
+        } catch (error) {
+            console.error('Payment initiation error:', error);
+            toast.error('Payment failed to initiate');
             setUpiLoading(false);
             setCardLoading(false);
-        } catch (err) {
-            console.error('Error in Razorpay flow:', err);
-            toast.error('Payment failed to initiate.');
+        } finally {
             setUpiLoading(false);
             setCardLoading(false);
         }
-
     };
-
-    // RazorPay UseEffect for their payment UI portal and Scripts
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.async = true;
-        document.body.appendChild(script);
-    }, []);
-
 
     async function createOrder() {
         try {

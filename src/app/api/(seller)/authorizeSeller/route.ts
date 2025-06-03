@@ -19,7 +19,14 @@ export async function POST(request: NextRequest) {
         const authorizedSeller = await User.findByIdAndUpdate(sellerId,
             {
                 $set: {
-                    isSeller: true
+                    isSeller: true,
+                    bankDetails: {
+                        name: "",
+                        account_number: "",
+                        ifsc: "",
+                        razorpayFundAccountId: "",
+                        status: false
+                    }
                 }
             },
             {

@@ -8,8 +8,6 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        console.log("The reqBody is : ", reqBody);
-
         const { sellerId, isEmailVerified, email, avatar } = reqBody;
 
         if (!sellerId || !email) {

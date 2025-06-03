@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
                 email: googleUser.email,
                 name: googleUser.name,
                 avatar: googleUser.picture,
-                password: "123"
+                password: "123",
             });
         }
 
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
         (await
             cookies()).set({
                 name: 'user',
-                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin }),
+                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin, bankDetails: user?.bankDetails }),
                 httpOnly: true,
                 path: '/',
             });
