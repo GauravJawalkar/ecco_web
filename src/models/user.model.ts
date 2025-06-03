@@ -36,6 +36,16 @@ const userSchema = new Schema(
             type: Boolean,
             default: false
         },
+        bankDetails: {
+            name: { type: String },
+            account_number: { type: String },
+            ifsc: { type: String },
+            razorpayFundAccountId: { type: String, },
+            status: {
+                type: Boolean,
+                default: false
+            }
+        },
         avatar: {
             type: String
         },

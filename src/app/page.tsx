@@ -35,11 +35,14 @@ export default function Home() {
   useEffect(() => {
     async function checkVaildCookies() {
       try {
-        const response = await axios.get('api/sessionCookies');
+        const response = await axios.get('/api/sessionCookies');
 
-        if (!response.data.user) {
+        if (response.data.user.trim() !== "") {
+          console.log(response.data.user);
+          return response.data.user
+        } else {
           localStorage.clear();
-          location.reload();
+          toast.success("clearing the localstorage")
         }
 
       } catch (error) {

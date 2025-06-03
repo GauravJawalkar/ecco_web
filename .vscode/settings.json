@@ -1,0 +1,13 @@
+"workbench.colorTheme": "GitHub Dark Default",
+"editor.tokenColorCustomizations": {
+    "[GitHub Dark Default]": {
+        "textMateRules": [
+            {
+                "scope": "keyword",
+                "settings": {
+                    "foreground": "#ff7b72"
+                }
+            }
+        ]
+    }
+}

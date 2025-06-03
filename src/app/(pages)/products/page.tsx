@@ -159,7 +159,6 @@ const ProductsPage = ({ searchParams }: any) => {
         setCategoryProduct(products);
     }, [products])
 
-
     // Add to cart functionality here
 
     async function addToCart() {
@@ -252,8 +251,9 @@ const ProductsPage = ({ searchParams }: any) => {
             {isPending && <div><Loader title='Loading...' /></div>}
             {isLoading && <div><Loader title='Loading...' /></div>}
 
-            {/* Filters On the right */}
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
+
+                {/* Filters On the right */}
                 <div className='p-3 border dark:border-neutral-700 rounded-2xl h-fit sticky top-24 flex items-center justify-center flex-col gap-3'>
                     <div className='mt-8 w-full bg-gray-50 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Price :</h1>
@@ -291,13 +291,15 @@ const ProductsPage = ({ searchParams }: any) => {
 
                     <h1 className='absolute top-0 right-0 px-3 py-1 rounded-tr-2xl rounded-bl-2xl bg-gray-100 flex items-center justify-center gap-1 dark:bg-neutral-800'><Filter className='h-4 w-4' /> Filter Products</h1>
                 </div>
+
+                {/* Product display grid */}
                 <div className=' grid grid-cols-4 gap-5'>
                     {/* CategoryWise product sorting here */}
                     {
                         categoryProduct?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {
                             return (
                                 <Link key={_id} onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
-                                    <div className="w-full py-3 relative">
+                                    <div className="w-full py-4 relative">
                                         <Swiper
                                             modules={[EffectFade, Pagination]}
                                             pagination={{ clickable: true }}
@@ -314,7 +316,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                                                 alt="product-image"
                                                                 width={180}
                                                                 height={180}
-                                                                className="h-64 w-full object-contain rounded" />
+                                                                className="h-64 w-full object-contain rounded -z-10" />
                                                         </SwiperSlide>);
                                                 })}
                                         </Swiper>
@@ -330,7 +332,7 @@ const ProductsPage = ({ searchParams }: any) => {
                                         <h1 title={name} className="font-semibold capitalize text-start text-lg truncate">
                                             {name}
                                         </h1>
-                                        <div className="flex items-center justify-between pt-3">
+                                        <div className="flex items-center justify-between pt-2">
                                             <button type="button" onClick={(e) => {
                                                 e.stopPropagation();
                                                 e.preventDefault();
