@@ -15,14 +15,10 @@ export async function POST(request: NextRequest) {
             sellerId,
             {
                 $set: {
-                    bankDetails: {
-                        account_holder_name: accountName,
-                        account_number: accountNumber,
-                        ifsc: IFSC,
-                        status: "Pending",
-                        razorpayFundAccountId: "",
-                        razorpayAccountId: ""
-                    }
+                    'bankDetails.account_holder_name': accountName,
+                    'bankDetails.account_number': accountNumber,
+                    'bankDetails.ifsc': IFSC,
+                    'bankDetails.status': "Pending",
                 }
             },
             { new: true }

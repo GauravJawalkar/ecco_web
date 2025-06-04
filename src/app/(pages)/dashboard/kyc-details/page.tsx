@@ -62,8 +62,7 @@ export default function KYCDetails() {
                 toast.error("Recipient creation failed");
             }
 
-            // Save recipient ID to seller profile
-            await axios.post('/api/updateSellerDetails', { sellerId: data?._id, razorpayRecipientId: response?.data?.data, acc_id: response?.data?.acc_id, kycStatus: 'Verified' });
+            console.log("response and ids : ", response.data);
         } catch (error) {
             console.error('Recipient creation error:', error);
         }

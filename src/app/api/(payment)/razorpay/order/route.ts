@@ -13,13 +13,20 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { amount, sellerId } = reqBody;
-        const platformOwnerId = process.env.PLATFORM_MONGO_ACCOUNT_ID;
+        const platformOwnerId = process.env.Acc_ID;
 
-        const platFormAccount = await User.findById(platformOwnerId);
         const sellerAccount = await User.findById(sellerId);
+        console.log("Sellet Acc_Id : ", sellerAccount?.bankDetails?.razorpayFundAccountId);
 
-        if (!platFormAccount || !sellerAccount) {
+        if (!sellerAccount) {
             return NextResponse.json({ error: "Seller Haven't completed the kyc process Yet" }, { status: 401 })
+        }
+
+        if (!sellerAccount?.bankDetails?.razorpayFundAccountId) {
+            return NextResponse.json(
+                { error: "Seller hasn't completed KYC process yet" },
+                { status: 400 }
+            );
         }
 
         const commission = amount * 0.02; // 2% commission
@@ -36,20 +43,20 @@ export async function POST(request: NextRequest) {
             },
             transfers: [
                 {
-                    account: platFormAccount?.bankDetails?.razorpayAccountId, // Main platform account
+                    account: platformOwnerId, // Main platform account
                     amount: commission * 100,
                     currency: 'INR'
                 },
                 {
-                    account: sellerAccount?.bankDetails?.razorpayAccountId, // Seller's connected account
+                    account: sellerAccount?.bankDetails?.razorpayFundAccountId, // Seller's connected account
                     amount: sellerAmount * 100,
                     currency: 'INR'
                 }
             ]
         });
         return NextResponse.json({ data: `Paid Successfully : ${order}` }, { status: 200 });
-    } catch (err) {
-        console.error("Error razorPay : ", err);
-        return NextResponse.json({ error: `'Failed to create order : '${err}` }, { status: 500 });
+    } catch (error) {
+        console.error("Error razorPay : ", error);
+        return NextResponse.json({ error: `Failed to create order : ${error}` }, { status: 500 });
     }
 }
