@@ -1,4 +1,3 @@
-// app/api/razorpay/create-recipient/route.ts
 import connectDB from '@/db/dbConfig';
 import { User } from '@/models/user.model';
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,96 +9,117 @@ const razorpay = new Razorpay({
 });
 
 export async function POST(request: NextRequest) {
-    connectDB();
+    await connectDB();
+
     try {
         const { kycId, accountNumber, ifscCode, name } = await request.json();
 
+        if (!kycId || !accountNumber || !ifscCode || !name) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
         const seller = await User.findById(kycId);
-
         if (!seller) {
-            return NextResponse.json({ error: "Failed to get the seller details" }, { status: 401 })
+            return NextResponse.json({ error: 'Seller not found' }, { status: 404 });
         }
 
-        // First try to find existing customer by email
-        let customer;
-        try {
-            const customers: any = await razorpay.customers.all({
-                email: seller.email,
-                count: 1
-            });
+        let customerId = seller.bankDetails?.razorpayAccountId;
+        let fundAccountId = seller.bankDetails?.razorpayFundAccountId;
 
-            if (customers.items.length > 0) {
-                customer = customers.items[0];
-            } else {
-                // Create new customer if not found
-                customer = await razorpay.customers.create({
-                    name: name,
-                    email: seller.email,
-                    contact: "+918767677119",
+        // If customer doesn't exist in our DB
+        if (!customerId) {
+            try {
+                console.log('Creating new Razorpay customer...');
+                const contact = await razorpay.customers.create({
+                    name,
+                    email: seller.email || `${seller._id}@example.com`, // Ensure unique email
+                    contact: seller.phone || `+91${Math.random().toString().slice(2, 12)}`, // Ensure unique phone
                     notes: {
-                        kycId,
-                        type: 'seller'
-                    }
+                        role: 'marketplace-seller',
+                        kycId: kycId
+                    },
                 });
+                customerId = contact.id;
+                console.log('New customer created:', customerId);
+            } catch (error: any) {
+                if (error.error?.code === 'BAD_REQUEST_ERROR' &&
+                    error.error.description.includes('already exists')) {
+                    // Customer exists but not in our DB - find it
+                    const customers: any = await (razorpay as any).customers.all({
+                        email: seller.email || `${seller._id}@example.com`
+                    });
+                    if (customers.items.length > 0) {
+                        customerId = customers.items[0].id;
+                        console.log('Found existing customer:', customerId);
+                    } else {
+                        throw error;
+                    }
+                } else {
+                    throw error;
+                }
             }
-        } catch (err) {
-            console.error('Error in customer lookup/creation:', err);
-            throw err;
+        } else {
+            console.log('Using existing customer from DB:', customerId);
         }
 
-        // Proceed with fund account creation
-        const fundAccount = await razorpay.fundAccount.create({
-            customer_id: customer.id,
-            account_type: 'bank_account',
-            bank_account: {
-                name,
-                account_number: accountNumber,
-                ifsc: ifscCode
-            }
-        });
-        console.log("Created fund account:", fundAccount.id);
+        // Create fund account only if we don't have one or bank details changed
+        if (!fundAccountId ||
+            seller.bankDetails?.accountNumber !== accountNumber ||
+            seller.bankDetails?.ifscCode !== ifscCode) {
 
-        const updatedSeller = await User.findByIdAndUpdate(
-            seller?._id,
+            console.log('Creating new fund account...');
+            const fundAccount = await razorpay.fundAccount.create({
+                customer_id: customerId,
+                account_type: 'bank_account',
+                bank_account: {
+                    name,
+                    account_number: accountNumber, // Using original account number
+                    ifsc: ifscCode,
+                },
+            });
+            fundAccountId = fundAccount.id;
+            console.log('New fund account created:', fundAccountId);
+        } else {
+            console.log('Using existing fund account:', fundAccountId);
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(
+            seller._id,
             {
                 $set: {
-                    "bankDetails.razorpayFundAccountId": fundAccount.id,
-                    "bankDetails.razorpayAccountId": customer.id,
-                    "bankDetails.status": "Verified"
-                }
+                    'bankDetails.razorpayFundAccountId': fundAccountId,
+                    'bankDetails.razorpayAccountId': customerId,
+                    'bankDetails.status': 'Verified',
+                    'bankDetails.accountNumber': accountNumber,
+                    'bankDetails.ifscCode': ifscCode,
+                    'bankDetails.accountName': name,
+                },
             },
-            {
-                new: true,
-                select: 'bankDetails'
-            }
+            { new: true }
         );
 
-        if (!updatedSeller) {
-            return NextResponse.json({ error: "Failed to update seller record" }, { status: 404 });
+        if (!updatedUser) {
+            return NextResponse.json({ error: 'Failed to update seller details' }, { status: 401 });
         }
 
         return NextResponse.json(
             {
-                success: true,
-                account_id: customer.id,
-                fund_account_id: fundAccount.id,
-                updated: updatedSeller.bankDetails
+                data: {
+                    razorpayContactId: customerId,
+                    razorpayFundAccountId: fundAccountId,
+                },
             },
             { status: 200 }
         );
     } catch (error: any) {
-        console.error('Full error:', JSON.stringify(error, null, 2));
+        console.error('Razorpay create-recipient error:', error);
         return NextResponse.json(
             {
-                error: error.error?.description || error.message || "Internal server error",
-                details: {
-                    step: error.error?.step,
-                    code: error.error?.code,
-                    field: error.error?.field
-                },
-                solution: error.error?.code === 'BAD_REQUEST_ERROR'
-                    ? '1. Enable Route in Razorpay Dashboard\n2. Verify bank details\n3. Check API permissions'
-                    : 'Contact support with the error details'
+                error: error.error?.description || error.message || 'Failed to process Razorpay request',
+                ...(process.env.NODE_ENV === 'development' && {
+                    stack: error.stack,
+                    details: error.error
+                }),
             },
             { status: error.statusCode || 500 }
         );

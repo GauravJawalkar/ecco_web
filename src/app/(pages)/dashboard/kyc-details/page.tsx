@@ -36,10 +36,8 @@ export default function KYCDetails() {
         e.preventDefault();
 
         try {
-            // Create FormData for file uploads
-
-            const response: any = await axios.post('/api/kyc', { accountName, accountNumber, IFSC, sellerId: data?._id });
-            if (!response.ok) {
+            const response = await axios.post('/api/kyc', { accountName, accountNumber, IFSC, sellerId: data?._id });
+            if (!response.data.success) {
                 toast.error("Submission failed");
             }
 
@@ -55,14 +53,16 @@ export default function KYCDetails() {
 
     const createRazorpayRecipient = async (kycId: string) => {
         try {
-            const response: any = await axios.post('/api/razorpay/create-recipient',
+            const response = await axios.post('/api/razorpay/create-recipient',
                 { kycId, accountNumber: accountNumber, ifscCode: IFSC, name: accountName });
 
-            if (!response.ok) {
+            if (!response.data.data) {
                 toast.error("Recipient creation failed");
+            } else {
+                console.log("response and ids : ", response.data.data);
+                toast.success("Razorpay Account Created");
             }
 
-            console.log("response and ids : ", response.data);
         } catch (error) {
             console.error('Recipient creation error:', error);
         }

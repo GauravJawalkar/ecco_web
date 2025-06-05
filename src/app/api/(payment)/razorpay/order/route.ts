@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { amount, sellerId } = reqBody;
-        const platformOwnerId = process.env.Acc_ID;
+        const platformOwnerId = process.env.RAZORPAY_PLATFORM_FUND_ACCOUNT_ID;
 
         const sellerAccount = await User.findById(sellerId);
         console.log("Sellet Acc_Id : ", sellerAccount?.bankDetails?.razorpayFundAccountId);
@@ -32,12 +32,13 @@ export async function POST(request: NextRequest) {
         const commission = amount * 0.02; // 2% commission
         const sellerAmount = amount - commission;
 
+        console.log("started creating a order ");
         const order = await razorpay.orders.create({
             amount: amount * 100, // in paise
             currency: 'INR',
             receipt: `order_${Date.now()}`,
             notes: {
-                seller_id: sellerId,
+                seller_Accountid: sellerAccount?.bankDetails?.razorpayFundAccountId,
                 commission: commission,
                 seller_amount: sellerAmount
             },
@@ -54,6 +55,8 @@ export async function POST(request: NextRequest) {
                 }
             ]
         });
+        console.log("started creating a order ");
+
         return NextResponse.json({ data: `Paid Successfully : ${order}` }, { status: 200 });
     } catch (error) {
         console.error("Error razorPay : ", error);

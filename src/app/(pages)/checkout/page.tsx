@@ -114,7 +114,7 @@ const page = () => {
             script.async = true;
             script.onload = () => {
                 const options = {
-                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+                    key: process.env.RAZORPAY_KEY_ID!,
                     amount: order.amount,
                     currency: order.currency,
                     name: `${sellerDetails.name}'s Store`,
@@ -176,6 +176,8 @@ const page = () => {
                     },
                 };
 
+                console.log("Created orderr is : ", order);
+
                 const rzp = new (window as any).Razorpay(options);
                 rzp.on('payment.failed', (response: any) => {
                     toast.error(`Payment failed: ${response.error.description}`);
@@ -186,7 +188,7 @@ const page = () => {
             };
             document.body.appendChild(script);
         } catch (error) {
-            console.error('Payment initiation error:', error);
+            console.error('Payment initiation error:', JSON.stringify(error));
             toast.error('Payment failed to initiate');
             setUpiLoading(false);
             setCardLoading(false);

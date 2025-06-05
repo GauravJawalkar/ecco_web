@@ -1,4 +1,4 @@
-// app/api/kyc/submit/route.ts
+
 import connectDB from '@/db/dbConfig';
 import { User } from '@/models/user.model';
 import { NextRequest, NextResponse } from 'next/server';
