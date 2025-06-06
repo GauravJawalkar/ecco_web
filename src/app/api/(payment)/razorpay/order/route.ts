@@ -13,10 +13,8 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { amount, sellerId } = reqBody;
-        const platformOwnerId = process.env.RAZORPAY_PLATFORM_FUND_ACCOUNT_ID;
 
         const sellerAccount = await User.findById(sellerId);
-        console.log("Sellet Acc_Id : ", sellerAccount?.bankDetails?.razorpayFundAccountId);
 
         if (!sellerAccount) {
             return NextResponse.json({ error: "Seller Haven't completed the kyc process Yet" }, { status: 401 })
@@ -32,34 +30,34 @@ export async function POST(request: NextRequest) {
         const commission = amount * 0.02; // 2% commission
         const sellerAmount = amount - commission;
 
-        console.log("started creating a order ");
+        // (Payment Collection) in my own account
         const order = await razorpay.orders.create({
             amount: amount * 100, // in paise
             currency: 'INR',
             receipt: `order_${Date.now()}`,
+            payment_capture: true, // Auto-capture payments
             notes: {
-                seller_Accountid: sellerAccount?.bankDetails?.razorpayFundAccountId,
-                commission: commission,
-                seller_amount: sellerAmount
-            },
-            transfers: [
-                {
-                    account: platformOwnerId, // Main platform account
-                    amount: commission * 100,
-                    currency: 'INR'
-                },
-                {
-                    account: sellerAccount?.bankDetails?.razorpayFundAccountId, // Seller's connected account
-                    amount: sellerAmount * 100,
-                    currency: 'INR'
-                }
-            ]
+                seller_id: sellerId,
+                seller_fund_account_id: sellerAccount.bankDetails.razorpayFundAccountId,
+                commission,
+                seller_amount: sellerAmount,
+                purpose: "Marketplace transaction"
+            }
         });
-        console.log("started creating a order ");
 
-        return NextResponse.json({ data: `Paid Successfully : ${order}` }, { status: 200 });
-    } catch (error) {
-        console.error("Error razorPay : ", error);
-        return NextResponse.json({ error: `Failed to create order : ${error}` }, { status: 500 });
+        return NextResponse.json({
+            success: true,
+            orderId: order.id,
+            amount: order.amount,
+            currency: order.currency,
+            receipt: order.receipt
+        }, { status: 200 });
+    } catch (error: any) {
+        console.error("Payment processing error:", error);
+
+        return NextResponse.json(
+            { error: error.error?.description || "Payment processing failed" },
+            { status: error.statusCode || 500 }
+        );
     }
 }

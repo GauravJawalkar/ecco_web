@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
             console.log('New fund account created:', fundAccountId);
         } else {
             console.log('Using existing fund account:', fundAccountId);
-        }
+        };
 
         const updatedUser = await User.findByIdAndUpdate(
             seller._id,

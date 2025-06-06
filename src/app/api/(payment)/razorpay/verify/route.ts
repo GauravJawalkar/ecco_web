@@ -1,19 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import Razorpay from 'razorpay';
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID!,
+    key_secret: process.env.RAZORPAY_KEY_SECRET!,
+});
 
 export async function POST(request: NextRequest) {
-    const reqBody = await request.json();
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = reqBody;
+    try {
+        const reqBody = await request.json();
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = reqBody;
 
-    const secret = process.env.RAZORPAY_KEY_SECRET!;
-    const expectedSignature = crypto
-        .createHmac('sha256', secret)
-        .update(razorpay_order_id + '|' + razorpay_payment_id)
-        .digest('hex');
+        const secret = process.env.RAZORPAY_KEY_SECRET || "ajcysJWOAfi9rZRl0htCqSuD";
+        // 1. Verifying payment signature
+        const generatedSignature = crypto
+            .createHmac('sha256', secret)
+            .update(razorpay_order_id + '|' + razorpay_payment_id)
+            .digest('hex');
 
-    if (expectedSignature === razorpay_signature) {
-        return NextResponse.json({ success: true });
-    } else {
-        return NextResponse.json({ success: false, error: 'Invalid signature' }, { status: 400 });
+        if (generatedSignature !== razorpay_signature) {
+            return NextResponse.json(
+                { error: "Invalid payment signature" },
+                { status: 400 }
+            );
+        }
+
+        // 2. Fetch order details to get seller info
+        const order = await razorpay.orders.fetch(razorpay_order_id);
+        const { seller_fund_account_id, commission, seller_amount }: any = order.notes;
+
+        // 3. Initiate payout to seller
+        const payout = await (razorpay as any).payouts.create({
+            account_number: seller_fund_account_id,
+            amount: seller_amount * 100,
+            currency: 'INR',
+            mode: 'IMPS',
+            purpose: 'payout',
+            reference_id: `payout_${Date.now()}`,
+            notes: {
+                order_id: razorpay_order_id,
+                payment_id: razorpay_payment_id,
+                commission
+            }
+        });
+
+        return NextResponse.json({
+            success: true,
+            payoutId: payout.id,
+            payoutStatus: payout.status
+        });
+
+    } catch (error: any) {
+        console.error("Payout processing error:", error);
+        return NextResponse.json(
+            { error: error.error?.description || "Payout processing failed" },
+            { status: error.statusCode || 500 }
+        );
     }
 }

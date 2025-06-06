@@ -114,7 +114,7 @@ const page = () => {
             script.async = true;
             script.onload = () => {
                 const options = {
-                    key: process.env.RAZORPAY_KEY_ID!,
+                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
                     amount: order.amount,
                     currency: order.currency,
                     name: `${sellerDetails.name}'s Store`,
@@ -128,6 +128,8 @@ const page = () => {
                                 razorpay_payment_id: response.razorpay_payment_id,
                                 razorpay_signature: response.razorpay_signature,
                             });
+
+                            console.log("Verified Data is : ", verifyData);
 
                             if (verifyData.success) {
                                 // Save order to database
@@ -152,7 +154,7 @@ const page = () => {
                                     sellerAmount: orderAmount * 0.98,
                                 };
 
-                                const orderResponse = await axios.post('/api/orders', { orderDetails });
+                                const orderResponse = await axios.post('/api/createOrder', { orderDetails });
 
                                 if (orderResponse.data.success) {
                                     toast.success('Payment successful! Commission deducted');
@@ -176,23 +178,21 @@ const page = () => {
                     },
                 };
 
-                console.log("Created orderr is : ", order);
-
                 const rzp = new (window as any).Razorpay(options);
+
                 rzp.on('payment.failed', (response: any) => {
                     toast.error(`Payment failed: ${response.error.description}`);
+                    setUpiLoading(false);
+                    setCardLoading(false);
                 });
+
                 rzp.open();
-                setUpiLoading(false);
-                setCardLoading(false);
-            };
+
+            }
             document.body.appendChild(script);
         } catch (error) {
-            console.error('Payment initiation error:', JSON.stringify(error));
+            console.error('Payment initiation error:', error);
             toast.error('Payment failed to initiate');
-            setUpiLoading(false);
-            setCardLoading(false);
-        } finally {
             setUpiLoading(false);
             setCardLoading(false);
         }
