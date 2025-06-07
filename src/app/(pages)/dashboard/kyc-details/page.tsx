@@ -59,7 +59,6 @@ export default function KYCDetails() {
             if (!response.data.data) {
                 toast.error("Recipient creation failed");
             } else {
-                console.log("response and ids : ", response.data.data);
                 toast.success("Razorpay Account Created");
             }
 

@@ -22,7 +22,7 @@ export default function Home() {
       }
       return [];
     } catch (error) {
-      console.log("Error fetching the products ", error)
+      console.error("Error getting the products ", error)
       return []
     }
   }
@@ -36,8 +36,7 @@ export default function Home() {
       try {
         const response = await axios.get('/api/sessionCookies');
 
-        if (response.data.user.trim() !== "") {
-          console.log(response.data.user);
+        if (response.data.user !== "" || response.data.user.trim() !== "") {
           return response.data.user
         } else {
           localStorage.clear();
@@ -45,7 +44,7 @@ export default function Home() {
         }
 
       } catch (error) {
-        console.log("Error clearing the localStorage", error)
+        console.error("Error clearing the localStorage", error)
       }
     }
 

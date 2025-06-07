@@ -29,7 +29,6 @@ export async function POST(request: NextRequest) {
         // If customer doesn't exist in our DB
         if (!customerId) {
             try {
-                console.log('Creating new Razorpay customer...');
                 const contact = await razorpay.customers.create({
                     name,
                     email: seller.email || `${seller._id}@example.com`, // Ensure unique email
@@ -40,7 +39,6 @@ export async function POST(request: NextRequest) {
                     },
                 });
                 customerId = contact.id;
-                console.log('New customer created:', customerId);
             } catch (error: any) {
                 if (error.error?.code === 'BAD_REQUEST_ERROR' &&
                     error.error.description.includes('already exists')) {
