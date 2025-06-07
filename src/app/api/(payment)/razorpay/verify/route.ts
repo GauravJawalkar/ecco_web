@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 import Razorpay from 'razorpay';
+import connectDB from '@/db/dbConfig';
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID!,
@@ -8,11 +9,12 @@ const razorpay = new Razorpay({
 });
 
 export async function POST(request: NextRequest) {
+    await connectDB();
     try {
         const reqBody = await request.json();
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = reqBody;
 
-        const secret = process.env.RAZORPAY_KEY_SECRET || "ajcysJWOAfi9rZRl0htCqSuD";
+        const secret = process.env.RAZORPAY_KEY_SECRET!;
         // 1. Verifying payment signature
         const generatedSignature = crypto
             .createHmac('sha256', secret)
