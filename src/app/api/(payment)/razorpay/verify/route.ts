@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
         const reqBody = await request.json();
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = reqBody;
 
+        console.log("Request body for verification is : ", reqBody);
+
         const secret = process.env.RAZORPAY_KEY_SECRET!;
         // 1. Verifying payment signature
         const generatedSignature = crypto

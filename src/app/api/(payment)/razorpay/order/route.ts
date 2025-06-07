@@ -45,13 +45,16 @@ export async function POST(request: NextRequest) {
             }
         });
 
-        return NextResponse.json({
-            success: true,
-            orderId: order.id,
-            amount: order.amount,
-            currency: order.currency,
-            receipt: order.receipt
-        }, { status: 200 });
+        return NextResponse.json(
+            {
+                success: true,
+                orderId: order.id,
+                amount: order.amount,
+                currency: order.currency,
+                receipt: order.receipt
+            },
+            { status: 200 }
+        );
     } catch (error: any) {
         console.error("Payment processing error:", error);
 

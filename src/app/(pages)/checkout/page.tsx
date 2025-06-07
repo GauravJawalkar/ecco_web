@@ -8,8 +8,9 @@ import axios from 'axios';
 import { CheckCircle2, Minus, Plus } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
+
 
 const page = () => {
     const searchParams = useSearchParams();
@@ -98,7 +99,6 @@ const page = () => {
 
 
     const handlePayment = async () => {
-
         try {
             const orderAmount = (productDetails.price - productDetails.discount) * quantity;
 
@@ -108,91 +108,98 @@ const page = () => {
                 sellerId: sellerDetails?._id,
             });
 
-            // Load Razorpay script dynamically
-            const script = document.createElement('script');
-            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-            script.async = true;
-            script.onload = () => {
-                const options = {
-                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-                    amount: order.amount,
-                    currency: order.currency,
-                    name: `${sellerDetails.name}'s Store`,
-                    description: `Payment for ${productDetails.name}`,
-                    order_id: order.id,
-                    handler: async (response: any) => {
-                        try {
-                            // Verify payment
-                            const { data: verifyData } = await axios.post('/api/razorpay/verify', {
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature,
-                            });
-
-                            console.log("Verified Data is : ", verifyData);
-
-                            if (verifyData.success) {
-                                // Save order to database
-                                const orderDetails = {
-                                    orderName: productDetails.name,
-                                    orderPrice: productDetails.price,
-                                    orderDiscount: productDetails.discount,
-                                    quantity,
-                                    contactNumber,
-                                    address,
-                                    pinCode,
-                                    landMark,
-                                    orderImage,
-                                    paymentMethod: "Online",
-                                    paymentStatus: "Done",
-                                    userId,
-                                    sellerId: sellerDetails._id,
-                                    productId: productDetails._id,
-                                    razorpayOrderId: response.razorpay_order_id,
-                                    razorpayPaymentId: response.razorpay_payment_id,
-                                    commission: orderAmount * 0.02,
-                                    sellerAmount: orderAmount * 0.98,
-                                };
-
-                                const orderResponse = await axios.post('/api/createOrder', { orderDetails });
-
-                                if (orderResponse.data.success) {
-                                    toast.success('Payment successful! Commission deducted');
-                                    router.push('/orders');
-                                }
-                            } else {
-                                toast.error('Payment verification failed');
-                            }
-                        } catch (error) {
-                            console.error('Order processing error:', error);
-                            toast.error('Order processing failed');
-                        }
-                    },
-                    prefill: {
-                        name: data?.name, // Replace with actual user name
-                        email: data?.email, // Replace with user email
-                        contact: contactNumber,
-                    },
-                    theme: {
-                        color: '#3399cc',
-                    },
-                };
-
-                const rzp = new (window as any).Razorpay(options);
-
-                rzp.on('payment.failed', (response: any) => {
-                    toast.error(`Payment failed: ${response.error.description}`);
-                    setUpiLoading(false);
-                    setCardLoading(false);
+            // Check if Razorpay is already loaded
+            if (!(window as any).Razorpay) {
+                await new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                    script.async = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.body.appendChild(script);
                 });
-
-                rzp.open();
-
             }
-            document.body.appendChild(script);
-        } catch (error) {
+
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: `${sellerDetails.name}'s Store`,
+                description: `Payment for ${productDetails.name}`,
+                order_id: order.orderId,
+
+                handler: async (response: any) => {
+                    try {
+                        if (!response.razorpay_payment_id || !response.razorpay_order_id || !response.razorpay_signature) {
+                            throw new Error("Incomplete payment response from Razorpay");
+                        }
+                        // Verify payment
+                        const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                        });
+
+                        if (verifyData.success) {
+                            const orderDetails = {
+                                orderName: productDetails.name,
+                                orderPrice: productDetails.price,
+                                orderDiscount: productDetails.discount,
+                                quantity,
+                                contactNumber,
+                                address,
+                                pinCode,
+                                landMark,
+                                orderImage,
+                                paymentMethod: "Online",
+                                paymentStatus: "Done",
+                                userId,
+                                sellerId: sellerDetails._id,
+                                productId: productDetails._id,
+                                razorpayOrderId: response.razorpay_order_id,
+                                razorpayPaymentId: response.razorpay_payment_id,
+                                commission: orderAmount * 0.02,
+                                sellerAmount: orderAmount * 0.98,
+                            };
+
+                            await axios.post('/api/createOrder', { orderDetails });
+                            toast.success('Payment successful! Commission deducted');
+                            router.push('/orders');
+                        } else {
+                            toast.error('Payment verification failed');
+                        }
+                    } catch (error: any) {
+                        console.error('Payment processing error:', error);
+                        toast.error(error.response?.data?.error || 'Payment processing failed');
+                    } finally {
+                        setUpiLoading(false);
+                        setCardLoading(false);
+                    }
+                },
+                prefill: {
+                    name: data?.name,
+                    email: data?.email,
+                    contact: contactNumber,
+                },
+                theme: {
+                    color: '#3399cc',
+                },
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+
+            rzp.on('payment.failed', (response: any) => {
+                toast.error(`Payment failed: ${response.error.description}`);
+                setUpiLoading(false);
+                setCardLoading(false);
+            });
+
+            rzp.open();
+            setUpiLoading(false);
+            setCardLoading(false);
+        } catch (error: any) {
             console.error('Payment initiation error:', error);
-            toast.error('Payment failed to initiate');
+            toast.error(error.response?.data?.error || 'Payment failed to initiate');
             setUpiLoading(false);
             setCardLoading(false);
         }

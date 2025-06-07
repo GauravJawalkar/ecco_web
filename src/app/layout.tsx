@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { Navbar } from "@/components/Navigation/Navbar";
 import Provider from "@/components/ReactQuery/Provider";
 
+
 const inter = Inter({
   subsets: ["latin"],
 });
