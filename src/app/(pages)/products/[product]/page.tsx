@@ -19,6 +19,7 @@ const Product = () => {
     const queryClient = useQueryClient();
     const cartOwnerId = data?._id;
     const [fill, setFill] = useState(false);
+    const [showMore, setShowMore] = useState(false);
 
     async function getSpecificProduct(id: string) {
         try {
@@ -97,13 +98,6 @@ const Product = () => {
         addToCartMutation.mutate();
     }
 
-    const handelOrder = () => {
-        try {
-
-        } catch (error) {
-            console.error("Error setting up the order : ", error)
-        }
-    }
 
     return (
         <section className='py-10'>
@@ -153,8 +147,8 @@ const Product = () => {
                     </div>
 
                     <div>
-                        <p className='w-full text-base text-gray-500 capitalize line-clamp-2'>{product?.description}</p>
-                        <button className='text-sm text-blue-500 hover:text-blue-600'>Show More</button>
+                        <p className={`w-full text-base text-gray-500 capitalize ${showMore ? "line-clamp-none" : "line-clamp-2"}`}>{product?.description}</p>
+                        <button onClick={() => { setShowMore((prev) => !prev) }} className='text-sm text-blue-500 hover:text-blue-600'>{showMore ? "Show Less" : "Show More"}</button>
                     </div>
 
                     {/* TODO: Still dummy need to make it dynamic */}
