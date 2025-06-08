@@ -33,7 +33,7 @@ export const Navbar = () => {
             logOut();
             router.push('/login')
             toast.success('Logged Out');
-            localStorage.clear();
+            localStorage.removeItem('userLogin');
 
         } catch (error) {
             toast.error("Failed to logout the user")

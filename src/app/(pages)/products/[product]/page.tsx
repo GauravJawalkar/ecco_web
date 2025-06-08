@@ -69,13 +69,29 @@ const Product = () => {
         }
     }
 
-    const { data: product = [], isLoading, isError } = useQuery(
+    const { data: product = [], isLoading, isError, isSuccess, isFetched } = useQuery(
         {
             queryFn: () => getSpecificProduct(id as string),
             queryKey: ['product'],
             refetchOnWindowFocus: false
         }
     );
+
+    // Add to recently viewed
+    if (isSuccess && isFetched) {
+        try {
+            const existingView = JSON.parse(localStorage.getItem('RecentView') || "[]");
+            console.log(existingView);
+
+            if (!existingView.includes(product._id)) {
+                existingView.push(product._id);
+                localStorage.setItem('RecentView', JSON.stringify(existingView));
+            }
+        } catch (error) {
+            console.error("Failed to parse localStorage item 'RecentView':", error);
+            localStorage.setItem('RecentView', JSON.stringify([product._id]));
+        }
+    }
 
     const { data: seller = [] } = useQuery(
         {
@@ -119,7 +135,7 @@ const Product = () => {
                                             src={image}
                                             height={200}
                                             width={200}
-                                            className='object-contain w-auto h-auto mb-5 border rounded cursor-pointer dark:border-neutral-500' />
+                                            className='object-contain w-auto h-auto mb-5 border rounded cursor-pointer dark:border-neutral-700' />
                                     </div>
                                 )
                             })
@@ -136,7 +152,7 @@ const Product = () => {
                                 alt='product_image'
                                 height={2000}
                                 width={2000}
-                                className='w-full h-auto transition-all duration-200 ease-linear border rounded dark:border-neutral-500 hover:cursor-grab hover:scale-150 ' />}
+                                className='w-full h-auto transition-all duration-200 ease-linear border rounded dark:border-neutral-700 hover:cursor-grab hover:scale-150 ' />}
                     </div>
                 </div>
 
@@ -176,10 +192,10 @@ const Product = () => {
                         </div>
                     </div>
 
-                    <div className='w-full px-4 py-2 border rounded dark:border-neutral-500'>
+                    <div className='w-full px-4 py-2 border rounded dark:border-neutral-700'>
 
                         {/* Highlights */}
-                        <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-500 '>
+                        <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-700 '>
                             <div className='font-semibold capitalize '>
                                 Highlights
                             </div>
@@ -200,7 +216,7 @@ const Product = () => {
                         </div>
 
                         {/* Payment Type */}
-                        <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-500'>
+                        <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-700'>
                             <div className='font-semibold capitalize '>
                                 Payment Options
                             </div>
@@ -237,12 +253,12 @@ const Product = () => {
                     {/* Add to cart and buy now button */}
                     <div className="flex items-center justify-between w-full gap-4">
                         <button
-                            className='flex items-center justify-center w-full gap-4 px-4 py-3 border rounded dark:border-neutral-500'
+                            className='flex items-center justify-center w-full gap-4 px-4 py-3 border rounded dark:border-neutral-700'
                             onClick={handelCart}>
                             {addToCartMutation.isPending ? <Loader title='Adding...' /> : (<span className='flex items-center justify-center gap-4'><ShoppingCart />
                                 Add To Cart</span>)}
                         </button>
-                        <button onClick={() => { setFill(!fill) }} className='p-3 border rounded-full dark:border-neutral-500'>
+                        <button onClick={() => { setFill(!fill) }} className='p-3 border rounded-full dark:border-neutral-700'>
                             <Heart className={`${fill ? "fill-red-500 text-red-500" : "fill-none"} `} />
                         </button>
                     </div>
