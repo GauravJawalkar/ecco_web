@@ -80,16 +80,20 @@ const Product = () => {
     // Add to recently viewed
     if (isSuccess && isFetched) {
         try {
-            const existingView = JSON.parse(localStorage.getItem('RecentView') || "[]");
+            const existingView = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
             console.log(existingView);
 
-            if (!existingView.includes(product._id)) {
-                existingView.push(product._id);
-                localStorage.setItem('RecentView', JSON.stringify(existingView));
+            if (!Array.isArray(existingView.product)) {
+                existingView.product = [];
+            }
+
+            if (!existingView.product.includes(product._id)) {
+                existingView.product.push(product._id);
+                localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ ...existingView, user: data?._id }));
             }
         } catch (error) {
             console.error("Failed to parse localStorage item 'RecentView':", error);
-            localStorage.setItem('RecentView', JSON.stringify([product._id]));
+            localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ user: data?._id, product: [product._id] }));
         }
     }
 

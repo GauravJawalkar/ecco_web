@@ -5,12 +5,14 @@ import HomeHero from "@/components/Home/HomeHero";
 import ProductHolder from "@/components/Home/ProductHolder";
 import ProductShowCase from "@/components/Home/ProductShowCase";
 import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
+import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
+  const { data }: any = useUserStore();
 
   async function getProducts() {
     try {
@@ -31,16 +33,17 @@ export default function Home() {
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
-  const existingRecentlyViewed = JSON.parse(localStorage.getItem('RecentView') || '[]');
+  const existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
+  console.log("User recents are : ", existingRecentlyViewed);
 
   useEffect(() => {
     async function checkVaildCookies() {
       try {
         const response = await axios.get('/api/sessionCookies');
-        if (response.data.user !== "" || response.data.user.trim() !== "") {
+        if (response.data?.user !== "" || response.data?.user.trim() !== "") {
           return response.data.user
         } else {
-          localStorage.clear();
+          localStorage.removeItem('userLogin');
           toast.success("clearing the localstorage")
         }
       } catch (error) {
@@ -67,7 +70,7 @@ export default function Home() {
         <ProductShowCase />
       </div>
 
-      {existingRecentlyViewed.length > 0 && < RecentlyViewedProducts />}
+      {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) && < RecentlyViewedProducts products={existingRecentlyViewed?.product} />}
     </div>
   );
 }
