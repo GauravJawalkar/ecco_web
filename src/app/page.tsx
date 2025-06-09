@@ -30,13 +30,18 @@ export default function Home() {
     }
   }
 
-  const { data: myData = [], isLoading } = useQuery({
+  const { data: myData = [], isLoading, isFetched, isSuccess } = useQuery({
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
+  let existingRecentlyViewed;
+
+  if (isFetched && isSuccess) {
+    existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
+  }
+
+
   useEffect(() => {
-    const existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-    setRecentlyViewed(existingRecentlyViewed);
     async function checkVaildCookies() {
       try {
         const response = await axios.get('/api/sessionCookies');
@@ -70,7 +75,8 @@ export default function Home() {
         <ProductShowCase />
       </div>
 
-      {(recentlyViewed?.product?.length > 0 && recentlyViewed?.user === data?._id) && < RecentlyViewedProducts products={recentlyViewed?.product} />}
+      {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
+        <RecentlyViewedProducts products={existingRecentlyViewed?.product} />}
     </div>
   );
 }
