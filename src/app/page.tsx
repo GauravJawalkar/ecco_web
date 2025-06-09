@@ -8,11 +8,12 @@ import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
 import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
   const { data }: any = useUserStore();
+  const [recentlyViewed, setRecentlyViewed] = useState<any>({});
 
   async function getProducts() {
     try {
@@ -33,10 +34,9 @@ export default function Home() {
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
-  const existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-  console.log("User recents are : ", existingRecentlyViewed);
-
   useEffect(() => {
+    const existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
+    setRecentlyViewed(existingRecentlyViewed);
     async function checkVaildCookies() {
       try {
         const response = await axios.get('/api/sessionCookies');
@@ -70,7 +70,7 @@ export default function Home() {
         <ProductShowCase />
       </div>
 
-      {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) && < RecentlyViewedProducts products={existingRecentlyViewed?.product} />}
+      {(recentlyViewed?.product?.length > 0 && recentlyViewed?.user === data?._id) && < RecentlyViewedProducts products={recentlyViewed?.product} />}
     </div>
   );
 }
