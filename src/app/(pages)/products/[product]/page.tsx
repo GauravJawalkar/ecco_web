@@ -20,6 +20,7 @@ const Product = () => {
     const cartOwnerId = data?._id;
     const [fill, setFill] = useState(false);
     const [showMore, setShowMore] = useState(false);
+    const [rateValue, setRateValue] = useState(0);
 
     async function getSpecificProduct(id: string) {
         try {
@@ -31,6 +32,25 @@ const Product = () => {
         } catch (error) {
             console.log("Error getting the product : ", error);
             return []
+        }
+    }
+
+    async function rateProduct() {
+        const userID = data?._id;
+        const productID = product?._id;
+        try {
+            const response = await axios.post('/api/rating/rateProduct', { userID, productID, rateValue });
+            if (response.data.data) {
+                toast.success("Rated Product Successfully");
+                return response.data.data;
+            }
+            return [];
+        } catch (error: any) {
+            console.error("Failed to rate the product : ", error);
+            if (error.status === 401) {
+                toast.error("Can't Rate Unordered Product");
+            }
+            return [];
         }
     }
 
@@ -114,6 +134,19 @@ const Product = () => {
         }
     })
 
+    const rateMutation = useMutation({
+        mutationFn: rateProduct,
+        onError: () => {
+            toast.error("Something Went Wrong");
+        },
+        onSuccess: () => {
+        }
+    })
+
+    const handelRating = () => {
+        rateMutation.mutate();
+    }
+
     const handelCart = () => {
         addToCartMutation.mutate();
     }
@@ -139,7 +172,7 @@ const Product = () => {
                                             src={image}
                                             height={200}
                                             width={200}
-                                            className='object-contain w-auto h-auto mb-5 border rounded cursor-pointer dark:border-neutral-700' />
+                                            className='object-contain w-auto h-auto mb-5 border rounded cursor-pointer dark:border-neutral-700 dark:bg-neutral-950/50 transition-colors duration-200 ease-linear' />
                                     </div>
                                 )
                             })
@@ -156,7 +189,7 @@ const Product = () => {
                                 alt='product_image'
                                 height={2000}
                                 width={2000}
-                                className='w-full h-auto transition-all duration-200 ease-linear border rounded dark:border-neutral-700 hover:cursor-grab hover:scale-150 ' />}
+                                className='w-full h-auto transition-colors duration-200 ease-linear border rounded dark:border-neutral-700 hover:cursor-grab hover:scale-150 dark:bg-neutral-950/50' />}
                     </div>
                 </div>
 
@@ -173,11 +206,11 @@ const Product = () => {
 
                     {/* TODO: Still dummy need to make it dynamic */}
                     <div className='flex w-full gap-2 text-yellow-500'>
-                        <Star className='w-5 h-5' />
-                        <Star className='w-5 h-5' />
-                        <Star className='w-5 h-5' />
-                        <Star className='w-5 h-5' />
-                        <Star className='w-5 h-5' />
+                        <Star onClick={() => { setRateValue(1); handelRating() }} className='w-5 h-5 cursor-pointer' />
+                        <Star onClick={() => { setRateValue(2); handelRating() }} className='w-5 h-5 cursor-pointer' />
+                        <Star onClick={() => { setRateValue(3); handelRating() }} className='w-5 h-5 cursor-pointer' />
+                        <Star onClick={() => { setRateValue(4); handelRating() }} className='w-5 h-5 cursor-pointer' />
+                        <Star onClick={() => { setRateValue(5); handelRating() }} className='w-5 h-5 cursor-pointer' />
                         <span className='text-gray-500'>(3,454)</span>
                     </div>
 

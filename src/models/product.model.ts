@@ -33,6 +33,21 @@ const productSchema = new Schema(
                 required: true
             }
         ],
+        rating: [
+            {
+                ratedBy: {
+                    type: Schema.Types.ObjectId,
+                    ref: "User",
+                    required: true
+                },
+                rateNumber: {
+                    type: Number,
+                    default: 0,
+                    enum: [0, 1, 2, 3, 4, 5],
+                    required: true
+                }
+            }
+        ],
         size: {
             type: Number,
             required: true
