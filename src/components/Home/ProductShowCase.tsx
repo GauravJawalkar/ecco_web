@@ -42,7 +42,7 @@ const ProductShowCase = () => {
   return (
     <div>
       <div className="grid grid-cols-2 gap-10">
-        <div className="h-auto border p-5 dark:border-neutral-700 dark:bg-neutral-950/20  rounded-xl">
+        <div className="h-auto p-5 border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-xl">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -53,17 +53,17 @@ const ProductShowCase = () => {
             {
               firstTwoProducts.length !== 0 && firstTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border dark:border-neutral-700 rounded-3xl relative">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="relative border dark:border-neutral-700 rounded-3xl">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
                       height={200} width={200}
-                      className="w-full h-64 object-contain" />
-                    <div className="dark:bg-neutral-800 bg-gray-100 rounded-b-3xl p-4">
-                      <h1 className="capitalize font-semibold text-lg my-1.5 line-clamp-1">{prodName}</h1>
-                      <h1 className="capitalize text-base text-gray-400">Seller : {sellerName}</h1>
+                      className="object-contain w-full h-64" />
+                    <div className="p-4 bg-gray-100 dark:bg-neutral-800 rounded-b-3xl">
+                      <h1 className="capitalize font-semibold text-lg text-center my-1.5 line-clamp-1">{prodName}</h1>
+                      <h1 className="text-base text-center text-gray-400 capitalize">Seller : {sellerName}</h1>
                     </div>
-                    <div className="absolute top-0 right-0 px-2 bg-green-600 text-white rounded-tr-xl rounded-bl-xl">
+                    <div className="absolute top-0 right-0 px-2 text-white bg-green-600 rounded-tr-xl rounded-bl-xl">
                       Today's Special
                     </div>
                   </Link>
@@ -72,7 +72,7 @@ const ProductShowCase = () => {
             }
           </div>
         </div>
-        <div className="h-auto border p-5 dark:border-neutral-700 dark:bg-neutral-950/20 rounded-xl">
+        <div className="h-auto p-5 border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-xl">
           <div className="grid grid-cols-2 gap-5">
             {isLoading && <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" /></div>}
@@ -83,17 +83,17 @@ const ProductShowCase = () => {
             {
               lastTwoProducts.length !== 0 && lastTwoProducts.map(({ _id, prodImages, sellerName, prodName, productId }: dataProps) => {
                 return (
-                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="border dark:border-neutral-700  rounded-3xl relative">
+                  <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="relative border dark:border-neutral-700 rounded-3xl">
                     <Image
                       src={prodImages[0]}
                       alt="splImage"
                       height={200} width={200}
-                      className="w-full h-64 object-contain" />
-                    <div className="dark:bg-neutral-800 bg-gray-100 rounded-b-3xl p-4">
-                      <h1 className="capitalize font-semibold text-lg my-1.5 line-clamp-1">{prodName}</h1>
-                      <h1 className="capitalize text-base text-gray-400">Seller : {sellerName}</h1>
+                      className="object-contain w-full h-64" />
+                    <div className="p-4 bg-gray-100 dark:bg-neutral-800 rounded-b-3xl">
+                      <h1 className="capitalize font-semibold text-lg text-center my-1.5 line-clamp-1">{prodName}</h1>
+                      <h1 className="text-base text-center text-gray-400 capitalize">Seller : {sellerName}</h1>
                     </div>
-                    <div className="absolute top-0 right-0 px-2 bg-green-600 text-white rounded-tr-xl rounded-bl-xl">
+                    <div className="absolute top-0 right-0 px-2 text-white bg-green-600 rounded-tr-xl rounded-bl-xl">
                       Today's Special
                     </div>
                   </Link>

@@ -5,8 +5,13 @@ import axios from "axios"
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import "swiper/css";
+import "../../app/globals.css";
 
 const RecentlyViewedProducts = ({ products }: { products: [string] }) => {
+
 
     async function getRecentProducts() {
         try {
@@ -35,39 +40,47 @@ const RecentlyViewedProducts = ({ products }: { products: [string] }) => {
 
 
     return (
-        <div className=" border h-auto dark:border-neutral-500 pb-4 rounded-xl">
-            <div className="flex items-center justify-start gap-3">
-                <div className="h-auto p-5 dark:bg-neutral-950/20  rounded-xl">
-                    <div className="gap-5 grid grid-cols-5">
-                        {
-                            mutation?.data?.length !== 0 && mutation?.data?.map(({ _id, images, name, price, discount }: { _id: string, images: [string], name: string, price: number, discount: number }) => {
-                                return (
-                                    <Link href={`/products/${slugify(name)}?id=${_id}`} key={_id} className="border dark:border-neutral-700 rounded-3xl relative">
+        <div
+            className="h-auto pb-4 border dark:border-neutral-500 rounded-xl">
+            <div className="p-5">
+                <Swiper
+                    slidesPerView={5}
+                    pagination={{ clickable: true }}
+                    spaceBetween={30}
+                    navigation={false}
+                    modules={[Pagination, Navigation]}
+                    loop={true}>
+                    {
+                        mutation?.data?.length !== 0 && mutation?.data?.map(({ _id, images, name, price, discount }: { _id: string, images: [string], name: string, price: number, discount: number }) => {
+                            return (
+                                <SwiperSlide className="relative w-full border rounded-3xl dark:border-neutral-700 " key={_id}>
+                                    <Link href={`/products/${slugify(name)}?id=${_id}`}>
                                         <Image
                                             src={images?.[0] || ""}
                                             alt="recentViewImage"
                                             height={200} width={200}
-                                            className="w-full h-64 object-contain p-2 dark:bg-neutral-800 rounded-tr-3xl rounded-tl-3xl" />
-                                        <div className=" border-t dark:border-t-neutral-700 rounded-b-3xl p-2">
-                                            <h1 className="capitalize font-normal text-center text-lg my-1.5 line-clamp-1">{name}</h1>
-                                            <h1 className="capitalize font-semibold text-lg text-center my-1.5 line-clamp-1 ">
+                                            className="object-contain w-full h-64 p-2 dark:bg-neutral-800 rounded-t-3xl" />
+                                        <div className="px-2 py-4 border-t dark:border-t-neutral-700 rounded-b-3xl space-y-2">
+                                            <h1 className="text-lg font-normal text-center text-gray-700 dark:text-gray-300 capitalize line-clamp-1">{name}</h1>
+                                            <h1 className="text-lg font-semibold text-center capitalize line-clamp-1 ">
                                                 ₹{price - discount}
-                                                <span className="line-through text-gray-500 font-normal text-base px-2">
+                                                <span className="px-2 text-base font-normal text-gray-500 line-through">
                                                     {price}
                                                 </span>
                                             </h1>
                                         </div>
-                                        <div className="absolute top-0 right-0 px-2 bg-green-600 text-white rounded-tr-xl rounded-bl-xl">
+                                        <h1 className="absolute w-auto px-2 text-white bg-green-600 top-0 right-0 rounded-tr-xl rounded-bl-xl line-clamp-1">
                                             Recent View
-                                        </div>
+                                        </h1>
                                     </Link>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
+                                </SwiperSlide>
+                            )
+                        })
+                    }
+                </Swiper>
             </div>
-        </div>
+
+        </div >
     )
 }
 
