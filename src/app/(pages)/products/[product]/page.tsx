@@ -92,8 +92,9 @@ const Product = () => {
     const { data: product = [], isLoading, isError, isSuccess, isFetched } = useQuery(
         {
             queryFn: () => getSpecificProduct(id as string),
-            queryKey: ['product'],
-            refetchOnWindowFocus: false
+            queryKey: ['product', id],
+            refetchOnWindowFocus: false,
+            refetchOnMount: true,
         }
     );
 
