@@ -41,7 +41,7 @@ const Product = () => {
         try {
             const response = await axios.post('/api/rating/rateProduct', { userID, productID, rateValue });
             if (response.data.data) {
-                toast.success("Rated Product Successfully");
+                toast.success("Thanks For Rating");
                 return response.data.data;
             }
             return [];
@@ -89,6 +89,12 @@ const Product = () => {
         }
     }
 
+    const getAverageRating = (rating: { rateNumber: number }[]) => {
+        if (rating.length === 0) return 0;
+        const total = rating.reduce((sum, r) => sum + r.rateNumber, 0);
+        return total / rating.length;
+    };
+
     const { data: product = [], isLoading, isError, isSuccess, isFetched } = useQuery(
         {
             queryFn: () => getSpecificProduct(id as string),
@@ -98,7 +104,7 @@ const Product = () => {
         }
     );
 
-    // Add to recently viewed
+    // Add to recently viewed if the product is successfully fetched and viewed
     if (isSuccess && isFetched) {
         try {
             const existingView = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
@@ -112,6 +118,7 @@ const Product = () => {
                 existingView.product.push(product._id);
                 localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ ...existingView, user: data?._id }));
             }
+
         } catch (error) {
             console.error("Failed to parse localStorage item 'RecentView':", error);
             localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ user: data?._id, product: [product._id] }));
@@ -141,6 +148,7 @@ const Product = () => {
             toast.error("Something Went Wrong");
         },
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['product', id] });
         }
     })
 
@@ -151,7 +159,6 @@ const Product = () => {
     const handelCart = () => {
         addToCartMutation.mutate();
     }
-
 
     return (
         <section className='py-10'>
@@ -205,14 +212,14 @@ const Product = () => {
                         <button onClick={() => { setShowMore((prev) => !prev) }} className='text-sm text-blue-500 hover:text-blue-600'>{showMore ? "Show Less" : "Show More"}</button>
                     </div>
 
-                    {/* TODO: Still dummy need to make it dynamic */}
+                    {/* TODO: Made it dynamic */}
                     <div className='flex w-full gap-2 text-yellow-500'>
-                        <Star onClick={() => { setRateValue(1); handelRating() }} className='w-5 h-5 cursor-pointer' />
-                        <Star onClick={() => { setRateValue(2); handelRating() }} className='w-5 h-5 cursor-pointer' />
-                        <Star onClick={() => { setRateValue(3); handelRating() }} className='w-5 h-5 cursor-pointer' />
-                        <Star onClick={() => { setRateValue(4); handelRating() }} className='w-5 h-5 cursor-pointer' />
-                        <Star onClick={() => { setRateValue(5); handelRating() }} className='w-5 h-5 cursor-pointer' />
-                        <span className='text-gray-500'>(3,454)</span>
+                        <Star onClick={() => { setRateValue(1); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 1 && 'fill-yellow-500'}`} />
+                        <Star onClick={() => { setRateValue(2); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 2 && 'fill-yellow-500'}`} />
+                        <Star onClick={() => { setRateValue(3); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 3 && 'fill-yellow-500'}`} />
+                        <Star onClick={() => { setRateValue(4); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 4 && 'fill-yellow-500'}`} />
+                        <Star onClick={() => { setRateValue(5); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 5 && 'fill-yellow-500 h1/2'}`} />
+                        <span className='text-gray-500'>({getAverageRating(product?.rating)})</span>
                     </div>
 
                     {/* Price and Discount */}
@@ -301,6 +308,14 @@ const Product = () => {
                         </button>
                     </div>
                     <Link href={`/checkout?id=${product?._id}`} className='w-full px-4 py-3 text-center text-white bg-green-500 rounded hover:bg-green-500/80'>Buy Now</Link>
+
+                    <div className='my-2 border w-full px-4 py-2'>
+                        <h1 className='text-xl font-semibold'>Ratings & Reviews</h1>
+                        {/* Ratings Info Div */}
+                        <div></div>
+                        {/* Reviews Components Dynamic */}
+                        <div></div>
+                    </div>
                 </div>
             </div>}
 
