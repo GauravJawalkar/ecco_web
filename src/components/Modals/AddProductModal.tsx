@@ -42,13 +42,14 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     async function addProduct() {
         try {
+            const seller = data?._id;
             setLoading(true);
             const formData = new FormData();
             formData.append('images', images);
             formData.append('primeImage', primeImage);
             formData.append('secondImage', secondImage);
             formData.append('name', name);
-            formData.append('seller', data._id);
+            formData.append('seller', seller);
             formData.append('description', description);
             formData.append('price', price);
             formData.append('discount', discount);

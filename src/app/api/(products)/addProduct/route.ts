@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User: Your are not a seller" }, { status: 401 })
         }
 
-        const userId = decodedUser?.id;
+        const userId = decodedUser?._id || decodedUser?.id;
 
         const formData = await request.formData();
 
@@ -41,6 +41,8 @@ export async function POST(request: NextRequest) {
         const stock = formData.get('stock');
         const category = formData.get('category');
 
+        console.log(seller);
+        console.log("UserId is : ", userId);
 
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })

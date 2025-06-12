@@ -8,8 +8,6 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
     try {
         const { id } = await params.params;
 
-        console.log(id)
-
         if (!id) {
             return NextResponse.json({ error: "Id is required" }, { status: 401 })
         }

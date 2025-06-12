@@ -14,6 +14,8 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
 
         const sellerOrders = await Order.find({ 'orders.seller': id });
 
+        console.log(sellerOrders[1].orders);
+
         if (!sellerOrders) {
             return NextResponse.json({ error: "No Orders found" }, { status: 404 });
         }

@@ -21,6 +21,7 @@ const Product = () => {
     const [fill, setFill] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [rateValue, setRateValue] = useState(0);
+    const [content, setContent] = useState("");
 
     async function getSpecificProduct(id: string) {
         try {
@@ -50,6 +51,23 @@ const Product = () => {
             if (error.status === 401) {
                 toast.error("Can't Rate Unordered Product");
             }
+            return [];
+        }
+    }
+
+    async function reviewProduct() {
+        const reviewedBy = data?._id;
+        const reviewerName = data?.name;
+        const reviewedProduct = product?._id;
+        try {
+            const response = await axios.post('/api/review/addReview', { reviewedBy, reviewedProduct, content, reviewerName });
+            if (response.data.data) {
+                toast.success("Review Added");
+                return response.data.data;
+            }
+            return [];
+        } catch (error) {
+            console.error("Error posting review for the product : ", error);
             return [];
         }
     }
@@ -89,6 +107,19 @@ const Product = () => {
         }
     }
 
+    async function getReviews() {
+        try {
+            const response = await axios.get(`/api/review/getReviews/${id}`);
+            if (response.data.data) {
+                return response.data.data;
+            }
+            return [];
+        } catch (error) {
+            console.error("Failed to fetch reviews ", error);
+            return []
+        }
+    }
+
     const getAverageRating = (rating: { rateNumber: number }[]) => {
         if (rating.length === 0) return 0;
         const total = rating.reduce((sum, r) => sum + r.rateNumber, 0);
@@ -99,6 +130,7 @@ const Product = () => {
         {
             queryFn: () => getSpecificProduct(id as string),
             queryKey: ['product', id],
+            enabled: !!id,
             refetchOnWindowFocus: false,
             refetchOnMount: true,
         }
@@ -160,6 +192,30 @@ const Product = () => {
         addToCartMutation.mutate();
     }
 
+    const postReviewMutation = useMutation(
+        {
+            mutationFn: reviewProduct,
+            onError: () => {
+                toast.error("Something Went Wrong");
+            },
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['allReviews'] });
+            },
+        }
+    )
+
+    const handelReviewPost = () => {
+        postReviewMutation.mutate();
+    }
+
+    const { data: allReviews = [] } = useQuery({
+        queryFn: getReviews,
+        queryKey: ['allReviews'],
+        enabled: !!id,
+        refetchOnWindowFocus: false,
+    })
+
+
     return (
         <section className='py-10'>
             {isLoading && <div className='flex items-center justify-center'>
@@ -180,7 +236,7 @@ const Product = () => {
                                             src={image}
                                             height={200}
                                             width={200}
-                                            className='object-contain w-auto h-auto mb-5 border rounded cursor-pointer dark:border-neutral-700 dark:bg-neutral-950/50 transition-colors duration-200 ease-linear' />
+                                            className='object-contain w-auto h-auto mb-5 transition-colors duration-200 ease-linear border rounded cursor-pointer dark:border-neutral-700 dark:bg-neutral-950/50' />
                                     </div>
                                 )
                             })
@@ -214,7 +270,7 @@ const Product = () => {
 
                     {/* TODO: Made it dynamic */}
                     <div className='flex w-full gap-2 text-yellow-500'>
-                        <Star onClick={() => { setRateValue(1); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 1 && 'fill-yellow-500'}`} />
+                        {<Star onClick={() => { setRateValue(1); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 1 && 'fill-yellow-500'}`} />}
                         <Star onClick={() => { setRateValue(2); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 2 && 'fill-yellow-500'}`} />
                         <Star onClick={() => { setRateValue(3); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 3 && 'fill-yellow-500'}`} />
                         <Star onClick={() => { setRateValue(4); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 4 && 'fill-yellow-500'}`} />
@@ -309,12 +365,48 @@ const Product = () => {
                     </div>
                     <Link href={`/checkout?id=${product?._id}`} className='w-full px-4 py-3 text-center text-white bg-green-500 rounded hover:bg-green-500/80'>Buy Now</Link>
 
-                    <div className='my-2 border w-full px-4 py-2'>
+                    {/* Ratings and reviews */}
+                    <div className='w-full p-4 my-2 border rounded'>
                         <h1 className='text-xl font-semibold'>Ratings & Reviews</h1>
                         {/* Ratings Info Div */}
-                        <div></div>
+                        <div className='py-4'>
+                            <div className='flex items-center justify-start space-x-5'>
+                                <h1 className='flex items-center gap-4 text-2xl'>
+                                    {getAverageRating(product?.rating)} <span><Star className='fill-yellow-500 text-yellow-500' /></span>
+                                </h1>
+                                <h1 className='text-base text-gray-600'>{product?.rating.length} Users rated this product & 5 Reviewed this product</h1>
+                            </div>
+
+                            {/* Map all the reviews */}
+                        </div>
+                        {
+                            allReviews.map((review: any, index: number) => {
+                                return (
+                                    <div key={index}>
+                                        {review?.reviews.map(({ content, likes, dislikes, _id, reviewerName }: any) => {
+                                            return (
+                                                <div key={_id}>
+                                                    <h1 className='capitalize'>{(reviewerName)}</h1>
+                                                    <h1>{content}</h1>
+                                                    <h1>{likes}</h1>
+                                                    <h1>{dislikes}</h1>
+                                                </div>
+                                            )
+                                        })
+                                        }
+                                    </div>
+                                )
+                            })
+                        }
+                        <div>
+
+                        </div>
+
                         {/* Reviews Components Dynamic */}
-                        <div></div>
+                        <div className='relative'>
+                            <input className='border p-2 w-full text-sm rounded outline-none' placeholder='Enter Your Review' type="text" value={content} onChange={(e) => { setContent(e.target.value) }} />
+                            <button className='absolute right-0 -translate-y-1/2 top-1/2 content-center rounded-r text-white bg-green-500 p-2 text-sm' onClick={handelReviewPost}>Submit</button>
+                        </div>
                     </div>
                 </div>
             </div>}
