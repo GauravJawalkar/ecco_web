@@ -18,6 +18,15 @@ const reviewSchema = new Schema(
                     type: String,
                     required: true
                 },
+                reviewTitle: {
+                    type: String,
+                    required: true
+                },
+                reviewImages: [
+                    {
+                        type: String
+                    }
+                ],
                 content: {
                     type: String,
                     required: true

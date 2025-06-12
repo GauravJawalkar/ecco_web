@@ -15,9 +15,6 @@ export async function GET(_request: NextRequest, params: { params: { id: string 
 
         const productReviews = await Reviews.find({ reviewedProduct: new mongoose.Types.ObjectId(id) });
 
-        console.log("Product reviews are  : ", productReviews);
-
-
         if (!productReviews) {
             return NextResponse.json({ error: "No reviews found" }, { status: 402 })
         }

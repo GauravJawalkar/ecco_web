@@ -10,8 +10,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "../../app/globals.css";
 
-const RecentlyViewedProducts = ({ products }: { products: [string] }) => {
-
+const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: boolean }) => {
 
     async function getRecentProducts() {
         try {
@@ -40,8 +39,7 @@ const RecentlyViewedProducts = ({ products }: { products: [string] }) => {
 
 
     return (
-        <div
-            className="h-auto pb-4 border dark:border-neutral-500 rounded-xl">
+        <div className="h-auto border dark:border-neutral-700 rounded-xl">
             <div className="p-5">
                 <Swiper
                     slidesPerView={5}
@@ -69,9 +67,9 @@ const RecentlyViewedProducts = ({ products }: { products: [string] }) => {
                                                 </span>
                                             </h1>
                                         </div>
-                                        <h1 className="absolute w-auto px-2 text-white bg-green-600 top-0 right-0 rounded-tr-xl rounded-bl-xl line-clamp-1">
+                                        {tag && <h1 className="absolute w-auto px-2 text-white bg-green-600 top-0 right-0 rounded-tr-xl rounded-bl-xl line-clamp-1">
                                             Recent View
-                                        </h1>
+                                        </h1>}
                                     </Link>
                                 </SwiperSlide>
                             )

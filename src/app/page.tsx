@@ -76,7 +76,7 @@ export default function Home() {
       </div>
 
       {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
-        <RecentlyViewedProducts products={existingRecentlyViewed?.product} />}
+        <RecentlyViewedProducts tag={true} products={existingRecentlyViewed?.product} />}
     </div>
   );
 }
