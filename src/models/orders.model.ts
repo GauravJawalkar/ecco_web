@@ -9,10 +9,12 @@ const orderSchema = new Schema(
         },
         orders: [
             {
-                productId: {
-                    type: String,
-                    required: true
-                },
+                productId: [
+                    {
+                        type: String,
+                        required: true
+                    }
+                ],
                 orderName: {
                     type: String,
                     required: true
@@ -61,11 +63,19 @@ const orderSchema = new Schema(
                     enum: ["Done", "Pending"],
                     required: true
                 },
-                seller: {
-                    type: Schema.Types.ObjectId,
-                    ref: "User",
-                    required: true
-                },
+                seller: [
+                    {
+                        productId: {
+                            type: String,
+                            required: true
+                        },
+                        sellerId: {
+                            type: Schema.Types.ObjectId,
+                            ref: "User",
+                            required: true
+                        }
+                    }
+                ],
                 processingStatus: {
                     type: String,
                     enum: ['Order Confirmed', 'Order Shipped', 'Order Processing', 'Out For Delivery']

@@ -11,9 +11,9 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation, productId } = reqBody.orderDetails;
+        const { orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, orderConfirmation, productId, seller } = reqBody.orderDetails;
 
-        const requiredFields = [orderName, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, productId, userId, sellerId, orderConfirmation];
+        const requiredFields = [orderName, userId, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, orderConfirmation];
 
         if (requiredFields.some((elem: string) => elem.trim() === "")) {
             return NextResponse.json({ error: "Required Fields cannot be empty" }, { status: 400 });
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
         const existingOrder = await Order.findOne({ orderBy: userId }).session(session);
 
         const newOrderItem = {
-            productId,
+            productId: productId,
             orderName,
             orderImage,
             contactNumber,
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             landMark,
             paymentMethod,
             paymentStatus,
-            seller: sellerId,
+            seller: seller,
             processingStatus: orderConfirmation,
         };
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
                 { status: 200 }
             );
         }
-        
+
     } catch (error) {
         await session.abortTransaction();
         session.endSession();

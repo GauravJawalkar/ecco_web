@@ -207,16 +207,17 @@ const page = () => {
 
     async function createOrder() {
         try {
-            const productId = productDetails?._id;
+            const productId = [productDetails?._id];
             const orderName = productDetails?.name;
             const orderPrice = productDetails?.price;
             const orderDiscount = productDetails?.discount;
             const paymentStatus = "Pending";
             const paymentMethod = "COD";
             const sellerId = sellerDetails?._id;
+            const seller = [{ productId: productDetails?._id, sellerId: sellerDetails?._id }]
             const orderConfirmation = "Order Confirmed";
             const orderDetails = {
-                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation, productId
+                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation, productId, seller
             };
             const response = await axios.post("/api/createOrder", { orderDetails });
             if (response.data.data) {

@@ -10,14 +10,12 @@ export async function POST(request: NextRequest) {
 
         const accessToken = cookieStore.get('accessToken')?.value;
 
-        console.log("Access Token Value : ", accessToken);
-
         if (!accessToken || accessToken.trim() === "" || accessToken === undefined) {
             return NextResponse.json({ error: "Unauthorized Access" }, { status: 403 });
         }
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, sellerName, discount, stock, productId } = reqBody;
+        const { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId } = reqBody;
 
         const quantity = 1;
 
@@ -25,9 +23,11 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!name || !price || !image || !sellerName || !discount || !productId) {
+        if (!name || !price || !image || !sellerName || !discount || !productId || !sellerId) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
+
+        console.log("Seller Id is : ", sellerId);
 
         const existingCart = await Cart.findOne({ cartOwner });
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
             const newCart = await Cart.create(
                 {
                     cartOwner,
-                    cartItems: [{ name, price, image, quantity, sellerName, discount, stock: stock, productId: productId }],
+                    cartItems: [{ name, price, image, quantity, sellerName, discount, stock: stock, productId: productId, sellerId: sellerId }],
                 }
             );
             await newCart.save();
@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
             existingCart.cartItems[existingItemIndex].quantity += quantity;
         } else {
             // Add new item
-            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName, stock: stock, productId });
+            existingCart.cartItems.push({ name, price, image, quantity, discount, sellerName, stock: stock, productId, sellerId: sellerId });
         }
 
         const updatedCart = await existingCart.save();

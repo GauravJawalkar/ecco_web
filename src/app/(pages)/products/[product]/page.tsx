@@ -86,7 +86,8 @@ const Product = () => {
             const sellerName = seller?.name;
             const stock = product?.stock;
             const productId = product?._id;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
+            const sellerId = seller?._id;
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
             if (response.data.data) {
                 toast.success("Item Added To Cart");
                 return response.data.data;
@@ -166,7 +167,7 @@ const Product = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
-        }
+        },
     })
 
     const rateMutation = useMutation({

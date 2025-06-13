@@ -37,6 +37,9 @@ const cartSchema = new Schema(
                 sellerName: {
                     type: String,
                 },
+                sellerId: {
+                    type: String
+                },
                 productId: {
                     type: Schema.Types.ObjectId,
                     ref: "Product",

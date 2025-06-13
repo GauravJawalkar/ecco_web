@@ -47,7 +47,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     try {
       const cartOwner = data?._id;
       const sellerName = vikreta;
-      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
+      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
       if (response.data.data) {
         toast.success("Item Added To Cart");
         return response.data.data;

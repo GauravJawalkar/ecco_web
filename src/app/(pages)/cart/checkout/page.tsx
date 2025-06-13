@@ -10,6 +10,7 @@ import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface cartMappingProps {
     _id: string;
@@ -65,7 +66,6 @@ const CartCeckOut = () => {
         }
     }
 
-
     const { data: userAddresses, isLoading } = useQuery({
         queryKey: ['userAddresses'],
         queryFn: () => getUserAddress(),
@@ -80,9 +80,53 @@ const CartCeckOut = () => {
         refetchOnWindowFocus: false,
     });
 
+    async function createOrder() {
+        try {
+            const productId = await userCart?.cartItems?.map((item: { productId: string }) => item?.productId);
+            const orderName = `Cart Order`;
+            const orderPrice = totalMrpPrice;
+            const orderDiscount = totalDiscount;
+            const paymentStatus = "Pending";
+            const paymentMethod = "COD";
+            const userId = data?._id;
+            const quantity = await userCart?.cartItems?.length;
+            const orderConfirmation = "Order Confirmed";
+            const seller = await userCart?.cartItems?.map((items: { productId: any; sellerId: any; }) => ({ productId: items?.productId, sellerId: items?.sellerId }));
+            const orderDetails = {
+                orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, seller, orderConfirmation, productId
+            };
+            const response = await axios.post("/api/createOrder", { orderDetails });
+            if (response.data.data) {
+                toast.success('Order Confirmed');
+            }
+            return [];
+        } catch (error) {
+            console.error("Error creating the order : ", error);
+            return [];
+        }
+    }
+
+    const createOrderMutation = useMutation({
+        mutationFn: createOrder,
+        onSuccess: () => {
+            router.push('/orders');
+        }
+    })
+
+    const handelOrderConfirmation = (e: React.MouseEvent) => {
+        e.preventDefault();
+        createOrderMutation.mutate();
+    }
+
+    const totalMrpPrice = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => {
+        return acc + item.price;
+    }, 0);
+
     const totalPrice = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => {
         return acc + (item.price - item.discount) * item.quantity
-    }, 0)
+    }, 0);
+
+    const totalDiscount = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => acc + item.discount * item.quantity, 0);
 
     return (
         <div className='grid grid-cols-[3fr_1fr] py-5 gap-4'>
@@ -140,7 +184,7 @@ const CartCeckOut = () => {
                                         setPinCode(pinCode);
                                         setLandMark(landMark);
                                         setContactNumber(contactNumber);
-                                        setOrderImage(userCart?.images?.[0]);
+                                        setOrderImage(userCart?.cartItems?.[0]?.image);
                                     }} key={_id} className='relative p-5 py-3 my-4 space-y-1 border cursor-pointer dark:border-neutral-700 rounded-xl'>
                                         <h1 title='main address of street city village'>🗺️ : {mainAddress}</h1>
                                         <h1 title='pincode of the area'>📍 : {pinCode}</h1>
@@ -181,7 +225,7 @@ const CartCeckOut = () => {
                     </button>
                 </div>
                 {
-                    (isCOD && select.trim() !== "") && <button onClick={() => { }} className='p-3 my-5 text-sm text-white bg-green-500 border rounded-full w-fit hover:bg-green-500/80'>
+                    (isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='p-3 my-5 text-sm text-white bg-green-500 border rounded-full w-fit hover:bg-green-500/80'>
                         Confirm Order
                     </button>
                 }
