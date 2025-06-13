@@ -108,7 +108,7 @@ export const Navbar = () => {
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
-                        {dataLength !== 0 && data.avatar.length > 3 ? < Image src={data.avatar || ''} height={10} width={10} alt="Pro-Img" className="h-10 w-10 object-contain rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
+                        {dataLength !== 0 && data.avatar.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="h-10 w-10 object-cover rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
                     </span>
                     <div className={` absolute top-10  w-fit hidden group-hover:block py-1
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 

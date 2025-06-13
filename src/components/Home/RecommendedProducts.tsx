@@ -39,7 +39,7 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
 
 
     return (
-        <div className="h-auto border dark:border-neutral-700 rounded-xl">
+        <div className="h-auto border dark:border-neutral-700 rounded-xl dark:bg-neutral-900">
             <div className="p-5">
                 <Swiper
                     slidesPerView={5}

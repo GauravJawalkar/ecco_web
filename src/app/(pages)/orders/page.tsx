@@ -48,7 +48,7 @@ const page = () => {
         <section >
             <div className='relative my-5'>
                 <input type="search" className='w-full p-2 rounded ring-1 ring-gray-200 dark:bg-neutral-800 dark:ring-neutral-700 focus:outline-none' placeholder='Search Your Orders Here' />
-                <button className='absolute top-0 right-0 flex items-center justify-center gap-2 p-2 text-white bg-blue-500 hover:bg-blue-500/80'>
+                <button className='absolute top-0 right-0 flex items-center justify-center gap-2 p-2 text-white bg-blue-500 hover:bg-blue-500/80 rounded-r'>
                     <Search className='w-5 h-5' />  Search Orders</button>
             </div>
             {isPending && <Loader title='Just A Second...' />}

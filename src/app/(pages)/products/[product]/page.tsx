@@ -27,7 +27,7 @@ const Product = () => {
     const [content, setContent] = useState("");
     const [openReviewModal, setOpenReviewModal] = useState(false);
     const [previewImageModal, setPreviewImageModal] = useState(false);
-    const [previewImage, setPreviewImage] = useState("");
+    const [previewImage, setPreviewImage] = useState([]);
 
     async function getSpecificProduct(id: string) {
         try {
@@ -60,8 +60,6 @@ const Product = () => {
             return [];
         }
     }
-
-
 
     async function getSellerDetails(id: string) {
         try {
@@ -182,9 +180,6 @@ const Product = () => {
     const handelCart = () => {
         addToCartMutation.mutate();
     }
-
-
-
 
     useEffect(() => {
         const stored = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
@@ -358,7 +353,7 @@ const Product = () => {
                                     <h1 className='flex items-center gap-2 text-xl'>
                                         {getAverageRating(product?.rating)} <span><Star className='text-yellow-500 fill-yellow-500' /></span>
                                     </h1>
-                                    <h1 className='text-base text-gray-600'>{product?.rating?.length} Users rated this product & {allReviews?.[0]?.reviews?.length || 0} Reviewed this product</h1>
+                                    <h1 className='text-base text-gray-600'>{product?.rating?.length} Users rated this product & {allReviews?.[0]?.reviews?.length || 0} Reviewed It</h1>
                                 </div>
                             </div>
                             {/* Map all the reviews */}
@@ -375,22 +370,24 @@ const Product = () => {
                                                             <div className='flex items-center gap-2'>
                                                                 {reviewImages?.map((image: string, index: number) => {
                                                                     return (
-                                                                        <Image key={index}
-                                                                            onClick={() => {
-                                                                                setPreviewImageModal(!previewImageModal);
-                                                                                setPreviewImage(image);
-                                                                            }}
-                                                                            className='rounded'
-                                                                            src={image}
-                                                                            alt={'review Image'} height={50}
-                                                                            width={50} />
+                                                                        <div key={index}>
+                                                                            <Image
+                                                                                onClick={() => {
+                                                                                    setPreviewImageModal(!previewImageModal);
+                                                                                    setPreviewImage(reviewImages);
+                                                                                }}
+                                                                                className='rounded cursor-pointer'
+                                                                                src={image}
+                                                                                alt={'review Image'} height={50}
+                                                                                width={50} />
+                                                                            <ImagePreviewModal
+                                                                                onClose={() => setPreviewImageModal(!previewImageModal)}
+                                                                                isVisible={previewImageModal}
+                                                                                images={previewImage} />
+                                                                        </div>
                                                                     )
                                                                 })}
                                                             </div>
-                                                            <ImagePreviewModal
-                                                                onClose={() => setPreviewImageModal(!previewImageModal)}
-                                                                isVisible={previewImageModal}
-                                                                image={previewImage} />
                                                         </div>
                                                         <div className='flex space-x-4'>
                                                             <button className='flex gap-2 text-gray-500'><ThumbsUp className='w-5 h-5 ' /><span className='text-sm'>{likes}</span> </button>
