@@ -11,6 +11,7 @@ import { CircleCheck, ShoppingCart, Star, ThumbsDown, ThumbsUp } from 'lucide-re
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
@@ -24,10 +25,10 @@ const Product = () => {
     const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
     const [showMore, setShowMore] = useState(false);
     const [rateValue, setRateValue] = useState(0);
-    const [content, setContent] = useState("");
     const [openReviewModal, setOpenReviewModal] = useState(false);
     const [previewImageModal, setPreviewImageModal] = useState(false);
     const [previewImage, setPreviewImage] = useState([]);
+    const router = useRouter();
 
     async function getSpecificProduct(id: string) {
         try {
@@ -37,7 +38,7 @@ const Product = () => {
             }
             return []
         } catch (error) {
-            console.log("Error getting the product : ", error);
+            console.error("Error getting the product : ", error);
             return []
         }
     }
@@ -64,13 +65,13 @@ const Product = () => {
     async function getSellerDetails(id: string) {
         try {
             const response = await axios.get(`../api/getSelletDetails/${id}`);
-
             if (response.data.data) {
                 return response.data.data
             }
             return [];
         } catch (error) {
-            console.log(`Error getting the user details : `, error)
+            console.error(`Error getting the user details : `, error);
+
             return [];
         }
     }
@@ -87,12 +88,16 @@ const Product = () => {
             const productId = product?._id;
             const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
             if (response.data.data) {
+                toast.success("Item Added To Cart");
                 return response.data.data;
             }
             return [];
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error Adding the product to cart ", error);
-            toast.error("Error Adding the product to cart ");
+            if (error.response.status === 403) {
+                toast.error("Unauthorized!");
+                return router.push('/login');
+            }
         }
     }
 
@@ -129,13 +134,11 @@ const Product = () => {
     if (isSuccess && isFetched) {
         try {
             const existingView = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-            console.log(existingView);
-
             if (!Array.isArray(existingView.product)) {
                 existingView.product = [];
             }
 
-            if (!existingView.product.includes(product._id)) {
+            if (product?._id && !existingView.product.includes(product._id)) {
                 existingView.product.push(product._id);
                 localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ ...existingView, user: data?._id }));
             }
@@ -151,14 +154,17 @@ const Product = () => {
             queryFn: () => getSellerDetails(product?.seller),
             queryKey: ['seller', product?.sellerId],
             enabled: !!product?.seller,
-            refetchOnWindowFocus: false
+            refetchOnWindowFocus: false,
+            refetchOnMount: true,
         }
     )
 
     const addToCartMutation = useMutation({
         mutationFn: async () => await addToCart(),
+        onError: () => {
+            toast.error("Error Adding the product to cart ");
+        },
         onSuccess: () => {
-            toast.success("Item Added To Cart");
             queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
         }
     })
@@ -183,7 +189,6 @@ const Product = () => {
 
     useEffect(() => {
         const stored = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-        console.log("stored is : ", stored);
         if (stored) {
             setExistingRecentlyViewed(stored);
         }
@@ -194,6 +199,7 @@ const Product = () => {
         queryKey: ['allReviews'],
         enabled: !!id,
         refetchOnWindowFocus: false,
+        refetchOnMount: true,
     })
 
     return (
@@ -245,7 +251,7 @@ const Product = () => {
                         </div>
 
                         <div>
-                            <p className={`w-full text-base text-gray-500 capitalize ${showMore ? "line-clamp-none" : "line-clamp-2"}`}>{product?.description}</p>
+                            <p className={`w-full text-base text-gray-500 dark:text-gray-400   capitalize ${showMore ? "line-clamp-none" : "line-clamp-2"}`}>{product?.description}</p>
                             <button onClick={() => { setShowMore((prev) => !prev) }} className='text-sm text-blue-500 hover:text-blue-600'>{showMore ? "Show Less" : "Show More"}</button>
                         </div>
 
@@ -256,7 +262,7 @@ const Product = () => {
                             <Star onClick={() => { setRateValue(3); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 3 && 'fill-yellow-500'}`} />
                             <Star onClick={() => { setRateValue(4); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 4 && 'fill-yellow-500'}`} />
                             <Star onClick={() => { setRateValue(5); handelRating() }} className={`w-5 h-5 cursor-pointer ${getAverageRating(product?.rating) >= 5 && 'fill-yellow-500 h1/2'}`} />
-                            <span className='text-gray-500'>({getAverageRating(product?.rating)})</span>
+                            <span className='text-gray-500 dark:text-gray-600'>({getAverageRating(product?.rating)})</span>
                         </div>
 
                         {/* Price and Discount */}
@@ -267,7 +273,7 @@ const Product = () => {
                                     <span className='uppercase font-semibold text-[28px] '>
                                         ₹{product?.price - product?.discount}</span>
                                 </div>
-                                <div className='uppercase font-semibold text-lg line-through decoration-gray-500 decoration-[1px] text-gray-500'>
+                                <div className='uppercase font-semibold text-lg line-through decoration-gray-500 decoration-[1px] text-gray-500 dark:text-gray-400  '>
                                     ₹{product?.price}
                                 </div>
                                 <span className='text-2xl font-semibold text-green-600'> {Math.round(discountPercentage(product.price, product.discount))}% off</span>
@@ -278,7 +284,7 @@ const Product = () => {
                         <div className='w-full px-4 py-2 border rounded-lg dark:border-neutral-700'>
 
                             {/* Highlights */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-700 '>
+                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 border-b dark:border-neutral-700 '>
                                 <div className='font-semibold capitalize '>
                                     Highlights
                                 </div>
@@ -299,7 +305,7 @@ const Product = () => {
                             </div>
 
                             {/* Payment Type */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 border-b dark:border-neutral-700'>
+                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 border-b dark:border-neutral-700'>
                                 <div className='font-semibold capitalize '>
                                     Payment Options
                                 </div>
@@ -321,7 +327,7 @@ const Product = () => {
 
 
                             {/* Seller Details */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 gap-4 w-full py-4 '>
+                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 '>
                                 <div className='font-semibold capitalize'>
                                     Seller
                                 </div>
@@ -353,7 +359,7 @@ const Product = () => {
                                     <h1 className='flex items-center gap-2 text-xl'>
                                         {getAverageRating(product?.rating)} <span><Star className='text-yellow-500 fill-yellow-500' /></span>
                                     </h1>
-                                    <h1 className='text-base text-gray-600'>{product?.rating?.length} Users rated this product & {allReviews?.[0]?.reviews?.length || 0} Reviewed It</h1>
+                                    <h1 className='text-base text-gray-600 dark:text-gray-400'>{product?.rating?.length} Users rated this product & {allReviews?.[0]?.reviews?.length || 0} Reviewed It</h1>
                                 </div>
                             </div>
                             {/* Map all the reviews */}
@@ -365,7 +371,7 @@ const Product = () => {
                                                 return (
                                                     <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl' key={_id}>
                                                         <div className='space-y-2'>
-                                                            <h1 className='flex gap-2 text-sm text-gray-600 capitalize'> {(reviewerName)} <span><CircleCheck className='w-5 h-5 text-white fill-gray-500' /></span> Certified Review </h1>
+                                                            <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'> {(reviewerName)} <span><CircleCheck className='w-5 h-5 text-white fill-gray-500' /></span> Certified Review </h1>
                                                             <h1>{reviewTitle}</h1>
                                                             <div className='flex items-center gap-2'>
                                                                 {reviewImages?.map((image: string, index: number) => {
@@ -390,8 +396,8 @@ const Product = () => {
                                                             </div>
                                                         </div>
                                                         <div className='flex space-x-4'>
-                                                            <button className='flex gap-2 text-gray-500'><ThumbsUp className='w-5 h-5 ' /><span className='text-sm'>{likes}</span> </button>
-                                                            <button className='flex gap-2 text-gray-500'><ThumbsDown className='w-5 h-5' /><span className='text-sm'>{dislikes}</span></button>
+                                                            <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsUp className='w-5 h-5 ' /><span className='text-sm'>{likes}</span> </button>
+                                                            <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsDown className='w-5 h-5' /><span className='text-sm'>{dislikes}</span></button>
                                                         </div>
                                                     </div>
                                                 )

@@ -2,7 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { Filter, Heart, ShoppingCart } from 'lucide-react';
+import { Filter, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { Key, use, useEffect, useState } from 'react'
@@ -142,7 +142,7 @@ const ProductsPage = ({ searchParams }: any) => {
         }
     }
 
-    const { data: allProducts = [], isSuccess, isLoading } = useQuery(
+    const { data: allProducts = [], isSuccess } = useQuery(
         {
             queryFn: getAllProducts,
             queryKey: ['allProducts'],
@@ -249,7 +249,6 @@ const ProductsPage = ({ searchParams }: any) => {
 
             {(products && products.length === 0) && <div>No Products Found</div>}
             {isPending && <div><Loader title='Loading...' /></div>}
-            {isLoading && <div><Loader title='Loading...' /></div>}
 
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
 

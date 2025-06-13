@@ -14,6 +14,7 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { discountPercentage } from "@/helpers/discountPercentage";
+import { useRouter } from "next/navigation";
 
 
 interface holderProps {
@@ -40,6 +41,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
   const [sellerId, setSellerId] = useState("");
   const [vikreta, setVikreta] = useState("");
   const [productId, setProductId] = useState("");
+  const router = useRouter();
 
   async function addToCart() {
     try {
@@ -47,12 +49,16 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
       const sellerName = vikreta;
       const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
       if (response.data.data) {
+        toast.success("Item Added To Cart");
         return response.data.data;
       }
       return [];
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error Adding the product to cart ", error);
-      toast.error("Error Adding the product to cart ");
+      if (error.response.status === 403) {
+        toast.error("Unauthorized!");
+        return router.push('/login');
+      }
     }
   }
 
@@ -81,9 +87,11 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
   const addToCartMutation = useMutation({
     mutationFn: async () => await addToCart(),
     onSuccess: () => {
-      toast.success("Item Added To Cart");
       queryClient.invalidateQueries({ queryKey: ['userCart', cartOwnerId] });
     },
+    onError: () => {
+      toast.error("Error Adding the product to cart ");
+    }
   });
 
   const handelCart = async () => {

@@ -1,10 +1,20 @@
 import connectDB from "@/db/dbConfig";
 import { Cart } from "@/models/cart.model";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     await connectDB();
     try {
+        const cookieStore = await cookies();
+
+        const accessToken = cookieStore.get('accessToken')?.value;
+
+        console.log("Access Token Value : ", accessToken);
+
+        if (!accessToken || accessToken.trim() === "" || accessToken === undefined) {
+            return NextResponse.json({ error: "Unauthorized Access" }, { status: 403 });
+        }
         const reqBody = await request.json();
 
         const { cartOwner, name, price, image, sellerName, discount, stock, productId } = reqBody;

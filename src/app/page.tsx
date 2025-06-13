@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 export default function Home() {
   const { data }: any = useUserStore();
-  const [recentlyViewed, setRecentlyViewed] = useState<any>({});
+  const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
 
   async function getProducts() {
     try {
@@ -34,12 +34,12 @@ export default function Home() {
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
-  let existingRecentlyViewed;
-
-  if (isFetched && isSuccess) {
-    existingRecentlyViewed = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-  }
-
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
+    if (stored) {
+      setExistingRecentlyViewed(stored);
+    }
+  }, []);
 
   useEffect(() => {
     async function checkVaildCookies() {
@@ -56,6 +56,7 @@ export default function Home() {
       }
     }
     checkVaildCookies();
+
   }, [])
 
 
