@@ -1,12 +1,12 @@
 "use client";
 
-import Loader from "@/components/Loaders/Loader";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -29,6 +29,7 @@ const Cart = () => {
     const [quantityOperation, setQuantityOperation] = useState("");
     const [cartTotal, setCartTotal] = useState(0);
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+    const router = useRouter();
 
     async function getCartItems() {
         try {
@@ -122,21 +123,21 @@ const Cart = () => {
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
-                <div className="text-2xl font-semibold text-center uppercase py-10">
+                <div className="py-10 text-2xl font-semibold text-center uppercase">
                     My Shopping Cart
                 </div>
             ) : (
-                <div className="text-2xl font-semibold uppercase text-center py-10">
+                <div className="py-10 text-2xl font-semibold text-center uppercase">
                     Your Cart Is Empty
                 </div>
             )}
             <div className="grid grid-cols-[3fr_1fr] gap-4">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-4">
                     {userCart?.cartItems?.length > 0 &&
                         userCart?.cartItems?.map(
                             ({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => {
                                 return (
-                                    <Link href={`/products/${slugify(name)}?id=${productId}`} className="p-5 border rounded-2xl dark:border-neutral-700 dark:bg-neutral-700/20 gap-3 my-3 relative h-fit" key={name + price}>
+                                    <Link href={`/products/${slugify(name)}?id=${productId}`} className="relative gap-3 p-5 border rounded-2xl dark:border-neutral-700 dark:bg-neutral-700/20 h-fit" key={name + price}>
                                         <div>
                                             <div className="flex gap-3">
                                                 <Image
@@ -144,42 +145,42 @@ const Cart = () => {
                                                     height={200}
                                                     src={image || "/userProfile.png"}
                                                     alt={"cartImage"}
-                                                    className="h-36 w-28 rounded-xl border-2 object-cover dark:border-neutral-700"
+                                                    className="object-cover border-2 h-36 w-28 rounded-xl dark:border-neutral-700"
                                                 />
-                                                <div className="flex items-start justify-start flex-col">
-                                                    <h1 className="capitalize text-xl font-semibold line-clamp-1" title={name}>{name}</h1>
-                                                    <h1 className="text-md text-gray-500">
+                                                <div className="flex flex-col items-start justify-start">
+                                                    <h1 className="text-xl font-semibold capitalize line-clamp-1" title={name}>{name}</h1>
+                                                    <h1 className="text-gray-500 text-md">
                                                         Price: ₹ {price - discount}
                                                     </h1>
-                                                    <h1 className="text-md text-gray-500 capitalize">
+                                                    <h1 className="text-gray-500 capitalize text-md">
                                                         Seller: {sellerName}
                                                     </h1>
-                                                    <h1 className="text-md text-gray-500">
+                                                    <h1 className="text-gray-500 text-md">
                                                         Delivery: Free 😊
                                                     </h1>
-                                                    <div className="py-3 flex items-center gap-3">
+                                                    <div className="flex items-center gap-3 py-3">
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             e.stopPropagation();
                                                             setQuantityOperation("+");
                                                             handelAddItemQuantity(_id, quantity);
-                                                        }} className="p-1 border-2 rounded-full dark:border-neutral-700">
-                                                            <Plus className="h-4 w-4" />
+                                                        }} className="p-1 border-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 dark:border-neutral-700">
+                                                            <Plus className="w-4 h-4" />
                                                         </button>
-                                                        <h1 className="text-sm py-1 px-2 dark:border-neutral-700 rounded border">{quantity}</h1>
+                                                        <h1 className="px-2 py-1 text-sm border rounded dark:border-neutral-700">{quantity}</h1>
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             e.stopPropagation();
                                                             setQuantityOperation("-");
                                                             handelAddItemQuantity(_id, quantity);
-                                                        }} className="p-1 border-2 rounded-full dark:border-neutral-700">
-                                                            <Minus className="h-4 w-4" />
+                                                        }} className="p-1 border-2 rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700 dark:border-neutral-700">
+                                                            <Minus className="w-4 h-4" />
                                                         </button>
                                                         <button onClick={(e) => {
                                                             e.preventDefault();
                                                             e.stopPropagation();
                                                             handelRemoveItem(_id)
-                                                        }} className="text-sm border dark:border-neutral-700 py-1 px-2 rounded">REMOVE ITEM</button>
+                                                        }} className="px-2 py-1 text-sm border rounded dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700">REMOVE ITEM</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,25 +198,28 @@ const Cart = () => {
                         )}
                 </div>
                 <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded-2xl my-3  dark:border-neutral-700 h-fit sticky top-24"}`}>
-                    <h1 className="font-semibold uppercase text-lg">
+                    <h1 className="text-lg font-semibold uppercase">
                         CART Summary :
                     </h1>
 
-                    <div className="pt-10 flex items-center justify-between">
+                    <div className="flex items-center justify-between pt-10">
                         <h1>Subtotal</h1>
                         <h1>₹ {cartTotal}</h1>
                     </div>
-                    <div className="py-3 flex items-center justify-between">
+                    <div className="flex items-center justify-between py-3">
                         <h1>Shipping</h1>
                         <h1>₹ 0.0</h1>
                     </div>
                     <br />
                     <hr className="dark:border-neutral-700" />
                     <br />
-                    <div className="py-2 flex items-center justify-between font-semibold uppercase">
+                    <div className="flex items-center justify-between py-2 font-semibold uppercase">
                         <h1>Total</h1>
                         <h1>₹ {cartTotal}</h1>
                     </div>
+                    <button onClick={() => { router.push('/cart/checkout') }} className="py-2 my-2 bg-green-500 hover:bg-green-500/80 text-white w-full rounded-lg">
+                        Checkout
+                    </button>
                 </div>
             </div>
         </section >

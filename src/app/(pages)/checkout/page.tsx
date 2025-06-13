@@ -285,12 +285,12 @@ const page = () => {
                         <h1 className='text-lg font-semibold uppercase text-start '>Delivery Address</h1>
                         <p className='text-sm text-gray-600'>Select your delivery address below</p>
                     </div>
-                    <button className='font-semibold uppercase hover:text-gray-700' onClick={() => { setShowModal(!showModal) }}>🏠 New Address</button>
+                    <button className='font-semibold capitalize border bg-gray-50 dark:bg-neutral-800 dark:hover:bg-neutral-800/50 hover:bg-gray-100 dark:border-neutral-700 p-2 rounded-lg' onClick={() => { setShowModal(!showModal) }}>🏠 Add Address</button>
                 </div>
                 <div className='w-full'>
                     <div>
                         {isLoading && <div className='flex items-center justify-center'><Loader title='Loading...' /></div>}
-                        {userAddresses?.[0].addresses?.length <= 0 && <h1 className='text-xl font-semibold capitalize'>No Addresses Saved. Add One</h1>}
+                        {userAddresses === "No Addresses Found" && <h1 className='text-base text-center py-5 my-2 border dark:border-neutral-700 rounded-xl capitalize'>No Addresses Saved</h1>}
                         {
                             userAddresses?.[0].addresses?.map(({ _id, mainAddress, pinCode, landMark, contactNumber }: any) => {
                                 return (
