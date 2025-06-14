@@ -61,9 +61,9 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
                                         <div className="px-2 py-4 border-t dark:border-t-neutral-700 rounded-b-3xl space-y-2">
                                             <h1 className="text-lg font-normal text-center text-gray-700 dark:text-gray-300 capitalize line-clamp-1">{name}</h1>
                                             <h1 className="text-lg font-semibold text-center capitalize line-clamp-1 ">
-                                                ₹{price - discount}
+                                                ₹{(price - discount)?.toLocaleString()}
                                                 <span className="px-2 text-base font-normal text-gray-500 line-through">
-                                                    {price}
+                                                    {price?.toLocaleString()}
                                                 </span>
                                             </h1>
                                         </div>

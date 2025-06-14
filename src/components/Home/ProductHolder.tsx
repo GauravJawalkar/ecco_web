@@ -165,7 +165,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                             <span>Add To Cart</span>
                           </button>
                           <h1 className="font-semibold text-lg uppercase">
-                            ₹ {price - discount}
+                            ₹ {(price - discount)?.toLocaleString()}
                           </h1>
                         </div>
                       </div>

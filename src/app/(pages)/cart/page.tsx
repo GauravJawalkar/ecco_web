@@ -150,7 +150,7 @@ const Cart = () => {
                                                 <div className="flex flex-col items-start justify-start">
                                                     <h1 className="text-xl font-semibold capitalize line-clamp-1" title={name}>{name}</h1>
                                                     <h1 className="text-gray-500 text-md">
-                                                        Price: ₹ {price - discount}
+                                                        Price: ₹ {(price - discount)?.toLocaleString()}
                                                     </h1>
                                                     <h1 className="text-gray-500 capitalize text-md">
                                                         Seller: {sellerName}
@@ -204,7 +204,7 @@ const Cart = () => {
 
                     <div className="flex items-center justify-between pt-10">
                         <h1>Subtotal</h1>
-                        <h1>₹ {cartTotal}</h1>
+                        <h1>₹ {cartTotal?.toLocaleString()}</h1>
                     </div>
                     <div className="flex items-center justify-between py-3">
                         <h1>Shipping</h1>
@@ -215,7 +215,7 @@ const Cart = () => {
                     <br />
                     <div className="flex items-center justify-between py-2 font-semibold uppercase">
                         <h1>Total</h1>
-                        <h1>₹ {cartTotal}</h1>
+                        <h1>₹ {cartTotal?.toLocaleString()}</h1>
                     </div>
                     <button onClick={() => { router.push('/cart/checkout') }} className="py-2 my-2 bg-green-500 hover:bg-green-500/80 text-white w-full rounded-lg">
                         Checkout

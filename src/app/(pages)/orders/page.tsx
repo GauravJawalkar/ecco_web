@@ -70,15 +70,15 @@ const page = () => {
                             <div className='flex items-start justify-center gap-3 p-3 border-l border-r dark:border-neutral-700 '>
                                 <div className='space-y-2'>
                                     <label className='font-semibold'>MRP</label>
-                                    <h1 className='text-sm text-start'>₹ {orderPrice}</h1>
+                                    <h1 className='text-sm text-start'>₹ {orderPrice?.toLocaleString()}</h1>
                                 </div>
                                 <div className='px-3 space-y-2 border-l border-r dark:border-neutral-700'>
                                     <label className='font-semibold'>Discount</label>
-                                    <h1 className='text-sm text-center text-red-600'>₹ {orderDiscount}</h1>
+                                    <h1 className='text-sm text-center text-red-600'>₹ {orderDiscount?.toLocaleString()}</h1>
                                 </div>
                                 <div className='space-y-2'>
                                     <label className='font-semibold'>Total</label>
-                                    <h1 className='text-sm text-green-600 text-start'>₹ {orderPrice - orderDiscount}</h1>
+                                    <h1 className='text-sm text-green-600 text-start'>₹ {(orderPrice - orderDiscount)?.toLocaleString()}</h1>
                                 </div>
                             </div>
                             <div className='p-3 text-center '>

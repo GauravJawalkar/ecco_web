@@ -366,7 +366,7 @@ const page = () => {
                     <hr className='my-2 dark:text-neutral-700' />
                     <div className='flex items-center justify-between'>
                         <h1>Toatal Payable</h1>
-                        <h1>₹{(productDetails?.price - productDetails?.discount) * quantity || 0}</h1>
+                        <h1>₹{((productDetails?.price - productDetails?.discount) * quantity)?.toLocaleString() || 0}</h1>
                     </div>
                 </div>
             </div >

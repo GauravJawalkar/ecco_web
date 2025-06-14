@@ -215,15 +215,15 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                     <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-700">
                                                         <div className="font-light ">
                                                             <label className="font-semibold"> MRP </label>
-                                                            <h1>₹ {price}</h1>
+                                                            <h1>₹ {price?.toLocaleString()}</h1>
                                                         </div>
                                                         <div className="font-light ">
                                                             <label className="font-semibold"> Discount</label>
-                                                            <h1>- ₹ {discount}</h1>
+                                                            <h1>- ₹ {discount?.toLocaleString()}</h1>
                                                         </div>
                                                         <div className="font-light ">
                                                             <label className="font-semibold">Total </label>
-                                                            <h1>₹ {Number(price) - Number(discount)}</h1>
+                                                            <h1>₹ {(Number(price) - Number(discount))?.toLocaleString()}</h1>
                                                         </div>
                                                     </div>
 
@@ -319,9 +319,9 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         }
                                                     </td>
                                                     <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{stock}</td>
-                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{price}</td>
-                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{discount}</td>
-                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{Number(price) - Number(discount)}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{price?.toLocaleString()}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{discount?.toLocaleString()}</td>
+                                                    <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{(Number(price) - Number(discount))?.toLocaleString()}</td>
                                                     <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-center">
                                                         <div className="flex items-center justify-center gap-2">
                                                             <Edit

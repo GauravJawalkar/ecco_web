@@ -272,10 +272,10 @@ const Product = () => {
                             <div className='flex items-baseline w-full gap-2'>
                                 <div>
                                     <span className='uppercase font-semibold text-[28px] '>
-                                        ₹{product?.price - product?.discount}</span>
+                                        ₹{(product?.price - product?.discount)?.toLocaleString()}</span>
                                 </div>
                                 <div className='uppercase font-semibold text-lg line-through decoration-gray-500 decoration-[1px] text-gray-500 dark:text-gray-400  '>
-                                    ₹{product?.price}
+                                    ₹{product?.price?.toLocaleString()}
                                 </div>
                                 <span className='text-2xl font-semibold text-green-600'> {Math.round(discountPercentage(product.price, product.discount))}% off</span>
                             </div>

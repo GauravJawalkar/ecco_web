@@ -122,7 +122,7 @@ const CartCeckOut = () => {
         return acc + item.price;
     }, 0);
 
-    const totalPrice = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => {
+    const totalPrice: number = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => {
         return acc + (item.price - item.discount) * item.quantity
     }, 0);
 
@@ -251,7 +251,7 @@ const CartCeckOut = () => {
                     <hr className='my-2 dark:text-neutral-700' />
                     <div className='flex items-center justify-between'>
                         <h1>Toatal Payable</h1>
-                        <h1>₹{totalPrice || 0}</h1>
+                        <h1>₹{totalPrice?.toLocaleString() || 0}</h1>
                     </div>
                 </div>
             </div >
