@@ -6,7 +6,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, Loader2, ShoppingCart, Star } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loader from "../Loaders/Loader";
 import Link from "next/link";
 import { useUserStore } from "@/store/UserStore";
@@ -41,6 +41,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
   const [sellerId, setSellerId] = useState("");
   const [vikreta, setVikreta] = useState("");
   const [productId, setProductId] = useState("");
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const router = useRouter();
 
   async function addToCart() {
@@ -98,6 +99,13 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     addToCartMutation.mutate();
   }
 
+  useEffect(() => {
+    if (swiperRef.current) {
+      swiperRef.current.update(); // this ensures it's initialized properly
+    }
+  }, [swiperRef.current]);
+
+
   return (
     <div className="my-10">
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"
@@ -118,9 +126,9 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
             pagination={{ clickable: true }}
             navigation={false}
             modules={[Pagination, Navigation]}
-            loop={true}
+            loop={prodData?.length > 3}
             onSwiper={(swiper) => {
-              swiperRef.current = swiper;
+              setSwiperInstance(swiper); // store swiper instance in state
             }}
           >
 
@@ -174,42 +182,23 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                 )
               })
             }
-
-            {/* <SwiperSlide className="px-2 " key={Math.floor(Math.random() * 1000)}>
-              <div className=" border dark:border-neutral-600 content-center flex items-center justify-center flex-col w-fit">
-                <Image
-                  src={'/happy.svg'}
-                  alt="prodImage"
-                  width={"180"}
-                  height={"180"}
-                  className="bg-white object-cover h-full w-full border-b animate-pulse"
-                />
-                <div className="text-center py-1">
-
-                  <h1 className="font-semibold uppercase text-lg text-yellow-600 animate-pulse">
-                    HAPPY SHOPPING
-                  </h1>
-                </div>
-              </div>
-            </SwiperSlide> */}
-
           </Swiper>
 
-          {rank % 2 ? (
+          {swiperInstance && (rank % 2 ? (
             <button
-              onClick={() => swiperRef.current.slideNext()}
+              onClick={() => swiperInstance.slideNext()}
               className="absolute top-1/2 -right-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
             >
               <ChevronRight />
             </button>
           ) : (
             <button
-              onClick={() => swiperRef.current.slideNext()}
+              onClick={() => swiperInstance.slideNext()}
               className="absolute top-1/2 left-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-gray-500"
             >
               <ChevronLeft />
             </button>
-          )}
+          ))}
         </div>
       </div>
     </div >
