@@ -74,7 +74,7 @@ const page = () => {
                 <h1>Some Thing Went Wrong</h1>
             </div>}
             {
-                (!isPending && sellerOrders.length === 0) && <div className="flex items-center justify-center py-5">
+                (sellerOrders?.data?.length === 0) && <div className="flex items-center justify-center py-5">
                     <h1>No Orders Found</h1>
                 </div>
             }

@@ -8,8 +8,10 @@ export async function PUT(request: NextRequest) {
         const reqBody = await request.json();
         const { processState, orderID, orderDocId } = reqBody;
 
+        console.log("Upadate Seller processing state : ", reqBody);
+
         if (processState === "Processing") {
-            const processState = await Order.updateOne(orderDocId, {
+            const processState = await Order.updateOne({ _id: orderDocId }, {
                 $set: {
                     "orders.$[order].processingStatus": "Order Processing",
                 }
@@ -29,7 +31,7 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json({ data: "Processed" }, { status: 200 })
         } else if (processState === "Ship") {
-            const processState = await Order.updateOne(orderDocId, {
+            const processState = await Order.updateOne({ _id: orderDocId }, {
                 $set: {
                     "orders.$[order].processingStatus": "Order Shipped",
                 }
@@ -49,7 +51,7 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json({ data: "Shipped" }, { status: 200 })
         } else if (processState === "Deliver") {
-            const processState = await Order.updateOne(orderDocId, {
+            const processState = await Order.updateOne({ _id: orderDocId }, {
                 $set: {
                     "orders.$[order].processingStatus": "Out For Delivery",
                 }
