@@ -99,13 +99,6 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     addToCartMutation.mutate();
   }
 
-  useEffect(() => {
-    if (swiperRef.current) {
-      swiperRef.current.update(); // this ensures it's initialized properly
-    }
-  }, [swiperRef.current]);
-
-
   return (
     <div className="my-10">
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"

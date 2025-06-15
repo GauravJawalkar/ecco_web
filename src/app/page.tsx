@@ -39,7 +39,7 @@ export default function Home() {
     if (stored) {
       setExistingRecentlyViewed(stored);
     }
-  }, []);
+  }, [isSuccess, isFetched]);
 
   useEffect(() => {
     async function checkVaildCookies() {
