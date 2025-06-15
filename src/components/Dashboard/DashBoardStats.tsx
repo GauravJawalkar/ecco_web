@@ -12,12 +12,11 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
     const [totalRequest, setTotalRequest] = useState("");
     const id = data?._id;
 
-
     async function getSellerOrders() {
         try {
             const response = await axios.get(`/api/getSellerOrders/${id}`);
-            if (response.data.data) {
-                return response.data.data;
+            if (response.data.total) {
+                return response.data.total || 0;
             }
             return [];
         } catch (error) {
@@ -31,13 +30,11 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
 
             if (response.data.data) {
                 setTotalProducts(response.data.data.length);
-                console.log(totalProducts);
             } else {
                 toast.error("Error Calculating the number of products")
             }
         } catch (error) {
             toast.error("Error Calculating the number of products")
-            console.log("Failed to get products", error)
         }
     }
 
@@ -51,8 +48,8 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
                 toast.error("Error Fetching Seller Requests");
             }
         } catch (error) {
+            console.error("Failed to get products", error);
             toast.error("Error Fetching Seller Requests")
-            console.log("Failed to get products", error)
         }
     }
 
@@ -74,7 +71,7 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
     }, [load])
 
 
-    const { data: sellerOrders = [] } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
+    const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
 
     const { data: sellerDetails = [] } = useQuery({ queryFn: getSellerDetails, queryKey: ['sellerDetails'], refetchOnWindowFocus: false, enabled: !!id })
 
@@ -86,7 +83,7 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
             </div>
             {/* Stock Availabel */}
             <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                Orders Recieved : <span className='text-red-600'>{sellerOrders[0]?.orders?.length > 0 ? sellerOrders[0]?.orders?.length : 0}</span>
+                Orders Recieved : <span className='text-red-600'>{sellerOrders > 0 ? sellerOrders : 0}</span>
             </div>
             {/* Revenue Generated */}
             <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>

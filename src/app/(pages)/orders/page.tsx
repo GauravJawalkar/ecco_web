@@ -65,6 +65,7 @@ const page = () => {
                                 <div className='w-full space-y-2 '>
                                     <h1 className='font-semibold capitalize line-clamp-2 text-start'>{orderName}</h1>
                                     <p className='text-sm text-start'>Quantity : {orderQuantity}</p>
+                                    <p className='text-sm text-start'>Order Id : {orderQuantity}</p>
                                 </div>
                             </div>
                             <div className='flex items-start justify-center gap-3 p-3 border-l border-r dark:border-neutral-700 '>

@@ -6,22 +6,36 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
     await connectDB();
     try {
         const { id } = await params.params;
-        console.log("id is : ", id);
 
         if (!id) {
-            return NextResponse.json({ error: "Seller id is required for finding the seller" }, { status: 400 });
+            return NextResponse.json({ error: "Invalid Seller Id" }, { status: 400 });
         }
 
-        const sellerOrders = await Order.find({ 'orders.seller': id });
-
-        console.log(sellerOrders[1].orders);
+        const sellerOrders = await Order.find({ 'orders.seller.sellerId': id });
 
         if (!sellerOrders) {
-            return NextResponse.json({ error: "No Orders found" }, { status: 404 });
+            return NextResponse.json({ error: "No Orders found in database" }, { status: 404 });
         }
 
-        return NextResponse.json({ data: sellerOrders }, { status: 200 });
+        const filteredOrders = sellerOrders.map(order => {
+            const relevantOrders = order.orders.filter((orderItem: { seller: any[]; }) =>
+                orderItem.seller.some(s => String(s.sellerId) === id)
+            );
+
+            return {
+                _id: order._id,
+                orderBy: order.orderBy,
+                createdAt: order.createdAt,
+                updatedAt: order.updatedAt,
+                orders: relevantOrders
+            };
+        }).filter(order => order.orders.length > 0);
+
+        const totalSellerOrders = filteredOrders.reduce((acc, doc) => acc + doc.orders.length, 0);
+
+        return NextResponse.json({ data: filteredOrders, total: totalSellerOrders }, { status: 200 });
+
     } catch (error) {
-        return NextResponse.json({ error: `Error finding the seller orders in the database : ${error}` });
+        return NextResponse.json({ error: `Error finding the seller orders: ${error}` }, { status: 500 });
     }
 }

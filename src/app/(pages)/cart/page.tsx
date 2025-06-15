@@ -97,7 +97,7 @@ const Cart = () => {
         {
             mutationFn: ({ _id, quantity }: { _id: string, quantity: number }) => addItemQuantity(_id, quantity),
             onSuccess: () => {
-                toast.success("Item Added");
+                toast.success("Quantity Updated");
                 queryClient.invalidateQueries({ queryKey: ['userCart'] });
             }
         }

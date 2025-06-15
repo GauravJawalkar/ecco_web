@@ -165,7 +165,7 @@ const ProductsPage = ({ searchParams }: any) => {
         try {
             const cartOwner = data?._id;
             const sellerName = vikreta;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId });
+            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
             if (response.data.data) {
                 return response.data.data;
             }
