@@ -18,6 +18,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
     const [size, setSize] = useState("");
+    const [container, setContainer] = useState("")
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
     const [primeImage, setPrimeImage] = useState("");
@@ -25,7 +26,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [exCategories, setExCategories] = useState([]);
 
     const handelFileChanges = async (e: any) => {
-        setImgArray(Array.from(e.target.files))
+        e.preventDefault();
+        setImgArray(Array.from(e.target?.files))
     }
 
     const mutation = useMutation({
@@ -41,6 +43,17 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     }
 
     async function addProduct() {
+        if (size === "Select Size") {
+            return toast.success("Select Proper Size", {
+                icon: "▄︻══━一💥"
+            })
+        }
+
+        if (container === "Select Container") {
+            return toast.success("Select Proper Container", {
+                icon: "▄︻══━一💥"
+            })
+        }
         try {
             const seller = data?._id;
             setLoading(true);
@@ -54,6 +67,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
             formData.append('price', price);
             formData.append('discount', discount);
             formData.append('size', size);
+            formData.append('container', container);
             formData.append('stock', stock);
             formData.append('stock', stock);
             formData.append('category', category);
@@ -67,6 +81,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                 setPrice("");
                 setDiscount("");
                 setSize("");
+                setContainer("");
                 setStock("");
                 setCategory("");
                 setImgArray([]);
@@ -148,7 +163,21 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
                         <div className='w-full'>
                             <label>Size :</label>
-                            <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Size' required onChange={(e) => setSize(e.target.value)} />
+                            <select onChange={(e) => { setSize(e.target.value) }} className='text-black px-3 py-2 w-full rounded'>
+                                <option>Select Size</option>
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                            </select>
+                        </div>
+
+                        <div className='w-full'>
+                            <label>Container :</label>
+                            <select onChange={(e) => { setContainer(e.target.value) }} className='text-black px-3 py-2 w-full rounded'>
+                                <option>Select Container</option>
+                                <option>Growth Bag</option>
+                                <option>Pot</option>
+                            </select>
                         </div>
 
                         <div className='w-full'>

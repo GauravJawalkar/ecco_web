@@ -142,7 +142,7 @@ const ProductsPage = ({ searchParams }: any) => {
         }
     }
 
-    const { data: allProducts = [], isSuccess } = useQuery(
+    const { data: allProducts = [], isSuccess, isLoading } = useQuery(
         {
             queryFn: getAllProducts,
             queryKey: ['allProducts'],
@@ -228,6 +228,7 @@ const ProductsPage = ({ searchParams }: any) => {
         }
         setSortedProducts(() => [...allProducts].sort((a, b) => { return ((b.price - b.discount) - (a.price - a.discount)) }));
     }
+
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -249,6 +250,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
             {(products && products.length === 0) && <div>No Products Found</div>}
             {isPending && <div><Loader title='Loading...' /></div>}
+            {isLoading && <div><Loader title='Loading...' /></div>}
 
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
 
@@ -292,7 +294,7 @@ const ProductsPage = ({ searchParams }: any) => {
                 </div>
 
                 {/* Product display grid */}
-                <div className=' grid grid-cols-4 gap-5'>
+                <div className='grid grid-cols-4 gap-5'>
                     {/* CategoryWise product sorting here */}
                     {
                         categoryProduct?.map(({ _id, name, images, price, seller, stock, discount }: productsProps) => {

@@ -37,6 +37,7 @@ interface prodDataProps {
     price: string;
     discount: string;
     size: string;
+    container: string;
     category: string;
     stock: string;
 }
@@ -55,6 +56,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
     const [showMore, setShowMore] = useState<string | null>(null);
     const [reqLoader, setReqLoader] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [oldContainer, setOldContainer] = useState("");
 
     async function getSellerProducts() {
         try {
@@ -137,7 +139,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                             &&
                             <div className="grid grid-cols-4 py-4 gap-10">
                                 {prodData.map(
-                                    ({ _id, name, description, images, price, discount, size, seller, category, stock }: prodDataProps) => {
+                                    ({ _id, name, description, images, price, discount, size, seller, category, container, stock }: prodDataProps) => {
                                         return (
                                             <div key={_id} className="border p-5 dark:border-neutral-600 dark:bg-neutral-800">
                                                 <div>
@@ -239,6 +241,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                 setOldDescripion(description);
                                                                 setOldDiscount(discount);
                                                                 setOldSize(size);
+                                                                setOldContainer(container);
                                                                 setCurrentId(_id);
                                                                 setOldCategory(category)
                                                             }}>
@@ -275,7 +278,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                     reRender={() => {
                                                         return getSellerProducts();
                                                     }}
-                                                />
+                                                    oldContainer={oldContainer} />
                                             </div>
                                         );
                                     }
@@ -300,7 +303,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock, category }: prodDataProps) => {
+                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock, category, container }: prodDataProps) => {
                                             return (
                                                 <tr key={_id}>
                                                     <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
@@ -335,6 +338,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                     setOldSize(size);
                                                                     setOldStock(stock);
                                                                     setCurrentId(_id);
+                                                                    setOldContainer(container);
                                                                     setOldCategory(category)
                                                                 }} />
                                                             <Trash2 onClick={() => {
@@ -358,6 +362,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                     oldStock={oldStock}
                                     oldSize={oldSize}
                                     id={currentId}
+                                    oldContainer={oldContainer}
                                     reRender={() => { return getSellerProducts() }} />
                             </div>
                         }

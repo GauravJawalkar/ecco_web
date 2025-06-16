@@ -15,19 +15,21 @@ interface editDetailsProps {
     oldStock: string;
     oldSize: string;
     oldCategory: string;
+    oldContainer: string;
     isVisible: boolean;
     id: string;
     reRender: () => {};
 }
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
-    oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, reRender }: editDetailsProps) => {
+    oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, reRender, oldContainer }: editDetailsProps) => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
     const [size, setSize] = useState("");
+    const [container, setContainer] = useState("");
     const [loading, setLoading] = useState(false);
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
@@ -36,7 +38,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         e.preventDefault();
         try {
             setLoading(true)
-            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock, category });
+            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock, category, container });
             if (response.data.data) {
                 toast.success("Updated Successfully")
                 setLoading(false);
@@ -76,6 +78,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         setDiscount(oldDiscount);
         setCategory(oldCategory);
         setSize(oldSize);
+        setContainer(oldContainer);
         setStock(oldStock);
     }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock, oldCategory])
 
@@ -146,13 +149,21 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                     </div>
                     <div className='w-full'>
                         <label>Size :</label>
-                        <input
-                            type="number"
-                            value={size}
-                            className='text-black px-3 py-2 w-full rounded'
-                            placeholder='Size'
-                            required
-                            onChange={(e) => setSize(e.target.value)} />
+                        <select className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setSize(e.target.value) }}>
+                            <option>Select Size</option>
+                            <option>Small</option>
+                            <option>Medium</option>
+                            <option>Large</option>
+                        </select>
+                    </div>
+
+                    <div className='w-full'>
+                        <label>Container :</label>
+                        <select className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setContainer(e.target.value) }}>
+                            <option>Select Container</option>
+                            <option>Growth Bag</option>
+                            <option>Pot</option>
+                        </select>
                     </div>
 
                     <div className='w-full'>

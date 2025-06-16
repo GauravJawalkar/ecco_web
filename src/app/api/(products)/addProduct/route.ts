@@ -38,16 +38,17 @@ export async function POST(request: NextRequest) {
         const primeImage = formData.get('primeImage');
         const secondaryImage = formData.get('secondImage');
         const size = formData.get('size');
+        const container = formData.get('container');
         const stock = formData.get('stock');
         const category = formData.get('category');
-
-        console.log(seller);
-        console.log("UserId is : ", userId);
 
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
+        if (!seller || !name || !description || !price || !discount || !size || !container || !stock || !category) {
+            return NextResponse.json({ error: "Required Fields not found" }, { status: 400 });
+        }
 
         const firstImageUrl: any = await uploadOnCloudinary(images, 'ecco_web');
         const primeImageUrl: any = await uploadOnCloudinary(primeImage, 'ecco_web')
@@ -66,6 +67,7 @@ export async function POST(request: NextRequest) {
             discount,
             images: imageArray || ['No image urls'],
             size,
+            container,
             stock,
             category,
             seller: userId
