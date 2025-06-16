@@ -1,3 +1,4 @@
+import { Product } from "@/models/product.model";
 import { SpecialAppearence } from "@/models/specialAppearence.model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -5,11 +6,19 @@ export async function PUT(request: NextRequest) {
     try {
         const reqBody = await request.json()
 
-        const { _id } = reqBody;
+        const { _id, productId } = reqBody;
 
-        console.log("Id of product to update : ", _id)
-        if (!_id) {
-            return NextResponse.json({ error: "ID not found" }, { status: 402 })
+        console.log("Product Id is : ", reqBody);
+
+        if (!_id || !productId) {
+            return NextResponse.json({ error: "Product ID not provided" }, { status: 400 })
+        }
+
+        const productExist = await Product.findById({ _id: productId });
+
+        if (!productExist) {
+            await SpecialAppearence.findByIdAndDelete(_id);
+            return NextResponse.json({ message: "No Product found.Removed from special appearance." }, { status: 404 })
         }
 
         const setProductAsSpecial = await SpecialAppearence.findByIdAndUpdate(_id,
@@ -19,19 +28,15 @@ export async function PUT(request: NextRequest) {
                 }
             },
             {
-                new: true
+                new: true,
+                upsert: true
             }
-        )
+        );
 
-        if (!setProductAsSpecial) {
-            return NextResponse.json({ error: "Failed to set the products for special appearence" }, { status: 401 })
-        }
-
-        return NextResponse.json({ data: "Product Set Successfully" }, { status: 200 })
-
+        return NextResponse.json({ data: setProductAsSpecial }, { status: 200 })
 
     } catch (error) {
-        console.log("Failed to set the products for special appearence", error)
+        console.error("Failed to set the products for special appearence", error)
         return NextResponse.json({ error: "Failed to set the products for special appearence" }, { status: 500 })
     }
 }

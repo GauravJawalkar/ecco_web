@@ -18,6 +18,7 @@ interface mapDataProps {
     prodDiscount: string,
     sellerAvatar: string
     sellerName: string,
+    productId: string,
     isSellerVerified: boolean,
     setActive: boolean
 }
@@ -37,9 +38,9 @@ const SpecialShowCase = () => {
         }
     }
 
-    const handelSplReq = async (_id: string) => {
+    const handelSplReq = async (_id: string, productId: string) => {
         try {
-            const response = await axios.put('../api/setSplAppearence', { _id })
+            const response = await axios.put('../api/setSplAppearence', { _id, productId })
             if (response.data.data) {
                 toast.success("Special Product Updated")
                 getSpecialAppearReq()
@@ -54,9 +55,9 @@ const SpecialShowCase = () => {
 
     console.log(data);
 
-    const handelUnsetSplReq = async (_id: string) => {
+    const handelUnsetSplReq = async (_id: string, productId: string) => {
         try {
-            const response = await axios.put('../api/unSetSplAppearence', { _id })
+            const response = await axios.put('../api/unSetSplAppearence', { _id, productId })
 
             if (response.data.data) {
                 toast.success("Special Product Removed")
@@ -91,7 +92,7 @@ const SpecialShowCase = () => {
                 <div className='col-span-1 font-semibold'>Verified</div>
                 <div className='col-span-1 font-semibold'>Set Special</div>
             </div>
-            {data.length! >= 0 && data.map(({ _id, prodName, prodPrice, prodImages, prodDiscount, sellerAvatar, sellerName, isSellerVerified, setActive }: mapDataProps) => {
+            {data.length! >= 0 && data.map(({ _id, prodName, prodPrice, productId, prodImages, prodDiscount, sellerAvatar, sellerName, isSellerVerified, setActive }: mapDataProps) => {
                 return (
                     <div key={_id} >
                         <div className='grid grid-cols-10 gap-4 border dark:border-neutral-700 px-4 py-2  '>
@@ -153,11 +154,11 @@ const SpecialShowCase = () => {
                                     !setActive === true ?
                                         (
                                             <button
-                                                onClick={() => handelSplReq(_id)}
+                                                onClick={() => handelSplReq(_id, productId)}
                                                 className=' py-1 px-4 rounded text-white bg-green-500 hover:bg-green-600 text-sm'>Set</button>
                                         ) : (
                                             <button
-                                                onClick={() => handelUnsetSplReq(_id)}
+                                                onClick={() => handelUnsetSplReq(_id, productId)}
                                                 className=' py-1 px-4 rounded text-white bg-red-500 hover:bg-red-600 text-sm'>Unset</button>
                                         )
                                 }

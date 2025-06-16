@@ -8,7 +8,7 @@ import Link from "next/link";
 
 interface dataProps {
   _id: string,
-  prodImages: [string],
+  prodImages: [string, string, string],
   sellerName: string,
   prodName: string,
   productId: string
@@ -85,7 +85,7 @@ const ProductShowCase = () => {
                 return (
                   <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="relative border dark:border-neutral-700 rounded-3xl">
                     <Image
-                      src={prodImages[0]}
+                      src={prodImages?.[2]}
                       alt="splImage"
                       height={200} width={200}
                       className="object-contain w-full h-64" />

@@ -1,3 +1,4 @@
+import { Product } from "@/models/product.model";
 import { SpecialAppearence } from "@/models/specialAppearence.model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -5,13 +6,20 @@ export async function PUT(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { _id } = reqBody;
+        const { _id, productId } = reqBody;
 
-        if (!_id) {
+        if (!_id || !productId) {
             return NextResponse.json(
                 { error: "Didnt got the id from frontend" },
                 { status: 402 }
             );
+        }
+
+        const productExist = await Product.findById({ _id: productId });
+
+        if (!productExist) {
+            await SpecialAppearence.findByIdAndDelete(_id);
+            return NextResponse.json({ message: "No Product found.Removed from special appearance." }, { status: 404 })
         }
 
         const removedFromUnset = await SpecialAppearence.findByIdAndUpdate(

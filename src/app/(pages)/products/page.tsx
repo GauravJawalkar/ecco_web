@@ -250,7 +250,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
             {(products && products.length === 0) && <div>No Products Found</div>}
             {isPending && <div><Loader title='Loading...' /></div>}
-            {isLoading && <div><Loader title='Loading...' /></div>}
+            {(!category && isLoading) && <div><Loader title='Loading...' /></div>}
 
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
 

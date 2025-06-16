@@ -22,13 +22,9 @@ export async function POST(request: NextRequest) {
 
         const Seller = await User.findById(seller);
 
-        // console.log("The seller is : ", Seller)
-
-        // if (!Seller) {
-        //     return NextResponse.json({ error: "No Seller Found" }, { status: 401 })
-        // }
-
-
+        if (!Seller) {
+            return NextResponse.json({ error: "No Seller Found" }, { status: 401 })
+        }
 
         const splReq = await SpecialAppearence.create(
             {

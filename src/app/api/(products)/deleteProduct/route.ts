@@ -1,5 +1,6 @@
 import connectDB from "@/db/dbConfig";
 import { Product } from "@/models/product.model";
+import { SpecialAppearence } from "@/models/specialAppearence.model";
 import { User } from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -30,16 +31,16 @@ export async function DELETE(request: NextRequest) {
         }
 
         const deletedProduct = await Product.findByIdAndDelete(productId);
+        const deleteFromSpecialAppearence = await SpecialAppearence.findByIdAndDelete({ productId: productId });
 
-        if (!deletedProduct) {
+        if (!deletedProduct || !deleteFromSpecialAppearence) {
             return NextResponse.json({ error: "Failed to delete the product" }, { status: 402 })
         }
 
         return NextResponse.json({ product: "Product Deletes Successfully" }, { status: 200 })
 
     } catch (error) {
-
-        console.log("Error Deleting Product : ", error)
+        console.error("Error Deleting Product : ", error)
         return NextResponse.json({ error: "Failed to delete the product" }, { status: 500 })
 
     }

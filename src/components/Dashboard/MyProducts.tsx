@@ -37,7 +37,7 @@ interface prodDataProps {
     price: string;
     discount: string;
     size: string;
-    container: string;
+    containerType: string;
     category: string;
     stock: string;
 }
@@ -139,9 +139,9 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                             &&
                             <div className="grid grid-cols-4 py-4 gap-10">
                                 {prodData.map(
-                                    ({ _id, name, description, images, price, discount, size, seller, category, container, stock }: prodDataProps) => {
+                                    ({ _id, name, description, images, price, discount, size, seller, category, containerType, stock }: prodDataProps) => {
                                         return (
-                                            <div key={_id} className="border p-5 dark:border-neutral-600 dark:bg-neutral-800">
+                                            <div key={_id} className="border p-5 rounded dark:border-neutral-600 dark:bg-neutral-800">
                                                 <div>
                                                     <Swiper
                                                         modules={[EffectFade, Pagination]}
@@ -164,7 +164,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                             })}
                                                     </Swiper>
                                                     <div>
-                                                        <h1 className="capitalize text-xl font-bold antialiased truncate p-2 border dark:border-neutral-700 my-3">
+                                                        <h1 className="capitalize text-xl font-bold antialiased truncate my-3">
                                                             {name}
                                                         </h1>
                                                         <p className={`text-base text-gray-500 
@@ -214,7 +214,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-700">
+                                                    <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-700 rounded">
                                                         <div className="font-light ">
                                                             <label className="font-semibold"> MRP </label>
                                                             <h1>₹ {price?.toLocaleString()}</h1>
@@ -241,7 +241,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                 setOldDescripion(description);
                                                                 setOldDiscount(discount);
                                                                 setOldSize(size);
-                                                                setOldContainer(container);
+                                                                setOldContainer(containerType);
                                                                 setCurrentId(_id);
                                                                 setOldCategory(category)
                                                             }}>
@@ -303,7 +303,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock, category, container }: prodDataProps) => {
+                                        {prodData.map(({ _id, name, description, images, price, discount, size, stock, category, containerType }: prodDataProps) => {
                                             return (
                                                 <tr key={_id}>
                                                     <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
@@ -338,7 +338,7 @@ const MyProducts = ({ sellerId, load, view }: MyProductsProps) => {
                                                                     setOldSize(size);
                                                                     setOldStock(stock);
                                                                     setCurrentId(_id);
-                                                                    setOldContainer(container);
+                                                                    setOldContainer(containerType);
                                                                     setOldCategory(category)
                                                                 }} />
                                                             <Trash2 onClick={() => {

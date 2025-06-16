@@ -80,7 +80,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         setSize(oldSize);
         setContainer(oldContainer);
         setStock(oldStock);
-    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock, oldCategory])
+    }, [oldName, oldDescripion, oldPrice, oldSize, oldPrice, id, oldStock, oldCategory, oldContainer])
 
     const { data: fetchedCategories = [] } = useQuery({
         queryKey: ['fetchedCategories'],
@@ -149,7 +149,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                     </div>
                     <div className='w-full'>
                         <label>Size :</label>
-                        <select className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setSize(e.target.value) }}>
+                        <select value={oldSize} className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setSize(e.target.value) }}>
                             <option>Select Size</option>
                             <option>Small</option>
                             <option>Medium</option>
@@ -159,7 +159,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
                     <div className='w-full'>
                         <label>Container :</label>
-                        <select className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setContainer(e.target.value) }}>
+                        <select value={oldContainer} className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setContainer(e.target.value) }}>
                             <option>Select Container</option>
                             <option>Growth Bag</option>
                             <option>Pot</option>
