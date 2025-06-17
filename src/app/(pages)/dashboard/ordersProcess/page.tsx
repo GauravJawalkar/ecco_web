@@ -1,6 +1,7 @@
 "use client"
 
 import Loader from "@/components/Loaders/Loader";
+import { generateInvoice } from "@/helpers/invoiceGenerator";
 import { useUserStore } from "@/store/UserStore"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -81,13 +82,15 @@ const page = () => {
             {
                 sellerOrders?.data?.map((order: any) => {
                     return (
-                        order?.orders?.map(({ _id, processingStatus }: { _id: string, processingStatus: string }) => {
+                        order?.orders?.map((orderItem: any) => {
+                            const { _id, processingStatus } = orderItem;
+                            const sellerName = data?.name;
                             return (
                                 <div key={_id} className="p-3 border dark:border-neutral-700 rounded my-4 dark:bg-neutral-900/80">
                                     <div className="flex items-center justify-between p-3">
                                         <h1>Order Id : {_id}</h1>
                                         <div className="space-x-2">
-                                            <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm">
+                                            <button onClick={() => { generateInvoice(orderItem, sellerName) }} className="py-1 px-2 rounded border dark:border-neutral-700 text-sm">
                                                 Generate Invoice</button>
                                             <button className="py-1 px-2 rounded border dark:border-neutral-700 text-sm"
                                                 onClick={() => { handelShowDetails(_id) }}

@@ -23,8 +23,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        console.log("Cart Req Body: ", reqBody);
-
         if (!name || !price || !image || !sellerName || !discount || !productId || !sellerId) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
