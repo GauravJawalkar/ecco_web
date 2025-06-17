@@ -24,10 +24,12 @@ interface holderProps {
   images: ["", "", ""],
   discount: number,
   seller: string,
-  stock: number
+  stock: number,
+  rating: [],
+  category: string
 }
 
-const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: any, loading: boolean }) => {
+const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodData: any, loading: boolean, tag: string }) => {
   const swiperRef: any = useRef(null);
   const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
   const { data }: any = useUserStore();
@@ -99,12 +101,19 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
     addToCartMutation.mutate();
   }
 
+  const getAverageRating = (rating: { rateNumber: number }[]) => {
+    if (rating?.length === 0) return 0;
+    const total = rating?.reduce((sum, r) => sum + r.rateNumber, 0);
+    return total / rating?.length;
+  };
+
   return (
     <div className="my-10">
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"
         dir={`${rank % 2 ? "ltr" : "rtl"}`}>
-        <div className="place-content-center text-center p-3 py-0 ">
+        <div className="place-content-center text-center p-3 py-0 relative">
           <Image src={"/Ads/Ad-1.png"} alt={"advertisement"} width={2000} height={1000} className="w-full h-full rounded-3xl" />
+          {tag.trim() !== "" && <h1 className={`absolute top-0 ${rank % 2 ? "right-3 rounded-tr-xl rounded-bl-xl border-t border-r" : "left-3 rounded-tl-xl rounded-br-xl border-t border-l"} bg-white px-3 py-1 dark:border-neutral-700 dark:text-black`}>{tag}</h1>}
         </div>
 
         <div className="h-auto max-w-[87ch] prod-holder relative ">
@@ -126,7 +135,7 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
           >
 
             {
-              prodData?.map(({ _id, name, price, images, discount, seller, stock }: holderProps) => {
+              prodData?.map(({ _id, name, price, images, discount, seller, stock, rating, category }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2 w-full " key={_id}>
                     <Link onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
@@ -143,8 +152,8 @@ const ProductHolder = ({ rank, prodData, loading }: { rank: number, prodData: an
                       </div>
                       <div dir={"ltr"} className="p-4 w-full bg-white/80 dark:bg-neutral-900/80 dark:border-neutral-700 rounded-3xl border">
                         <div className="text-start text-sm text-gray-500 flex items-center justify-between pb-2">
-                          <h1>Plants</h1>
-                          <h1>⭐ (4.5)</h1>
+                          <h1 className="capitalize">{(category === "accessories" || category === "fertilizers") && category || "plants"}</h1>
+                          <h1>⭐ {getAverageRating(rating)?.toFixed(1)}</h1>
                         </div>
                         <h1 title={name} className="font-semibold capitalize text-start text-lg truncate">
                           {name}

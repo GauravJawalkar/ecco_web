@@ -229,6 +229,37 @@ const ProductsPage = ({ searchParams }: any) => {
         setSortedProducts(() => [...allProducts].sort((a, b) => { return ((b.price - b.discount) - (a.price - a.discount)) }));
     }
 
+    const handelDiscountLowToHigh = () => {
+        const getDiscountPercent = (p: any) =>
+            ((p.discount || 0) / (p.price + (p.discount || 0))) * 100;
+
+        if (category) {
+            setCategoryProduct(() =>
+                [...products].sort((a, b) => getDiscountPercent(a) - getDiscountPercent(b))
+            );
+        }
+
+        setSortedProducts(() =>
+            [...allProducts].sort((a, b) => getDiscountPercent(a) - getDiscountPercent(b))
+        );
+    }
+
+    const handelDiscountHighToLow = () => {
+        const getDiscountPercent = (p: any) =>
+            ((p.discount || 0) / (p.price + (p.discount || 0))) * 100;
+
+        if (category) {
+            setCategoryProduct(() =>
+                [...products].sort((a, b) => getDiscountPercent(b) - getDiscountPercent(a))
+            );
+        }
+
+        setSortedProducts(() =>
+            [...allProducts].sort((a, b) => getDiscountPercent(b) - getDiscountPercent(a))
+        );
+    }
+
+
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -269,16 +300,12 @@ const ProductsPage = ({ searchParams }: any) => {
                     <div className='w-full bg-gray-50 dark:bg-neutral-800 p-3 rounded-xl'>
                         <h1 className='pb-2 text-start'>Sort By Discount :</h1>
                         <h1
-                            onClick={() => {
-                                setSortedProducts(() => [...allProducts].sort((a, b) => { return a.discount - b.discount }));
-                            }}
+                            onClick={handelDiscountLowToHigh}
                             className='border dark:border-neutral-700 p-1 cursor-pointer text-center text-sm rounded-full mb-2 hover:bg-gray-100 dark:hover:bg-neutral-700'>
                             Low To High
                         </h1>
                         <h1
-                            onClick={() => {
-                                setSortedProducts(() => [...allProducts].sort((a, b) => { return b.discount - a.discount }))
-                            }}
+                            onClick={handelDiscountHighToLow}
                             className='border p-1 dark:border-neutral-700 cursor-pointer text-center text-sm rounded-full hover:bg-gray-100 dark:hover:bg-neutral-700'>
                             High To Low
                         </h1>

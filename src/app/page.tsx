@@ -34,6 +34,12 @@ export default function Home() {
     queryKey: ["myData"], queryFn: getProducts, refetchOnWindowFocus: false
   })
 
+  function getAverageRating(product: any): number {
+    if (!product.rating || product.rating.length === 0) return 0;
+    const total = product.rating.reduce((sum: number, rate: any) => sum + rate.rateNumber, 0);
+    return total / product.rating.length;
+  }
+
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
     if (stored) {
@@ -67,10 +73,19 @@ export default function Home() {
         <HomeFilter />
       </div>
       <div className="py-10 mb-10">
-        <ProductHolder rank={1} prodData={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
+        <ProductHolder rank={1} tag="Great Deals" prodData={myData?.filter((product: any) => product.price >= 600)} loading={isLoading} />
       </div>
       <div className="py-20 mb-10">
-        <ProductHolder rank={2} prodData={myData?.filter((product: any) => product.price <= 600)} loading={isLoading} />
+        <ProductHolder rank={2} tag="Best Selling" prodData={[...(myData || [])].sort((a: any, b: any) => {
+          const priceA = a.price + (a.discount || 0);
+          const priceB = b.price + (b.discount || 0);
+          const discountPercentA = (a.discount || 0) / priceA * 100;
+          const discountPercentB = (b.discount || 0) / priceB * 100;
+          return discountPercentB - discountPercentA; // High to low
+        })} loading={isLoading} />
+      </div>
+      <div className="py-20 mb-10">
+        <ProductHolder rank={3} tag="Top Rated" prodData={myData?.sort((a: any, b: any) => getAverageRating(b) - getAverageRating(a))?.slice(0, 10)} loading={isLoading} />
       </div>
       <div className="py-20">
         <ProductShowCase />
