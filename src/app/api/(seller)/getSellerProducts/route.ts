@@ -6,24 +6,30 @@ connectDB();
 
 export async function POST(request: NextRequest) {
     try {
-
         const reqBody = await request.json();
+        const { sellerId, page = 1, limit = 10 } = reqBody;
 
-        const { sellerId } = reqBody;
-
-        if (sellerId.trim() === "") {
-            return NextResponse.json({ error: "No Seller Id Found" }, { status: 402 })
+        if (!sellerId || sellerId.trim() === "") {
+            return NextResponse.json({ error: "No Seller Id Found" }, { status: 400 });
         }
 
-        const sellerProducts = await Product.find({ seller: sellerId })
+        const parsedPage = parseInt(page) || 1;
+        const parsedLimit = parseInt(limit) || 5;
+        const skip = (parsedPage - 1) * parsedLimit;
 
-        if (!sellerProducts) {
-            return NextResponse.json({ error: "This seller has no products uploaded" }, { status: 401 })
-        }
+        const products = await Product.find({ seller: sellerId }).skip(skip).limit(parsedLimit);
 
-        return NextResponse.json({ data: sellerProducts }, { status: 200 })
+        const totalCount = await Product.countDocuments({ seller: sellerId });
 
-    } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 })
+        return NextResponse.json({
+            data: products,
+            totalCount,
+            totalPages: Math.ceil(totalCount / parsedLimit),
+            currentPage: parsedPage
+        }, { status: 200 });
+
+    } catch (error: any) {
+        console.error("Error in getSellerProducts API:", error);
+        return NextResponse.json({ error: error.message || "Server error" }, { status: 500 });
     }
 }
