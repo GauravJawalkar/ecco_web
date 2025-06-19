@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
-import { ChevronLeft, ChevronRight, Loader2, ShoppingCart, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import Loader from "../Loaders/Loader";
 import Link from "next/link";
 import { useUserStore } from "@/store/UserStore";
 import axios from "axios";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { discountPercentage } from "@/helpers/discountPercentage";
 import { useRouter } from "next/navigation";

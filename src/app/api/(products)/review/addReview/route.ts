@@ -19,8 +19,6 @@ export async function POST(request: NextRequest) {
         const imageThree = formData.get('imageThree');
         const title = formData.get('title');
 
-        console.log("FormData is : ", formData);
-
         const requiredFields = [reviewedBy, content, reviewedProduct, reviewerName, title];
 
         if (requiredFields.some((elem: any) => elem.trim() === "")) {
