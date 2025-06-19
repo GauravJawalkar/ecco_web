@@ -30,7 +30,6 @@ interface holderProps {
 }
 
 const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodData: any, loading: boolean, tag: string }) => {
-  const swiperRef: any = useRef(null);
   const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
   const { data }: any = useUserStore();
   const cartOwnerId = data?._id;

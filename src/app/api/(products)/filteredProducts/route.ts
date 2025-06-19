@@ -7,21 +7,32 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { category } = reqBody;
+        const { category, categoryPage, limit = 12 } = reqBody;
 
-        console.log(category);
+        console.log(reqBody);
+
+        const skip = (categoryPage - 1) * limit;
 
         if (category.trim() === "") {
             return NextResponse.json({ error: "Invalid category value" }, { status: 400 })
         }
 
-        const filteredProducts = await Product.find({ category: category });
+        const totalCategoryProducts = await Product.countDocuments({ category: category });
+
+        const filteredProducts = await Product.find({ category: category }).skip(skip).limit(limit);
 
         if (!filteredProducts) {
             return NextResponse.json({ error: "Failed to fetch the filtered Products" }, { status: 401 })
         }
 
-        return NextResponse.json({ data: filteredProducts }, { status: 200 });
+        return NextResponse.json(
+            {
+                data: filteredProducts,
+                totalCategoryProducts: totalCategoryProducts,
+                totalCategoryPages: Math.ceil(totalCategoryProducts / limit),
+                currentPage: categoryPage
+
+            }, { status: 200 });
 
     } catch (error) {
         return NextResponse.json({ error: `Error getting filtered products : ${error}` }, { status: 500 })
