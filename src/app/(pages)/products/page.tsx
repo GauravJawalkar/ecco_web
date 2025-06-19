@@ -147,7 +147,7 @@ const ProductsPage = ({ searchParams }: any) => {
                 totalCount: 0,
                 totalPages: 0,
                 currentPage: 1,
-            };;
+            };
         } catch (error) {
             console.error("Error getting all the products ", error)
             return {
@@ -280,7 +280,6 @@ const ProductsPage = ({ searchParams }: any) => {
         return total / rating?.length;
     };
 
-
     return (
         <>
             <div className=" py-5 overflow-x-auto ">
@@ -300,12 +299,7 @@ const ProductsPage = ({ searchParams }: any) => {
                 </div>
             </div>
 
-            {(products && products.length === 0) && <div>No Products Found</div>}
-            {isPending && <div><Loader title='Loading...' /></div>}
-            {(!category && isLoading) && <div><Loader title='Loading...' /></div>}
-
             <div className='grid grid-cols-[0.5fr_3fr] gap-4'>
-
                 {/* Filters On the right */}
                 <div className='p-3 border dark:border-neutral-700 rounded-2xl h-fit sticky top-24 flex items-center justify-center flex-col gap-3'>
                     <div className='mt-8 w-full bg-gray-50 dark:bg-neutral-800 p-3 rounded-xl'>
@@ -341,7 +335,12 @@ const ProductsPage = ({ searchParams }: any) => {
                     <h1 className='absolute top-0 right-0 px-3 py-1 rounded-tr-2xl rounded-bl-2xl bg-gray-100 flex items-center justify-center gap-1 dark:bg-neutral-800'><Filter className='h-4 w-4' /> Filter Products</h1>
                 </div>
                 <div>
+                    {(!category && isLoading) && <div className='flex items-center justify-center py-5'>
+                        <Loader title='Loading...' />
+                    </div>}
 
+                    {isPending && <div><Loader title='Loading...' /></div>}
+                    {(products && products.length === 0) && <div className='flex items-center justify-center'>No Products Found</div>}
 
                     {/* Product display grid */}
                     <div className='grid grid-cols-4 gap-5'>
@@ -479,7 +478,7 @@ const ProductsPage = ({ searchParams }: any) => {
                             )
                         })}
                     </div>
-                    {!category && <div className="flex justify-center items-center gap-4 my-4">
+                    {!category && <div className={` justify-center items-center gap-4 my-4 ${isLoading ? "hidden" : "flex"}`}>
                         <button
                             className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:bg-opacity-0'
                             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -495,7 +494,7 @@ const ProductsPage = ({ searchParams }: any) => {
                         </button>
                     </div>}
 
-                    {category && <div className="flex justify-center items-center gap-4 my-4">
+                    {category && <div className={`justify-center items-center gap-4 my-4 ${isPending ? "hidden" : "flex"}`}>
                         <button
                             className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:bg-opacity-0'
                             onClick={() => setCategoryPage((prev) => Math.max(prev - 1, 1))}

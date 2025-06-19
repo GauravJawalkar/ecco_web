@@ -6,7 +6,7 @@ import { Pagination, Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, Loader2, ShoppingCart, Star } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Loader from "../Loaders/Loader";
 import Link from "next/link";
 import { useUserStore } from "@/store/UserStore";
