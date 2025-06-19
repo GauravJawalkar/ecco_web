@@ -119,7 +119,6 @@ const Cart = () => {
         }
     }, [userCart]);
 
-    // For checking out the whole cart : The Approach :-> Just take the whole array of cartItems and save it in the database then map it in the checkout page and create an order depending on the number of product present
     return (
         <section>
             {userCart?.cartItems?.length > 0 ? (
@@ -197,7 +196,7 @@ const Cart = () => {
                             }
                         )}
                 </div>
-                <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded-2xl my-3  dark:border-neutral-700 h-fit sticky top-24"}`}>
+                <div className={` ${userCart?.cartItems?.length <= 0 ? "hidden" : " w-full p-5 border rounded-2xl  dark:border-neutral-700 h-fit sticky top-24"}`}>
                     <h1 className="text-lg font-semibold uppercase">
                         CART Summary :
                     </h1>

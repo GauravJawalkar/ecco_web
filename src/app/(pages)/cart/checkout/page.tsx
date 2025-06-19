@@ -137,9 +137,9 @@ const CartCeckOut = () => {
                     {(!isPending && !isError) &&
                         userCart?.cartItems?.map(({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => {
                             return (
-                                <div key={_id} className={`w-full grid grid-cols-[1.5fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-5`}>
+                                <div key={_id} className={`w-full grid grid-cols-[1.2fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-5`}>
                                     <div className={`${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-3`}>
-                                        <Image src={image || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='object-contain w-full rounded-xl h-36' />
+                                        <Image src={image || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='object-contain w-full rounded-xl h-26' />
                                     </div>
 
                                     <div className='content-center space-y-3'>

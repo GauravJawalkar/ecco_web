@@ -1,5 +1,6 @@
 import connectDB from "@/db/dbConfig";
 import { Cart } from "@/models/cart.model";
+import { User } from "@/models/user.model";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -15,7 +16,9 @@ export async function POST(request: NextRequest) {
         }
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId } = reqBody;
+        const { cartOwner, name, price, image, discount, stock, productId, sellerId } = reqBody;
+
+        console.log("Request Body is : ", reqBody);
 
         const quantity = 1;
 
@@ -23,11 +26,13 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!name || !price || !image || !sellerName || !discount || !productId || !sellerId) {
+        if (!name || !price || !image || !discount || !productId || !sellerId) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
 
-        console.log("Seller Id is : ", sellerId);
+        const seller = await User.findById(sellerId);
+
+        const sellerName = await seller?.name;
 
         const existingCart = await Cart.findOne({ cartOwner });
 

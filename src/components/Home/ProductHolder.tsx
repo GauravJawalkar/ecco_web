@@ -40,7 +40,6 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
   const [discount, setDiscount] = useState(0);
   const [stock, setStock] = useState(0);
   const [sellerId, setSellerId] = useState("");
-  const [vikreta, setVikreta] = useState("");
   const [productId, setProductId] = useState("");
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const router = useRouter();
@@ -48,8 +47,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
   async function addToCart() {
     try {
       const cartOwner = data?._id;
-      const sellerName = vikreta;
-      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
+      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, discount, stock, productId, sellerId });
       if (response.data.data) {
         toast.success("Item Added To Cart");
         return response.data.data;
@@ -63,28 +61,6 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
       }
     }
   }
-
-  async function getSellerDetails(id: string) {
-    try {
-      const response = await axios.get(`../api/getSelletDetails/${id}`);
-      if (response.data.data) {
-        return response.data.data
-      }
-      return [];
-    } catch (error) {
-      console.log(`Error getting the user details : `, error)
-      return [];
-    }
-  }
-
-  const { data: sellerDet = [] } = useQuery(
-    {
-      queryFn: () => getSellerDetails(sellerId),
-      queryKey: ['seller', sellerId],
-      enabled: !!sellerId,
-      refetchOnWindowFocus: false
-    }
-  )
 
   const addToCartMutation = useMutation({
     mutationFn: async () => await addToCart(),
@@ -137,7 +113,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
               prodData?.map(({ _id, name, price, images, discount, seller, stock, rating, category }: holderProps) => {
                 return (
                   <SwiperSlide className="px-2 w-full " key={_id}>
-                    <Link onLoad={() => { setSellerId(seller) }} passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
+                    <Link passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                       <div className="w-full py-3 relative">
                         <Image
                           src={images?.[2] || ""}
@@ -166,7 +142,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
                             setPrice(price);
                             setStock(stock);
                             setDiscount(discount);
-                            setVikreta(sellerDet?.name);
+                            setSellerId(seller);
                             setProductId(_id);
                             handelCart();
                           }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
