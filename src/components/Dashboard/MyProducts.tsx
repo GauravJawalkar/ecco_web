@@ -125,6 +125,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
             queryKey: ["sellerProducts", sellerId, page],
             queryFn: getSellerProducts,
             enabled: !!sellerId,
+            refetchOnWindowFocus: false
         })
 
     return (
@@ -362,13 +363,13 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                             </table>
 
                             {/* Pagination Buttons */}
-                            <div className="flex justify-center items-center gap-4 mt-4">
-                                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    <span><ChevronLeft className="h-4 w-4" /></span>  Previous
+                            <div className="flex justify-center items-center gap-2 mt-4">
+                                <button title="Previous" onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="p-3 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
+                                    <ChevronLeft className="h-4 w-4" />
                                 </button>
-                                <span>Page {page} of {totalPages}</span>
-                                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    Next <span><ChevronRight className="h-4 w-4" /></span>
+                                Page<span className="font-bold">{page}</span> of {totalPages}
+                                <button title="Next" onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="p-3 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
+                                    <ChevronRight className="h-4 w-4" />
                                 </button>
                             </div>
                             <EditDetailsModal

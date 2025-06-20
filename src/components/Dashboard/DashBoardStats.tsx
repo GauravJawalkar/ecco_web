@@ -29,7 +29,7 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
             const response = await axios.post('/api/getSellerProducts', { sellerId })
 
             if (response.data.data) {
-                setTotalProducts(response.data.data.length);
+                setTotalProducts(response.data?.totalCount);
             } else {
                 toast.error("Error Calculating the number of products")
             }

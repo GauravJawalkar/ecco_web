@@ -34,9 +34,9 @@ export async function POST(request: NextRequest) {
         const description = formData.get('description');
         const price = formData.get('price');
         const discount = formData.get('discount');
-        const images = formData.get('images');
         const primeImage = formData.get('primeImage');
         const secondaryImage = formData.get('secondImage');
+        const thirdImage = formData.get('thirdImage');
         const size = formData.get('size');
         const container = formData.get('container');
         const stock = formData.get('stock');
@@ -50,13 +50,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Required Fields not found" }, { status: 400 });
         }
 
-        const firstImageUrl: any = await uploadOnCloudinary(images, 'ecco_web');
-        const primeImageUrl: any = await uploadOnCloudinary(primeImage, 'ecco_web')
-        const secondaryImageUrl: any = await uploadOnCloudinary(secondaryImage, 'ecco_web')
+        if (!primeImage || !secondaryImage || !thirdImage) {
+            return NextResponse.json({ error: "All three Images are required" }, { status: 401 })
+        }
 
-        const imageArray = [firstImageUrl?.secure_url, primeImageUrl?.secure_url, secondaryImageUrl?.secure_url];
+        const mainImageUrl: any = await uploadOnCloudinary(primeImage, 'ecco_web');
+        const secondImageUrl: any = await uploadOnCloudinary(secondaryImage, 'ecco_web')
+        const thirdImageUrl: any = await uploadOnCloudinary(thirdImage, 'ecco_web')
 
-        if (!firstImageUrl) {
+        const imageArray = [mainImageUrl?.secure_url, secondImageUrl?.secure_url, thirdImageUrl?.secure_url];
+
+        if (!mainImageUrl) {
             return NextResponse.json({ error: "No Files uploaded on cloudinary" }, { status: 404 })
         }
 
@@ -65,7 +69,7 @@ export async function POST(request: NextRequest) {
             description,
             price,
             discount,
-            images: imageArray || ['No image urls'],
+            images: imageArray || [],
             size,
             container,
             stock,
