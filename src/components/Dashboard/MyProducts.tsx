@@ -5,7 +5,7 @@ import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { ChevronLeft, ChevronRight, Edit, LoaderCircle, PenLine, Trash, Trash2 } from "lucide-react";
-import { Key, useEffect, useState } from "react";
+import { Key, useState } from "react";
 import EditDetailsModal from "../Modals/EditDetailsModal";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -273,9 +273,6 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                 oldDiscount={oldDiscount}
                                                 oldSize={oldSize}
                                                 id={currentId}
-                                                reRender={() => {
-                                                    return getSellerProducts();
-                                                }}
                                                 oldContainer={oldContainer} />
                                         </div>
                                     );
@@ -371,8 +368,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 oldStock={oldStock}
                                 oldSize={oldSize}
                                 id={currentId}
-                                oldContainer={oldContainer}
-                                reRender={() => { return getSellerProducts() }} />
+                                oldContainer={oldContainer} />
                         </div>
                     }
                 </>

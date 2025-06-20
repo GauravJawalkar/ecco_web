@@ -4,7 +4,8 @@ import Loader from '../Loaders/Loader'
 import { CircleX } from 'lucide-react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useUserStore } from '@/store/UserStore';
 
 interface editDetailsProps {
     onClose: () => void;
@@ -18,43 +19,57 @@ interface editDetailsProps {
     oldContainer: string;
     isVisible: boolean;
     id: string;
-    reRender: () => {};
 }
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
-    oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, reRender, oldContainer }: editDetailsProps) => {
+    oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, oldContainer }: editDetailsProps) => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
+    const { data }: any = useUserStore();
     const [discount, setDiscount] = useState("");
     const [size, setSize] = useState("");
     const [container, setContainer] = useState("");
     const [loading, setLoading] = useState(false);
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
+    const queryClient = useQueryClient();
+
+    async function editProductDetails() {
+        try {
+            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock, category, container });
+            if (response.data.data) {
+                return response.data.data || [];
+            } else {
+                toast.error("Failed to update")
+                console.error("Error updating the details");
+                return [];
+            }
+        } catch (error) {
+            console.error("Error updating details : ", error)
+            toast.error("Failed to update")
+        }
+    }
+
+    const editProductDetailsMutation = useMutation(
+        {
+            mutationKey: ['eidtProductDetails'],
+            mutationFn: editProductDetails,
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: ['sellerProducts', data?._id] });
+                onClose();
+            },
+            onError: (error) => {
+                toast.error("Failed to update");
+                console.error("Error updating details : ", error);
+            }
+        }
+    )
 
     const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            setLoading(true)
-            const response = await axios.put('/api/editProductDetails', { id, name, description, price, discount, size, stock, category, container });
-            if (response.data.data) {
-                toast.success("Updated Successfully")
-                setLoading(false);
-                onClose();
-                reRender();
-            } else {
-                toast.error("Failed to update")
-
-            }
-
-        } catch (error) {
-            setLoading(false)
-            console.log("Error updating details : ", error)
-            toast.error("Failed to update")
-        }
-
+        editProductDetailsMutation.mutate();
     }
 
     async function getCategories() {
@@ -188,7 +203,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                         type='submit'
                         className='w-full h-fit py-2 bg-[#0a0a0a] text-[#ededed] rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {
-                            loading ?
+                            editProductDetailsMutation.isPending ?
                                 <Loader title='Updating ' /> :
                                 "Update Details"
                         }
