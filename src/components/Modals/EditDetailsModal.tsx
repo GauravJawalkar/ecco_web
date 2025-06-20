@@ -23,7 +23,6 @@ interface editDetailsProps {
 
 const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
     oldPrice, oldDiscount, oldSize, oldCategory, oldStock, id, oldContainer }: editDetailsProps) => {
-
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
@@ -31,7 +30,6 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
     const [discount, setDiscount] = useState("");
     const [size, setSize] = useState("");
     const [container, setContainer] = useState("");
-    const [loading, setLoading] = useState(false);
     const [stock, setStock] = useState("");
     const [category, setCategory] = useState("");
     const queryClient = useQueryClient();
@@ -103,7 +101,6 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
     })
 
     if (!isVisible) return null;
-
 
     return (
         <section className='inset-0 fixed h-auto flex items-center justify-center z-10 backdrop-blur '>

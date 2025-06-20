@@ -174,7 +174,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
     useEffect(() => {
         setCategoryProduct(products || []);
-    }, [products])
+    }, [products, categoryPage])
 
     async function addToCart() {
         try {
@@ -480,14 +480,14 @@ const ProductsPage = ({ searchParams }: any) => {
                     </div>
                     {!category && <div className={` justify-center items-center gap-4 my-4 ${isLoading ? "hidden" : "flex"}`}>
                         <button
-                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:bg-opacity-0'
+                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                             disabled={page === 1}>
                             <ChevronLeft className='h-5 w-5' />
                         </button>
                         <span className='text-sm'>Page <span className='font-bold'> {page} </span>of {totalPages}</span>
                         <button
-                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed disabled:bg-transparent disabled:bg-opacity-0'
+                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                             disabled={page === totalPages}>
                             <ChevronRight className='h-5 w-5' />
@@ -496,14 +496,14 @@ const ProductsPage = ({ searchParams }: any) => {
 
                     {category && <div className={`justify-center items-center gap-4 my-4 ${isPending ? "hidden" : "flex"}`}>
                         <button
-                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:bg-opacity-0'
+                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setCategoryPage((prev) => Math.max(prev - 1, 1))}
                             disabled={page === 1}>
                             <ChevronLeft className='h-5 w-5' />
                         </button>
                         <span className='text-sm'>Page <span className='font-bold'> {categoryPage}</span> of {categoryTotalPages}</span>
                         <button
-                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed disabled:bg-transparent disabled:bg-opacity-0'
+                            className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setCategoryPage((prev) => Math.min(prev + 1, categoryTotalPages))}
                             disabled={page === categoryTotalPages}>
                             <ChevronRight className='h-5 w-5' />
