@@ -28,6 +28,7 @@ const Product = () => {
     const [openReviewModal, setOpenReviewModal] = useState(false);
     const [previewImageModal, setPreviewImageModal] = useState(false);
     const [previewImage, setPreviewImage] = useState([]);
+    const [skip, setSkip] = useState(0);
     const router = useRouter();
 
     async function getSpecificProduct(id: string) {
@@ -104,9 +105,9 @@ const Product = () => {
 
     async function getReviews() {
         try {
-            const response = await axios.get(`/api/review/getReviews/${id}`);
+            const response = await axios.get(`/api/review/getReviews/${id}?skip=${skip}`);
             if (response.data.data) {
-                return response.data.data;
+                return response.data;
             }
             return [];
         } catch (error) {
@@ -195,9 +196,9 @@ const Product = () => {
         }
     }, [isSuccess, isFetched]);
 
-    const { data: allReviews = [] } = useQuery({
+    const { data: allReviews = [], isFetching } = useQuery({
         queryFn: getReviews,
-        queryKey: ['allReviews'],
+        queryKey: ['allReviews', id, skip],
         enabled: !!id,
         refetchOnWindowFocus: false,
         refetchOnMount: true,
@@ -365,7 +366,7 @@ const Product = () => {
                             </div>
                             {/* Map all the reviews */}
                             {
-                                allReviews.map((review: any, index: number) => {
+                                allReviews.data?.map((review: any, index: number) => {
                                     return (
                                         <div key={index}>
                                             {review?.reviews.map(({ reviewTitle, likes, dislikes, _id, reviewerName, reviewImages }: any) => {
