@@ -7,40 +7,36 @@ const reviewSchema = new Schema(
             ref: "Product",
             required: true
         },
-        reviews: [
+        reviewedBy: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        reviewerName: {
+            type: String,
+            required: true
+        },
+        reviewTitle: {
+            type: String,
+            required: true
+        },
+        reviewImages: [
             {
-                reviewedBy: {
-                    type: Schema.Types.ObjectId,
-                    ref: "User",
-                    required: true,
-                },
-                reviewerName: {
-                    type: String,
-                    required: true
-                },
-                reviewTitle: {
-                    type: String,
-                    required: true
-                },
-                reviewImages: [
-                    {
-                        type: String
-                    }
-                ],
-                content: {
-                    type: String,
-                    required: true
-                },
-                likes: {
-                    type: Number,
-                    default: 0
-                },
-                dislikes: {
-                    type: Number,
-                    default: 0
-                }
+                type: String
             }
-        ]
+        ],
+        content: {
+            type: String,
+            required: true
+        },
+        likes: {
+            type: Number,
+            default: 0
+        },
+        dislikes: {
+            type: Number,
+            default: 0
+        }
     }
 );
 

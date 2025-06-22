@@ -29,6 +29,8 @@ const Product = () => {
     const [previewImageModal, setPreviewImageModal] = useState(false);
     const [previewImage, setPreviewImage] = useState([]);
     const [skip, setSkip] = useState(0);
+    const [totalReviews, setTotalReviews] = useState(0);
+    const [reviews, setReviews] = useState<[] | any>([]);
     const router = useRouter();
 
     async function getSpecificProduct(id: string) {
@@ -107,7 +109,9 @@ const Product = () => {
         try {
             const response = await axios.get(`/api/review/getReviews/${id}?skip=${skip}`);
             if (response.data.data) {
-                return response.data;
+                setTotalReviews(response.data?.total || 0);
+                setReviews((prev: any) => [...prev, ...response.data?.data]);
+                return response.data?.data;
             }
             return [];
         } catch (error) {
@@ -122,7 +126,7 @@ const Product = () => {
         return total / rating?.length;
     };
 
-    const { data: product = [], isLoading, isError, isSuccess, isFetched } = useQuery(
+    const { data: product = [], isLoading, isError, isFetched, isSuccess } = useQuery(
         {
             queryFn: () => getSpecificProduct(id as string),
             queryKey: ['product', id],
@@ -133,7 +137,7 @@ const Product = () => {
     );
 
     // Add to recently viewed if the product is successfully fetched and viewed
-    if (isSuccess && isFetched) {
+    if (isFetched && isSuccess) {
         try {
             const existingView = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
             if (!Array.isArray(existingView.product)) {
@@ -194,15 +198,19 @@ const Product = () => {
         if (stored) {
             setExistingRecentlyViewed(stored);
         }
-    }, [isSuccess, isFetched]);
+    }, [isFetched, isSuccess]);
 
     const { data: allReviews = [], isFetching } = useQuery({
         queryFn: getReviews,
         queryKey: ['allReviews', id, skip],
         enabled: !!id,
         refetchOnWindowFocus: false,
-        refetchOnMount: true,
     })
+
+    console.log(reviews?.length);
+    console.log(totalReviews);
+
+    console.log("Check disablity : ", reviews?.length === totalReviews)
 
     return (
         <>
@@ -366,50 +374,46 @@ const Product = () => {
                             </div>
                             {/* Map all the reviews */}
                             {
-                                allReviews.data?.map((review: any, index: number) => {
+                                reviews?.map(({ reviewTitle, likes, dislikes, _id, reviewerName, reviewImages }: any) => {
                                     return (
-                                        <div key={index}>
-                                            {review?.reviews.map(({ reviewTitle, likes, dislikes, _id, reviewerName, reviewImages }: any) => {
-                                                return (
-                                                    <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl' key={_id}>
-                                                        <div className='space-y-2'>
-                                                            <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'> {(reviewerName)} <span><CircleCheck className='w-5 h-5 text-white fill-gray-500' /></span> Certified Review </h1>
-                                                            <h1>{reviewTitle}</h1>
-                                                            <div className='flex items-center gap-2'>
-                                                                {reviewImages?.map((image: string, index: number) => {
-                                                                    return (
-                                                                        <div key={index}>
-                                                                            <Image
-                                                                                onClick={() => {
-                                                                                    setPreviewImageModal(!previewImageModal);
-                                                                                    setPreviewImage(reviewImages);
-                                                                                }}
-                                                                                className='rounded cursor-pointer'
-                                                                                src={image}
-                                                                                alt={'review Image'} height={50}
-                                                                                width={50} />
-                                                                            <ImagePreviewModal
-                                                                                onClose={() => setPreviewImageModal(!previewImageModal)}
-                                                                                isVisible={previewImageModal}
-                                                                                images={previewImage} />
-                                                                        </div>
-                                                                    )
-                                                                })}
-                                                            </div>
-                                                        </div>
-                                                        <div className='flex space-x-4'>
-                                                            <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsUp className='w-5 h-5 ' /><span className='text-sm'>{likes}</span> </button>
-                                                            <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsDown className='w-5 h-5' /><span className='text-sm'>{dislikes}</span></button>
-                                                        </div>
+                                        <div key={_id}>
+                                            <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl' key={_id}>
+                                                <div className='space-y-2'>
+                                                    <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'> {(reviewerName)} <span><CircleCheck className='w-5 h-5 text-white fill-gray-500' /></span> Certified Review </h1>
+                                                    <h1>{reviewTitle}</h1>
+                                                    <div className='flex items-center gap-2'>
+                                                        {reviewImages?.map((image: string, index: number) => {
+                                                            return (
+                                                                <div key={index}>
+                                                                    <Image
+                                                                        onClick={() => {
+                                                                            setPreviewImageModal(!previewImageModal);
+                                                                            setPreviewImage(reviewImages);
+                                                                        }}
+                                                                        className='rounded cursor-pointer h-14 w-14'
+                                                                        src={image}
+                                                                        alt={'review Image'}
+                                                                        height={50}
+                                                                        width={50} />
+                                                                    <ImagePreviewModal
+                                                                        onClose={() => setPreviewImageModal(!previewImageModal)}
+                                                                        isVisible={previewImageModal}
+                                                                        images={previewImage} />
+                                                                </div>
+                                                            )
+                                                        })}
                                                     </div>
-                                                )
-                                            })
-                                            }
+                                                </div>
+                                                <div className='flex space-x-4'>
+                                                    <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsUp className='w-5 h-5 ' /><span className='text-sm'>{likes}</span> </button>
+                                                    <button className='flex gap-2 text-gray-500 dark:text-gray-400 '><ThumbsDown className='w-5 h-5' /><span className='text-sm'>{dislikes}</span></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     )
                                 })
                             }
-
+                            {totalReviews >= 5 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setSkip(skip + 5)}>Load More</button>}
                             {/*Add Reviews Components Dynamic */}
                             <div className='py-3'>
                                 <button className='px-3 py-2 text-white bg-green-500 rounded-lg hover:bg-green-500/80' onClick={() => { setOpenReviewModal(!openReviewModal) }}>Add Review</button>

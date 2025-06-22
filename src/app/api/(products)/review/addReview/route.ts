@@ -46,23 +46,18 @@ export async function POST(request: NextRequest) {
         const img2: any = await uploadOnCloudinary(imageTwo, 'ecco_web');
         const img3: any = await uploadOnCloudinary(imageThree, 'ecco_web');
 
-        const addReview = {
-            reviewedBy: reviewedBy,
-            reviewerName: reviewerName,
-            reviewTitle: title,
-            reviewImages: [img1?.secure_url, img2?.secure_url, img3?.secure_url],
-            content: content,
-            likes: 0,
-            dislikes: 0
-        };
-
-        const newReview = await Reviews.findOneAndUpdate(
-            { reviewedProduct },
+        const newReview = await Reviews.create(
             {
-                $push: { reviews: addReview }
-            },
-            { new: true, upsert: true }
-        );
+                reviewedProduct,
+                reviewedBy: reviewedBy,
+                reviewerName: reviewerName,
+                reviewTitle: title,
+                reviewImages: [img1?.secure_url, img2?.secure_url, img3?.secure_url],
+                content: content,
+                likes: 0,
+                dislikes: 0
+            }
+        )
 
         if (!newReview) {
             return NextResponse.json({ error: "Failed to post a new Review" }, { status: 402 })
