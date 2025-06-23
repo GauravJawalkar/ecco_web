@@ -207,11 +207,6 @@ const Product = () => {
         refetchOnWindowFocus: false,
     })
 
-    console.log(reviews?.length);
-    console.log(totalReviews);
-
-    console.log("Check disablity : ", reviews?.length === totalReviews)
-
     return (
         <>
             <section className='py-10'>
@@ -227,7 +222,7 @@ const Product = () => {
                             {
                                 product?.images?.map((image: string, index: number) => {
                                     return (
-                                        <div onClick={() => { setMainImage(index) }} key={index} className='flex items-center justify-center ' >
+                                        <div onClick={() => { setMainImage(index) }} key={index + Math.random()} className='flex items-center justify-center ' >
                                             <Image
                                                 alt='product_image'
                                                 src={image}
@@ -376,8 +371,8 @@ const Product = () => {
                             {
                                 reviews?.map(({ reviewTitle, likes, dislikes, _id, reviewerName, reviewImages }: any) => {
                                     return (
-                                        <div key={_id}>
-                                            <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl' key={_id}>
+                                        <div key={_id + Math.random()}>
+                                            <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl'>
                                                 <div className='space-y-2'>
                                                     <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'>
                                                         {(reviewerName)}
@@ -390,7 +385,7 @@ const Product = () => {
                                                     <div className='flex items-center gap-2'>
                                                         {reviewImages?.map((image: string, index: number) => {
                                                             return (
-                                                                <div key={index}>
+                                                                <div key={index + Math.random()}>
                                                                     <Image
                                                                         onClick={() => {
                                                                             setPreviewImageModal(!previewImageModal);
