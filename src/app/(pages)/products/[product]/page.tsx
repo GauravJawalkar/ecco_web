@@ -379,7 +379,13 @@ const Product = () => {
                                         <div key={_id}>
                                             <div className='p-4 my-2 space-y-3 border dark:border-neutral-700 rounded-xl' key={_id}>
                                                 <div className='space-y-2'>
-                                                    <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'> {(reviewerName)} <span><CircleCheck className='w-5 h-5 text-white fill-gray-500' /></span> Certified Review </h1>
+                                                    <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'>
+                                                        {(reviewerName)}
+                                                        <span>
+                                                            <CircleCheck className='w-5 h-5 text-white fill-gray-500  dark:text-gray-200' />
+                                                        </span>
+                                                        Certified Review
+                                                    </h1>
                                                     <h1>{reviewTitle}</h1>
                                                     <div className='flex items-center gap-2'>
                                                         {reviewImages?.map((image: string, index: number) => {
@@ -413,6 +419,7 @@ const Product = () => {
                                     )
                                 })
                             }
+                            {isFetching && <Loader title='Loading...' />}
                             {totalReviews >= 5 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setSkip(skip + 5)}>Load More</button>}
                             {/*Add Reviews Components Dynamic */}
                             <div className='py-3'>
