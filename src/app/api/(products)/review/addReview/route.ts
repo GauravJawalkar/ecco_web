@@ -6,10 +6,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     await connectDB();
-    try {
-
+    try { 
         const formData = await request.formData();
-
         const reviewedBy = formData.get('reviewedBy');
         const reviewedProduct = formData.get('reviewedProduct');
         const content = formData.get('content');
