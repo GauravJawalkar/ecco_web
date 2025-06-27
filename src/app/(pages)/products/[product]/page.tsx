@@ -293,16 +293,16 @@ const Product = () => {
                                 <div className='font-semibold capitalize '>
                                     Highlights
                                 </div>
-                                <div>
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                <div className='space-y-1'>
+                                    <li className='text-sm font-normal capitalize'>
                                         Category: {product?.category}
                                     </li>
 
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                    <li className='text-sm font-normal capitalize'>
                                         Replace: Non Replaceable
                                     </li>
 
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                    <li className='text-sm font-normal capitalize'>
                                         Size: {product?.size}
                                     </li>
 
@@ -314,16 +314,16 @@ const Product = () => {
                                 <div className='font-semibold capitalize '>
                                     Payment Options
                                 </div>
-                                <div>
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                <div className='space-y-1'>
+                                    <li className='text-sm font-normal capitalize'>
                                         Cash on Delivery available
                                     </li>
 
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                    <li className='text-sm font-normal capitalize'>
                                         Carding & Net-Banking
                                     </li>
 
-                                    <li className='pb-1 text-sm font-normal capitalize'>
+                                    <li className='text-sm font-normal capitalize'>
                                         All UPI options supported
                                     </li>
 
@@ -334,9 +334,9 @@ const Product = () => {
                             {/* Seller Details */}
                             <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 '>
                                 <div className='font-semibold capitalize'>
-                                    Seller
+                                    <h1 title='Seller Information'>Seller Details</h1>
                                 </div>
-                                <div>
+                                <div className='space-y-1'>
                                     <li className='text-sm font-normal capitalize'>🧑‍🦰 {seller?.name}</li>
                                     {seller?.isEmailVerified && <li className='text-sm font-normal capitalize'>{seller?.isEmailVerified ? "✅ Verified Seller" : ""}</li>}
                                     <li className='text-sm font-normal'>📧 {seller?.email}</li>

@@ -9,7 +9,6 @@ export async function GET() {
         const cookieStore = await cookies();
 
         const authToken: any = cookieStore.get('accessToken')?.value;
-
         return NextResponse.json(
             {
                 message: "User Details",

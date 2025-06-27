@@ -6,7 +6,7 @@ import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -17,6 +17,7 @@ const Login = () => {
     const [required, setRequired] = useState(true);
     const { login, googleLogin }: any = useUserStore()
     const router = useRouter()
+    const clearUser = useUserStore((state: any) => state.clearUser);
 
     const handelSubmit = async () => {
         setLoading(true)
@@ -66,6 +67,11 @@ const Login = () => {
 
         }
     }
+
+    useEffect(() => {
+        clearUser();
+    }, [])
+
 
     return (
         <section className='flex items-center justify-center min-h-screen '>

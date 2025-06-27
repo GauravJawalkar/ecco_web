@@ -44,6 +44,13 @@ export const useUserStore = create(
                         throw new Error("Error logging out")
                     }
                 },
+                clearUser: () => {
+                    localStorage.removeItem("userLogin");
+                    Cookies.remove("accessToken");
+                    set(
+                        () => ({ data: {} })
+                    );
+                },
                 loginDetails: async () => {
                     try {
                         const response = await axios.get('/api/logInDetails');

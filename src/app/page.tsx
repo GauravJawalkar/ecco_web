@@ -8,12 +8,14 @@ import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
 import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
   const { data }: any = useUserStore();
   const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
+  const router = useRouter();
 
   async function getProducts() {
     try {
@@ -57,7 +59,7 @@ export default function Home() {
           localStorage.removeItem('userLogin');
           toast.success("clearing the localstorage")
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error clearing the localStorage", error)
       }
     }
