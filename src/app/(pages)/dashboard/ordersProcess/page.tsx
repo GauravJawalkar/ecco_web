@@ -103,14 +103,14 @@ const page = () => {
                                             <div className="border place-items-center dark:border-neutral-700 rounded-xl">
                                                 <Image src={orderImage || ""} alt={"order-Image"} width={200} height={200} className="w-32 h-32" />
                                             </div>
-                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl capitalize">{orderName}</div>
-                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl">
+                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl capitalize text-[15px] line-clamp-2">{orderName}</div>
+                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl text-[15px]">
                                                 Contact: +91 {contactNumber}
                                                 <br />
                                                 Quantity : {orderQuantity}
                                             </div>
-                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl">PinCode : {pinCode}</div>
-                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl">{paymentMethod === "COD" ? "Cash On Delivery" : "Online"}</div>
+                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl text-[15px]">PinCode : {pinCode}</div>
+                                            <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl text-[15px]">{paymentMethod === "COD" ? "Cash On Delivery" : "Online"}</div>
                                         </div>
                                         {/* Processing status state */}
                                         <div className="flex items-center justify-between flex-grow gap-3">
