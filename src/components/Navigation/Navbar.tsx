@@ -129,7 +129,7 @@ export const Navbar = () => {
                     </div>
                 </div>
                 <Link href={'/cart'} className="text-neutral-300 relative">
-                    <span className="absolute -top-3 right-0 px-1 text-xs font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? `${userCart?.cartItems?.length === undefined ? 0 : userCart?.cartItems?.length}` : "?"}</span>
+                    <span className="absolute -top-2.5 right-0 px-1 text-[10px] font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? `${userCart?.cartItems?.length === undefined ? 0 : userCart?.cartItems?.length}` : "?"}</span>
                     <ShoppingCart className="h-6 w-6 text-slate-700 dark:text-slate-200" />
                 </Link>
                 <button onClick={toogleTheme}>

@@ -124,11 +124,12 @@ const page = () => {
                                             <div className="relative w-full p-3 border rounded dark:border-neutral-700">
                                                 <h1 className="text-center">Order Processing</h1>
                                                 <div className="absolute -right-2 -top-3">
-                                                    {(processingStatus === "Out For Delivery" || processingStatus === "Order Processing" || processingStatus === "Order Shipped") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
-                                                        <button onClick={(e) => {
-                                                            e.preventDefault();
-                                                            handelOrderUpdate(order._id, _id, "Processing");
-                                                        }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Processed ?</button>
+                                                    {
+                                                        (processingStatus === "Out For Delivery" || processingStatus === "Order Processing" || processingStatus === "Order Shipped") ? <CircleCheckBig className="text-green-500 bg-white dark:bg-[#1a1a1a]" /> :
+                                                            <button onClick={(e) => {
+                                                                e.preventDefault();
+                                                                handelOrderUpdate(order._id, _id, "Processing");
+                                                            }} className="bg-white dark:bg-[#1a1a1a] px-2 border dark:border-neutral-700 rounded text-sm">Processed ?</button>
                                                     }
                                                 </div>
                                             </div>
@@ -162,10 +163,8 @@ const page = () => {
                             )
                         })
                     )
-
                 })
             }
-
         </section >
     )
 }
