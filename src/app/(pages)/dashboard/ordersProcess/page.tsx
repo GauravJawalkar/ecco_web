@@ -108,10 +108,10 @@ const page = () => {
                                             </div>
                                             <div className="flex items-center justify-center flex-col p-2 border dark:border-neutral-700 rounded-xl text-[15px]">
                                                 <h1>
-                                                    📱 Contact: +91 {contactNumber}
+                                                    📞 Contact: +91 {contactNumber}
                                                 </h1>
                                                 <h1>
-                                                    🔢 Quantity : {orderQuantity}
+                                                    📦 Quantity : {orderQuantity}
                                                 </h1>
                                             </div>
                                             <div className="flex items-center justify-center p-2 border dark:border-neutral-700 rounded-xl text-[15px]">📍PinCode : {pinCode}</div>
