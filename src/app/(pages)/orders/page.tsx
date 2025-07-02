@@ -3,9 +3,9 @@ import Loader from '@/components/Loaders/Loader';
 import { useUserStore } from '@/store/UserStore'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react'
+import React, { useState } from 'react'
 
 interface myOrdersProps {
     _id: string,

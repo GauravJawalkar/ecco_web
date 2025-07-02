@@ -199,7 +199,7 @@ const ProductsPage = ({ searchParams }: any) => {
             }
             return [];
         } catch (error) {
-            console.log(`Error getting the user details : `, error)
+            console.error(`Error getting the user details : `, error)
             return [];
         }
     }

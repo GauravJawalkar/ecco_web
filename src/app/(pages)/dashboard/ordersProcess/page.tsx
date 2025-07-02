@@ -101,7 +101,7 @@ const page = () => {
                                         {/* Details */}
                                         <div className="grid grid-cols-5 gap-3">
                                             <div className="border place-items-center dark:border-neutral-700 rounded-xl">
-                                                <Image src={orderImage || ""} alt={"order-Image"} width={200} height={200} className="w-32 h-32" />
+                                                <Image src={orderImage || ""} alt={"order-Image"} width={200} height={200} className="w-32 h-32 object-contain" />
                                             </div>
                                             <div className="flex items-center justify-center py-2 px-4 border dark:border-neutral-700 rounded-xl capitalize text-[15px] line-clamp-2">
                                                 <h1>{orderName}</h1>

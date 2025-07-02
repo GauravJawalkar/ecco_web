@@ -17,7 +17,13 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
             return NextResponse.json({ error: "Failed to get the customers orders " }, { status: 404 })
         }
 
-        return NextResponse.json({ data: userOrders }, { status: 200 })
+        if (userOrders.length === 0) {
+            return NextResponse.json({ data: [], message: "No orders found for this user." }, { status: 200 });
+        }
+
+        return NextResponse.json({
+            data: userOrders
+        }, { status: 200 })
 
     } catch (error) {
         return NextResponse.json({ error: "Failed to fetch the orders from the database" }, { status: 500 })
