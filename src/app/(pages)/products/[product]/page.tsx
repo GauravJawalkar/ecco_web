@@ -143,12 +143,10 @@ const Product = () => {
             if (!Array.isArray(existingView.product)) {
                 existingView.product = [];
             }
-
-            if (product?._id && !existingView.product.includes(product._id)) {
+            if (product?._id && !existingView.product.includes(product._id) && data?._id) {
                 existingView.product.push(product._id);
                 localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ ...existingView, user: data?._id }));
             }
-
         } catch (error) {
             console.error("Failed to parse localStorage item 'RecentView':", error);
             localStorage.setItem(`${'RecentView' + data?._id}`, JSON.stringify({ user: data?._id, product: [product._id] }));
@@ -430,7 +428,7 @@ const Product = () => {
                     </div>
                 </div>}
             </section >
-            {(isSuccess && isFetched) &&
+            {(isSuccess && isFetched && data?._id) &&
                 <div className='relative'>
                     {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
                         <RecentlyViewedProducts tag={false} products={existingRecentlyViewed?.product} />

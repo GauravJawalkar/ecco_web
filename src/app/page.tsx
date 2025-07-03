@@ -15,7 +15,6 @@ import toast from "react-hot-toast";
 export default function Home() {
   const { data }: any = useUserStore();
   const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
-  const router = useRouter();
 
   async function getProducts() {
     try {
@@ -44,7 +43,7 @@ export default function Home() {
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem(`${'RecentView' + data?._id}`) || "{}");
-    if (stored) {
+    if (stored && data?._id) {
       setExistingRecentlyViewed(stored);
     }
   }, [isSuccess, isFetched]);
@@ -64,7 +63,6 @@ export default function Home() {
       }
     }
     checkVaildCookies();
-
   }, [])
 
 
