@@ -2,6 +2,7 @@
 import { useUserStore } from '@/store/UserStore';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
@@ -90,13 +91,16 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
                 Revenue Generated : ₹2000
             </div>
             {/* KYC Status For RazorPay */}
-            <Link href={'/dashboard/kyc-details'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                KYC Status : <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" : "Pending"}</span>
+            <Link href={'/dashboard/kyc-details'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>
+                KYC Status : <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" :
+                    <Loader2 className='animate-spin flex items-center justify-center text-black h-5 w-5' />}</span>
             </Link>
-            {isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                Seller Requests : <span className='text-red-500'>{totalRequest}</span>
-            </Link> : ""}
-        </div>
+            {
+                isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
+                    Seller Requests : <span className='text-red-500'>{totalRequest}</span>
+                </Link> : ""
+            }
+        </div >
     )
 }
 
