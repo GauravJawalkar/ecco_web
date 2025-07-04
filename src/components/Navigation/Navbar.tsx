@@ -95,17 +95,18 @@ export const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            <div className='w-[55%]'>
+            <div className='w-[50%]'>
                 <input type="search" name="" id="" className='w-full py-2 px-4 rounded border-2' placeholder='Search For Plants Decoratables And More' />
             </div>
 
             {/* Account details ,Orders and Cart */}
-            <div className='w-[25%] flex items-center justify-center gap-5'>
+            <div className='w-[30%] flex items-center justify-center gap-5'>
                 {dataLength !== 0 && data.isSeller ?
                     <Link href={'/dashboard'} className="dark:text-neutral-300">
                         Dashboard</Link> :
                     <button onClick={handelBecomeSeller}>Become Seller</button>}
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
+                <Link href={'/products'} className="dark:text-neutral-300">Products</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
                         {dataLength !== 0 && data.avatar.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="h-10 w-10 object-cover rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
