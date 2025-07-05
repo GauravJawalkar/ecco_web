@@ -17,8 +17,44 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen">
 
-            <h1 className="capitalize p-5 my-5 rounded  text-center text-2xl w-fit font-semibold   bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 dark:text-black">🏪 {data?.name}'<span className="lowercase">s</span> Store</h1>
+            <h1 className="p-5 my-5 text-2xl font-semibold text-center capitalize rounded w-fit bg-gradient-to-r from-red-100 via-fuchsia-100 to-yellow-100 dark:text-black">🏪 {data?.name}'<span className="lowercase">s</span> Store</h1>
 
+            <div className="flex items-center justify-start gap-3 p-3 border rounded dark:border-neutral-700 dark:text-white">
+                {/* My Products List */}
+                <div>
+                    <button
+                        className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700"
+                        onClick={() => { setShowProductModal(true) }}>
+                        Add product
+                    </button>
+                </div>
+
+                {/* Custom Category */}
+                <div>
+                    <button
+                        className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700"
+                        onClick={() => setShowCustomCategoryModal(true)}>
+                        Add Category
+                    </button>
+                </div>
+
+                {/* specialShow button */}
+                {data?.isSuperAdmin && <div>
+                    <button className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700">
+                        <Link href={"/dashboard/specialShow"} >
+                            Special Appearence
+                        </Link>
+                    </button>
+                </div>}
+
+                {/* Add A Product */}
+                <div>
+                    <Link href={'/dashboard/ordersProcess'} className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700">
+                        Process Orders
+                    </Link>
+                </div>
+
+            </div>
             {/* TODO: recall the api whenever a call is triggered for toggling a product modal */}
             {data._id && (
                 <DashBoardStats
@@ -28,48 +64,13 @@ const Dashboard = () => {
                     kycVerified={data?.bankDetails.status}
                 />
             )}
-            <div className="flex items-center border dark:border-neutral-700 p-3 rounded justify-start gap-3 dark:text-white">
-                {/* My Products List */}
-                <div>
-                    <button
-                        className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
-                        onClick={() => { setShowProductModal(true) }}>
-                        Add product
-                    </button>
-                </div>
 
-                {/* Custom Category */}
-                <div>
-                    <button
-                        className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700"
-                        onClick={() => setShowCustomCategoryModal(true)}>
-                        Add Category
-                    </button>
-                </div>
-
-                {/* specialShow button */}
-                {data?.isSuperAdmin && <div>
-                    <button className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        <Link href={"/dashboard/specialShow"} >
-                            Special Appearence
-                        </Link>
-                    </button>
-                </div>}
-
-                {/* Add A Product */}
-                <div>
-                    <Link href={'/dashboard/ordersProcess'} className="bg-gray-50 dark:bg-neutral-800 px-4 py-2 rounded border dark:border-neutral-700">
-                        Process Orders
-                    </Link>
-                </div>
-
-            </div>
-            <div className=" flex items-center justify-end gap-3 pt-4">
+            <div className="flex items-center justify-end gap-3">
                 <button onClick={() => { setListView("grid") }} className="p-2 border rounded dark:border-neutral-700">
-                    <LayoutGrid className="text-gray-600 dark:text-white h-5 w-5" />
+                    <LayoutGrid className="w-5 h-5 text-gray-600 dark:text-white" />
                 </button>
-                <button onClick={() => { setListView("list") }} className="p-2 border rounded dark:border-neutral-700 ">
-                    <LayoutList className="text-gray-600 dark:text-white h-5 w-5" />
+                <button onClick={() => { setListView("list") }} className="p-2 border rounded dark:border-neutral-700">
+                    <LayoutList className="w-5 h-5 text-gray-600 dark:text-white" />
                 </button>
             </div>
             {data._id && <AddProductModal

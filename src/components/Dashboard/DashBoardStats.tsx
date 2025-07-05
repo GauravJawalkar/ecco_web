@@ -2,7 +2,7 @@
 import { useUserStore } from '@/store/UserStore';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
+import { BringToFront, Gem, HandCoins, Landmark, Loader2, PackageSearch } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
@@ -72,32 +72,32 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
     }, [load])
 
 
-    const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
+    const { data: sellerOrders = [] } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
 
     const { data: sellerDetails = [] } = useQuery({ queryFn: getSellerDetails, queryKey: ['sellerDetails'], refetchOnWindowFocus: false, enabled: !!id })
 
     return (
-        <div className={`grid ${isAdmin ? "grid-cols-5" : "grid-cols-4"} text-center my-10 gap-5 dark:text-neutral-200 `}>
+        <div className={`grid ${isAdmin ? "grid-cols-5" : "grid-cols-4"} text-center mt-10 mb-5 gap-5 dark:text-neutral-200 `}>
             {/* Total No oF orders */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                Total Products : <span className='text-red-600'>{totalProducts}</span>
+            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center'>
+                <PackageSearch className='size-6' /> Total Products : <span className='text-red-600'>{totalProducts}</span>
             </div>
             {/* Stock Availabel */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                Orders Recieved : <span className='text-red-600'>{sellerOrders > 0 ? sellerOrders : 0}</span>
+            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center'>
+                <BringToFront className='size-6' /> Orders Recieved : <span className='text-red-600'>{sellerOrders > 0 ? sellerOrders : 0}</span>
             </div>
             {/* Revenue Generated */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                Revenue Generated : ₹2000
+            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center'>
+                <HandCoins className='size-6' /> Estimated : ₹2000
             </div>
             {/* KYC Status For RazorPay */}
             <Link href={'/dashboard/kyc-details'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>
-                KYC Status : <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" :
+                <Landmark className='size-6' /> KYC : <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" :
                     <Loader2 className='animate-spin flex items-center justify-center text-black h-5 w-5' />}</span>
             </Link>
             {
-                isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700'>
-                    Seller Requests : <span className='text-red-500'>{totalRequest}</span>
+                isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>
+                    <Gem className='size-6' /> Seller Requests : <span className='text-red-500'>{totalRequest}</span>
                 </Link> : ""
             }
         </div >
