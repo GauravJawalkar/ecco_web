@@ -100,7 +100,7 @@ export const Navbar = () => {
             </div>
 
             {/* Account details ,Orders and Cart */}
-            <div className='w-[30%] flex items-center justify-center gap-5'>
+            <div className='w-[30%] flex items-center justify-center gap-4'>
                 {dataLength !== 0 && data.isSeller ?
                     <Link href={'/dashboard'} className="dark:text-neutral-300">
                         Dashboard</Link> :
