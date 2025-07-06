@@ -5,7 +5,7 @@ import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
@@ -82,7 +82,25 @@ export const Navbar = () => {
         queryKey: ['userCart', cartOwnerId],
         enabled: !!cartOwnerId,
         refetchOnWindowFocus: false,
-    })
+    });
+
+    async function authenticationValidity() {
+        try {
+            const response = await axios.get('/api/sessionCookies');
+            if (!response.data?.user) {
+                logOut();
+            } else {
+                toast.success("Logged In");
+            }
+        } catch (error) {
+            console.error("Failed to authenticate the user validity");
+        }
+    }
+
+    useEffect(() => {
+        authenticationValidity();
+    }, []);
+
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>
