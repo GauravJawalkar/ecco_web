@@ -148,7 +148,7 @@ const CartCeckOut = () => {
                                             <span className='text-xl'>
                                                 ₹ {price - discount}
                                             </span>
-                                            <span className='text-gray-500 line-through px-3 '>₹ {price}</span>
+                                            <span className='text-gray-500 line-through px-3 dark:text-gray-400'>₹ {price}</span>
                                             <span className='text-green-500'>{Math.round(discountPercentage(price, discount))} % off</span>
                                         </h1>
                                         <div>
@@ -167,9 +167,9 @@ const CartCeckOut = () => {
                 <div className='flex items-center justify-between pt-10'>
                     <div>
                         <h1 className='text-lg font-semibold uppercase text-start '>Delivery Address</h1>
-                        <p className='text-sm text-gray-600'>Select your delivery address below</p>
+                        <p className='text-sm text-gray-600 dark:text-gray-400'>Select your delivery address below</p>
                     </div>
-                    <button className='font-semibold capitalize border bg-gray-50 dark:bg-neutral-800 dark:hover:bg-neutral-800/50 hover:bg-gray-100 dark:border-neutral-700 p-2 rounded-lg' onClick={() => { setShowModal(!showModal) }}>🏠 Add Address</button>
+                    <button className='font-semibold capitalize border bg-gray-50 dark:bg-neutral-800 dark:hover:bg-neutral-800/50 hover:bg-gray-100 dark:border-neutral-700 p-2 rounded-lg ' onClick={() => { setShowModal(!showModal) }}>🏠 Add Address</button>
                 </div>
                 <div className='w-full'>
                     <div>
@@ -203,7 +203,7 @@ const CartCeckOut = () => {
 
                 <div className='py-5 '>
                     <h1 className='text-lg font-semibold uppercase text-start'>Payment Options</h1>
-                    <p className='text-sm text-gray-600'>Select a payment type below</p>
+                    <p className='text-sm text-gray-600 dark:text-gray-400'>Select a payment type below</p>
                 </div>
                 <div className='flex items-center justify-between w-full gap-4'>
                     {/* UPI */}
@@ -250,7 +250,7 @@ const CartCeckOut = () => {
                     </div>
                     <hr className='my-2 dark:text-neutral-700' />
                     <div className='flex items-center justify-between'>
-                        <h1>Toatal Payable</h1>
+                        <h1>Total Payable</h1>
                         <h1>₹{totalPrice?.toLocaleString() || 0}</h1>
                     </div>
                 </div>
