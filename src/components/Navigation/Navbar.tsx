@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query"
 
 
 export const Navbar = () => {
-    const { data, logOut }: any = useUserStore();
+    const { data, logOut, clearUser }: any = useUserStore();
     const [dark, setDark] = useState(false);
     const router = useRouter();
 
@@ -88,7 +88,7 @@ export const Navbar = () => {
         try {
             const response = await axios.get('/api/sessionCookies');
             if (!response.data?.user) {
-                logOut();
+                clearUser();
             } else {
                 toast.success("Logged In");
             }
