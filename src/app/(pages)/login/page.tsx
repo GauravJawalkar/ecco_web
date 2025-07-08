@@ -45,27 +45,13 @@ const Login = () => {
         }
     }
 
-    const handelOTP = async () => {
-        setForgotLoading(true)
-        setRequired(false);
-        try {
-            const res = await axios.post('/api/otpValidation', { email })
-            if (res.data.data) {
-                toast.success("Check email for OTP");
-            }
-            setForgotLoading(false)
-            router.push('/forgot-password');
-        } catch (error) {
-            setForgotLoading(false)
-            console.log("error sending OTP in", error)
-        }
-    }
+
 
     const handelGoogleLogin = async () => {
         try {
             await googleLogin();
         } catch (error) {
-
+            console.error("Error loggin in with google (OAuth): ", error);
         }
     }
 
@@ -101,13 +87,13 @@ const Login = () => {
                         <label className='text-sm'>Email :</label>
                         <input type="email" className='w-full px-3 py-2 text-sm text-black rounded' placeholder='Enter Your Email' required onChange={(e) => setEmail(e.target.value)} />
                     </div>
-                    <div className='w-full relative'>
+                    <div className='relative w-full'>
                         <label className='text-sm'>Password :</label>
                         <input type={showPassword ? "text" : "password"} className='w-full px-3 py-2 text-sm text-black rounded' placeholder='Enter Your Password' required={required} onChange={(e) => setPassword(e.target.value)} />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 outline-none cursor-pointer dark:text-gray-400 mt-3">
+                            className="absolute mt-3 text-gray-500 -translate-y-1/2 outline-none cursor-pointer top-1/2 right-3 dark:text-gray-400">
                             {showPassword ? <Eye size={20} /> : <EyeClosed size={20} />}
                         </button>
                     </div>
@@ -121,11 +107,9 @@ const Login = () => {
                     </button>
                 </form>
                 <div className='w-full my-2 text-start'>
-                    <button type='button' onClick={() => { handelOTP() }} className='gap-3 text-sm transition-all ease-linear dark:text-gray-300 duration-400 hover:text-gray-700 dark:hover:text-gray-200 cursor-pointer'>
-                        {
-                            forgotLoading ? <span className='flex items-center justify-center gap-2'> Just A Sec... <LoaderCircle className='w-5 h-5 animate-spin' /></span> : <span>Forgot Password ?</span>
-                        }
-                    </button>
+                    <Link href={'/forgot-password'} type='button' className='gap-3 text-sm transition-all ease-linear cursor-pointer dark:text-gray-300 duration-400 hover:text-gray-700 dark:hover:text-gray-200'>
+                        Forgot Password
+                    </Link>
                 </div>
 
                 <div className='text-sm'>
