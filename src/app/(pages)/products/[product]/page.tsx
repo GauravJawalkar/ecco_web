@@ -110,7 +110,7 @@ const Product = () => {
             const response = await axios.get(`/api/review/getReviews/${id}?skip=${skip}`);
             if (response.data.data) {
                 setTotalReviews(response.data?.total || 0);
-                setReviews((prev: any) => [...prev, ...response.data?.data]);
+                setReviews([...reviews, ...response.data?.data]);
                 return response.data?.data;
             }
             return [];
@@ -362,7 +362,7 @@ const Product = () => {
                                     <h1 className='flex items-center gap-2 text-xl'>
                                         {getAverageRating(product?.rating)} <span><Star className='text-yellow-500 fill-yellow-500' /></span>
                                     </h1>
-                                    <h1 className='text-base text-gray-600 dark:text-gray-400'>{product?.rating?.length} Users rated this product & {allReviews?.[0]?.reviews?.length || 0} Reviewed It</h1>
+                                    <h1 className='text-base text-gray-600 dark:text-gray-400'>{product?.rating?.length} Users rated this product & {reviews?.length || 0} Reviewed It</h1>
                                 </div>
                             </div>
                             {/* Map all the reviews */}

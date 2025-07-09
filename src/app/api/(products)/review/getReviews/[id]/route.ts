@@ -1,6 +1,5 @@
 import connectDB from "@/db/dbConfig";
 import { Reviews } from "@/models/review.models";
-import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_request: NextRequest, params: { params: { id: string } }) {
