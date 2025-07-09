@@ -137,11 +137,11 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                     {(view === "grid" && !isLoading)
                         &&
                         <div>
-                            <div className="grid grid-cols-4 py-4 gap-10">
+                            <div className="grid grid-cols-4 gap-10 py-4">
                                 {prodData.map(
                                     ({ _id, name, description, images, price, discount, size, seller, category, containerType, stock }: prodDataProps) => {
                                         return (
-                                            <div key={_id} className="border p-5 rounded dark:border-neutral-600 dark:bg-neutral-800">
+                                            <div key={_id} className="p-5 border rounded dark:border-neutral-600 dark:bg-neutral-800">
                                                 <div>
                                                     <Swiper
                                                         modules={[EffectFade, Pagination]}
@@ -164,7 +164,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                             })}
                                                     </Swiper>
                                                     <div>
-                                                        <h1 className="capitalize text-xl font-bold antialiased truncate my-3">
+                                                        <h1 className="my-3 text-xl antialiased font-bold capitalize truncate">
                                                             {name}
                                                         </h1>
                                                         <p className={`text-base text-gray-500 
@@ -204,7 +204,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                                 }}>
                                                                 {reqLoader ? (
                                                                     <span className="flex items-center justify-center gap-2">
-                                                                        <LoaderCircle className="animate-spin text-blue-500" />
+                                                                        <LoaderCircle className="text-blue-500 animate-spin" />
                                                                         "Req.."
                                                                     </span>
                                                                 ) : (
@@ -214,7 +214,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-3 py-2 border gap- place-items-center my-3 dark:border-neutral-700 rounded">
+                                                    <div className="grid grid-cols-3 py-2 my-3 border rounded gap- place-items-center dark:border-neutral-700">
                                                         <div className="font-light ">
                                                             <label className="font-semibold"> MRP </label>
                                                             <h1>₹ {price?.toLocaleString()}</h1>
@@ -230,9 +230,9 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                     </div>
 
                                                     {/* Functionality buttons */}
-                                                    <div className="py-2 grid grid-cols-2 gap-3 bottom-0">
+                                                    <div className="bottom-0 grid grid-cols-2 gap-3 py-2">
                                                         <button
-                                                            className="px-3 py-1 bg-green-500 hover:bg-green-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2"
+                                                            className="flex items-center justify-center gap-2 px-3 py-1 text-white transition-colors duration-200 ease-in-out bg-green-500 rounded hover:bg-green-700"
                                                             onClick={() => {
                                                                 setEditModal(true);
                                                                 setOldName(name);
@@ -247,17 +247,17 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                             }}>
                                                             Edit
                                                             <span>
-                                                                <PenLine className="h-4 w-4" />
+                                                                <PenLine className="w-4 h-4" />
                                                             </span>
                                                         </button>
                                                         <button
-                                                            className="px-3 py-1 bg-red-500 hover:bg-red-700 transition-colors ease-in-out duration-200 rounded text-white flex items-center justify-center gap-2"
+                                                            className="flex items-center justify-center gap-2 px-3 py-1 text-white transition-colors duration-200 ease-in-out bg-red-500 rounded hover:bg-red-700"
                                                             onClick={() => {
                                                                 handelDelete(_id);
                                                             }}>
                                                             Delete
                                                             <span>
-                                                                <Trash className="h-4 w-4" />
+                                                                <Trash className="w-4 h-4" />
                                                             </span>
                                                         </button>
                                                     </div>
@@ -283,13 +283,13 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 )}
                             </div >
                             {/* Pagination Buttons */}
-                            <div className="flex justify-center items-center gap-4 py-4">
-                                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    <span><ChevronLeft className="h-4 w-4" /></span>  Previous
+                            <div className="flex items-center justify-center gap-4 py-4">
+                                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <span><ChevronLeft className="w-4 h-4" /></span>  Previous
                                 </button>
                                 <span className="dark:text-gray-300">Page <span className="font-bold">{page}</span> of {totalPages}</span>
-                                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    Next <span><ChevronRight className="h-4 w-4" /></span>
+                                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Next <span><ChevronRight className="w-4 h-4" /></span>
                                 </button>
                             </div>
                         </div>
@@ -299,7 +299,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                     {
                         (view === "list" && !isLoading) &&
                         <div className="py-4">
-                            <table className="min-w-full table-auto border border-gray-300 rounded-xl">
+                            <table className="min-w-full border border-gray-300 table-auto rounded-xl">
                                 <thead>
                                     <tr>
                                         <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start">Name</th>
@@ -316,29 +316,29 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                     {prodData.map(({ _id, name, description, images, price, discount, size, stock, category, containerType }: prodDataProps) => {
                                         return (
                                             <tr key={_id}>
-                                                <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize">{name}</td>
-                                                <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start capitalize ">
+                                                <td colSpan={2} className="px-4 py-2 capitalize border dark:border-neutral-700 text-start">{name}</td>
+                                                <td colSpan={2} className="px-4 py-2 capitalize border dark:border-neutral-700 text-start ">
                                                     <div className="line-clamp-2">
                                                         {description}
                                                     </div>
                                                 </td>
-                                                <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-center w-1/6">
+                                                <td colSpan={2} className="w-1/6 px-4 py-2 text-center border dark:border-neutral-700">
                                                     {
-                                                        <div className="flex items-center justify-center gap-2 w-full">
+                                                        <div className="flex items-center justify-center w-full gap-2">
                                                             < Image src={images[0]} alt="product-image" height={40} width={40} />
                                                             < Image src={images[1]} alt="product-image" height={40} width={40} />
                                                             < Image src={images[2]} alt="product-image" height={40} width={40} />
                                                         </div>
                                                     }
                                                 </td>
-                                                <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{stock}</td>
-                                                <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{price?.toLocaleString()}</td>
-                                                <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center">{discount?.toLocaleString()}</td>
-                                                <td colSpan={1} className="px-4 py-2 border dark:border-neutral-700 text-center truncate ">{(Number(price) - Number(discount))?.toLocaleString()}</td>
-                                                <td colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-center">
+                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{stock}</td>
+                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{price?.toLocaleString()}</td>
+                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{discount?.toLocaleString()}</td>
+                                                <td colSpan={1} className="px-4 py-2 text-center truncate border dark:border-neutral-700 ">{(Number(price) - Number(discount))?.toLocaleString()}</td>
+                                                <td colSpan={2} className="px-4 py-2 text-center border dark:border-neutral-700">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <Edit
-                                                            className="cursor-pointer text-green-500 hover:text-green-600"
+                                                            className="text-green-500 cursor-pointer hover:text-green-600"
                                                             onClick={() => {
                                                                 setEditModal(!editModal);
                                                                 setOldName(name);
@@ -353,7 +353,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                             }} />
                                                         <Trash2 onClick={() => {
                                                             handelDelete(_id);
-                                                        }} className="cursor-pointer text-red-500 hover:text-red-600" />
+                                                        }} className="text-red-500 cursor-pointer hover:text-red-600" />
                                                     </div>
                                                 </td>
                                             </tr>
@@ -363,13 +363,13 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                             </table>
 
                             {/* Pagination Buttons */}
-                            <div className="flex justify-center items-center gap-2 mt-4">
-                                <button title="Previous" onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="p-3 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    <ChevronLeft className="h-4 w-4" />
+                            <div className="flex items-center justify-center gap-2 mt-4">
+                                <button title="Previous" onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <ChevronLeft className="w-4 h-4" />
                                 </button>
                                 Page<span className="font-bold">{page}</span> of {totalPages}
-                                <button title="Next" onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="p-3 border rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1">
-                                    <ChevronRight className="h-4 w-4" />
+                                <button title="Next" onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <ChevronRight className="w-4 h-4" />
                                 </button>
                             </div>
                             <EditDetailsModal
