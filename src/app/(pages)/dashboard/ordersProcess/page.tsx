@@ -10,6 +10,17 @@ import Image from "next/image";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
+interface OrderItemType {
+    _id: string;
+    processingStatus: string;
+    orderName: string;
+    orderImage: string;
+    contactNumber: string;
+    pinCode: string;
+    paymentMethod: string;
+    orderQuantity: string;
+}
+
 const page = () => {
     const { data }: any = useUserStore();
     const [showDetails, setShowDetails] = useState("");
@@ -62,7 +73,7 @@ const page = () => {
     const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
 
     return (
-        <section className="my-6">
+        <section className="min-h-screen h-auto">
             <div className="flex items-center justify-between">
                 <h1 className="font-semibold uppercase">Toatal Orders : {totalSellerOrders}</h1>
                 <h1>Order Status</h1>
@@ -82,7 +93,7 @@ const page = () => {
             {
                 sellerOrders?.data?.map((order: any) => {
                     return (
-                        order?.orders?.map((orderItem: any) => {
+                        order?.orders?.map((orderItem: OrderItemType) => {
                             const { _id, processingStatus, orderName, orderImage, contactNumber, pinCode, paymentMethod, orderQuantity } = orderItem;
                             const sellerName = data?.name;
                             return (

@@ -284,11 +284,11 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                             </div >
                             {/* Pagination Buttons */}
                             <div className="flex items-center justify-center gap-4 py-4">
-                                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700">
                                     <span><ChevronLeft className="w-4 h-4" /></span>  Previous
                                 </button>
                                 <span className="dark:text-gray-300">Page <span className="font-bold">{page}</span> of {totalPages}</span>
-                                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed">
+                                <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700">
                                     Next <span><ChevronRight className="w-4 h-4" /></span>
                                 </button>
                             </div>
