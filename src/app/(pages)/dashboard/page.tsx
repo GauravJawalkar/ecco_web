@@ -23,7 +23,7 @@ const Dashboard = () => {
                 {/* My Products List */}
                 <div>
                     <button
-                        className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700"
+                        className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700"
                         onClick={() => { setShowProductModal(true) }}>
                         Add product
                     </button>
@@ -32,7 +32,7 @@ const Dashboard = () => {
                 {/* Custom Category */}
                 <div>
                     <button
-                        className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700"
+                        className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700"
                         onClick={() => setShowCustomCategoryModal(true)}>
                         Add Category
                     </button>
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
                 {/* specialShow button */}
                 {data?.isSuperAdmin && <div>
-                    <button className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700">
+                    <button className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700">
                         <Link href={"/dashboard/specialShow"} >
                             Special Appearence
                         </Link>
@@ -49,9 +49,11 @@ const Dashboard = () => {
 
                 {/* Add A Product */}
                 <div>
-                    <Link href={'/dashboard/ordersProcess'} className="px-4 py-2 border rounded bg-gray-50 dark:bg-neutral-800 dark:border-neutral-700">
-                        Process Orders
-                    </Link>
+                    <button className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700">
+                        <Link href={'/dashboard/ordersProcess'}>
+                            Process Orders
+                        </Link>
+                    </button>
                 </div>
 
             </div>

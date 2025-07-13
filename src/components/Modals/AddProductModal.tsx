@@ -1,11 +1,11 @@
 "use client"
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { CircleX } from 'lucide-react';
 import Loader from '../Loaders/Loader';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
@@ -22,7 +22,6 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [primeImage, setPrimeImage] = useState<File | null>(null);
     const [secondImage, setSecondImage] = useState<File | null>(null);
     const [thirdImage, setThirdImage] = useState<File | null>(null);
-    const [exCategories, setExCategories] = useState([]);
 
 
     async function addProduct() {
@@ -91,23 +90,24 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
         return URL.createObjectURL(file);
     };
 
-    useEffect(() => {
-        async function getCategories() {
-            try {
-                const response = await axios.get('/api/getCategories')
-                if (response.data.data) {
-                    setExCategories(response.data.data)
-                } else {
-                    setExCategories([]);
-                }
-            } catch (error) {
-                console.log("Error fetching the categories : ", error);
+    async function getCategories() {
+        try {
+            const response = await axios.get('/api/getCategories')
+            if (response.data.data) {
+                return response.data.data;
+            } else {
                 return [];
             }
+        } catch (error) {
+            console.error("Error fetching the categories : ", error);
+            return [];
         }
+    }
 
-        getCategories()
-    }, [])
+    const { data: exCategories = [] } = useQuery({
+        queryKey: ['exCategories'],
+        queryFn: getCategories
+    })
 
     if (!isVisible) return null;
 
