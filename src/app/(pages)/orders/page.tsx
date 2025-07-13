@@ -1,5 +1,6 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
+import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore'
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -21,7 +22,7 @@ interface myOrdersProps {
 }
 
 const page = () => {
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
 
     async function getMyOrders() {
         const userId = data?._id

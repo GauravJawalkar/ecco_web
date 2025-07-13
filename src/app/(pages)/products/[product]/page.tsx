@@ -4,6 +4,7 @@ import Loader from '@/components/Loaders/Loader';
 import ImagePreviewModal from '@/components/Modals/ImagePreviewModal';
 import ReviewModal from '@/components/Modals/ReviewModal';
 import { discountPercentage } from '@/helpers/discountPercentage';
+import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -19,7 +20,7 @@ const Product = () => {
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
     const [mainImage, setMainImage] = useState(0)
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const queryClient = useQueryClient();
     const cartOwnerId = data?._id;
     const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});

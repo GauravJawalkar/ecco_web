@@ -9,10 +9,15 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
+import { userProps } from "@/interfaces/commonInterfaces"
 
 
 export const Navbar = () => {
-    const { data, logOut, clearUser }: any = useUserStore();
+    const { data, logOut, clearUser } = useUserStore() as {
+        data: userProps;
+        logOut: () => void;
+        clearUser: () => void;
+    };
     const [dark, setDark] = useState(false);
     const router = useRouter();
 
@@ -127,7 +132,7 @@ export const Navbar = () => {
                 <Link href={'/products'} className="dark:text-neutral-300">Products</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
-                        {dataLength !== 0 && data.avatar.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="h-10 w-10 object-cover rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
+                        {dataLength !== 0 && data?.avatar?.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="h-10 w-10 object-cover rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
                     </span>
                     <div className={` absolute top-10  w-fit hidden group-hover:block py-1
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 

@@ -7,10 +7,11 @@ import { CircleX } from 'lucide-react';
 import Loader from '../Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import { userProps } from '@/interfaces/commonInterfaces';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
     const queryClient = useQueryClient();
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");

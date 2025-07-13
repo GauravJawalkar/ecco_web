@@ -4,20 +4,24 @@ import toast from "react-hot-toast";
 import { create } from "zustand"
 import { persist, createJSONStorage } from 'zustand/middleware';
 import Cookies from 'js-cookie';
+import { userProps } from "@/interfaces/commonInterfaces";
 
-
-interface User {
-    name: string,
-    email: string,
-    password: string
+interface UserStore {
+    data: userProps;
+    login: (user: userProps) => Promise<void>;
+    logOut: () => Promise<void>;
+    clearUser: () => void;
+    loginDetails: () => Promise<void>;
+    googleLogin: () => void;
+    setUser: (user: userProps) => void;
 }
 
-export const useUserStore = create(
+export const useUserStore = create<UserStore>()(
     persist(
         (set) => (
             {
-                data: {},
-                login: async (user: User) => {
+                data: {} as userProps,
+                login: async (user) => {
                     try {
                         const response = await axios.post('/api/login', user);
                         set(
@@ -36,7 +40,7 @@ export const useUserStore = create(
                         Cookies.remove('accessToken');
                         Cookies.remove('user');
                         set(
-                            () => ({ data: {} })
+                            () => ({ data: {} as userProps })
                         );
                     } catch (error) {
                         console.error("Error logging out : ", error)
@@ -47,7 +51,7 @@ export const useUserStore = create(
                     localStorage.removeItem("userLogin");
                     Cookies.remove("accessToken");
                     set(
-                        () => ({ data: {} })
+                        () => ({ data: {} as userProps })
                     );
                 },
                 loginDetails: async () => {
@@ -65,7 +69,7 @@ export const useUserStore = create(
                 googleLogin: async () => {
                     window.location.href = '/api/auth/google';
                 },
-                setUser: (user: any) => set({ data: user })
+                setUser: (user) => set({ data: user })
             }
         ),
         {

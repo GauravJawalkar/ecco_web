@@ -7,9 +7,10 @@ import { useUserStore } from "@/store/UserStore";
 import Link from "next/link";
 import { useState } from "react";
 import { LayoutGrid, LayoutList } from "lucide-react";
+import { userProps } from "@/interfaces/commonInterfaces";
 
 const Dashboard = () => {
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
     const [showCustomCategoryModal, setShowCustomCategoryModal] = useState(false);
     const [listView, setListView] = useState("list");
@@ -63,7 +64,7 @@ const Dashboard = () => {
                     sellerId={data._id}
                     isAdmin={data?.isSuperAdmin}
                     load={showProductModal}
-                    kycVerified={data?.bankDetails.status}
+                    kycVerified={data?.bankDetails?.status}
                 />
             )}
 

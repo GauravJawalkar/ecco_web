@@ -2,6 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import AddAddressModal from '@/components/Modals/AddAddressModal';
 import { discountPercentage } from '@/helpers/discountPercentage';
+import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -27,7 +28,7 @@ const page = () => {
     const [isCOD, setIsCOD] = useState(false);
     const [upiLoading, setUpiLoading] = useState(false);
     const [cardLoading, setCardLoading] = useState(false);
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const userId = data?._id;
 
 

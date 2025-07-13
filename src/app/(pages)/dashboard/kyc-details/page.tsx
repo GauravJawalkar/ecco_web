@@ -1,5 +1,6 @@
 'use client';
 
+import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,7 @@ import toast from "react-hot-toast";
 
 export default function KYCDetails() {
 
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const [accountName, setAccountName] = useState("");
     const [accountNumber, setAccountNumber] = useState("");
     const [IFSC, setIFSC] = useState("");

@@ -3,6 +3,7 @@
 import Loader from "@/components/Loaders/Loader";
 import AddAddressModal from "@/components/Modals/AddAddressModal";
 import { discountPercentage } from "@/helpers/discountPercentage";
+import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -25,7 +26,7 @@ interface cartMappingProps {
 }
 
 const CartCeckOut = () => {
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const cartOwnerId = data?._id;
     const [showModal, setShowModal] = useState(false);
     const [address, setAddress] = useState("");

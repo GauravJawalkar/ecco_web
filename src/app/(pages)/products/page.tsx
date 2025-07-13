@@ -14,6 +14,7 @@ import "swiper/css";
 import { useUserStore } from '@/store/UserStore';
 import { discountPercentage } from '@/helpers/discountPercentage';
 import { useRouter } from 'next/navigation';
+import { userProps } from '@/interfaces/commonInterfaces';
 interface searchParams {
     category?: string | "";
 }
@@ -83,7 +84,7 @@ const ProductsPage = ({ searchParams }: any) => {
     const searchParamsData: searchParams = use(searchParams);
     const category = searchParamsData?.category;
     const [sellerId, setSellerId] = useState("");
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const cartOwnerId = data?._id;
     const queryClient = useQueryClient();
     const [name, setName] = useState("");

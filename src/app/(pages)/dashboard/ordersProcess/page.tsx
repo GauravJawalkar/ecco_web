@@ -2,6 +2,7 @@
 
 import Loader from "@/components/Loaders/Loader";
 import { generateInvoice } from "@/helpers/invoiceGenerator";
+import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -22,7 +23,7 @@ interface OrderItemType {
 }
 
 const page = () => {
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const [showDetails, setShowDetails] = useState("");
     const id = data?._id;
     const queryClient = useQueryClient();

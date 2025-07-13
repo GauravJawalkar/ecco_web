@@ -1,5 +1,6 @@
 "use client";
 
+import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -23,7 +24,7 @@ interface cartMappingProps {
 }
 
 const Cart = () => {
-    const { data }: any = useUserStore();
+    const { data }: { data: userProps } = useUserStore();
     const cartOwnerId = data?._id;
     const queryClient = useQueryClient();
     const [quantityOperation, setQuantityOperation] = useState("");
