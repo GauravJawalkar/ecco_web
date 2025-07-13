@@ -45,7 +45,7 @@ const page = () => {
     })
 
     return (
-        <section >
+        <section className='py-2'>
             <div className='relative my-5'>
                 <input type="search" className='w-full p-2 rounded ring-1 ring-gray-200 dark:bg-neutral-800 dark:ring-neutral-700 focus:outline-none' placeholder='Search Your Orders Here' />
                 <button className='absolute top-0 right-0 flex items-center justify-center gap-2 p-2 text-white bg-blue-500 hover:bg-blue-500/80 rounded-r'>
@@ -65,7 +65,7 @@ const page = () => {
                                 <div className='w-full space-y-2 '>
                                     <h1 className='font-semibold capitalize line-clamp-2 text-start'>{orderName}</h1>
                                     <p className='text-sm text-start'>Quantity : {orderQuantity}</p>
-                                    <p className='text-sm text-start'>Order Id : {orderQuantity}</p>
+                                    <p className='text-sm text-start'>Order Id : {_id}</p>
                                 </div>
                             </div>
                             <div className='flex items-start justify-center gap-3 p-3 border-l border-r dark:border-neutral-700 '>

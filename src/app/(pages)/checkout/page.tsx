@@ -336,7 +336,7 @@ const page = () => {
                     </button>
 
                     {/* Cash on Delivery */}
-                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 border dark:border-neutral-700 w-full rounded-xl relative ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'>
+                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 border dark:border-neutral-700 w-full rounded-xl relative disabled:cursor-not-allowed cursor-pointer`} type='button'>
                         Cash On Delivery
                         {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500'><CheckCircle2 /></span>}
                     </button>

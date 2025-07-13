@@ -23,7 +23,6 @@ export const useUserStore = create(
                         set(
                             () => ({ data: response.data.user })
                         );
-
                     } catch (error) {
                         toast.error("Invalid Credentials");
                         console.log("Error logging in : ", error)

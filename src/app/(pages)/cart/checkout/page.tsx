@@ -91,7 +91,7 @@ const CartCeckOut = () => {
             const userId = data?._id;
             const quantity = await userCart?.cartItems?.length;
             const orderConfirmation = "Order Confirmed";
-            const seller = await userCart?.cartItems?.map((items: { productId: any; sellerId: any; }) => ({ productId: items?.productId, sellerId: items?.sellerId }));
+            const seller = await userCart?.cartItems?.map((items: { productId: string; sellerId: string; }) => ({ productId: items?.productId, sellerId: items?.sellerId }));
             const orderDetails = {
                 orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, seller, orderConfirmation, productId
             };
@@ -127,6 +127,113 @@ const CartCeckOut = () => {
     }, 0);
 
     const totalDiscount = userCart?.cartItems?.reduce((acc: number, item: { price: number; discount: number; quantity: number; }) => acc + item.discount * item.quantity, 0);
+
+    const handlePayment = async () => {
+        try {
+            const orderAmount = totalPrice;
+
+            // Create order with commission details
+            const { data: order } = await axios.post('/api/razorpay/order', {
+                amount: orderAmount,
+                sellerId: userCart?.cartItems?.map((item: { sellerId: string }) => item?.sellerId),
+            });
+
+            // Check if Razorpay is already loaded
+            if (!(window as any).Razorpay) {
+                await new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                    script.async = true;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.body.appendChild(script);
+                });
+            }
+
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: `Full Cart Order`,
+                description: `Payment for ${data?.name}'s full cart order`,
+                order_id: order.orderId,
+
+                handler: async (response: any) => {
+                    try {
+                        if (!response.razorpay_payment_id || !response.razorpay_order_id || !response.razorpay_signature) {
+                            throw new Error("Incomplete payment response from Razorpay");
+                        }
+                        // Verify payment
+                        const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                        });
+
+                        if (verifyData.success) {
+                            const orderDetails = {
+                                orderName: userCart?.cartItems?.map((items: { name: string }) => items?.name),
+                                orderPrice: totalMrpPrice,
+                                orderDiscount: totalMrpPrice,
+                                quantity: 1,
+                                contactNumber,
+                                address,
+                                pinCode,
+                                landMark,
+                                orderImage,
+                                paymentMethod: "Online",
+                                paymentStatus: "Done",
+                                userId: data?._id,
+                                sellerId: await userCart?.cartItems?.map((item: { sellerId: string }) => item?.sellerId),
+                                productId: await userCart?.cartItems?.map((item: { productId: string }) => item?.productId),
+                                razorpayOrderId: response.razorpay_order_id,
+                                razorpayPaymentId: response.razorpay_payment_id,
+                                commission: orderAmount * 0.02,
+                                sellerAmount: orderAmount * 0.98,
+                            };
+
+                            await axios.post('/api/createOrder', { orderDetails });
+                            toast.success('Payment successful! Commission deducted');
+                            router.push('/orders');
+                        } else {
+                            toast.error('Payment verification failed');
+                        }
+                    } catch (error: any) {
+                        console.error('Payment processing error:', error);
+                        toast.error(error.response?.data?.error || 'Payment processing failed');
+                    } finally {
+                        setUpiLoading(false);
+                        setCardLoading(false);
+                    }
+                },
+                prefill: {
+                    name: data?.name,
+                    email: data?.email,
+                    contact: contactNumber,
+                },
+                theme: {
+                    color: '#3399cc',
+                },
+            };
+
+            const rzp = new (window as any).Razorpay(options);
+
+            rzp.on('payment.failed', (response: any) => {
+                toast.error(`Payment failed: ${response.error.description}`);
+                setUpiLoading(false);
+                setCardLoading(false);
+            });
+
+            rzp.open();
+            setUpiLoading(false);
+            setCardLoading(false);
+        } catch (error: any) {
+            console.error('Payment initiation error:', error);
+            toast.error(error.response?.data?.error || 'Payment failed to initiate');
+            setUpiLoading(false);
+            setCardLoading(false);
+        }
+    };
 
     return (
         <div className='grid grid-cols-[3fr_1fr] py-5 gap-4'>
@@ -208,13 +315,13 @@ const CartCeckOut = () => {
                 <div className='flex items-center justify-between w-full gap-4'>
                     {/* UPI */}
                     <button disabled={select.trim() === ""} className={`p-5 border dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'
-                        onClick={() => { setUpiLoading(true); }}>
+                        onClick={() => { setUpiLoading(true); handlePayment(); }}>
                         {upiLoading ? <Loader title='Processing...' /> : "UPI"}
                     </button>
 
                     {/* Credit/Debit Card */}
                     <button disabled={select.trim() === ""} className={`p-5 border dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"} `} type='button'
-                        onClick={() => { setCardLoading(true); }}>
+                        onClick={() => { setCardLoading(true); handlePayment(); }}>
                         {cardLoading ? <Loader title='Processing...' /> : "Credit / Debit Card"}
                     </button>
 
