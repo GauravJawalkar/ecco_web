@@ -35,7 +35,7 @@ const Product = () => {
 
     async function getSpecificProduct(id: string) {
         try {
-            const response = await axios.get(`../api/getProductDetails/${id}`)
+            const response = await axios.get(`../api/getProductDetails/${id}`, { timeout: 2000 })
             if (response.data.data) {
                 return response.data.data
             }
@@ -362,7 +362,7 @@ const Product = () => {
                                     <h1 className='flex items-center gap-2 text-xl'>
                                         {getAverageRating(product?.rating)} <span><Star className='text-yellow-500 fill-yellow-500' /></span>
                                     </h1>
-                                    <h1 className='text-base text-gray-600 dark:text-gray-400'>{product?.rating?.length} Users rated this product & {reviews?.length || 0} Reviewed It</h1>
+                                    <h1 className='text-base text-gray-600 dark:text-gray-400'>{product?.rating?.length} Users rated this product & {totalReviews || 0} Reviews Available</h1>
                                 </div>
                             </div>
                             {/* Map all the reviews */}
@@ -413,7 +413,7 @@ const Product = () => {
                                 })
                             }
                             {isFetching && <Loader title='Loading...' />}
-                            {totalReviews >= 5 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed' onClick={() => setSkip(skip + 5)}>Load More</button>}
+                            {totalReviews >= 4 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hidden' onClick={() => setSkip(skip + 4)}>Load More</button>}
                             {/*Add Reviews Components Dynamic */}
                             <div className='py-3'>
                                 <button className='px-3 py-2 text-white bg-green-500 rounded-lg hover:bg-green-500/80' onClick={() => { setOpenReviewModal(!openReviewModal) }}>Add Review</button>

@@ -8,7 +8,7 @@ export async function GET(_request: NextRequest, params: { params: { id: string 
 
         const { id } = await params.params
         const url = new URL(_request.url);
-        const limit = 5;
+        const limit = 4;
         const skip = parseInt(url.searchParams.get("skip") || "0");
 
         if (!id) {
