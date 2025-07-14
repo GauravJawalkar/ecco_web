@@ -74,7 +74,7 @@ const page = () => {
     const { data: sellerOrders = [], isPending, isError } = useQuery({ queryKey: ['sellerOrders'], queryFn: getSellerOrders, refetchOnWindowFocus: false, enabled: !!id });
 
     return (
-        <section className="min-h-screen h-auto">
+        <section className="min-h-screen h-auto py-5">
             <div className="flex items-center justify-between">
                 <h1 className="font-semibold uppercase">Toatal Orders : {totalSellerOrders}</h1>
                 <h1>Order Status</h1>

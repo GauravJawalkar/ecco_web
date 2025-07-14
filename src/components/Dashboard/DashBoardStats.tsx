@@ -93,7 +93,7 @@ const DashBoardStats = ({ sellerId, load, isAdmin, kycVerified }: { sellerId: st
             {/* KYC Status For RazorPay */}
             <Link href={'/dashboard/kyc-details'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>
                 <Landmark className='size-6' /> KYC : <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" :
-                    <Loader2 className='animate-spin flex items-center justify-center text-black h-5 w-5' />}</span>
+                    <Loader2 className='animate-spin flex items-center justify-center text-black h-5 w-5 dark:text-white' />}</span>
             </Link>
             {
                 isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>

@@ -148,7 +148,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                         pagination={{ clickable: true }}
                                                         spaceBetween={50}
                                                         effect="card"
-                                                        className="border rounded dark:border-neutral-700">
+                                                        className="border rounded dark:border-neutral-700 dark:bg-neutral-900/50">
                                                         {images.map(
                                                             (elem: string, index: Key | null | undefined) => {
                                                                 return (
@@ -338,7 +338,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                 <td colSpan={2} className="px-4 py-2 text-center border dark:border-neutral-700">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <Edit
-                                                            className="text-green-500 cursor-pointer hover:text-green-600"
+                                                            className="cursor-pointer hover:text-green-600 h-5 w-5"
                                                             onClick={() => {
                                                                 setEditModal(!editModal);
                                                                 setOldName(name);
@@ -353,7 +353,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                             }} />
                                                         <Trash2 onClick={() => {
                                                             handelDelete(_id);
-                                                        }} className="text-red-500 cursor-pointer hover:text-red-600" />
+                                                        }} className="cursor-pointer hover:text-red-600 h-5 w-5" />
                                                     </div>
                                                 </td>
                                             </tr>
