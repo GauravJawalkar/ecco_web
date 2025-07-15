@@ -126,10 +126,11 @@ export const Navbar = () => {
             <div className='w-[30%] flex items-center justify-center gap-4'>
                 {dataLength !== 0 && data.isSeller ?
                     <Link href={'/dashboard'} className="dark:text-neutral-300">
-                        Dashboard</Link> :
+                        Dashboard
+                    </Link> :
                     <button onClick={handelBecomeSeller}>Become Seller</button>}
                 <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
-                <Link href={'/products'} className="dark:text-neutral-300">Products</Link>
+                <Link href={'/stores'} className="dark:text-neutral-300">Stores</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
                         {dataLength !== 0 && data?.avatar?.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="h-10 w-10 object-cover rounded-full border border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
@@ -140,7 +141,7 @@ export const Navbar = () => {
                         <div className="border-b-[0.1px]  dark:bg-white/5 bg-slate-300/1 rounded border dark:border-zinc-700 p-2">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />
-                                <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed]">{dataLength !== 0 && data.name.split(" ")[0]}</h1>
+                                <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed]">{dataLength !== 0 && data?.name.split(" ")[0]}</h1>
                             </li>
                             <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Details</Link>
                             <div>
