@@ -283,7 +283,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 )}
                             </div >
                             {/* Pagination Buttons */}
-                            <div className="flex items-center justify-center gap-4 py-4">
+                            {prodData?.length !== 0 && <div className="flex items-center justify-center gap-4 py-4">
                                 <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700">
                                     <span><ChevronLeft className="w-4 h-4" /></span>  Previous
                                 </button>
@@ -291,7 +291,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 px-3 py-1 border rounded disabled:opacity-50 disabled:cursor-not-allowed dark:border-neutral-700">
                                     Next <span><ChevronRight className="w-4 h-4" /></span>
                                 </button>
-                            </div>
+                            </div>}
                         </div>
                     }
 
@@ -361,9 +361,10 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                     })}
                                 </tbody>
                             </table>
+                            {prodData?.length === 0 && <div className="text-center place-items-center w-full py-4 border border-t-0 dark:border-neutral-700"> No Products Found</div>}
 
                             {/* Pagination Buttons */}
-                            <div className="flex items-center justify-center gap-2 mt-4">
+                            {prodData?.length !== 0 && <div className="flex items-center justify-center gap-2 mt-4">
                                 <button title="Previous" onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
                                     <ChevronLeft className="w-4 h-4" />
                                 </button>
@@ -371,7 +372,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 <button title="Next" onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
                                     <ChevronRight className="w-4 h-4" />
                                 </button>
-                            </div>
+                            </div>}
                             <EditDetailsModal
                                 isVisible={editModal}
                                 oldCategory={oldCategory}
