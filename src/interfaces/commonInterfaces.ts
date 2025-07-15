@@ -6,10 +6,11 @@ export interface userProps {
     isSeller: boolean;
     isEmailVerified: boolean;
     isSuperAdmin: boolean;
+    store: boolean;
     bankDetails: {
         accountNumber: string;
         ifscCode: string;
         bankName: string;
         status: string; // KYC verification status
-    }
+    };
 }
