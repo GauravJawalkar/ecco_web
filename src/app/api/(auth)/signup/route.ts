@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
                 email: email,
                 password: password,
                 avatar: imageUrl.secure_url || "",
+                store: false
             }
         )
 

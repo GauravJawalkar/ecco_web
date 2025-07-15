@@ -40,6 +40,7 @@ export async function GET(request: NextRequest) {
                 name: googleUser.name,
                 avatar: googleUser.picture,
                 password: "123",
+                store: false,
             });
         }
 
@@ -49,7 +50,7 @@ export async function GET(request: NextRequest) {
         (await
             cookies()).set({
                 name: 'user',
-                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin, bankDetails: user?.bankDetails }),
+                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin, bankDetails: user?.bankDetails, store: user?.store }),
                 httpOnly: true,
                 path: '/',
             });
