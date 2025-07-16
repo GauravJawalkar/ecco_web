@@ -9,8 +9,6 @@ export async function POST(request: NextRequest) {
 
         const { category, categoryPage, limit = 12 } = reqBody;
 
-        console.log(reqBody);
-
         const skip = (categoryPage - 1) * limit;
 
         if (category.trim() === "") {
