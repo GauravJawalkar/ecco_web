@@ -114,42 +114,41 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     return (
         <>
-            <section className='inset-0 fixed flex items-center justify-center backdrop-blur-md z-10 pt-20'>
-                <div className='w-1/2 flex items-center justify-center px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md relative'>
-                    <div className='text-end absolute -top-3 -right-2'>
-                        <CircleX className='cursor-pointer h-8 w-8 ' onClick={() => {
+            <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
+                <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-neutral-900/80 bg-slate-600/5 backdrop-blur-md'>
+                    <div className='absolute text-end -top-3 -right-2'>
+                        <CircleX className='w-8 h-8 cursor-pointer ' onClick={() => {
                             onClose();
                             setPrimeImage(null);
                             setSecondImage(null);
                             setThirdImage(null);
                         }} />
                     </div>
-                    <form onSubmit={handelSubmit} className='grid grid-cols-2 gap-5 min-w-full'>
+                    <form onSubmit={handelSubmit} className='grid min-w-full grid-cols-2 gap-5'>
                         <div className='space-y-4'>
                             <div className='w-full'>
                                 <label>Name :</label>
-                                <input type="text" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Name' required onChange={(e) => setName(e.target.value)} />
+                                <input type="text" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Name' required onChange={(e) => setName(e.target.value)} />
                             </div>
                             <div className='w-full'>
                                 <label>Description :</label>
-                                <textarea rows={1} className='text-black px-3 py-2 w-full rounded' placeholder='Enter Description' required onChange={(e) => setDescription(e.target.value)} />
+                                <textarea rows={1} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Description' required onChange={(e) => setDescription(e.target.value)} />
                             </div>
                             <div className='w-full'>
                                 <label>Stock :</label>
-                                <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Stock' required onChange={(e) => setStock(e.target.value)} />
+                                <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Stock' required onChange={(e) => setStock(e.target.value)} />
                             </div>
-
                             <div className='w-full'>
                                 <label>Price :</label>
-                                <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Price' required onChange={(e) => setPrice(e.target.value)} />
+                                <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Price' required onChange={(e) => setPrice(e.target.value)} />
                             </div>
                             <div className='w-full'>
                                 <label>Discount :</label>
-                                <input type="number" className='text-black px-3 py-2 w-full rounded' placeholder='Enter Discount' required onChange={(e) => setDiscount(e.target.value)} />
+                                <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Discount' required onChange={(e) => setDiscount(e.target.value)} />
                             </div>
                             <div className='w-full'>
                                 <label>Size :</label>
-                                <select onChange={(e) => { setSize(e.target.value) }} className='text-black px-3 py-2 w-full rounded'>
+                                <select onChange={(e) => { setSize(e.target.value) }} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded'>
                                     <option>Select Size</option>
                                     <option>Small</option>
                                     <option>Medium</option>
@@ -163,28 +162,28 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                             <div className='w-full'>
                                 <label>Main Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='text-black file:px-3 file:py-2  file:border-0 file:bg-gray-300 file:text-white file:mr-2 w-full rounded bg-white file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setPrimeImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setPrimeImage(e.target.files?.[0] || null) }} />
                                     {primeImage &&
                                         <Image
                                             src={(primeImage !== null) && getPreviewUrl(primeImage) || ""}
                                             width={200}
                                             height={200}
                                             alt={'product-image'}
-                                            className="object-contain w-14 h-14 border rounded-full dark:bg-neutral-700" />
+                                            className="object-contain border dark:border-neutral-700 rounded-full w-14 h-14 dark:bg-neutral-700" />
                                     }
                                 </div>
                             </div>
                             <div className='w-full'>
                                 <label>Second Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='text-black file:px-3 file:py-2  file:border-0 file:bg-gray-300 file:text-white file:mr-2 w-full rounded bg-white file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSecondImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSecondImage(e.target.files?.[0] || null) }} />
                                     {secondImage &&
                                         <Image
                                             src={(secondImage !== null) && getPreviewUrl(secondImage) || ""}
                                             width={200}
                                             height={200}
                                             alt={'product-image'}
-                                            className="object-contain w-14 h-14 border rounded-full dark:bg-neutral-700" />
+                                            className="object-contain border dark:border-neutral-700 rounded-full w-14 h-14 dark:bg-neutral-700" />
                                     }
                                 </div>
                             </div>
@@ -192,14 +191,14 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                             <div className='w-full'>
                                 <label>Third Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='text-black file:px-3 file:py-2  file:border-0 file:bg-gray-300 file:text-white file:mr-2 w-full rounded bg-white file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setThirdImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setThirdImage(e.target.files?.[0] || null) }} />
                                     {thirdImage &&
                                         <Image
                                             src={(thirdImage !== null) && getPreviewUrl(thirdImage) || ""}
                                             width={200}
                                             height={200}
                                             alt={'product-image'}
-                                            className="object-contain w-14 h-14 border rounded-full dark:bg-neutral-700" />
+                                            className="object-contain border dark:border-neutral-700 rounded-full w-14 h-14 dark:bg-neutral-700" />
                                     }
                                 </div>
                             </div>
@@ -207,7 +206,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
                             <div className='w-full'>
                                 <label>Container :</label>
-                                <select onChange={(e) => { setContainer(e.target.value) }} className='text-black px-3 py-2 w-full rounded'>
+                                <select onChange={(e) => { setContainer(e.target.value) }} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded'>
                                     <option>Select Container</option>
                                     <option>Growth Bag</option>
                                     <option>Pot</option>
@@ -216,7 +215,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
                             <div className='w-full'>
                                 <label>Category :</label>
-                                <select className='text-black px-3 py-2 w-full rounded' required onChange={(e) => setCategory(e.target.value)} >
+                                <select className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' required onChange={(e) => setCategory(e.target.value)} >
                                     <option>Select Category</option>
                                     {
                                         exCategories.length !== 0 && exCategories.map(({ categoryName, _id }: { categoryName: string, _id: string }) => {

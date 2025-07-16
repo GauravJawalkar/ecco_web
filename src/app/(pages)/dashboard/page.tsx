@@ -22,7 +22,7 @@ const Dashboard = () => {
         <div className="min-h-screen relative">
             <div className={`relative`}>
                 {/* Main dashboard content */}
-                <div className={`transition-all duration-300 my-10 ${isStoreLocked === false ? "opacity-50 pointer-events-none select-none" : "opacity-100"}`}>
+                <div className={`transition-all duration-300 py-10 ${isStoreLocked === false ? "opacity-40 pointer-events-none select-none" : "opacity-100"}`}>
                     <div className="flex items-center justify-start gap-3 p-3 border rounded dark:border-neutral-700 dark:text-white">
                         {/* My Products List */}
                         <div>

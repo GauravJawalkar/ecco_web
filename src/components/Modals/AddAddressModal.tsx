@@ -55,8 +55,8 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
 
     if (!isVisible) return null;
     return (
-        <section className='fixed inset-0 z-10 flex items-center justify-center backdrop-blur-md'>
-            <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
+        <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
+            <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-neutral-900/80 bg-slate-600/5 backdrop-blur-md'>
                 <div className='absolute text-end -top-3 -right-2'>
                     <CircleX className='w-8 h-8 cursor-pointer ' onClick={onClose} />
                 </div>
