@@ -8,12 +8,15 @@ import Link from "next/link";
 import { useState } from "react";
 import { LayoutGrid, LayoutList, Lock } from "lucide-react";
 import { userProps } from "@/interfaces/commonInterfaces";
+import { set } from "mongoose";
+import StoreOnboardingModal from "@/components/Modals/StoreOnboardingModal";
 
 const Dashboard = () => {
     const { data }: { data: userProps } = useUserStore();
     const [showProductModal, setShowProductModal] = useState(false);
     const [showCustomCategoryModal, setShowCustomCategoryModal] = useState(false);
     const [listView, setListView] = useState("list");
+    const [storeOnboarding, setStoreOnboarding] = useState(false);
 
     const isStoreLocked = data?.store;
     console.log("Store Status:", isStoreLocked);
@@ -96,13 +99,14 @@ const Dashboard = () => {
                             <p className="mb-6 text-gray-600 dark:text-neutral-400 text-center max-w-sm ">Unlock your store to access dashboard features and manage your own products store.</p>
                             <button
                                 className="px-4 py-2 rounded border text-sm transition flex items-center gap-2 dark:border-neutral-700 dark:hover:bg-neutral-900/20 hover:bg-gray-100/50"
-                                onClick={() => { }}>
+                                onClick={() => { setStoreOnboarding(true) }}>
                                 <Lock className="w-5 h-5 opacity-70" />
                                 Unlock Store
                             </button>
                         </div>
                     </div>
                 )}
+                <StoreOnboardingModal isOpen={storeOnboarding} onClose={() => setStoreOnboarding(false)} ownerId={data._id} />
             </div>
         </div >
     );
