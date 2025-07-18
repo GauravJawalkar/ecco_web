@@ -5,6 +5,7 @@ import { CircleX } from 'lucide-react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import Loader from '../Loaders/Loader'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface CustomCategoryModalProps {
     onClose: () => void,
@@ -14,34 +15,42 @@ interface CustomCategoryModalProps {
 
 const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModalProps) => {
 
-    const [categoryName, setCategoryName] = useState("")
+    const [categoryName, setCategoryName] = useState("");
+    const queryClient = useQueryClient();
 
-    const [loading, setLoading] = useState(false)
-
-    const handelSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    async function addCategory() {
         try {
-            setLoading(true)
             if (categoryName.trim() !== "" && categoryName.length !== 0) {
-                setLoading(true)
                 const response = await axios.post('/api/addCategory', { categoryName, creator })
-                if (response.data.data) {
-                    toast.success("Category Created");
-                    setLoading(false)
+                if (response.data?.data) {
                     onClose();
                 } else {
-                    setLoading(false)
                     toast.error("Failed to upload a category");
                     onClose();
                 }
             }
         } catch (error) {
-            toast.error("Failed to upload a category");
-            console.log("Error is : ", error)
+            console.error("Error adding category:", error);
+            toast.error("Failed to add category");
             onClose();
         }
     }
 
+    const addCategoryMutation = useMutation({
+        mutationFn: addCategory,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['fetchedCategories'] });
+        },
+        onError: (error) => {
+            toast.error("Failed to add category");
+            console.error("Error:", error);
+        }
+    })
+
+    const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        addCategoryMutation.mutate();
+    }
     if (!isVisible) return null;
     return (
         <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
@@ -57,7 +66,7 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
 
                     <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
                         {
-                            loading ?
+                            addCategoryMutation.isPending ?
                                 <Loader title='Adding ' /> :
                                 "Add Category"
                         }
