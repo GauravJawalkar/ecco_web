@@ -22,27 +22,25 @@ export async function POST(request: NextRequest) {
 
         const validateEmailOTP = user?.emailVerificationOTP;
 
-        console.log("validateEmailOTP : ", validateEmailOTP)
-
-        if (validateEmailOTP === OTP) {
-            await User.findByIdAndUpdate(
-                id,
-                {
-                    $set: {
-                        isEmailVerified: true,
-                        emailVerificationOTP: "",
-                        emailVerificationOTPexpiry: ""
-                    }
-                },
-                {
-                    new: true
-                }
-            )
-        } else {
+        if (validateEmailOTP !== OTP) {
             return NextResponse.json({ error: "Invalid OTP" }, { status: 401 })
         }
 
-        return NextResponse.json({ data: "Email Verified Succcessfully" }, { status: 200 })
+        const userEmailValidation = await User.findByIdAndUpdate(
+            id,
+            {
+                $set: {
+                    isEmailVerified: true,
+                    emailVerificationOTP: "",
+                    emailVerificationOTPexpiry: ""
+                }
+            },
+            {
+                new: true
+            }
+        ).select("--password --refreshToken --accessToken --emailVerificationOTP --forgotPasswordOTP --emailVerificationOTPexpiry --forgotPasswordOTPexpiry");
+
+        return NextResponse.json({ message: "Email Verified Succcessfully", data: userEmailValidation }, { status: 200 })
 
 
     } catch (error) {

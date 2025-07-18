@@ -4,27 +4,30 @@ import Loader from '../Loaders/Loader';
 import { CircleX } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useUserStore } from '@/store/UserStore';
 
 const VerifyEmailModal = ({ isVisible, onClose, id }: { isVisible: boolean, onClose: () => void, id: string }) => {
     const [OTP, setOTP] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const setUser = useUserStore((state) => state.setUser);
 
     const handelSubmit = async () => {
         try {
             setLoading(true)
             const response = await axios.post('/api/verifyEmail', { id, OTP });
-            if (response.data.data) {
+            if (response.data?.data) {
                 toast.success("Email Verified");
-                setLoading(false)
+                setUser(response.data?.data);
+                setLoading(false);
                 onClose();
             } else {
                 toast.error("Failed to verify Email")
                 setLoading(false)
             }
         } catch (error) {
-            toast.error("Failed to verify Email")
+            toast.error("Failed to verify Email");
+            console.error("Error verifying email:", error);
             setLoading(false)
-            console.log(error)
         }
     }
     if (!isVisible) return null;

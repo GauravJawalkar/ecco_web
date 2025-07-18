@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
 
         const { _id, email } = reqBody;
 
-
         if (_id.trim() === "") {
             return NextResponse.json({ error: "Enter correct email" }, { status: 402 })
         }

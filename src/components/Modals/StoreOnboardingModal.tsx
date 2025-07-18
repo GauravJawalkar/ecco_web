@@ -13,12 +13,7 @@ interface StoreOnboardingModalProps {
     ownerId: string;
 }
 
-const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({
-    isOpen,
-    onClose,
-    onSubmit,
-    ownerId,
-}) => {
+const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onClose, ownerId }) => {
     const [storeName, setStoreName] = useState("");
     const [storeDescription, setStoreDescription] = useState("");
     const [storeImage, setStoreImage] = useState<File | null>(null);

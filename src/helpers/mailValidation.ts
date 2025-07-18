@@ -71,7 +71,6 @@ export async function mailValidator({ email, emailType }: mailValidatorProps) {
         try {
 
             const mailResponse = await transport.sendMail(mailOptions);
-            console.log(mailResponse);
             return mailResponse;
 
         } catch (error) {

@@ -2,7 +2,6 @@
 
 import UserInfoCard from "@/components/Navigation/UserInfoCard";
 import VerifyEmailModal from "@/components/Modals/VerifyEmailModal";
-import { mailValidator } from "@/helpers/mailValidation";
 import { useUserStore } from "@/store/UserStore";
 import axios from "axios";
 import { LoaderCircle, LogOut, Pencil, ShieldCheck, ShieldQuestion, Trash2 } from "lucide-react";
@@ -13,10 +12,10 @@ import toast from "react-hot-toast";
 
 const Home = () => {
     const { data, logOut }: any = useUserStore();
-    const dataLength = Object.keys(data).length;
+    const dataLength = Object.keys(data)?.length;
     const [loadOTP, setLoadOTP] = useState(false)
-    const email = dataLength !== 0 && data.email
-    const _id = dataLength !== 0 && data._id
+    const email = dataLength !== 0 && data?.email
+    const _id = dataLength !== 0 && data?._id
 
     const router = useRouter();
     const [verifyEmailModal, setVerifyEmailModal] = useState(false);
@@ -99,7 +98,7 @@ const Home = () => {
                                             <ShieldCheck className="w-5 h-5" />
                                             Verified
                                         </div> :
-                                        <button onClick={() => handelEmailVerify()} className="flex items-center justify-center gap-2 font-normal">
+                                        <button onClick={handelEmailVerify} className="flex items-center justify-center gap-2 font-normal">
                                             {loadOTP ? <LoaderCircle className="w-5 h-5 animate-spin" /> : <ShieldQuestion className="w-5 h-5" />}
                                             Verify Now
                                         </button>
