@@ -45,7 +45,7 @@ const Store = () => {
                     src={StoreData?.[0]?.storeCoverImage || `https://dummyimage.com/640x4:3`}
                     width={1280}
                     height={4080}
-                    className="rounded-xl h-full w-full object-cover"
+                    className="rounded-xl h-full w-full object-cover border dark:border-neutral-700"
                     priority
                 />
             </div>

@@ -108,12 +108,12 @@ const EditStoreDetailsModal: React.FC<EditStoreDetailsModalProps> = ({ isOpen, o
                         <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Profile Image
                         </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
-                            onChange={(e) => setStoreImage(e.target.files?.[0] || null)} />
                         <div className="flex items-center gap-2 mt-2">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                                onChange={(e) => setStoreImage(e.target.files?.[0] || null)} />
                             <Image
                                 src={storeImage ? URL.createObjectURL(storeImage) : store.storeImage}
                                 alt="Profile Preview"
@@ -126,12 +126,12 @@ const EditStoreDetailsModal: React.FC<EditStoreDetailsModalProps> = ({ isOpen, o
                         <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Cover Image
                         </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:text-sm file:border-0 file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
-                            onChange={(e) => setStoreCoverImage(e.target.files?.[0] || null)} />
                         <div className="flex items-center gap-2 mt-2">
+                            <input
+                                type="file"
+                                accept="image/*"
+                                className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:text-sm file:border-0 file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                                onChange={(e) => setStoreCoverImage(e.target.files?.[0] || null)} />
                             <Image
                                 src={storeCoverImage ? URL.createObjectURL(storeCoverImage) : store.storeCoverImage}
                                 alt="Cover Preview"
