@@ -10,6 +10,7 @@ import { LayoutGrid, LayoutList, Lock } from "lucide-react";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { set } from "mongoose";
 import StoreOnboardingModal from "@/components/Modals/StoreOnboardingModal";
+import Store from "@/components/Dashboard/Store";
 
 const Dashboard = () => {
     const { data }: { data: userProps } = useUserStore();
@@ -23,6 +24,7 @@ const Dashboard = () => {
 
     return (
         <div className="min-h-screen relative">
+            <Store />
             <div className={`relative`}>
                 {/* Main dashboard content */}
                 <div className={`transition-all duration-300 py-10 ${isStoreLocked === false ? "opacity-40 pointer-events-none select-none" : "opacity-100"}`}>
