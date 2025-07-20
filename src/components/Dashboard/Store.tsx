@@ -37,28 +37,28 @@ const Store = () => {
         }
     )
     return (
-        <section className="relative w-full mx-auto rounded-xl my-5">
+        <section className="relative w-full mx-auto my-5 rounded-xl">
             {/* Cover Image */}
-            <div className="w-full h-48 md:h-64 relative">
+            <div className="relative w-full h-48 md:h-64">
                 <Image
                     alt="Store Cover"
                     src={StoreData?.[0]?.storeCoverImage || `https://dummyimage.com/640x4:3`}
                     width={1280}
                     height={4080}
-                    className="rounded-xl h-full w-full object-cover border dark:border-neutral-700"
+                    className="object-cover w-full h-full border rounded-xl dark:border-neutral-700"
                     priority
                 />
             </div>
             {/* Profile + Info Row */}
-            <div className="flex items-center gap-4 z-10 my-5 relative">
+            <div className="relative z-10 flex items-center gap-4 my-5">
                 {/* Profile Image */}
-                <div className="w-32 h-32 rounded-full border-4 border-white dark:border-neutral-900 bg-white dark:bg-neutral-900">
+                <div className="w-32 h-32 bg-white border-4 border-white rounded-full dark:border-neutral-900 dark:bg-neutral-900">
                     <Image
                         alt="Store Profile"
                         src={StoreData?.[0]?.storeImage || `https://dummyimage.com/qvga`}
                         width={1280}
                         height={1280}
-                        className="rounded-full w-full h-full object-cover border border-neutral-300 dark:border-neutral-700"
+                        className="object-cover w-full h-full border rounded-full border-neutral-300 dark:border-neutral-700"
                         priority
                     />
                 </div>
@@ -72,7 +72,7 @@ const Store = () => {
                         </p>
                         {StoreData?.[0]?.storeDescription &&
                             StoreData[0].storeDescription.length > 0 && (
-                                <button className="text-blue-500 hover:underline text-sm"
+                                <button className="text-sm text-blue-500 hover:underline"
                                     onClick={() => setShowFullDescription((prev) => !prev)}
                                     type="button">
                                     {showFullDescription ? '...less' : '...more'}
@@ -81,8 +81,8 @@ const Store = () => {
                     </div>
                     <p className='text-sm'>{totalProducts} Products In Store</p>
                 </div>
-                <button onClick={() => { setShowEditStoreModal(true) }} title='Edit Store Details' className='absolute top-0 right-2 p-2 rounded-full bg-white dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-900 transition-colors'>
-                    <Edit3 className='h-5 w-5' />
+                <button disabled={!StoreData?.[0]} onClick={() => { setShowEditStoreModal(true) }} title='Edit Store Details' className='absolute top-0 p-2 transition-colors bg-white border rounded-full right-2 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed text-black/50 hover:text-black dark:text-white/50 hover:dark:text-white'>
+                    <Edit3 className='w-5 h-5 ' />
                 </button>
             </div>
             {StoreData?.length > 0 && < EditStoreDetailsModal isOpen={showEditStoreModal} onClose={() => { setShowEditStoreModal(!showEditStoreModal) }} store={{ ...StoreData?.[0] }} />}
