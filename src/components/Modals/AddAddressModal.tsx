@@ -2,7 +2,7 @@
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { CircleX } from 'lucide-react';
+import { CircleX, X } from 'lucide-react';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
@@ -55,30 +55,30 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
 
     if (!isVisible) return null;
     return (
-        <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
-            <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-neutral-900/80 bg-slate-600/5 backdrop-blur-md'>
-                <div className='absolute text-end -top-3 -right-2'>
-                    <CircleX className='w-8 h-8 cursor-pointer ' onClick={onClose} />
-                </div>
-                <form onSubmit={handelAddress} className='grid min-w-full grid-cols-2 gap-5'>
-                    <div className='w-full'>
+        <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+            <div className='relative w-full max-w-3xl p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
+                <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
+                    <X className="w-5 h-5" />
+                </button>
+                <form onSubmit={handelAddress} className='grid min-w-full grid-cols-2 gap-5 text-sm'>
+                    <div className='w-full space-y-1'>
                         <label>Address :</label>
-                        <textarea rows={1} className='w-full px-3 py-2 text-black rounded' placeholder='Enter Your Full Address' required onChange={(e) => setAddress(e.target.value)} />
+                        <textarea rows={1} className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Your Full Address' required onChange={(e) => setAddress(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>PinCode :</label>
-                        <input type='text' className='w-full px-3 py-2 text-black rounded' placeholder='Enter Your Pincode' required onChange={(e) => setPinCode(e.target.value)} />
+                        <input type='text' className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Your Pincode' required onChange={(e) => setPinCode(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>LandMark :</label>
-                        <input type="text" className='w-full px-3 py-2 text-black rounded' placeholder='Enter Stock' required onChange={(e) => setLandMark(e.target.value)} />
+                        <input type="text" className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Stock' required onChange={(e) => setLandMark(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Contact Number :</label>
-                        <input type="number" className='w-full px-3 py-2 text-black rounded' placeholder='Enter Discount' required onChange={(e) => setContactNumber(e.target.value)} />
+                        <input type="number" className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Discount' required onChange={(e) => setContactNumber(e.target.value)} />
                     </div>
-                    <div className='w-full'>
-                        <button type='submit' className='w-full py-2 bg-[#0a0a0a] text-[#ededed]  rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                    <div className='w-full space-y-1'>
+                        <button type='submit' className='w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded hover:bg-green-700 disabled:cursor-not-allowed'>
                             Add Address
                         </button>
                     </div>

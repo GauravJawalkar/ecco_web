@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { CircleX } from 'lucide-react'
+import { CircleX, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import Loader from '../Loaders/Loader'
@@ -53,18 +53,18 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
     }
     if (!isVisible) return null;
     return (
-        <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
-            <div className='w-[500px] relative flex items-center justify-center px-10 py-8 rounded-xl dark:bg-neutral-900/80 bg-slate-600/5 backdrop-blur-md'>
-                <form onSubmit={handelSubmit} className='flex items-center justify-center gap-5 flex-col min-w-full'>
-                    <div className='text-end'>
-                        <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
-                    </div>
-                    <div className='w-full'>
+        <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+            <div className='relative w-full max-w-md p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
+                <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
+                    <X className="w-5 h-5" />
+                </button>
+                <form onSubmit={handelSubmit} className='flex flex-col items-center justify-center min-w-full space-y-3 text-sm'>
+                    <div className='w-full space-y-1'>
                         <label>CUSTOM CATEGORY :</label>
-                        <input type="text" className='text-black px-3 my-3 py-2 w-full rounded' placeholder='Custom Category Name' required onChange={(e) => setCategoryName(e.target.value)} />
+                        <input type="text" className='w-full px-3 py-2 text-black border rounded' placeholder='Custom Category Name' required onChange={(e) => setCategoryName(e.target.value)} />
                     </div>
 
-                    <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] py-2 rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                    <button type='submit' className='w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded hover:bg-green-700 disabled:cursor-not-allowed'>
                         {
                             addCategoryMutation.isPending ?
                                 <Loader title='Adding ' /> :

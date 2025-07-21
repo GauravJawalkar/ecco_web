@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import Loader from '../Loaders/Loader'
-import { CircleX } from 'lucide-react'
+import { CircleX, X } from 'lucide-react'
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -103,65 +103,65 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
     if (!isVisible) return null;
 
     return (
-        <section className='inset-0 fixed h-auto flex items-center justify-center z-10 backdrop-blur '>
-            <div className='w-[600px]  px-10 py-8 rounded-xl dark:bg-white/5 bg-slate-600/5 relative '>
-                <div className='absolute -right-2 -top-3'>
-                    <CircleX className='cursor-pointer h-8 w-8 ' onClick={onClose} />
-                </div>
-                <form onSubmit={handelSubmit} className=' gap-5 flex-col min-w-full grid grid-cols-2'>
-                    <div className='w-full'>
+        <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+            <div className='relative w-full max-w-3xl p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
+                <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
+                    <X className="w-5 h-5" />
+                </button>
+                <form onSubmit={handelSubmit} className='gap-5 flex-col min-w-full grid grid-cols-2 text-sm'>
+                    <div className='w-full space-y-1'>
                         <label>Name :</label>
                         <input
                             type="text"
                             value={name}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             placeholder='Name'
                             required
                             onChange={(e) => { setName(e.target.value) }} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Description :</label>
                         <input
                             type="text"
                             value={description}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             placeholder='Description'
                             required
                             onChange={(e) => setDescription(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Price :</label>
                         <input
                             type="number"
                             value={price}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             placeholder='Price'
                             required
                             onChange={(e) => setPrice(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Discount :</label>
                         <input
                             type="number"
                             value={discount}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             placeholder='Discount'
                             required
                             onChange={(e) => setDiscount(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Stock :</label>
                         <input
                             type="number"
                             value={stock}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             placeholder='Discount'
                             required
                             onChange={(e) => setStock(e.target.value)} />
                     </div>
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Size :</label>
-                        <select value={oldSize} className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setSize(e.target.value) }}>
+                        <select value={oldSize} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setSize(e.target.value) }}>
                             <option>Select Size</option>
                             <option>Small</option>
                             <option>Medium</option>
@@ -169,20 +169,20 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                         </select>
                     </div>
 
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Container :</label>
-                        <select value={oldContainer} className='text-black px-3 py-2 w-full rounded' onChange={(e) => { setContainer(e.target.value) }}>
+                        <select value={oldContainer} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setContainer(e.target.value) }}>
                             <option>Select Container</option>
                             <option>Growth Bag</option>
                             <option>Pot</option>
                         </select>
                     </div>
 
-                    <div className='w-full'>
+                    <div className='w-full space-y-1'>
                         <label>Category :</label>
                         <select
                             value={category}
-                            className='text-black px-3 py-2 w-full rounded'
+                            className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700'
                             required
                             onChange={(e) => setCategory(e.target.value)} >
                             <option>Select Category</option>
@@ -198,7 +198,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
                     <button
                         type='submit'
-                        className='w-full h-fit py-2 bg-[#0a0a0a] text-[#ededed] rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                        className='w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded hover:bg-green-700 disabled:cursor-not-allowed'>
                         {
                             editProductDetailsMutation.isPending ?
                                 <Loader title='Updating ' /> :

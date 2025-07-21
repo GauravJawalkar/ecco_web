@@ -3,7 +3,7 @@ import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
 import React, { use, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
-import { CircleX } from 'lucide-react';
+import { CircleX, X } from 'lucide-react';
 import Loader from '../Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -114,39 +114,39 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     return (
         <>
-            <section className='fixed inset-0 z-10 flex items-center justify-center pt-20 backdrop-blur-md'>
-                <div className='relative flex items-center justify-center w-1/2 px-10 py-8 rounded-xl dark:bg-neutral-900/80 bg-slate-600/5 backdrop-blur-md'>
-                    <div className='absolute text-end -top-3 -right-2'>
-                        <CircleX className='w-8 h-8 cursor-pointer ' onClick={() => {
-                            onClose();
-                            setPrimeImage(null);
-                            setSecondImage(null);
-                            setThirdImage(null);
-                        }} />
-                    </div>
-                    <form onSubmit={handelSubmit} className='grid min-w-full grid-cols-2 gap-5'>
+            <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
+                <div className='relative w-full max-w-3xl p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
+                    <button onClick={() => {
+                        onClose();
+                        setPrimeImage(null);
+                        setSecondImage(null);
+                        setThirdImage(null);
+                    }} title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" aria-label="Close" >
+                        <X className="w-6 h-6" />
+                    </button>
+                    <form onSubmit={handelSubmit} className='grid min-w-full grid-cols-2 gap-5 text-sm'>
                         <div className='space-y-4'>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Name :</label>
                                 <input type="text" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Name' required onChange={(e) => setName(e.target.value)} />
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Description :</label>
                                 <textarea rows={1} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Description' required onChange={(e) => setDescription(e.target.value)} />
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Stock :</label>
                                 <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Stock' required onChange={(e) => setStock(e.target.value)} />
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Price :</label>
                                 <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Price' required onChange={(e) => setPrice(e.target.value)} />
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Discount :</label>
                                 <input type="number" className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' placeholder='Enter Discount' required onChange={(e) => setDiscount(e.target.value)} />
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Size :</label>
                                 <select onChange={(e) => { setSize(e.target.value) }} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded'>
                                     <option>Select Size</option>
@@ -159,10 +159,10 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
                         <div className='space-y-4'>
                             {/* Images */}
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Main Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setPrimeImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-black/40 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setPrimeImage(e.target.files?.[0] || null) }} />
                                     {primeImage &&
                                         <Image
                                             src={(primeImage !== null) && getPreviewUrl(primeImage) || ""}
@@ -173,10 +173,10 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                     }
                                 </div>
                             </div>
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Second Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSecondImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-black/40 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSecondImage(e.target.files?.[0] || null) }} />
                                     {secondImage &&
                                         <Image
                                             src={(secondImage !== null) && getPreviewUrl(secondImage) || ""}
@@ -188,10 +188,10 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                 </div>
                             </div>
 
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Third Image :</label>
                                 <div className='flex items-center justify-center gap-2'>
-                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-gray-300 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setThirdImage(e.target.files?.[0] || null) }} />
+                                    <input type="file" className='w-full text-black bg-white border dark:border-neutral-700 rounded file:px-3 file:py-2 file:border-0 file:bg-black/40 file:text-white file:mr-2 file:hover:cursor-pointer hover:cursor-pointer' placeholder='Images' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setThirdImage(e.target.files?.[0] || null) }} />
                                     {thirdImage &&
                                         <Image
                                             src={(thirdImage !== null) && getPreviewUrl(thirdImage) || ""}
@@ -204,7 +204,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                             </div>
 
 
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Container :</label>
                                 <select onChange={(e) => { setContainer(e.target.value) }} className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded'>
                                     <option>Select Container</option>
@@ -213,7 +213,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                 </select>
                             </div>
 
-                            <div className='w-full'>
+                            <div className='w-full space-y-1'>
                                 <label>Category :</label>
                                 <select className='w-full px-3 py-2 text-black border dark:border-neutral-700 rounded' required onChange={(e) => setCategory(e.target.value)} >
                                     <option>Select Category</option>
@@ -226,8 +226,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                     }
                                 </select>
                             </div>
-                            <div className='w-full'>
-                                <button type='submit' className='w-full py-2 bg-[#0a0a0a] text-[#ededed]  rounded text-lg hover:bg-[#1a1a1a] transition-all ease-linear duration-200'>
+                            <div className='w-full space-y-1'>
+                                <button type='submit' className='w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded hover:bg-green-700 disabled:cursor-not-allowed'>
                                     {
                                         mutation?.isPending ?
                                             <Loader title='Adding...' /> :

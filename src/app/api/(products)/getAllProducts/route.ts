@@ -30,4 +30,4 @@ export async function GET(request: NextRequest) {
         console.error("Error in GET allProducts API:", error);
         return NextResponse.json({ error: error }, { status: 500 })
     }
-}
+}   
