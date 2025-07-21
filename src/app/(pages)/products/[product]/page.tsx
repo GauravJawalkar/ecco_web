@@ -376,7 +376,7 @@ const Product = () => {
                                                     <h1 className='flex gap-2 text-sm text-gray-600 capitalize dark:text-gray-400'>
                                                         {(reviewerName)}
                                                         <span>
-                                                            <CircleCheck className='w-5 h-5 text-white fill-gray-500  dark:text-gray-200' />
+                                                            <CircleCheck className='w-5 h-5 text-white fill-gray-500 dark:text-gray-200' />
                                                         </span>
                                                         Certified Review
                                                     </h1>
@@ -414,21 +414,21 @@ const Product = () => {
                                 })
                             }
                             {isFetching && <Loader title='Loading...' />}
-                            {totalReviews >= 4 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hidden' onClick={() => setSkip(skip + 4)}>Load More</button>}
-                            {/*Add Reviews Components Dynamic */}
-                            <div className='py-3'>
+                            <div className='py-3 gap-2 flex items-start justify-start'>
+                                {/*Add Reviews Components Dynamic */}
                                 <button className='px-3 py-2 text-white bg-green-500 rounded-lg hover:bg-green-500/80' onClick={() => { setOpenReviewModal(!openReviewModal) }}>Add Review</button>
-                                <ReviewModal
-                                    onClose={() => setOpenReviewModal(false)}
-                                    isVisible={openReviewModal}
-                                    reviewedBy={data?._id}
-                                    reviewerName={data?.name}
-                                    reviewedProduct={product?._id} />
+                                {totalReviews >= 4 && <button disabled={totalReviews === reviews?.length} className='px-3 py-2 border rounded-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hidden dark:border-neutral-700' onClick={() => setSkip(skip + 4)}>Load More</button>}
                             </div>
                         </div>
                     </div>
                 </div>}
             </section >
+            <ReviewModal
+                onClose={() => setOpenReviewModal(false)}
+                isVisible={openReviewModal}
+                reviewedBy={data?._id}
+                reviewerName={data?.name}
+                reviewedProduct={product?._id} />
             {(isSuccess && isFetched && data?._id) &&
                 <div className='relative'>
                     {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
