@@ -124,6 +124,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                     }} title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" aria-label="Close" >
                         <X className="w-6 h-6" />
                     </button>
+                    <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Add New Product</h2>
                     <form onSubmit={handelSubmit} className='grid min-w-full grid-cols-2 gap-5 text-sm'>
                         <div className='space-y-4'>
                             <div className='w-full space-y-1'>

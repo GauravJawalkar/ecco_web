@@ -37,8 +37,8 @@ const VerifyEmailModal = ({ isVisible, onClose, id }: { isVisible: boolean, onCl
                 <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
                     <X className="w-5 h-5" />
                 </button>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Verify Your Email</h2>
                 <form onSubmit={(e) => { e.preventDefault(); handelSubmit() }} className='flex flex-col items-center justify-center min-w-full space-y-5 text-sm'>
-                    <h1 className='text-2xl font-semibold text-center capitalize'>Verify Your Email</h1>
                     <div className='w-full space-y-1'>
                         <label>OTP :</label>
                         <input type="text" className='w-full px-3 py-2 text-sm font-normal text-black border rounded' placeholder='Enter OTP' required onChange={(e) => setOTP(e.target.value)} />

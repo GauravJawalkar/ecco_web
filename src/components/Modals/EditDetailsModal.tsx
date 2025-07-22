@@ -108,6 +108,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                 <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
                     <X className="w-5 h-5" />
                 </button>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Edit Product Details</h2>
                 <form onSubmit={handelSubmit} className='gap-5 flex-col min-w-full grid grid-cols-2 text-sm'>
                     <div className='w-full space-y-1'>
                         <label>Name :</label>

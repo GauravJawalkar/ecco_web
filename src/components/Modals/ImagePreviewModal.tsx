@@ -14,6 +14,7 @@ const ImagePreviewModal = ({ onClose, isVisible, images }: { onClose: () => void
                 <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
                     <X className="w-5 h-5" />
                 </button>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white text-center">Image Preview</h2>
                 <Image src={images?.[arrayPointer]} priority alt={"review image"} height={2000} width={2000} className="h-[400px] w-[400px] object-cover rounded-2xl" />
 
                 <button disabled={arrayPointer === 0} onClick={() => { setArrayPointer((prev) => Math.max(prev - 1, 0)); }} className={`absolute left-0 top-1/2 -translate-y-1/2 disabled:cursor-not-allowed disabled:opacity-5`}>

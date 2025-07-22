@@ -60,6 +60,7 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
                 <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
                     <X className="w-5 h-5" />
                 </button>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Add New Address</h2>
                 <form onSubmit={handelAddress} className='grid min-w-full grid-cols-2 gap-5 text-sm'>
                     <div className='w-full space-y-1'>
                         <label>Address :</label>

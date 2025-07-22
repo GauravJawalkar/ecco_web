@@ -58,6 +58,7 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
                 <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
                     <X className="w-5 h-5" />
                 </button>
+                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white text-center">Add Category</h2>
                 <form onSubmit={handelSubmit} className='flex flex-col items-center justify-center min-w-full space-y-3 text-sm'>
                     <div className='w-full space-y-1'>
                         <label>CUSTOM CATEGORY :</label>
