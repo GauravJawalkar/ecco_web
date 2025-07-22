@@ -80,7 +80,7 @@ const EditStoreDetailsModal: React.FC<EditStoreDetailsModalProps> = ({ isOpen, o
                     <X className="w-5 h-5" />
                 </button>
                 <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Edit Store Details</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5 text-sm">
                     <div>
                         <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                             Store Name

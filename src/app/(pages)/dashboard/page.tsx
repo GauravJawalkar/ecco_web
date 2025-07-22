@@ -8,7 +8,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { LayoutGrid, LayoutList, Lock } from "lucide-react";
 import { userProps } from "@/interfaces/commonInterfaces";
-import { set } from "mongoose";
 import StoreOnboardingModal from "@/components/Modals/StoreOnboardingModal";
 import Store from "@/components/Dashboard/Store";
 

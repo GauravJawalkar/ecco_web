@@ -27,16 +27,12 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     async function addProduct() {
         if (size === "Select Size") {
-            toast.success("Select Proper Size", {
-                icon: "▄︻══━一💥"
-            })
+            toast.success("Select Proper Size", { icon: "▄︻══━一💥" })
             return;
         }
 
         if (container === "Select Container") {
-            toast.success("Select Proper Container", {
-                icon: "▄︻══━一💥"
-            })
+            toast.success("Select Proper Container", { icon: "▄︻══━一💥" })
             return;
         }
         try {
