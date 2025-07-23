@@ -14,6 +14,19 @@ const productSchema = new Schema(
             trim: true,
             lowercase: true,
         },
+        storeDetails: {
+            storeName: {
+                type: String,
+                required: true,
+                trim: true,
+                lowercase: true,
+            },
+            storeId: {
+                type: Schema.Types.ObjectId,
+                ref: "Store",
+                required: true
+            }
+        },
         price: {
             type: Number,
             required: [true, "Price cant be empty"],
