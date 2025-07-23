@@ -43,8 +43,8 @@ const Store = () => {
                 <Image
                     alt="Store Cover"
                     src={StoreData?.[0]?.storeCoverImage || `https://dummyimage.com/640x4:3`}
-                    width={1280}
-                    height={4080}
+                    width={1000}
+                    height={1000}
                     className="object-cover w-full h-full border rounded-xl dark:border-neutral-700"
                     priority
                 />
@@ -56,8 +56,8 @@ const Store = () => {
                     <Image
                         alt="Store Profile"
                         src={StoreData?.[0]?.storeImage || `https://dummyimage.com/qvga`}
-                        width={1280}
-                        height={1280}
+                        width={1000}
+                        height={1000}
                         className="object-cover w-full h-full border rounded-full border-neutral-300 dark:border-neutral-700"
                         priority
                     />

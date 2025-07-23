@@ -18,13 +18,13 @@ export async function POST(request: NextRequest) {
         const { email, password } = reqBody;
 
         if ([email, password].some((field) => field.trim() === "")) {
-            return NextResponse.json({ error: "name email and password are required" }, { status: 404 })
+            return NextResponse.json({ error: "name email and password are required" }, { status: 401 })
         }
 
         const user = await User.findOne({ email })
 
         if (!user) {
-            return NextResponse.json({ error: "User not found" }, { status: 500 });
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
         const validPassword = await user.isPasswordCorrect(password);

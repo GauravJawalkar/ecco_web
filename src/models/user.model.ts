@@ -21,6 +21,16 @@ const userSchema = new Schema(
             type: Boolean,
             default: false,
         },
+        storeDetails: {
+            storeName: {
+                type: String,
+                default: ""
+            },
+            storeId: {
+                type: String,
+                default: ""
+            }
+        },
         password: {
             type: String,
             required: true

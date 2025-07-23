@@ -43,7 +43,11 @@ export async function POST(request: NextRequest) {
             ownerId,
             {
                 $set: {
-                    store: true
+                    store: true,
+                    storeDetails: {
+                        storeName: storeName,
+                        storeId: storeData._id.toString()
+                    }
                 }
             },
             { new: true }

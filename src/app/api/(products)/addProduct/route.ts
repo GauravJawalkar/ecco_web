@@ -41,12 +41,14 @@ export async function POST(request: NextRequest) {
         const container = formData.get('container');
         const stock = formData.get('stock');
         const category = formData.get('category');
+        const storeName = formData.get('storeName');
+        const storeId = formData.get('storeId');
 
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!seller || !name || !description || !price || !discount || !size || !container || !stock || !category) {
+        if (!seller || !name || !description || !price || !discount || !size || !container || !stock || !category || !storeName || !storeId) {
             return NextResponse.json({ error: "Required Fields not found" }, { status: 400 });
         }
 
@@ -74,7 +76,11 @@ export async function POST(request: NextRequest) {
             container,
             stock,
             category,
-            seller: userId
+            seller: userId,
+            storeDetails: {
+                storeName: storeName ? storeName : null,
+                storeId: storeId ? storeId : null
+            }
         })
 
         if (!product) {

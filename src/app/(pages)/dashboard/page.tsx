@@ -17,10 +17,8 @@ const Dashboard = () => {
     const [showCustomCategoryModal, setShowCustomCategoryModal] = useState(false);
     const [listView, setListView] = useState("list");
     const [storeOnboarding, setStoreOnboarding] = useState(false);
-
     const isStoreLocked = data?.store;
-    console.log("Store Status:", isStoreLocked);
-
+    
     return (
         <div className="relative min-h-screen">
             <Store />

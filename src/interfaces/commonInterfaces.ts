@@ -13,4 +13,8 @@ export interface userProps {
         bankName: string;
         status: string; // KYC verification status
     };
+    storeDetails: {
+        storeName: string;
+        storeId: string;
+    };
 }

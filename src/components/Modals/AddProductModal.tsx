@@ -1,9 +1,9 @@
 "use client"
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
-import React, { use, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import toast from 'react-hot-toast';
-import { CircleX, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import Loader from '../Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -51,6 +51,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
             formData.append('stock', stock);
             formData.append('stock', stock);
             formData.append('category', category);
+            formData.append('storeName', data?.storeDetails?.storeName || "");
+            formData.append('storeId', data?.storeDetails?.storeId || "");
             const response = await axios.post('/api/addProduct', formData);
             if (response.data.data) {
                 toast.success("Product Added Successfully");
