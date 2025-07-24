@@ -18,7 +18,7 @@ const Dashboard = () => {
     const [listView, setListView] = useState("list");
     const [storeOnboarding, setStoreOnboarding] = useState(false);
     const isStoreLocked = data?.store;
-    
+
     return (
         <div className="relative min-h-screen">
             <Store />
@@ -63,7 +63,6 @@ const Dashboard = () => {
                         <DashBoardStats
                             sellerId={data._id}
                             isAdmin={data?.isSuperAdmin}
-                            load={showProductModal}
                             kycVerified={data?.bankDetails?.status}
                         />
                     )}
@@ -86,7 +85,7 @@ const Dashboard = () => {
                         onClose={() => setShowCustomCategoryModal(false)}
                         creator={data?._id} />}
                     {
-                        data._id && <MyProducts load={showProductModal} view={listView} sellerId={data?._id} />
+                        data._id && <MyProducts view={listView} sellerId={data?._id} />
                     }
                 </div>
                 {/* Unlock overlay */}

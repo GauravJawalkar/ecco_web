@@ -105,7 +105,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     const { data: exCategories = [] } = useQuery({
         queryKey: ['exCategories'],
-        queryFn: getCategories
+        queryFn: getCategories,
+        refetchOnWindowFocus: false,
     })
 
     if (!isVisible) return null;

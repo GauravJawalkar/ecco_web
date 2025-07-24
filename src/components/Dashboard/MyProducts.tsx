@@ -25,7 +25,6 @@ interface reqSpecialAppearenceProps {
 
 interface MyProductsProps {
     sellerId: string;
-    load: boolean;
     view: string;
 }
 
