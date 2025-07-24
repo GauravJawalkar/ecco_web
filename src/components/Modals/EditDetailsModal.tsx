@@ -67,6 +67,18 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
     const handelSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (size === "Select Size") {
+            toast.error("Please select a valid size.");
+            return;
+        }
+        if (container === "Select Container") {
+            toast.error("Please select a valid container.");
+            return;
+        }
+        if (category === "Select Category") {
+            toast.error("Please select a valid category.");
+            return;
+        }
         editProductDetailsMutation.mutate();
     }
 
@@ -162,7 +174,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                     </div>
                     <div className='w-full space-y-1'>
                         <label>Size :</label>
-                        <select value={oldSize} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setSize(e.target.value) }}>
+                        <select value={size} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setSize(e.target.value) }}>
                             <option>Select Size</option>
                             <option>Small</option>
                             <option>Medium</option>
@@ -172,7 +184,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
                     <div className='w-full space-y-1'>
                         <label>Container :</label>
-                        <select value={oldContainer} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setContainer(e.target.value) }}>
+                        <select value={container} className='text-black px-3 py-2 w-full rounded border dark:border-neutral-700' onChange={(e) => { setContainer(e.target.value) }}>
                             <option>Select Container</option>
                             <option>Growth Bag</option>
                             <option>Pot</option>
@@ -190,7 +202,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
                             {
                                 fetchedCategories.length !== 0 && fetchedCategories?.map(({ categoryName, _id }: { categoryName: string, _id: string }) => {
                                     return (
-                                        <option key={_id}>{categoryName}</option>
+                                        <option key={_id} className='capitalize'>{categoryName}</option>
                                     )
                                 })
                             }

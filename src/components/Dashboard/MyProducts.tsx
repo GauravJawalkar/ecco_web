@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules"
 import Loader from "../Loaders/Loader";
 import { useQuery } from "@tanstack/react-query";
+import DeleteProductModal from "../Modals/DeleteProductModal";
 
 interface reqSpecialAppearenceProps {
     _id: string;
@@ -57,13 +58,16 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
     const [showMore, setShowMore] = useState<string | null>(null);
     const [reqLoader, setReqLoader] = useState(false);
     const [oldContainer, setOldContainer] = useState("");
+    const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
+    const [deleteName, setDeleteName] = useState("");
+    const [productId, setProductId] = useState("");
 
     async function getSellerProducts() {
         try {
             const response = await axios.post("/api/getSellerProducts", { sellerId, page });
-            if (response.data.data) {
-                setTotalPages(response.data.totalPages || 1);
-                return response.data.data || [];
+            if (response.data?.data) {
+                setTotalPages(response.data?.totalPages || 1);
+                return response.data?.data || [];
             }
             return [];
         } catch (error) {
@@ -72,22 +76,6 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
         }
     }
 
-    const handelDelete = async (productId: string) => {
-        try {
-            const response = await axios.delete("api/deleteProduct", {
-                data: { sellerId, productId },
-            });
-
-            if (response.data.product) {
-                toast.success("Product Deleted");
-            }
-
-            await getSellerProducts();
-        } catch (error) {
-            toast.error("Failed to delete the product. Try Again");
-            console.log(error);
-        }
-    };
 
     const reqSpecialAppearence = async ({ _id, name, description, price, images, discount, seller, }: reqSpecialAppearenceProps) => {
         const data = { _id, name, description, price, images, discount, seller };
@@ -252,7 +240,9 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                         <button
                                                             className="flex items-center justify-center gap-2 px-3 py-1 text-white transition-colors duration-200 ease-in-out bg-red-500 rounded hover:bg-red-700"
                                                             onClick={() => {
-                                                                handelDelete(_id);
+                                                                setDeleteName(name);
+                                                                setShowDeleteProductModal(true);
+                                                                setProductId(_id);
                                                             }}>
                                                             Delete
                                                             <span>
@@ -261,6 +251,13 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                         </button>
                                                     </div>
                                                 </div>
+                                                <DeleteProductModal
+                                                    isOpen={showDeleteProductModal}
+                                                    onClose={() => setShowDeleteProductModal(false)}
+                                                    productName={deleteName}
+                                                    productId={productId}
+                                                    sellerId={sellerId}
+                                                />
 
                                                 <EditDetailsModal
                                                     isVisible={editModal}
@@ -351,8 +348,17 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                                 setOldCategory(category)
                                                             }} />
                                                         <Trash2 onClick={() => {
-                                                            handelDelete(_id);
+                                                            setDeleteName(name);
+                                                            setShowDeleteProductModal(true);
+                                                            setProductId(_id);
                                                         }} className="cursor-pointer hover:text-red-600 h-5 w-5" />
+                                                        <DeleteProductModal
+                                                            isOpen={showDeleteProductModal}
+                                                            onClose={() => setShowDeleteProductModal(false)}
+                                                            productName={deleteName}
+                                                            productId={productId}
+                                                            sellerId={sellerId}
+                                                        />
                                                     </div>
                                                 </td>
                                             </tr>
@@ -360,6 +366,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                     })}
                                 </tbody>
                             </table>
+
                             {prodData?.length === 0 && <div className="text-center place-items-center w-full py-4 border border-t-0 dark:border-neutral-700"> No Products Found</div>}
 
                             {/* Pagination Buttons */}
