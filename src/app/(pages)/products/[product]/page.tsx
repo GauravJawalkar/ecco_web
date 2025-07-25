@@ -298,6 +298,10 @@ const Product = () => {
                                     </li>
 
                                     <li className='text-sm font-normal capitalize'>
+                                        Container: {product?.containerType}
+                                    </li>
+
+                                    <li className='text-sm font-normal capitalize'>
                                         Replace: Non Replaceable
                                     </li>
 
