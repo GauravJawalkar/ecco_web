@@ -44,6 +44,8 @@ export async function POST(request: NextRequest) {
         const storeName = formData.get('storeName');
         const storeId = formData.get('storeId');
 
+        console.log("Form data is ", formData);
+
         if (seller !== userId) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
@@ -62,7 +64,7 @@ export async function POST(request: NextRequest) {
 
         const imageArray = [mainImageUrl?.secure_url, secondImageUrl?.secure_url, thirdImageUrl?.secure_url];
 
-        if (!mainImageUrl) {
+        if (imageArray?.length === 0 || !imageArray) {
             return NextResponse.json({ error: "No Files uploaded on cloudinary" }, { status: 404 })
         }
 
@@ -72,14 +74,14 @@ export async function POST(request: NextRequest) {
             price,
             discount,
             images: imageArray || [],
-            size,
-            container,
+            size: size,
+            containerType: container,
             stock,
             category,
             seller: userId,
             storeDetails: {
-                storeName: storeName ? storeName : null,
-                storeId: storeId ? storeId : null
+                storeName: storeName,
+                storeId: storeId
             }
         })
 
@@ -92,6 +94,7 @@ export async function POST(request: NextRequest) {
         )
 
     } catch (error) {
+        console.error("Error in adding product:", error);
         return NextResponse.json({ error: "Failed to add the product" }, { status: 500 })
     }
 }

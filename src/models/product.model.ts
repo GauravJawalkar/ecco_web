@@ -63,7 +63,7 @@ const productSchema = new Schema(
         ],
         size: {
             type: String,
-            enum: ['Small', 'Medium', 'Large '],
+            enum: ['Small', 'Medium', 'Large'],
             required: true
         },
         containerType: {

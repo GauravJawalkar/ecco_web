@@ -23,6 +23,9 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const [primeImage, setPrimeImage] = useState<File | null>(null);
     const [secondImage, setSecondImage] = useState<File | null>(null);
     const [thirdImage, setThirdImage] = useState<File | null>(null);
+    const storeName = data?.storeDetails?.storeName ?? "";
+    const storeId = data?.storeDetails?.storeId ?? "";
+    const sellerId = data?._id;
 
 
     async function addProduct() {
@@ -51,8 +54,8 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
             formData.append('stock', stock);
             formData.append('stock', stock);
             formData.append('category', category);
-            formData.append('storeName', data?.storeDetails?.storeName || "");
-            formData.append('storeId', data?.storeDetails?.storeId || "");
+            formData.append('storeName', storeName);
+            formData.append('storeId', storeId);
             const response = await axios.post('/api/addProduct', formData);
             if (response.data.data) {
                 toast.success("Product Added Successfully");
@@ -72,7 +75,9 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const mutation = useMutation({
         mutationFn: addProduct,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['myData'] });
+            queryClient.invalidateQueries({
+                queryKey: ['sellerProducts', sellerId],
+            });
         },
     })
 

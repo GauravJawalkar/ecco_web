@@ -116,7 +116,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
                     <Link passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                       <div className="w-full py-3 relative">
                         <Image
-                          src={images?.[2] || ""}
+                          src={images?.[0] || ""}
                           alt="prodImage"
                           width={"180"}
                           height={"180"}
