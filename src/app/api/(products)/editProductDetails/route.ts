@@ -1,4 +1,5 @@
 import connectDB from "@/db/dbConfig";
+import { uploadOnCloudinary } from "@/helpers/uploadAssets";
 import { Product } from "@/models/product.model";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,11 +7,22 @@ connectDB();
 export async function PUT(request: NextRequest) {
     try {
 
-        const reqBody = await request.json();
+        const formData = await request.formData();
 
-        const { id, name, description, price, discount, size, stock, category, container } = reqBody;
+        const id = formData.get("id");
+        const name = formData.get("name");
+        const description = formData.get("description");
+        const price = formData.get("price");
+        const discount = formData.get("discount");
+        const size = formData.get("size");
+        const stock = formData.get("stock");
+        const category = formData.get("category");
+        const container = formData.get("container");
+        let mainImage = formData.get("mainImage")
+        let secondImage = formData.get("secondImage");
+        let thirdImage = formData.get("thirdImage");
 
-        if (id.trim() === "") {
+        if (!id) {
             return NextResponse.json({ error: "id is required" }, { status: 402 })
         }
 
@@ -20,7 +32,20 @@ export async function PUT(request: NextRequest) {
         String(stock);
         String(container);
 
-        if ([name, description, category, container].some((field) => field.trim() === "")) {
+        if (mainImage && (mainImage instanceof File)) {
+            const newMainImage: any = await uploadOnCloudinary(mainImage, "ecco_web");
+            mainImage = newMainImage?.secure_url;
+        }
+        if (secondImage && (secondImage instanceof File)) {
+            const newSecondImage: any = await uploadOnCloudinary(secondImage, "ecco_web");
+            secondImage = newSecondImage?.secure_url;
+        }
+        if (thirdImage && (thirdImage instanceof File)) {
+            const newThirdImage: any = await uploadOnCloudinary(thirdImage, "ecco_web");
+            thirdImage = newThirdImage?.secure_url;
+        }
+
+        if (!name || !description || !category || !container) {
             return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 403 })
         }
 
@@ -34,7 +59,8 @@ export async function PUT(request: NextRequest) {
                     stock,
                     containerType: container,
                     size,
-                    category
+                    category,
+                    images: [mainImage, secondImage, thirdImage]
                 },
             },
             {

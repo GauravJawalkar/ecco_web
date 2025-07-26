@@ -39,13 +39,13 @@ const Store = () => {
     return (
         <section className="relative w-full mx-auto my-5 rounded-xl">
             {/* Cover Image */}
-            <div className="relative w-full h-48 md:h-64">
+            <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden">
                 <Image
                     alt="Store Cover"
                     src={StoreData?.[0]?.storeCoverImage || `https://dummyimage.com/640x4:3`}
-                    width={1000}
-                    height={1000}
-                    className="object-cover w-full h-full border rounded-xl dark:border-neutral-700"
+                    fill
+                    sizes="100vw"
+                    className="object-cover w-full h-full"
                     priority
                 />
             </div>

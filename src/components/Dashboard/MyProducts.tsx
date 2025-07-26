@@ -13,6 +13,7 @@ import { EffectFade, Pagination } from "swiper/modules"
 import Loader from "../Loaders/Loader";
 import { useQuery } from "@tanstack/react-query";
 import DeleteProductModal from "../Modals/DeleteProductModal";
+import { set } from "mongoose";
 
 interface reqSpecialAppearenceProps {
     _id: string;
@@ -61,6 +62,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
     const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
     const [deleteName, setDeleteName] = useState("");
     const [productId, setProductId] = useState("");
+    const [oldImages, setOldImages] = useState<string[]>([]);
 
     async function getSellerProducts() {
         try {
@@ -271,6 +273,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                     oldStock={oldStock}
                                                     oldDiscount={oldDiscount}
                                                     oldSize={oldSize}
+                                                    oldImages={oldImages}
                                                     id={currentId}
                                                     oldContainer={oldContainer} />
                                             </div>
@@ -345,7 +348,8 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                                 setOldStock(stock);
                                                                 setCurrentId(_id);
                                                                 setOldContainer(containerType);
-                                                                setOldCategory(category)
+                                                                setOldCategory(category);
+                                                                setOldImages(images);
                                                             }} />
                                                         <Trash2 onClick={() => {
                                                             setDeleteName(name);
@@ -390,6 +394,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 oldStock={oldStock}
                                 oldSize={oldSize}
                                 id={currentId}
+                                oldImages={oldImages}
                                 oldContainer={oldContainer} />
                         </div>
                     }

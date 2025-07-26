@@ -68,7 +68,7 @@ const productSchema = new Schema(
         },
         containerType: {
             type: String,
-            enum: ['Growth Bag', 'Pot'],
+            enum: ['Growth Bag', 'Pot', 'Box'],
             required: true
         },
         category: {
