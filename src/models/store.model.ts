@@ -23,7 +23,15 @@ const storeSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
             required: true
-        }
+        },
+        location: {
+            type: String,
+            default: "On Earth"
+        },
+        reviewCount: {
+            type: Number,
+            default: 0
+        },
     },
     {
         timestamps: true,

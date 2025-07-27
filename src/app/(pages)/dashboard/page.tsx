@@ -88,7 +88,7 @@ const Dashboard = () => {
                         data._id && <MyProducts view={listView} sellerId={data?._id} />
                     }
                 </div>
-                {/* Unlock overlay */}
+                {/* Unlock Store overlay */}
                 {isStoreLocked === false && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
                         <div className="flex flex-col items-center justify-center p-10 bg-white border shadow-xl dark:bg-neutral-800 dark:border-neutral-700 rounded-xl">

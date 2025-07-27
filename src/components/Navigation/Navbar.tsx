@@ -1,7 +1,7 @@
 "use client"
 
 import { useUserStore } from "@/store/UserStore"
-import { ListCollapse, LogOut, MoonStar, ShoppingCart, Sun, User } from "lucide-react"
+import { ListCollapse, LogOut, MoonStar, Search, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -118,8 +118,13 @@ export const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            <div className='w-[50%]'>
-                <input type="search" name="" id="" className='w-full py-2 px-4 rounded border-2' placeholder='Search For Plants Decoratables And More' />
+            <div className='w-[50%] flex items-center bg-white dark:bg-neutral-800 rounded-lg border dark:border-neutral-700 px-4 py-2'>
+                <Search className="w-5 h-5 text-gray-400 mr-2" />
+                <input
+                    type="text"
+                    placeholder="Search For Plants Decoratables And More"
+                    className="w-full bg-transparent outline-none text-gray-700 dark:text-white"
+                />
             </div>
 
             {/* Account details ,Orders and Cart */}

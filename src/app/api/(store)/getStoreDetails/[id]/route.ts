@@ -8,8 +8,6 @@ export async function GET(_: NextRequest, { params }: { params: { id: string } }
     try {
         const { id } = await params;
 
-        console.log("Fetching store details for ID:", id);
-
         if (!id || id.trim() === "") {
             return NextResponse.json({ error: "Id is required" }, { status: 400 });
         }
