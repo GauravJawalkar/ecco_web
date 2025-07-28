@@ -21,7 +21,7 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
     const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
     return (
         <>
-            <div className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-100 dark:border-neutral-700">
+            <div className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-200 dark:border-neutral-700">
                 {/* Cover Image with gradient overlay */}
                 <div className="relative w-full h-40 md:h-48 overflow-hidden">
                     <Image
