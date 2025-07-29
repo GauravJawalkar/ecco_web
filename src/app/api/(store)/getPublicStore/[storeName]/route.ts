@@ -16,10 +16,10 @@ export async function GET(_: NextRequest, { params }: StoreProps) {
         const { storeName } = await params;
 
         if (!storeName || storeName.trim() === "") {
-            return NextResponse.json({ error: "Store name is required" }, { status: 400 });
+            return NextResponse.json({ error: "Store ID is required" }, { status: 400 });
         }
 
-        const publicStore = await Store.findOne({ name: storeName });
+        const publicStore = await Store.findById(storeName);
 
         if (!publicStore) {
             return NextResponse.json({ error: "Store not found" }, { status: 404 });
@@ -40,7 +40,7 @@ export async function GET(_: NextRequest, { params }: StoreProps) {
         const storeProducts = await Product.find({ seller: storeOwnerId });
         const totalStoreProducts = await Product.countDocuments({ seller: storeOwnerId });
 
-        return NextResponse.json({ data: publicStore, ownerDetails, storeProducts, totalStoreProducts }, { status: 200 });
+        return NextResponse.json({ data: { publicStore, ownerDetails, storeProducts, totalStoreProducts } }, { status: 200 });
 
     } catch (error) {
         console.error("Error fetching public store data:", error);

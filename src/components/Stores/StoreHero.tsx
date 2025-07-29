@@ -3,6 +3,7 @@ import {
     Star, MapPin, Instagram, Facebook, Twitter,
     Calendar, ShoppingBag, Leaf, Heart, Mail, Phone, Clock, Tag, Shield
 } from 'lucide-react';
+import Image from 'next/image';
 
 const dummyStore = {
     storeName: "GreenLeaf Boutique",
@@ -27,13 +28,15 @@ const dummyStore = {
     }
 };
 
-const StoreHero = () => {
+const StoreHero = ({ storeDetails }: any) => {
     return (
         <div className="relative overflow-hidden border dark:border-neutral-800 dark:bg-neutral-900/60 rounded-b-lg">
             {/* Cover Image with Gradient Overlay */}
             <div className="relative h-64 md:h-80 lg:h-96">
-                <img
-                    src={dummyStore.storeCoverImage}
+                <Image
+                    height={1000}
+                    width={1000}
+                    src={storeDetails?.storeCoverImage || "https://dummyimage.com/640x4:3"}
                     alt="Store Cover"
                     className="object-cover w-full h-full"
                 />
@@ -43,8 +46,10 @@ const StoreHero = () => {
                 <div className="absolute left-8 -bottom-16 z-10">
                     <div className="flex items-end gap-4">
                         <div className="relative group">
-                            <img
-                                src={dummyStore.storeImage}
+                            <Image
+                                height={1000}
+                                width={1000}
+                                src={storeDetails?.storeImage || "https://dummyimage.com/qvga"}
                                 alt="Store Profile"
                                 className="object-cover border-4 border-white rounded-lg shadow-xl w-28 h-28 md:w-32 md:h-32 dark:border-neutral-800 transition-transform duration-300 group-hover:scale-105"
                             />
@@ -62,7 +67,7 @@ const StoreHero = () => {
                         <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-3 mb-2">
                                 <h1 className="text-2xl font-bold text-gray-900 md:text-3xl dark:text-white tracking-tight">
-                                    {dummyStore.storeName}
+                                    {storeDetails?.storeName}
                                 </h1>
                                 <div className="flex items-center gap-2">
                                     <span className={`flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-full ${dummyStore.isOpen ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200" : "bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-200"}`}>
@@ -71,13 +76,13 @@ const StoreHero = () => {
                                     </span>
                                     <span className="flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200">
                                         <Calendar className="w-3 h-3" />
-                                        Est. {dummyStore.establishedYear}
+                                        Est. {storeDetails?.createdAt ? new Date(storeDetails.createdAt).getFullYear() : "N/A"}
                                     </span>
                                 </div>
                             </div>
 
                             <p className="text-sm text-gray-600 dark:text-gray-300 max-w-3xl">
-                                {dummyStore.storeDescription}
+                                {storeDetails?.storeDescription}
                             </p>
 
                             {/* Store Stats */}
@@ -89,7 +94,7 @@ const StoreHero = () => {
                                     <div>
                                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Rating</p>
                                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {dummyStore.rating} <span className="text-sm font-normal text-gray-500 dark:text-gray-400">({dummyStore.reviewCount})</span>
+                                            {storeDetails?.rating || 0} <span className="text-sm font-normal text-gray-500 dark:text-gray-400">({storeDetails?.reviewCount || 0})</span>
                                         </p>
                                     </div>
                                 </div>

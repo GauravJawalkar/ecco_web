@@ -91,7 +91,7 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
                             <span>{store?.location || '1.2 miles away'}</span>
                         </div>
 
-                        <Link href={`/stores/${slugify(store?.storeName || '')}`} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center">
+                        <Link href={`/stores/${slugify(store?.storeName)}?id=${store?._id}`} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center">
                             <ShoppingBag className="w-4 h-4 mr-2" />
                             Visit Store
                         </Link>

@@ -1,20 +1,40 @@
+"use client";
 import StoreHero from '@/components/Stores/StoreHero';
 import StoreProductsShowcase from '@/components/Stores/StoreShowcase';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { useSearchParams } from 'next/navigation';
 import React from 'react'
 
-type Props = {
-    params: { storeName: string };
-};
+const StorePage = () => {
+    const searchParams = useSearchParams();
+    const storeId = searchParams.get('id');
 
+    const getStoreDetails = async () => {
+        try {
+            const response = await axios.get(`/api/getPublicStore/${storeId}`);
+            if (response.status === 200) {
+                return response.data?.data
+            }
+            return [];
+        } catch (error) {
+            console.error("Error fetching store details:", error);
+        }
+    }
 
+    const { data: storeDetails = [] } = useQuery(
+        {
+            queryFn: getStoreDetails,
+            queryKey: ['StoreDetails', storeId],
+            refetchOnWindowFocus: false,
+        });
 
-const StorePage = async ({ params }: Props) => {
-    // const { storeName } = await params; // Not needed for dummy UI
+    console.log("Store Details:", storeDetails);
 
     return (
         <>
-            <StoreHero />
-            <StoreProductsShowcase />
+            <StoreHero storeDetails={storeDetails?.publicStore} />
+            <StoreProductsShowcase storeProducts={storeDetails?.storeProducts}  />
         </>
     )
 }
