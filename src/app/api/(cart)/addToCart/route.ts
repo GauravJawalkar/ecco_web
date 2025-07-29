@@ -16,7 +16,9 @@ export async function POST(request: NextRequest) {
         }
         const reqBody = await request.json();
 
-        const { cartOwner, name, price, image, discount, stock, productId, sellerId, storeName, storeId } = reqBody;
+        const { cartOwner, name, price, image, discount, stock, productId, sellerId } = reqBody;
+
+        console.log("Request Body:", reqBody);
 
         const quantity = 1;
 
@@ -24,7 +26,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
         }
 
-        if (!name || !price || !image || !discount || !productId || !sellerId || !storeName || !storeId) {
+        if (!name || !price || !image || !discount || !productId || !sellerId) {
             return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
         }
 
