@@ -32,9 +32,11 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
         }
     })
 
-    useEffect(() => {
-        mutation.mutate();
-    }, [products]);
+    if (products?.length >= 1) {
+        useEffect(() => {
+            mutation.mutate();
+        }, [products]);
+    }
     const slugify = (prodName: string) => prodName.toLowerCase().replace(/\s+/g, '-');
 
 
