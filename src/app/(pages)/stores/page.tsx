@@ -83,7 +83,7 @@ const page = () => {
                                 onChange={(e) => setFilter(e.target.value)}
                                 className="px-3 py-2 rounded-lg border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-700 dark:text-white"
                             >
-                                {filterOptions.map((opt) => (
+                                {filterOptions?.map((opt) => (
                                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                                 ))}
                             </select>
@@ -91,16 +91,16 @@ const page = () => {
                     </div>
                 </div>
                 {
-                    (filteredStores.length === 0 && isLoading) && <Loader title="Loading stores..." />
+                    (filteredStores?.length === 0 && isLoading) && <Loader title="Loading stores..." />
                 }
                 {
-                    (filteredStores.length === 0 && isError) && <div>Error Loading The Stores</div>
+                    (filteredStores?.length === 0 && isError) && <div>Error Loading The Stores</div>
                 }
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {(filteredStores?.length === 0 && !isLoading && !isError) ? (
                         <div>No Stores Found</div>
                     ) : (
-                        filteredStores.map((store: StoreProps) => (
+                        filteredStores?.map((store: StoreProps) => (
                             <StoreCard key={store?._id} store={store} />
                         ))
                     )}

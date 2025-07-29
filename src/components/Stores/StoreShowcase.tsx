@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import { Search, Star } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Dummy categories
 const categories = [
@@ -50,6 +51,8 @@ const StoreProductsShowcase = ({ storeProducts }: any) => {
         return total / rating?.length;
     };
 
+    const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
+
     return (
         <section className="py-10">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
@@ -85,7 +88,7 @@ const StoreProductsShowcase = ({ storeProducts }: any) => {
                     </div>
                 ) : (
                     filteredProducts?.map(({ name, images, _id, price, discount, rating }: productProps) => (
-                        <div key={_id} className="bg-white dark:bg-neutral-800 rounded-xl border dark:border-neutral-700/80 p-4 flex flex-col">
+                        <Link href={`/products/${slugify(name)}?id=${_id}`} key={_id} className="bg-white dark:bg-neutral-800 rounded-xl border dark:border-neutral-700/80 p-4 flex flex-col">
                             <Image
                                 height={160}
                                 width={160}
@@ -105,7 +108,7 @@ const StoreProductsShowcase = ({ storeProducts }: any) => {
                                     <span className="text-xs text-gray-400 dark:text-gray-500">( {rating?.length} )</span>
                                 </span>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 )}
             </div>
