@@ -1,6 +1,6 @@
 "use client"
 import React, { useMemo, useState } from "react";
-import { Search, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Search, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -28,7 +28,17 @@ interface productProps {
     category: string;
 }
 
-const StoreProductsShowcase = ({ storeProducts }: any) => {
+interface StoreProductsShowcaseProps {
+    storeProducts: productProps[];
+    currentPage: number;
+    totalPages: number;
+    limit: number;
+    onPageChange: (page: number) => void;
+    onLimitChange: (limit: number) => void;
+    loading: boolean
+}
+
+const StoreProductsShowcase = ({ storeProducts, currentPage, totalPages, limit, onPageChange, onLimitChange, loading }: StoreProductsShowcaseProps) => {
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("all");
 
@@ -112,6 +122,47 @@ const StoreProductsShowcase = ({ storeProducts }: any) => {
                     ))
                 )}
             </div>
+
+            {/* Pagination and Limit Controls */}
+            {totalPages > 1 && (
+                <div className="flex flex-col sm:flex-row items-center justify-between mt-10 gap-4">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Product Limit:</span>
+                        <select
+                            value={limit}
+                            onChange={(e) => onLimitChange(Number(e.target.value))}
+                            className="px-3 py-2 text-sm rounded-lg border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-700 dark:text-white outline-none"
+                        >
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                        </select>
+                    </div>
+
+                    <div className="flex items-center justify-center">
+                        <button
+                            onClick={() => onPageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="flex items-center gap-1 p-3 rounded-full border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
+                        >
+                            <ChevronLeft className="w-4 h-4" />
+                        </button>
+
+                        <span className="px-4 py-2 text-gray-700 dark:text-white">
+                            Page {currentPage} of {totalPages}
+                        </span>
+
+                        <button
+                            onClick={() => onPageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="flex items-center gap-1 p-3 rounded-full border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-700 dark:text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
+                        >
+                            <ChevronRight className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };
