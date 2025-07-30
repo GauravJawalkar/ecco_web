@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Search, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import StoreProductsSkeleton from "../Skeletons/Store/StoreProductsSkeleton";
 
 // Dummy categories
 const categories = [
@@ -91,7 +92,11 @@ const StoreProductsShowcase = ({ storeProducts, currentPage, totalPages, limit, 
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+
+            {loading && <StoreProductsSkeleton />}
+
+            {/* Product Showcases */}
+            {!loading && (<div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
                 {filteredProducts?.length === 0 ? (
                     <div className="col-span-2 text-center text-gray-500 dark:text-gray-400 py-10">
                         No products found.
@@ -121,7 +126,7 @@ const StoreProductsShowcase = ({ storeProducts, currentPage, totalPages, limit, 
                         </Link>
                     ))
                 )}
-            </div>
+            </div>)}
 
             {/* Pagination and Limit Controls */}
             {totalPages > 1 && (
