@@ -4,16 +4,16 @@ import "swiper/css";
 import axios from "axios";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { ChevronLeft, ChevronRight, Edit, LoaderCircle, PenLine, Trash, Trash2 } from "lucide-react";
-import { Key, useState } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Edit, LoaderCircle, Minus, PackageSearch, PenLine, Plus, Star, Trash, Trash2 } from "lucide-react";
+import { useState } from "react";
 import EditDetailsModal from "../Modals/EditDetailsModal";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Pagination } from "swiper/modules"
+import { EffectFade, Pagination, Navigation } from "swiper/modules"
 import Loader from "../Loaders/Loader";
 import { useQuery } from "@tanstack/react-query";
 import DeleteProductModal from "../Modals/DeleteProductModal";
-import { set } from "mongoose";
+import TableLayoutSkeleton from "../Skeletons/Dashboard/TableLayoutSkeleton";
 
 interface reqSpecialAppearenceProps {
     _id: string;
@@ -63,6 +63,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
     const [deleteName, setDeleteName] = useState("");
     const [productId, setProductId] = useState("");
     const [oldImages, setOldImages] = useState<string[]>([]);
+    const [showFullDescription, setShowFullDescription] = useState(false);
 
     async function getSellerProducts() {
         try {
@@ -119,7 +120,6 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
 
     return (
         <>
-            {isLoading && <div className="flex items-center justify-center"><Loader title="Fetching..." /></div>}
             {isError && <div className="flex items-center justify-center">Something Went Wrong</div>}
             {
                 <>
@@ -130,129 +130,163 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 {prodData.map(
                                     ({ _id, name, description, images, price, discount, size, seller, category, containerType, stock }: prodDataProps) => {
                                         return (
-                                            <div key={_id} className="p-5 border rounded dark:border-neutral-600 dark:bg-neutral-800">
-                                                <div>
+                                            <div key={_id} className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800 h-fit">
+                                                {/* Image Gallery with Professional Controls */}
+                                                <div className="relative aspect-square w-full bg-gray-50 dark:bg-neutral-900/30">
                                                     <Swiper
                                                         modules={[EffectFade, Pagination]}
-                                                        pagination={{ clickable: true }}
-                                                        spaceBetween={50}
+                                                        pagination={{
+                                                            clickable: true,
+                                                            bulletClass: 'swiper-pagination-bullet !w-2 !h-2 !mx-1 !bg-gray-300 dark:!bg-neutral-600',
+                                                            bulletActiveClass: '!bg-gray-800 dark:!bg-white'
+                                                        }}
+                                                        spaceBetween={10}
                                                         effect="card"
-                                                        className="border rounded dark:border-neutral-700 dark:bg-neutral-900/50">
-                                                        {images.map(
-                                                            (elem: string, index: Key | null | undefined) => {
-                                                                return (
-                                                                    <SwiperSlide key={index} className="">
-                                                                        <Image
-                                                                            src={elem}
-                                                                            loading="lazy"
-                                                                            alt="image prod"
-                                                                            width={300}
-                                                                            height={200}
-                                                                            className="h-[300px] w-full object-contain rounded" />
-                                                                    </SwiperSlide>);
-                                                            })}
+                                                        className="h-full w-full"
+                                                    >
+                                                        {images.map((elem, index) => (
+                                                            <SwiperSlide key={index}>
+                                                                <div className="relative h-full w-full bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900">
+                                                                    <Image
+                                                                        src={elem}
+                                                                        alt={`${name} product view ${index + 1}`}
+                                                                        fill
+                                                                        className="object-contain object-center"
+                                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                                        priority={index === 0}
+                                                                    />
+                                                                </div>
+                                                            </SwiperSlide>
+                                                        ))}
+
+                                                        {/* Custom Navigation Arrows */}
+                                                        <div className="swiper-button-next !right-2 !text-gray-700 dark:!text-neutral-300 after:!text-sm"></div>
+                                                        <div className="swiper-button-prev !left-2 !text-gray-700 dark:!text-neutral-300 after:!text-sm"></div>
                                                     </Swiper>
-                                                    <div>
-                                                        <h1 className="my-3 text-xl antialiased font-bold capitalize truncate">
+                                                </div>
+
+                                                {/* Product Information Section */}
+                                                <div className="p-4">
+                                                    <div className="mb-4">
+                                                        <h3 title={name} className="text-lg font-semibold text-gray-900 line-clamp-2 dark:text-white capitalize h-14">
                                                             {name}
-                                                        </h1>
-                                                        <p className={`text-base text-gray-500 
-                                                        ${showMore === _id
-                                                                ? "line-clamp-2"
-                                                                : "hidden"
-                                                            }`}>
-                                                            {description}
-                                                        </p>
-                                                    </div>
-                                                    <div className="grid grid-cols-2 px-2">
-                                                        <div>
+                                                        </h3>
+
+                                                        {/* Description with Expand/Collapse */}
+                                                        <div className="mt-2">
                                                             <button
-                                                                className="text-sm text-blue-700 hover:text-blue-500"
-                                                                title="Show Description"
-                                                                onClick={() =>
-                                                                    setShowMore(showMore === _id ? null : _id)
-                                                                }
+                                                                onClick={() => setShowMore(showMore === _id ? null : _id)}
+                                                                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
+                                                                aria-expanded={showMore === _id}
+                                                                aria-controls={`desc-${_id}`}
                                                             >
-                                                                Show Desc..
-                                                            </button>
-                                                        </div>
-                                                        <div>
-                                                            <button
-                                                                className="text-sm text-blue-700 hover:text-blue-500"
-                                                                title="Request for special appearence"
-                                                                onClick={() => {
-                                                                    reqSpecialAppearence({
-                                                                        _id,
-                                                                        name,
-                                                                        description,
-                                                                        price,
-                                                                        images,
-                                                                        discount,
-                                                                        seller,
-                                                                    });
-                                                                }}>
-                                                                {reqLoader ? (
-                                                                    <span className="flex items-center justify-center gap-2">
-                                                                        <LoaderCircle className="text-blue-500 animate-spin" />
-                                                                        "Req.."
-                                                                    </span>
+                                                                {showMore === _id ? (
+                                                                    <>
+                                                                        Hide details
+                                                                        <ChevronUp className="w-4 h-4 mr-1.5" />
+                                                                    </>
                                                                 ) : (
-                                                                    <span>Req Appear ?</span>
+                                                                    <>
+                                                                        View details
+                                                                        <ChevronDown className="w-4 h-4 mr-1.5" />
+                                                                    </>
                                                                 )}
                                                             </button>
+
+                                                            <div
+                                                                id={`desc-${_id}`}
+                                                                className={`mt-1 text-sm text-gray-600 dark:text-neutral-400 ${showMore === _id ? 'block' : 'hidden'}`}
+                                                            >
+                                                                {description}
+                                                            </div>
                                                         </div>
                                                     </div>
 
-                                                    <div className="grid grid-cols-3 py-2 my-3 border rounded gap- place-items-center dark:border-neutral-700">
-                                                        <div className="font-light ">
-                                                            <label className="font-semibold"> MRP </label>
-                                                            <h1>₹ {price?.toLocaleString()}</h1>
+                                                    {/* Pricing Information */}
+                                                    <div className="mb-4 grid grid-cols-3 divide-x divide-gray-200 rounded-lg border border-gray-200 bg-gray-50 py-2 dark:divide-neutral-700 dark:border-neutral-700 dark:bg-neutral-900/50">
+                                                        <div className="px-2 text-center">
+                                                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-neutral-400">MRP</p>
+                                                            <p className="text-sm font-medium text-gray-900 dark:text-white">₹{price?.toLocaleString()}</p>
                                                         </div>
-                                                        <div className="font-light ">
-                                                            <label className="font-semibold"> Discount</label>
-                                                            <h1> - ₹ {discount?.toLocaleString()}</h1>
+                                                        <div className="px-2 text-center">
+                                                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-neutral-400">Discount</p>
+                                                            <p className="text-sm font-medium text-red-600 dark:text-red-400">-₹{discount?.toLocaleString()}</p>
                                                         </div>
-                                                        <div className="font-light ">
-                                                            <label className="font-semibold">Total </label>
-                                                            <h1>₹ {(Number(price) - Number(discount))?.toLocaleString()}</h1>
+                                                        <div className="px-2 text-center">
+                                                            <p className="text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-neutral-400">Total</p>
+                                                            <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                                                                ₹{(Number(price) - Number(discount))?.toLocaleString()}
+                                                            </p>
                                                         </div>
                                                     </div>
 
-                                                    {/* Functionality buttons */}
-                                                    <div className="bottom-0 grid grid-cols-2 gap-3 py-2">
+                                                    {/* Action Buttons */}
+                                                    <div className="space-y-2">
                                                         <button
-                                                            className="flex items-center justify-center gap-2 px-3 py-1 text-white transition-colors duration-200 ease-in-out bg-green-500 rounded hover:bg-green-700"
                                                             onClick={() => {
-                                                                setEditModal(true);
-                                                                setOldName(name);
-                                                                setOldPrice(price);
-                                                                setOldStock(stock);
-                                                                setOldDescripion(description);
-                                                                setOldDiscount(discount);
-                                                                setOldSize(size);
-                                                                setOldContainer(containerType);
-                                                                setCurrentId(_id);
-                                                                setOldCategory(category)
-                                                            }}>
-                                                            Edit
-                                                            <span>
-                                                                <PenLine className="w-4 h-4" />
-                                                            </span>
+                                                                reqSpecialAppearence({
+                                                                    _id,
+                                                                    name,
+                                                                    description,
+                                                                    price,
+                                                                    images,
+                                                                    discount,
+                                                                    seller,
+                                                                });
+                                                            }}
+                                                            disabled={reqLoader}
+                                                            className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-blue-700 dark:hover:bg-blue-800 dark:focus:ring-blue-600"
+                                                        >
+                                                            {reqLoader ? (
+                                                                <>
+                                                                    <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                                                                    Processing...
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Star className="mr-2 h-4 w-4" />
+                                                                    Feature Product
+                                                                </>
+                                                            )}
                                                         </button>
-                                                        <button
-                                                            className="flex items-center justify-center gap-2 px-3 py-1 text-white transition-colors duration-200 ease-in-out bg-red-500 rounded hover:bg-red-700"
-                                                            onClick={() => {
-                                                                setDeleteName(name);
-                                                                setShowDeleteProductModal(true);
-                                                                setProductId(_id);
-                                                            }}>
-                                                            Delete
-                                                            <span>
-                                                                <Trash className="w-4 h-4" />
-                                                            </span>
-                                                        </button>
+
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <button
+                                                                onClick={() => {
+                                                                    setEditModal(true);
+                                                                    setOldName(name);
+                                                                    setOldPrice(price);
+                                                                    setOldStock(stock);
+                                                                    setOldDescripion(description);
+                                                                    setOldDiscount(discount);
+                                                                    setOldSize(size);
+                                                                    setOldContainer(containerType);
+                                                                    setCurrentId(_id);
+                                                                    setOldCategory(category);
+                                                                    setOldImages(images);
+                                                                }}
+                                                                className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-neutral-600 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-600"
+                                                            >
+                                                                <PenLine className="h-4 w-4" />
+                                                                Edit
+                                                            </button>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    setDeleteName(name);
+                                                                    setShowDeleteProductModal(true);
+                                                                    setProductId(_id);
+                                                                }}
+                                                                className="flex items-center justify-center gap-2 rounded-lg bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 transition-colors hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/40"
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                                Delete
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                {/* Modals - Positioned outside card for proper z-index */}
                                                 <DeleteProductModal
                                                     isOpen={showDeleteProductModal}
                                                     onClose={() => setShowDeleteProductModal(false)}
@@ -263,9 +297,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
 
                                                 <EditDetailsModal
                                                     isVisible={editModal}
-                                                    onClose={() => {
-                                                        return setEditModal(false);
-                                                    }}
+                                                    onClose={() => setEditModal(false)}
                                                     oldCategory={oldCategory}
                                                     oldName={oldName}
                                                     oldDescripion={oldDescripion}
@@ -275,7 +307,8 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                     oldSize={oldSize}
                                                     oldImages={oldImages}
                                                     id={currentId}
-                                                    oldContainer={oldContainer} />
+                                                    oldContainer={oldContainer}
+                                                />
                                             </div>
                                         );
                                     }
@@ -295,98 +328,175 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                     }
 
                     {/* List View Table Format */}
+                    {(view === "list" && isLoading) && (<TableLayoutSkeleton />)}
                     {
                         (view === "list" && !isLoading) &&
-                        <div className="py-4">
-                            <table className="min-w-full border border-gray-300 table-auto rounded-xl">
-                                <thead>
-                                    <tr>
-                                        <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start">Name</th>
-                                        <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700 text-start">Description</th>
-                                        <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700">Images</th>
-                                        <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Stock</th>
-                                        <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">MRP</th>
-                                        <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Discount</th>
-                                        <th colSpan={1} className="px-4 py-2 border dark:border-neutral-700">Total</th>
-                                        <th colSpan={2} className="px-4 py-2 border dark:border-neutral-700">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {prodData.map(({ _id, name, description, images, price, discount, size, stock, category, containerType }: prodDataProps) => {
-                                        return (
-                                            <tr key={_id}>
-                                                <td colSpan={2} className="px-4 py-2 capitalize border dark:border-neutral-700 text-start">{name}</td>
-                                                <td colSpan={2} className="px-4 py-2 capitalize border dark:border-neutral-700 text-start ">
-                                                    <div className="line-clamp-2">
-                                                        {description}
-                                                    </div>
-                                                </td>
-                                                <td colSpan={2} className="w-1/6 px-4 py-2 text-center border dark:border-neutral-700">
-                                                    {
-                                                        <div className="flex items-center justify-center w-full gap-2">
-                                                            < Image src={images[0]} alt="product-image" height={40} width={40} />
-                                                            < Image src={images[1]} alt="product-image" height={40} width={40} />
-                                                            < Image src={images[2]} alt="product-image" height={40} width={40} />
-                                                        </div>
-                                                    }
-                                                </td>
-                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{stock}</td>
-                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{price?.toLocaleString()}</td>
-                                                <td colSpan={1} className="px-4 py-2 text-center border dark:border-neutral-700">{discount?.toLocaleString()}</td>
-                                                <td colSpan={1} className="px-4 py-2 text-center truncate border dark:border-neutral-700 ">{(Number(price) - Number(discount))?.toLocaleString()}</td>
-                                                <td colSpan={2} className="px-4 py-2 text-center border dark:border-neutral-700">
-                                                    <div className="flex items-center justify-center gap-2">
-                                                        <Edit
-                                                            className="cursor-pointer hover:text-green-600 h-5 w-5"
-                                                            onClick={() => {
-                                                                setEditModal(!editModal);
-                                                                setOldName(name);
-                                                                setOldPrice(price);
-                                                                setOldDescripion(description);
-                                                                setOldDiscount(discount);
-                                                                setOldSize(size);
-                                                                setOldStock(stock);
-                                                                setCurrentId(_id);
-                                                                setOldContainer(containerType);
-                                                                setOldCategory(category);
-                                                                setOldImages(images);
-                                                            }} />
-                                                        <Trash2 onClick={() => {
-                                                            setDeleteName(name);
-                                                            setShowDeleteProductModal(true);
-                                                            setProductId(_id);
-                                                        }} className="cursor-pointer hover:text-red-600 h-5 w-5" />
-                                                        <DeleteProductModal
-                                                            isOpen={showDeleteProductModal}
-                                                            onClose={() => setShowDeleteProductModal(false)}
-                                                            productName={deleteName}
-                                                            productId={productId}
-                                                            sellerId={sellerId}
-                                                        />
-                                                    </div>
-                                                </td>
+                        (<div className="py-6">
+                            <div className="overflow-hidden border rounded-lg dark:border-neutral-700">
+                                <div className="overflow-auto no-scrollbar">
+                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                                        <thead className="bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 dark:bg-neutral-800">
+                                            <tr>
+                                                <th scope="col" className="px-4 py-4 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-neutral-400">
+                                                    Product
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-neutral-400">
+                                                    Description
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    Images
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    Stock
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    MRP
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    Discount
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    Price
+                                                </th>
+                                                <th scope="col" className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">
+                                                    Actions
+                                                </th>
                                             </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody className=" divide-y divide-gray-200 dark:bg-neutral-850 dark:divide-neutral-700">
+                                            {prodData.length > 0 ? (
+                                                prodData.map(({ _id, name, description, images, price, discount, size, stock, category, containerType }: prodDataProps) => (
+                                                    <tr key={_id} className="hover:bg-gray-50 dark:hover:bg-neutral-800/50">
+                                                        <td className="px-4 py-4 whitespace-nowrap">
+                                                            <div className="font-medium text-gray-900 dark:text-white capitalize">
+                                                                {name}
+                                                            </div>
+                                                            <div className="text-sm text-gray-500 dark:text-neutral-400 capitalize">{category}</div>
+                                                        </td>
+                                                        <td className="px-6 py-4 max-w-xs">
+                                                            <p title={description} className={`text-gray-600 dark:text-neutral-300 text-sm ${showFullDescription ? '' : 'line-clamp-2'}`}>
+                                                                {description}
+                                                            </p>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <div className="flex justify-center gap-2">
+                                                                {images.slice(0, 3).map((img, idx) => (
+                                                                    <div key={idx} className="relative w-10 h-10 overflow-hidden border rounded-md border-gray-200 dark:border-neutral-700">
+                                                                        <Image
+                                                                            src={img}
+                                                                            alt={`Product image ${idx + 1}`}
+                                                                            fill
+                                                                            className="object-cover"
+                                                                            sizes="40px"
+                                                                        />
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm text-center text-gray-500 dark:text-neutral-400 whitespace-nowrap">
+                                                            {stock}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm text-center text-gray-900 dark:text-white whitespace-nowrap">
+                                                            ₹{price?.toLocaleString()}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm text-center text-gray-900 dark:text-white whitespace-nowrap">
+                                                            ₹{discount?.toLocaleString()}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm font-medium text-center text-gray-900 dark:text-white whitespace-nowrap">
+                                                            ₹{(Number(price) - Number(discount))?.toLocaleString()}
+                                                        </td>
+                                                        <td className="px-6 py-4 text-sm font-medium text-center whitespace-nowrap">
+                                                            <div className="flex justify-center space-x-3">
+                                                                <button
+                                                                    onClick={() => {
+                                                                        setEditModal(true);
+                                                                        setCurrentId(_id);
+                                                                        setOldName(name);
+                                                                        setOldPrice(price);
+                                                                        setOldDescripion(description);
+                                                                        setOldDiscount(discount);
+                                                                        setOldSize(size);
+                                                                        setOldStock(stock);
+                                                                        setOldContainer(containerType);
+                                                                        setOldCategory(category);
+                                                                        setOldImages(images);
+                                                                    }}
+                                                                    className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                                                                    title="Edit"
+                                                                >
+                                                                    <Edit className="w-5 h-5" />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        setDeleteName(name);
+                                                                        setShowDeleteProductModal(true);
+                                                                        setProductId(_id);
+                                                                    }}
+                                                                    className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                                                                    title="Delete"
+                                                                >
+                                                                    <Trash2 className="w-5 h-5" />
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan={8} className="px-6 py-4 text-center text-gray-500 dark:text-neutral-400">
+                                                        <div className="flex flex-col items-center justify-center py-8">
+                                                            <PackageSearch className="w-12 h-12 text-gray-400 dark:text-neutral-600" />
+                                                            <p className="mt-2 text-sm font-medium text-gray-500 dark:text-neutral-400">No products found</p>
+                                                            <p className="text-xs text-gray-400 dark:text-neutral-500">Add products to see them listed here</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            {prodData?.length === 0 && <div className="text-center place-items-center w-full py-4 border border-t-0 dark:border-neutral-700"> No Products Found</div>}
+                                {/* Pagination */}
+                                {prodData.length > 0 && (
+                                    <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-neutral-800 border-t dark:border-neutral-700">
+                                        <div className="text-sm text-gray-500 dark:text-neutral-400">
+                                            Page <span className="font-medium">{page}</span> of <span className="font-medium">{totalPages}</span>
+                                        </div>
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                                disabled={page === 1}
+                                                className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                <ChevronLeft className="w-4 h-4 mr-1" />
+                                                Previous
+                                            </button>
+                                            <button
+                                                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                                                disabled={page === totalPages}
+                                                className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                            >
+                                                Next
+                                                <ChevronRight className="w-4 h-4 ml-1" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
 
-                            {/* Pagination Buttons */}
-                            {prodData?.length !== 0 && <div className="flex items-center justify-center gap-2 mt-4">
-                                <button title="Previous" onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <ChevronLeft className="w-4 h-4" />
-                                </button>
-                                Page<span className="font-bold">{page}</span> of {totalPages}
-                                <button title="Next" onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="flex items-center justify-center gap-1 p-3 border rounded-full dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <ChevronRight className="w-4 h-4" />
-                                </button>
-                            </div>}
+                            {/* Modals */}
+                            <DeleteProductModal
+                                isOpen={showDeleteProductModal}
+                                onClose={() => setShowDeleteProductModal(false)}
+                                productName={deleteName}
+                                productId={productId}
+                                sellerId={sellerId}
+                            />
+
                             <EditDetailsModal
                                 isVisible={editModal}
                                 oldCategory={oldCategory}
-                                onClose={() => { return setEditModal(false) }}
+                                onClose={() => setEditModal(false)}
                                 oldName={oldName}
                                 oldDescripion={oldDescripion}
                                 oldPrice={oldPrice}
@@ -395,8 +505,9 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 oldSize={oldSize}
                                 id={currentId}
                                 oldImages={oldImages}
-                                oldContainer={oldContainer} />
-                        </div>
+                                oldContainer={oldContainer}
+                            />
+                        </div>)
                     }
                 </>
             }

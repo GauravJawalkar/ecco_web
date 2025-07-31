@@ -1,5 +1,5 @@
 "use client"
-import Loader from '@/components/Loaders/Loader';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { ChevronLeft, ChevronRight, Filter, ShoppingCart } from 'lucide-react';
@@ -353,7 +353,11 @@ const ProductsPage = ({ searchParams }: any) => {
                                         <div className="w-full py-4 relative">
                                             <Swiper
                                                 modules={[EffectFade, Pagination]}
-                                                pagination={{ clickable: true }}
+                                                pagination={{
+                                                    clickable: true,
+                                                    bulletClass: 'swiper-pagination-bullet !w-2 !h-2 !mx-1 !bg-gray-300 dark:!bg-neutral-600',
+                                                    bulletActiveClass: '!bg-gray-800 dark:!bg-white'
+                                                }}
                                                 navigation={false}
                                                 spaceBetween={50}
                                                 effect="card">
@@ -420,8 +424,11 @@ const ProductsPage = ({ searchParams }: any) => {
                                     <div className="w-full py-3 relative">
                                         <Swiper
                                             modules={[EffectFade, Pagination]}
-                                            pagination={{ clickable: true }}
-                                            navigation={false}
+                                            pagination={{
+                                                clickable: true,
+                                                bulletClass: 'swiper-pagination-bullet !w-2 !h-2 !mx-1 !bg-gray-300 dark:!bg-neutral-600',
+                                                bulletActiveClass: '!bg-gray-800 dark:!bg-white'
+                                            }}
                                             spaceBetween={50}
                                             effect="card">
                                             {images.map(

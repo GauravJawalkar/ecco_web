@@ -3,6 +3,7 @@ import RecentlyViewedProducts from '@/components/Home/RecommendedProducts';
 import Loader from '@/components/Loaders/Loader';
 import ImagePreviewModal from '@/components/Modals/ImagePreviewModal';
 import ReviewModal from '@/components/Modals/ReviewModal';
+import SingleProductSkeleton from '@/components/Skeletons/Products/SingleProductSkeleton';
 import { discountPercentage } from '@/helpers/discountPercentage';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
@@ -209,9 +210,7 @@ const Product = () => {
     return (
         <>
             <section className='py-10'>
-                {isLoading && <div className='flex items-center justify-center'>
-                    <Loader title='Fetching...' />
-                </div>}
+                {isLoading && <SingleProductSkeleton />}
 
                 {(!isLoading && !isError) && <div className='grid grid-cols-[0.5fr_3fr_3.5fr] w-full space-x-4'>
 
@@ -426,7 +425,7 @@ const Product = () => {
                         </div>
                     </div>
                 </div>}
-            </section >
+            </section>
             <ReviewModal
                 onClose={() => setOpenReviewModal(false)}
                 isVisible={openReviewModal}

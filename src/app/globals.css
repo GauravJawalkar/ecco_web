@@ -25,7 +25,3 @@
 li::marker {
     color: gray;
 }
-
-.swiper-pagination {
-    display: none;
-}

@@ -6,7 +6,7 @@ import MyProducts from "@/components/Dashboard/MyProducts";
 import { useUserStore } from "@/store/UserStore";
 import Link from "next/link";
 import { useState } from "react";
-import { LayoutGrid, LayoutList, Lock } from "lucide-react";
+import { FolderPlusIcon, LayoutGrid, LayoutList, Lock, PlusIcon, SparklesIcon, TruckIcon } from "lucide-react";
 import { userProps } from "@/interfaces/commonInterfaces";
 import StoreOnboardingModal from "@/components/Modals/StoreOnboardingModal";
 import Store from "@/components/Dashboard/Store";
@@ -25,35 +25,44 @@ const Dashboard = () => {
             <div className={`relative`}>
                 {/* Main dashboard content */}
                 <div className={`transition-all duration-300 py-10 ${isStoreLocked === false ? "opacity-40 pointer-events-none select-none" : "opacity-100"}`}>
-                    <div className="flex items-center justify-start gap-3 p-3 border rounded dark:border-neutral-700 dark:text-white">
+                    <div className="flex items-center justify-start gap-3 p-4 dark:bg-neutral-850 rounded-lg border border-gray-150 dark:border-neutral-700 shadow-xs">
                         {/* My Products List */}
                         <div>
                             <button
-                                className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700"
+                                className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors duration-200 flex items-center gap-2"
                                 onClick={() => { setShowProductModal(true) }}>
-                                Add product
+                                <PlusIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                                Add Product
                             </button>
                         </div>
+
                         {/* Custom Category */}
                         <div>
                             <button
-                                className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700"
+                                className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors duration-200 flex items-center gap-2"
                                 onClick={() => setShowCustomCategoryModal(true)}>
+                                <FolderPlusIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                                 Add Category
                             </button>
                         </div>
+
                         {/* specialShow button */}
-                        {data?.isSuperAdmin && <div>
-                            <button className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700">
-                                <Link href={"/dashboard/specialShow"} >
-                                    Special Appearence
-                                </Link>
-                            </button>
-                        </div>}
-                        {/* Add A Product */}
+                        {data?.isSuperAdmin && (
+                            <div>
+                                <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors duration-200 flex items-center gap-2">
+                                    <SparklesIcon className="w-5 h-5 text-amber-500 dark:text-amber-400" />
+                                    <Link href={"/dashboard/specialShow"} className="hover:no-underline">
+                                        Special Appearance
+                                    </Link>
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Process Orders */}
                         <div>
-                            <button className="px-4 py-2 border rounded bg-gray-50 hover:bg-opacity-5 dark:hover:bg-opacity-0 dark:bg-neutral-800 dark:border-neutral-700">
-                                <Link href={'/dashboard/ordersProcess'}>
+                            <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors duration-200 flex items-center gap-2">
+                                <TruckIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                                <Link href={'/dashboard/ordersProcess'} className="hover:no-underline">
                                     Process Orders
                                 </Link>
                             </button>
@@ -66,12 +75,23 @@ const Dashboard = () => {
                             kycVerified={data?.bankDetails?.status}
                         />
                     )}
-                    <div className="flex items-center justify-end gap-3">
-                        <button onClick={() => { setListView("grid") }} className="p-2 border rounded dark:border-neutral-700">
-                            <LayoutGrid className="w-5 h-5 text-gray-600 dark:text-white" />
+                    <div className="flex items-center justify-end gap-1 rounded-lg bg-gray-100 p-1 dark:bg-neutral-800">
+                        <button
+                            onClick={() => setListView("grid")}
+                            className={`p-2 rounded-md transition-colors ${listView === "grid" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"}`}
+                            aria-label="Grid view"
+                            title="Grid view"
+                        >
+                            <LayoutGrid className={`h-5 w-5 transition-colors ${listView === "grid" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />
                         </button>
-                        <button onClick={() => { setListView("list") }} className="p-2 border rounded dark:border-neutral-700">
-                            <LayoutList className="w-5 h-5 text-gray-600 dark:text-white" />
+
+                        <button
+                            onClick={() => setListView("list")}
+                            className={`p-2 rounded-md transition-colors ${listView === "list" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"}`}
+                            aria-label="List view"
+                            title="List view"
+                        >
+                            <LayoutList className={`h-5 w-5 transition-colors ${listView === "list" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />
                         </button>
                     </div>
                     {data._id && <AddProductModal

@@ -17,7 +17,7 @@ const ProductHolderSkeleton = () => {
                 <SwiperSlide className="px-2 w-full" key={index}>
                     <div className="flex flex-col items-center justify-center cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full animate-pulse">
                         {/* Image placeholder */}
-                        <div className="w-full py-3 relative">
+                        <div className="w-full relative">
                             <div className="bg-gray-200 dark:bg-neutral-700 h-64 w-full rounded-t-2xl"></div>
                             <div className='absolute top-0 right-0 z-10'>
                                 <div className='bg-gray-300 h-6 w-16 rounded-tr-xl rounded-bl-xl'></div>

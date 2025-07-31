@@ -29,7 +29,9 @@ const HomeHero = () => {
                     disableOnInteraction: false,
                 }}
                 pagination={{
-                    clickable: true
+                    clickable: true,
+                    bulletClass: 'swiper-pagination-bullet !w-2 !h-2 !mx-1 !bg-gray-300 dark:!bg-neutral-600',
+                    bulletActiveClass: '!bg-gray-800 dark:!bg-white'
                 }}
                 navigation={false}
                 modules={[Autoplay, Pagination, Navigation]}

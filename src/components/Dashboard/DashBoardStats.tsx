@@ -2,7 +2,7 @@
 import { useUserStore } from '@/store/UserStore';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { BringToFront, Gem, HandCoins, Landmark, Loader2, PackageSearch } from 'lucide-react';
+import { BringToFront, CircleCheck, Gem, HandCoins, Landmark, Loader2, PackageSearch } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
@@ -76,29 +76,69 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
     const { data: sellerDetails = [] } = useQuery({ queryFn: getSellerDetails, queryKey: ['sellerDetails'], refetchOnWindowFocus: false, enabled: !!id })
 
     return (
-        <div className={`grid ${isAdmin ? "grid-cols-5" : "grid-cols-4"} text-center mt-10 mb-5 gap-5 dark:text-neutral-200 `} >
-            {/* Total No oF orders */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center' >
-                <PackageSearch className='size-6' /> Total Products : <span className='text-red-600'>{totalProductsNumber}</span>
-            </div >
-            {/* Stock Availabel */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center' >
-                <BringToFront className='size-6' /> Orders Recieved: <span className='text-red-600'>{sellerOrders > 0 ? sellerOrders : 0}</span>
+        <div className={`grid ${isAdmin ? "grid-cols-5" : "grid-cols-4"} gap-6 my-8`}>
+            {/* Total Products */}
+            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 hover:shadow-md transition-all duration-300 group'>
+                <div className='flex flex-col items-center justify-center gap-3'>
+                    <div className='p-3 rounded-full bg-blue-100/80 dark:bg-blue-900/30 group-hover:bg-blue-200/80 dark:group-hover:bg-blue-800/50 transition-all duration-300'>
+                        <PackageSearch className='size-6 text-blue-600 dark:text-blue-400' />
+                    </div>
+                    <p className='text-gray-500 dark:text-neutral-400 font-medium'>Total Products</p>
+                    <p className='text-2xl font-bold text-gray-800 dark:text-white'>{totalProductsNumber}</p>
+                </div>
             </div>
-            {/* Revenue Generated */}
-            <div className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex gap-2 items-center justify-center' >
-                <HandCoins className='size-6' /> Estimated: ₹2000
+
+            {/* Orders Received */}
+            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 hover:shadow-md transition-all duration-300 group'>
+                <div className='flex flex-col items-center justify-center gap-3'>
+                    <div className='p-3 rounded-full bg-green-100/80 dark:bg-green-900/30 group-hover:bg-green-200/80 dark:group-hover:bg-green-800/50 transition-all duration-300'>
+                        <BringToFront className='size-6 text-green-600 dark:text-green-400' />
+                    </div>
+                    <p className='text-gray-500 dark:text-neutral-400 font-medium'>Orders Received</p>
+                    <p className='text-2xl font-bold text-gray-800 dark:text-white'>{sellerOrders > 0 ? sellerOrders : 0}</p>
+                </div>
             </div>
-            {/* KYC Status For RazorPay */}
-            <Link href={'/dashboard/kyc-details'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2' >
-                <Landmark className='size-6' /> KYC: <span className='text-red-600'>{sellerDetails?.bankDetails?.status === "Verified" ? "Verified" : "Pending"}</span>
+
+            {/* Estimated Revenue */}
+            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 hover:shadow-md transition-all duration-300 group'>
+                <div className='flex flex-col items-center justify-center gap-3'>
+                    <div className='p-3 rounded-full bg-amber-100/80 dark:bg-amber-900/30 group-hover:bg-amber-200/80 dark:group-hover:bg-amber-800/50 transition-all duration-300'>
+                        <HandCoins className='size-6 text-amber-600 dark:text-amber-400' />
+                    </div>
+                    <p className='text-gray-500 dark:text-neutral-400 font-medium'>Estimated Revenue</p>
+                    <p className='text-2xl font-bold text-gray-800 dark:text-white'>₹2000</p>
+                </div>
+            </div>
+
+            {/* KYC Status */}
+            <Link href={'/dashboard/kyc-details'} className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 hover:shadow-md transition-all duration-300 group hover:-translate-y-1 relative'>
+                <div className='flex flex-col items-center justify-center gap-3'>
+                    <div className='p-3 rounded-full bg-purple-100/80 dark:bg-purple-900/30 group-hover:bg-purple-200/80 dark:group-hover:bg-purple-800/50 transition-all duration-300'>
+                        <Landmark className='size-6 text-purple-600 dark:text-purple-400' />
+                    </div>
+                    <p className='text-gray-500 dark:text-neutral-400 font-medium'>KYC Status</p>
+                    <p className={`text-2xl font-bold ${sellerDetails?.bankDetails?.status === "Verified" ? "text-green-600 dark:text-green-400" : "text-amber-600 dark:text-amber-400"}`}>
+                        {sellerDetails?.bankDetails?.status === "Verified" ? "Verified" : "Pending"}
+                    </p>
+                </div>
+                {sellerDetails?.bankDetails?.status === "Verified" && <div className={`absolute -top-2 -right-4 px-2 text-green-500 rounded-tr-xl rounded-bl-xl`}>
+                    <CircleCheck className='w-7 h-7 bg-white dark:bg-neutral-700 rounded-full' />
+                </div>}
             </Link>
-            {
-                isAdmin ? <Link href={'/dashboard/requests'} className='border min-h-20 rounded-md place-content-center dark:bg-neutral-800 dark:border-neutral-700 flex items-center justify-center gap-2'>
-                    < Gem className='size-6' /> Seller Requests: <span className='text-red-500'>{totalRequestNumber}</span>
-                </Link > : ""
-            }
-        </div >
+
+            {/* Seller Requests (Admin Only) */}
+            {isAdmin && (
+                <Link href={'/dashboard/requests'} className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 hover:shadow-md transition-all duration-300 group hover:-translate-y-1'>
+                    <div className='flex flex-col items-center justify-center gap-3'>
+                        <div className='p-3 rounded-full bg-pink-100/80 dark:bg-pink-900/30 group-hover:bg-pink-200/80 dark:group-hover:bg-pink-800/50 transition-all duration-300'>
+                            <Gem className='size-6 text-pink-600 dark:text-pink-400' />
+                        </div>
+                        <p className='text-gray-500 dark:text-neutral-400 font-medium'>Seller Requests</p>
+                        <p className='text-2xl font-bold text-gray-800 dark:text-white'>{totalRequestNumber}</p>
+                    </div>
+                </Link>
+            )}
+        </div>
     )
 }
 
