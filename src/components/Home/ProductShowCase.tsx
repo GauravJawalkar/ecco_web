@@ -5,6 +5,7 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ProductShowcaseSkeleton from "../Skeletons/Products/ProductShowcaseSkeleton";
 
 interface dataProps {
   _id: string,
@@ -43,9 +44,8 @@ const ProductShowCase = () => {
     <div>
       <div className="grid grid-cols-2 gap-10">
         <div className="h-auto p-5 border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-xl">
+          {isLoading && <ProductShowcaseSkeleton />}
           <div className="grid grid-cols-2 gap-5">
-            {isLoading && <div className="flex items-center justify-center">
-              <Loader2 className="animate-spin" /></div>}
             {(!isLoading && firstTwoProducts.length === 0) && <div className="flex items-center justify-center">
               <h1>No Products Here</h1></div>}
             {isError && <div className="flex items-center justify-center">
@@ -73,9 +73,8 @@ const ProductShowCase = () => {
           </div>
         </div>
         <div className="h-auto p-5 border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-xl">
+          {isLoading && <ProductShowcaseSkeleton />}
           <div className="grid grid-cols-2 gap-5">
-            {isLoading && <div className="flex items-center justify-center">
-              <Loader2 className="animate-spin" /></div>}
             {(!isLoading && lastTwoProducts.length === 0) && <div className="flex items-center justify-center">
               <h1>No Products Here</h1></div>}
             {isError && <div className="flex items-center justify-center">

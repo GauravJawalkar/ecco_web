@@ -15,6 +15,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { discountPercentage } from "@/helpers/discountPercentage";
 import { useRouter } from "next/navigation";
+import ProductHolderSkeleton from "../Skeletons/Products/ProductHolderSkeleton";
 
 
 interface holderProps {
@@ -93,9 +94,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
 
         <div className="h-auto max-w-[87ch] prod-holder relative ">
 
-          {loading && <div className="flex items-center justify-center">
-            <Loader title={"Fetching..."} />
-          </div>}
+          {loading && <ProductHolderSkeleton />}
 
           {/* Product Card */}
           <Swiper
@@ -112,7 +111,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
             {
               prodData?.map(({ _id, name, price, images, discount, seller, stock, rating, category }: holderProps) => {
                 return (
-                  <SwiperSlide className="px-2 w-full " key={_id}>
+                  <SwiperSlide className="px-2 w-full" key={_id}>
                     <Link passHref href={`/products/${slugify(name)}?id=${_id}`} className="content-center flex items-center justify-center flex-col cursor-pointer dark:bg-neutral-800 bg-gray-100 rounded-b-3xl rounded-t-2xl w-full">
                       <div className="w-full py-3 relative">
                         <Image
