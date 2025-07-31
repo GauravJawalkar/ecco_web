@@ -134,7 +134,7 @@ export const Navbar = () => {
                         Dashboard
                     </Link> :
                     <button onClick={handelBecomeSeller}>Become Seller</button>}
-                <Link href={'/orders'} className="dark:text-neutral-300">Orders</Link>
+                <Link href={'/products'} className="dark:text-neutral-300">Products</Link>
                 <Link href={'/stores'} className="dark:text-neutral-300">Stores</Link>
                 <div className="text-neutral-300 group relative flex items-center justify-center">
                     <span>
@@ -149,6 +149,7 @@ export const Navbar = () => {
                                 <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed]">{dataLength !== 0 && data?.name.split(" ")[0]}</h1>
                             </li>
                             <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Details</Link>
+                            <Link href={'/orders'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <ListCollapse className="h-5 w-5" />Orders</Link>
                             <div>
                                 <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={() => { handelLogout() }}>
                                     <LogOut className="h-5 w-5" />

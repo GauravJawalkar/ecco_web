@@ -1,5 +1,6 @@
 "use client";
 import StoreHero from '@/components/Stores/StoreHero';
+import StoreHeroSkeleton from '@/components/Stores/StoreHeroSkeleton';
 import StoreProductsShowcase from '@/components/Stores/StoreShowcase';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
@@ -31,12 +32,18 @@ const StorePage = () => {
             refetchOnWindowFocus: false,
         });
 
-    console.log("Store Details:", storeDetails);
-
     return (
         <>
-            <StoreHero storeDetails={storeDetails?.publicStore} />
-            <StoreProductsShowcase storeProducts={storeDetails?.storeProducts} currentPage={page} totalPages={storeDetails?.totalStorePages} limit={limit} onPageChange={setPage} onLimitChange={setLimit} loading={isLoading} />
+            {!storeDetails?.publicStore ? (<StoreHeroSkeleton />) : (<StoreHero storeDetails={storeDetails?.publicStore} />)}
+            <StoreProductsShowcase
+                storeProducts={storeDetails?.storeProducts}
+                currentPage={page}
+                totalPages={storeDetails?.totalStorePages}
+                limit={limit}
+                onPageChange={setPage}
+                onLimitChange={setLimit}
+                loading={isLoading}
+            />
         </>
     )
 }

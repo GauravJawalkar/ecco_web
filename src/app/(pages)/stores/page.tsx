@@ -5,6 +5,7 @@ import { Search, Filter } from "lucide-react";
 import StoreCard from "@/components/Stores/StoreCard";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/Loaders/Loader";
+import MainStoreSkeleton from "@/components/Skeletons/Store/MainStoreSkeleton";
 
 interface StoreProps {
     _id: string;
@@ -91,18 +92,21 @@ const page = () => {
                     </div>
                 </div>
                 {
-                    (filteredStores?.length === 0 && isLoading) && <Loader title="Loading stores..." />
-                }
-                {
                     (filteredStores?.length === 0 && isError) && <div>Error Loading The Stores</div>
                 }
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {(filteredStores?.length === 0 && !isLoading && !isError) ? (
-                        <div>No Stores Found</div>
-                    ) : (
-                        filteredStores?.map((store: StoreProps) => (
-                            <StoreCard key={store?._id} store={store} />
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    {isLoading ? (
+                        [...Array(4)].map((_, index) => (
+                            <MainStoreSkeleton key={index} />
                         ))
+                    ) : (
+                        filteredStores?.length === 0 ? (
+                            <div>No Stores Found</div>
+                        ) : (
+                            filteredStores?.map((store: StoreProps) => (
+                                <StoreCard key={store?._id} store={store} />
+                            ))
+                        )
                     )}
                 </div>
             </div>

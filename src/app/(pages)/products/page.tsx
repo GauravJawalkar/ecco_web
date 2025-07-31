@@ -15,6 +15,7 @@ import { useUserStore } from '@/store/UserStore';
 import { discountPercentage } from '@/helpers/discountPercentage';
 import { useRouter } from 'next/navigation';
 import { userProps } from '@/interfaces/commonInterfaces';
+import MainProductsPageSkeleton from '@/components/Skeletons/Products/MainProductsPageSkeleton';
 interface searchParams {
     category?: string | "";
 }
@@ -336,15 +337,14 @@ const ProductsPage = ({ searchParams }: any) => {
                     <h1 className='absolute top-0 right-0 px-3 py-1 rounded-tr-2xl rounded-bl-2xl bg-gray-100 flex items-center justify-center gap-1 dark:bg-neutral-800'><Filter className='h-4 w-4' /> Filter Products</h1>
                 </div>
                 <div>
-                    {(!category && isLoading) && <div className='flex items-center justify-center py-5'>
-                        <Loader title='Loading...' />
-                    </div>}
 
-                    {isPending && <div><Loader title='Loading...' /></div>}
                     {(products && products.length === 0) && <div className='flex items-center justify-center'>No Products Found</div>}
 
                     {/* Product display grid */}
-                    <div className='grid grid-cols-4 gap-5'>
+                    <div className='grid grid-cols-4 gap-5 pb-5'>
+                        {(!category && isLoading) && <MainProductsPageSkeleton />}
+                        {isPending && <MainProductsPageSkeleton />}
+
                         {/* CategoryWise product sorting here */}
                         {
                             categoryProduct?.map(({ _id, name, images, price, seller, stock, discount, rating }: productsProps) => {
@@ -479,7 +479,7 @@ const ProductsPage = ({ searchParams }: any) => {
                             )
                         })}
                     </div>
-                    {!category && <div className={` justify-center items-center gap-4 my-4 ${isLoading ? "hidden" : "flex"}`}>
+                    {(!category && totalPages > 1) && <div className={` justify-center items-center gap-4 my-4 ${isLoading ? "hidden" : "flex"}`}>
                         <button
                             className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
@@ -495,7 +495,7 @@ const ProductsPage = ({ searchParams }: any) => {
                         </button>
                     </div>}
 
-                    {category && <div className={`justify-center items-center gap-4 my-4 ${isPending ? "hidden" : "flex"}`}>
+                    {(category && categoryTotalPages > 1) && <div className={`justify-center items-center gap-4 my-4 ${isPending ? "hidden" : "flex"}`}>
                         <button
                             className='border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full disabled:cursor-not-allowed  disabled:bg-transparent disabled:opacity-50'
                             onClick={() => setCategoryPage((prev) => Math.max(prev - 1, 1))}
