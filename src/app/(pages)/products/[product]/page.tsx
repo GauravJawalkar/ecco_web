@@ -433,11 +433,13 @@ const Product = () => {
                 reviewerName={data?.name}
                 reviewedProduct={product?._id} />
             {(isSuccess && isFetched && data?._id) &&
-                <div className='relative'>
-                    {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
-                        <RecentlyViewedProducts tag={false} products={existingRecentlyViewed?.product} />
-                    }
-                    <h1 className='absolute top-0 right-0 z-10 p-2 text-white bg-green-500 rounded-tr-xl'>Recently Viewed</h1>
+                <div className='pb-5'>
+                    <div className='relative'>
+                        {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
+                            <RecentlyViewedProducts tag={false} products={existingRecentlyViewed?.product} />
+                        }
+                        <h1 className='absolute top-0 right-0 z-10 p-2 text-white bg-green-500 rounded-tr-xl'>Recently Viewed</h1>
+                    </div>
                 </div>
             }
         </>
