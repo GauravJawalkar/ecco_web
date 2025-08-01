@@ -1,5 +1,6 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
+import OrdersSkeleton from '@/components/Skeletons/Orders/OrdersSkeleton';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore'
 import { useQuery } from '@tanstack/react-query';
@@ -64,10 +65,7 @@ const page = () => {
 
             {/* Loading & Error States */}
             {isPending && (
-                <div className="flex flex-col items-center justify-center py-12 border-2 border-dashed rounded-xl">
-                    <LoaderCircle className="w-12 h-12 animate-spin text-blue-500" />
-                    <p className="mt-4 text-lg font-medium text-gray-600 dark:text-neutral-300">Loading your orders...</p>
-                </div>
+                <OrdersSkeleton />
             )}
 
             {isError && (
