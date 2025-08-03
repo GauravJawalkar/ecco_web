@@ -130,7 +130,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                 {prodData.map(
                                     ({ _id, name, description, images, price, discount, size, seller, category, containerType, stock }: prodDataProps) => {
                                         return (
-                                            <div key={_id} className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800 h-fit">
+                                            <div key={_id} className="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md dark:border-neutral-700 dark:bg-neutral-800 h-fit">
                                                 {/* Image Gallery with Professional Controls */}
                                                 <div className="relative aspect-square w-full bg-gray-50 dark:bg-neutral-900/30">
                                                     <Swiper

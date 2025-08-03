@@ -22,6 +22,17 @@ export async function PUT(request: NextRequest) {
             storeCoverImage = newStoreCoverImage?.secure_url;
         }
 
+        const shippingPolicy = formData.get("shippingPolicy");
+        const returnPolicy = formData.get("returnPolicy");
+        const contactPhone = formData.get("contactPhone");
+        const instagram = formData.get("instagram");
+        const facebook = formData.get("facebook");
+        const twitter = formData.get("twitter");
+        const isStoreOpen = formData.get("isStoreOpen");
+        const isOpen = isStoreOpen === "true" ? true : false;
+
+        console.log("The store is : ", isOpen);
+
         const updatedStore = await Store.findByIdAndUpdate(
             storeId,
             {
@@ -30,6 +41,13 @@ export async function PUT(request: NextRequest) {
                     storeDescription,
                     storeImage: storeImage || "",
                     storeCoverImage: storeCoverImage || "",
+                    shippingPolicy,
+                    returnPolicy,
+                    contact: contactPhone,
+                    "socialMedia.instagram": instagram,
+                    "socialMedia.facebook": facebook,
+                    "socialMedia.twitter": twitter,
+                    isOpen
                 }
             },
             { new: true }

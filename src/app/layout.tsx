@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased selection:bg-emerald-100 selection:text-emerald-900 dark:selection:bg-emerald-900/80 dark:selection:text-emerald-50`}>
         <Provider>
           <div className="bg-white text-[#1a1a1a] dark:bg-[#1a1a1a] dark:text-[#ededed] min-h-screen h-auto">
             <div className="max-w-[85rem] mx-auto ">

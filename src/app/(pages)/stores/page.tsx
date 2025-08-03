@@ -61,19 +61,19 @@ const page = () => {
     ];
 
     return (
-        <div className="min-h-screen dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900 py-10 px-4">
+        <div className="min-h-screen px-4 py-10 dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-900">
             <div className="mx-auto">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-8 text-gray-900 dark:text-white">
+                <div className="flex items-center justify-between">
+                    <h1 className="mb-8 text-3xl font-extrabold text-center text-gray-900 md:text-4xl dark:text-white">
                         Explore All Stores
                     </h1>
-                    <div className="flex flex-col md:flex-row items-center justify-start  gap-4 mb-8">
-                        <div className="flex items-center w-full md:w-2/3 bg-white dark:bg-neutral-800 rounded-lg border dark:border-neutral-700 px-4 py-2">
-                            <Search className="w-5 h-5 text-gray-400 mr-2" />
+                    <div className="flex flex-col items-center justify-start gap-4 mb-8 md:flex-row">
+                        <div className="flex items-center w-full px-4 py-2 bg-white border rounded-lg md:w-2/3 dark:bg-neutral-800 dark:border-neutral-700">
+                            <Search className="w-5 h-5 mr-2 text-gray-400" />
                             <input
                                 type="text"
                                 placeholder="Search stores by name, description, or ID..."
-                                className="w-full bg-transparent outline-none text-gray-700 dark:text-white"
+                                className="w-full text-gray-700 bg-transparent outline-none dark:text-white"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -82,7 +82,7 @@ const page = () => {
                             <select
                                 value={filter}
                                 onChange={(e) => setFilter(e.target.value)}
-                                className="px-3 py-2 rounded-lg border dark:border-neutral-700 bg-white dark:bg-neutral-800 text-gray-700 dark:text-white"
+                                className="px-3 py-2 text-gray-700 bg-white border rounded-lg dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
                             >
                                 {filterOptions?.map((opt) => (
                                     <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -94,7 +94,7 @@ const page = () => {
                 {
                     (filteredStores?.length === 0 && isError) && <div>Error Loading The Stores</div>
                 }
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
                     {isLoading ? (
                         [...Array(4)].map((_, index) => (
                             <MainStoreSkeleton key={index} />
