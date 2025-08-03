@@ -116,7 +116,7 @@ const StoreProductsShowcase = ({ storeProducts, currentPage, totalPages, limit, 
                             </h3>
                             <div className="flex items-center justify-center gap-2 mt-1">
                                 <span className="text-green-600 dark:text-green-400 font-bold text-lg">₹ {price - discount}</span>
-                                <span className="text-gray-700 decoration-gray-700 text-sm line-through">₹{price}</span>
+                                <span className="text-gray-700 decoration-gray-700 dark:text-gray-500 dark:decoration-gray-400 text-sm line-through">₹{price}</span>
                                 <span className="flex items-center gap-1 ml-auto text-yellow-500">
                                     <Star className="w-4 h-4" fill="currentColor" />
                                     <span className="font-medium">{getAverageRating(rating)}</span>

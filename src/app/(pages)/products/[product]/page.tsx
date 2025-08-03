@@ -226,7 +226,7 @@ const Product = () => {
                                                 src={image}
                                                 height={200}
                                                 width={200}
-                                                className='object-contain w-auto h-auto mb-5 transition-colors duration-200 ease-linear border cursor-pointer rounded-xl dark:border-neutral-700 dark:bg-neutral-950/50' />
+                                                className='object-contain w-auto h-auto mb-5 transition-colors duration-200 ease-linear border cursor-pointer rounded-xl dark:border-neutral-700 dark:bg-neutral-900/90' />
                                         </div>
                                     )
                                 })
@@ -243,7 +243,7 @@ const Product = () => {
                                     alt='product_image'
                                     height={2000}
                                     width={2000}
-                                    className='w-full h-auto transition-colors duration-200 ease-linear border rounded-xl dark:border-neutral-700 hover:cursor-grab hover:scale-150 dark:bg-neutral-950/50' />}
+                                    className='w-full h-auto transition-colors duration-200 ease-linear border rounded-xl dark:border-neutral-700 hover:cursor-grab hover:scale-150 dark:bg-neutral-900/90' />}
                         </div>
                     </div>
 
