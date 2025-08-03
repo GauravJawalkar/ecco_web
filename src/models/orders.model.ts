@@ -5,6 +5,7 @@ const orderSchema = new Schema(
         orderBy: {
             type: Schema.Types.ObjectId,
             ref: 'User',
+
             required: true
         },
         orders: [
@@ -61,6 +62,11 @@ const orderSchema = new Schema(
                 paymentStatus: {
                     type: String,
                     enum: ["Done", "Pending"],
+                    required: true
+                },
+                orderDate: {
+                    type: Date,
+                    default: Date.now,
                     required: true
                 },
                 seller: [

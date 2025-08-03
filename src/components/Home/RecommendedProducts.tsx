@@ -45,10 +45,14 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
             <div className="p-5">
                 <Swiper
                     slidesPerView={5}
-                    pagination={{ clickable: true }}
+                    modules={[Pagination]}
+                    pagination={{
+                        clickable: true,
+                        bulletClass: 'swiper-pagination-bullet !w-2 !h-2 !mx-1 !bg-gray-300 dark:!bg-neutral-600',
+                        bulletActiveClass: '!bg-gray-800 dark:!bg-white'
+                    }}
                     spaceBetween={30}
                     navigation={false}
-                    modules={[Pagination, Navigation]}
                     loop={true}>
                     {
                         mutation?.data?.length !== 0 && mutation?.data?.map(({ _id, images, name, price, discount }: { _id: string, images: [string], name: string, price: number, discount: number }) => {
