@@ -70,8 +70,8 @@ const Product = () => {
     async function getSellerDetails(id: string) {
         try {
             const response = await axios.get(`../api/getSelletDetails/${id}`);
-            if (response.data.data) {
-                return response.data.data
+            if (response.data?.data) {
+                return response.data?.data
             }
             return [];
         } catch (error) {
@@ -339,6 +339,9 @@ const Product = () => {
                                     <h1 title='Seller Information'>Seller Details</h1>
                                 </div>
                                 <div className='space-y-1'>
+                                    <li onClick={() => { router.push(`/stores/${seller?.storeDetails?.storeName}?id=${seller?.storeDetails?.storeId}`) }} className='text-sm text-green-500 hover:text-green-600 font-semibold hover:cursor-pointer'>
+                                        🏪 {seller?.storeDetails?.storeName}  <span className='font-normal animate-pulse text-gray-500 dark:text-gray-400 transition-colors'>(Visit Store)</span>
+                                    </li>
                                     <li className='text-sm font-normal capitalize'>🧑‍🦰 {seller?.name}</li>
                                     {seller?.isEmailVerified && <li className='text-sm font-normal capitalize'>{seller?.isEmailVerified ? "✅ Verified Seller" : ""}</li>}
                                     <li className='text-sm font-normal'>📧 {seller?.email}</li>
