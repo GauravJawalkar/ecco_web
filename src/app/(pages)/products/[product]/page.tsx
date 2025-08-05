@@ -254,7 +254,7 @@ const Product = () => {
                         </div>
 
                         <div>
-                            <p className={`w-full text-base text-gray-500 dark:text-gray-400   capitalize ${showMore ? "line-clamp-none" : "line-clamp-2"}`}>{product?.description}</p>
+                            <p className={`w-full text-sm text-gray-500 dark:text-gray-400  capitalize ${showMore ? "line-clamp-none" : "line-clamp-2"}`}>{product?.description}</p>
                             <button onClick={() => { setShowMore((prev) => !prev) }} className='text-sm text-blue-500 hover:text-blue-600'>{showMore ? "Show Less" : "Show More"}</button>
                         </div>
 
@@ -269,85 +269,141 @@ const Product = () => {
                         </div>
 
                         {/* Price and Discount */}
-                        <div>
-                            <h1 className='pb-1 text-sm text-green-600'>Special price</h1>
-                            <div className='flex items-baseline w-full gap-2'>
-                                <div>
-                                    <span className='uppercase font-semibold text-[28px] '>
-                                        ₹{(product?.price - product?.discount)?.toLocaleString()}</span>
-                                </div>
-                                <div className='uppercase font-semibold text-lg line-through decoration-gray-500 decoration-[1px] text-gray-500 dark:text-gray-400  '>
+                        <div className='p-4 bg-gray-50 dark:bg-neutral-800 rounded-lg w-full'>
+                            <div className='flex items-end gap-3'>
+                                <span className='text-3xl font-bold text-green-600'>
+                                    ₹{(product?.price - product?.discount)?.toLocaleString()}
+                                </span>
+                                <span className='text-lg font-medium text-gray-500 line-through dark:text-gray-400'>
                                     ₹{product?.price?.toLocaleString()}
-                                </div>
-                                <span className='text-2xl font-semibold text-green-600'> {Math.round(discountPercentage(product.price, product.discount))}% off</span>
+                                </span>
+                                <span className='px-2 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-md dark:bg-green-900/30'>
+                                    {Math.round(discountPercentage(product.price, product.discount))}% OFF
+                                </span>
+                            </div>
+                            <div className='mt-2 text-sm text-gray-500 dark:text-gray-400'>
+                                Inclusive of all taxes
                             </div>
                         </div>
 
                         {/* Highlights */}
-                        <div className='w-full px-4 py-2 border rounded-lg dark:border-neutral-700'>
-
-                            {/* Highlights */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 border-b dark:border-neutral-700 '>
-                                <div className='font-semibold capitalize '>
-                                    Highlights
-                                </div>
-                                <div className='space-y-1'>
-                                    <li className='text-sm font-normal capitalize'>
-                                        Category: {product?.category}
+                        <div className='w-full border rounded-xl dark:border-neutral-700 overflow-hidden'>
+                            <div className='p-5 border-b dark:border-neutral-700'>
+                                <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>Highlights</h3>
+                                <ul className='mt-3 space-y-2'>
+                                    <li className='flex items-start'>
+                                        <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span className='text-gray-600 dark:text-gray-300 text-sm'>Category: <span className='font-medium capitalize'>{product?.category}</span></span>
                                     </li>
-
-                                    <li className='text-sm font-normal capitalize'>
-                                        Container: {product?.containerType}
+                                    <li className='flex items-start'>
+                                        <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span className='text-gray-600 dark:text-gray-300 text-sm'>Container: <span className='font-medium capitalize'>{product?.containerType}</span></span>
                                     </li>
-
-                                    <li className='text-sm font-normal capitalize'>
-                                        Replace: Non Replaceable
+                                    <li className='flex items-start'>
+                                        <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span className='text-gray-600 dark:text-gray-300 text-sm'>Size: <span className='font-medium capitalize'>{product?.size}</span></span>
                                     </li>
-
-                                    <li className='text-sm font-normal capitalize'>
-                                        Size: {product?.size}
+                                    <li className='flex items-start'>
+                                        <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        <span className='text-gray-600 dark:text-gray-300 text-sm'>Non-Replaceable</span>
                                     </li>
-
-                                </div>
+                                </ul>
                             </div>
 
-                            {/* Payment Type */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 border-b dark:border-neutral-700'>
-                                <div className='font-semibold capitalize '>
-                                    Payment Options
-                                </div>
-                                <div className='space-y-1'>
-                                    <li className='text-sm font-normal capitalize'>
-                                        Cash on Delivery available
-                                    </li>
-
-                                    <li className='text-sm font-normal capitalize'>
-                                        Carding & Net-Banking
-                                    </li>
-
-                                    <li className='text-sm font-normal capitalize'>
-                                        All UPI options supported
-                                    </li>
-
+                            {/* Payment Options */}
+                            <div className='p-5 border-b dark:border-neutral-700'>
+                                <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>Payment Options</h3>
+                                <div className='grid grid-cols-2 gap-3 mt-3'>
+                                    <div className='flex items-center p-2 bg-gray-100 rounded-lg dark:bg-neutral-700/50'>
+                                        <div className='p-1 mr-2 text-white bg-blue-500 rounded-md'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                                                <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <span className='text-sm font-medium'>Card Payment</span>
+                                    </div>
+                                    <div className='flex items-center p-2 bg-gray-100 rounded-lg dark:bg-neutral-700/50'>
+                                        <div className='p-1 mr-2 text-white bg-purple-500 rounded-md'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M5 4a2 2 0 00-2 2v8a2 2 0 002 2h10a2 2 0 002-2V8a2 2 0 00-2-2h-2.5l-.707-.707A1 1 0 0011.172 5H9.828a1 1 0 00-.707.293L8.5 6H5z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <span className='text-sm font-medium'>Net Banking</span>
+                                    </div>
+                                    <div className='flex items-center p-2 bg-gray-100 rounded-lg dark:bg-neutral-700/50'>
+                                        <div className='p-1 mr-2 text-white bg-green-500 rounded-md'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                                            </svg>
+                                        </div>
+                                        <span className='text-sm font-medium'>UPI</span>
+                                    </div>
+                                    <div className='flex items-center p-2 bg-gray-100 rounded-lg dark:bg-neutral-700/50'>
+                                        <div className='p-1 mr-2 text-white bg-orange-500 rounded-md'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+                                                <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1v-1a1 1 0 011-1h2a1 1 0 011 1v1a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1V5a1 1 0 00-1-1H3z" />
+                                            </svg>
+                                        </div>
+                                        <span className='text-sm font-medium'>Cash on Delivery</span>
+                                    </div>
                                 </div>
                             </div>
-
 
                             {/* Seller Details */}
-                            <div className='grid grid-cols-[0.7fr_2fr] text-gray-500 dark:text-gray-400   gap-4 w-full py-4 '>
-                                <div className='font-semibold capitalize'>
-                                    <h1 title='Seller Information'>Seller Details</h1>
-                                </div>
-                                <div className='space-y-1'>
-                                    <li onClick={() => { router.push(`/stores/${seller?.storeDetails?.storeName}?id=${seller?.storeDetails?.storeId}`) }} className='text-sm text-green-500 hover:text-green-600 font-semibold hover:cursor-pointer'>
-                                        🏪 {seller?.storeDetails?.storeName}  <span className='font-normal animate-pulse text-gray-500 dark:text-gray-400 transition-colors'>(Visit Store)</span>
-                                    </li>
-                                    <li className='text-sm font-normal capitalize'>🧑‍🦰 {seller?.name}</li>
-                                    {seller?.isEmailVerified && <li className='text-sm font-normal capitalize'>{seller?.isEmailVerified ? "✅ Verified Seller" : ""}</li>}
-                                    <li className='text-sm font-normal'>📧 {seller?.email}</li>
+                            <div className='p-5'>
+                                <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>Seller Information</h3>
+                                <div className='flex items-start mt-3'>
+                                    <div className='flex-shrink-0 mr-4'>
+                                        <div className='flex items-center justify-center w-12 h-12 text-lg font-medium text-white bg-green-500 rounded-full'>
+                                            {seller?.name?.charAt(0)}
+                                        </div>
+                                    </div>
+                                    <div className='flex-1'>
+                                        <div
+                                            onClick={() => { router.push(`/stores/${seller?.storeDetails?.storeName}?id=${seller?.storeDetails?.storeId}`) }}
+                                            className='flex items-center text-lg font-medium text-green-600 cursor-pointer hover:text-green-700'
+                                        >
+                                            {seller?.storeDetails?.storeName}
+                                            <span className='ml-2 text-xs font-normal text-gray-500 dark:text-gray-400'>
+                                                (Visit Store)
+                                            </span>
+                                        </div>
+                                        <div className='mt-1 text-sm text-gray-600 dark:text-gray-300'>
+                                            <div className='flex items-center'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                </svg>
+                                                {seller?.isEmailVerified ? "Verified Seller" : "Unverified Seller"}
+                                            </div>
+                                            <div className='flex items-center mt-1'>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-1 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                                </svg>
+                                                {seller?.email}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
                         {/* Add to cart and buy now button */}
                         <div className="flex items-center justify-between w-full gap-4">
