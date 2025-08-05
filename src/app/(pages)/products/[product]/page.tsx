@@ -372,7 +372,7 @@ const Product = () => {
                                 <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200'>Seller Information</h3>
                                 <div className='flex items-start mt-3'>
                                     <div className='flex-shrink-0 mr-4'>
-                                        <div className='flex items-center justify-center w-12 h-12 text-lg font-medium text-white bg-green-500 rounded-full'>
+                                        <div className='flex items-center justify-center w-12 h-12 text-lg font-medium text-white bg-green-500 rounded-full uppercase'>
                                             {seller?.name?.charAt(0)}
                                         </div>
                                     </div>
