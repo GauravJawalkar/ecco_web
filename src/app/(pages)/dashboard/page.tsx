@@ -21,10 +21,10 @@ const Dashboard = () => {
 
     return (
         <div className="relative min-h-screen">
-            <Store />
-            <div className={`relative`}>
+            <div className={`relative ${isStoreLocked === false ? "opacity-40 pointer-events-none select-none" : "opacity-100"}`}>
+                <Store />
                 {/* Main dashboard content */}
-                <div className={`py-10 ${isStoreLocked === false ? "opacity-40 pointer-events-none select-none" : "opacity-100"}`}>
+                <div className={`py-10 `}>
                     <div className="flex items-center justify-start gap-3 p-4 dark:bg-neutral-850 rounded-lg border border-gray-150 dark:border-neutral-700 shadow-xs">
                         {/* My Products List */}
                         <div>
@@ -108,24 +108,24 @@ const Dashboard = () => {
                         data._id && <MyProducts view={listView} sellerId={data?._id} />
                     }
                 </div>
-                {/* Unlock Store overlay */}
-                {isStoreLocked === false && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <div className="flex flex-col items-center justify-center p-10 bg-white border shadow-xl dark:bg-neutral-800 dark:border-neutral-700 rounded-xl">
-                            <Lock className="w-12 h-12 mb-4 text-red-500" />
-                            <h2 className="mb-2 text-2xl font-bold text-gray-800 uppercase dark:text-white">Store Locked</h2>
-                            <p className="max-w-sm mb-6 text-center text-gray-600 dark:text-neutral-400 ">Unlock your store to access dashboard features and manage your own products store.</p>
-                            <button
-                                className="flex items-center gap-2 px-4 py-2 text-sm transition-colors border rounded dark:border-neutral-700 dark:hover:bg-neutral-900/20 hover:bg-gray-100/50"
-                                onClick={() => { setStoreOnboarding(true) }}>
-                                <Lock className="w-5 h-5 opacity-70" />
-                                Unlock Store
-                            </button>
-                        </div>
-                    </div>
-                )}
-                <StoreOnboardingModal isOpen={storeOnboarding} onClose={() => setStoreOnboarding(false)} ownerId={data._id} />
             </div>
+            {/* Unlock Store overlay */}
+            {isStoreLocked === false && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="flex flex-col items-center justify-center p-10 bg-white border shadow-xl dark:bg-neutral-800 dark:border-neutral-700 rounded-xl">
+                        <Lock className="w-12 h-12 mb-4 text-red-500" />
+                        <h2 className="mb-2 text-2xl font-bold text-gray-800 uppercase dark:text-white">Store Locked</h2>
+                        <p className="max-w-sm mb-6 text-center text-gray-600 dark:text-neutral-400 ">Unlock your store to access dashboard features and manage your own products store.</p>
+                        <button
+                            className="flex items-center gap-2 px-4 py-2 text-sm transition-colors border rounded dark:border-neutral-700 dark:hover:bg-neutral-900/20 hover:bg-gray-100/50"
+                            onClick={() => { setStoreOnboarding(true) }}>
+                            <Lock className="w-5 h-5 opacity-70" />
+                            Unlock Store
+                        </button>
+                    </div>
+                </div>
+            )}
+            <StoreOnboardingModal isOpen={storeOnboarding} onClose={() => setStoreOnboarding(false)} ownerId={data._id} />
         </div >
     );
 };

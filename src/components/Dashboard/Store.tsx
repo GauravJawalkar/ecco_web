@@ -46,7 +46,7 @@ const Store = () => {
                     <div className="relative w-full h-48 overflow-hidden md:h-64 rounded-xl">
                         <Image
                             alt="Store Cover"
-                            src={`${StoreData?.[0]?.storeCoverImage}`}
+                            src={`${StoreData?.[0]?.storeCoverImage || "https://dummyimage.com/16:9x1080"}`}
                             fill
                             sizes="100vw"
                             className="object-cover w-full h-full"
@@ -59,7 +59,7 @@ const Store = () => {
                         <div className="w-32 h-32 bg-white border-4 border-white rounded-full dark:border-neutral-900 dark:bg-neutral-900">
                             <Image
                                 alt="Store Profile"
-                                src={`${StoreData?.[0]?.storeImage}`}
+                                src={`${StoreData?.[0]?.storeImage || "https://dummyimage.com/squarepopup"}`}
                                 width={1000}
                                 height={1000}
                                 className="object-cover w-full h-full border rounded-full border-neutral-300 dark:border-neutral-700"

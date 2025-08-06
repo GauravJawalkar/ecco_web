@@ -23,7 +23,7 @@ interface EditStoreDetailsModalProps {
             facebook?: string,
             twitter?: string,
         },
-        isStoreOpen?: boolean;
+        isOpen?: boolean;
     };
 }
 
@@ -41,7 +41,7 @@ const EditStoreDetailsModal: React.FC<EditStoreDetailsModalProps> = ({ isOpen, o
     const [instagram, setInstagram] = useState(store?.socialMedia.instagram || "");
     const [facebook, setFacebook] = useState(store?.socialMedia.facebook || "");
     const [twitter, setTwitter] = useState(store?.socialMedia.twitter || "");
-    const [isStoreOpen, setIsStoreOpen] = useState(store?.isStoreOpen ?? true);
+    const [isStoreOpen, setIsStoreOpen] = useState(store?.isOpen ?? true);
 
     // Form state
     const [showAdditionalFields, setShowAdditionalFields] = useState(false);
