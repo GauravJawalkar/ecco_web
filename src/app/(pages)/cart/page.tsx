@@ -122,22 +122,140 @@ const Cart = () => {
 
     return (
         <section className="my-10">
-            {((!isPending && !isError) && userCart?.length === 0 || userCart?.cartItems?.length === 0) && (
+
+            {((!isPending && !isError) && (userCart?.length === 0 || userCart?.cartItems?.length === 0)) && (
                 <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl dark:border-neutral-700">
                     <PackageOpen className="w-16 h-16 text-gray-400 dark:text-neutral-500" />
-                    <h3 className="mt-4 text-xl font-medium text-gray-900 dark:text-white">Your Cart Is Empty</h3>
-                    <p className="max-w-md mt-2 text-center text-gray-600 dark:text-neutral-400">
-                        Looks like you haven't added anything to your cart yet
+                    <h3 className="mt-4 text-xl font-medium text-gray-900 dark:text-white">Your cart feels light</h3>
+                    <p className="mt-2 text-gray-600 dark:text-neutral-400 max-w-md text-center">
+                        No items added yet. Start shopping to fill your cart with amazing products!
                     </p>
                     <Link
                         href="/products"
-                        className="inline-flex items-center px-6 py-2 mt-5 transition-colors text-sm font-medium text-white bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 gap-3"
+                        className="flex items-center gap-2 px-8 py-2 mt-8 text-sm text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700 hover:shadow-md"
                     >
-                        <ArrowLeft className="h-5 w-5" />  Continue Shopping
+                        <ArrowLeft className="w-5 h-5" />
+                        Continue Shopping
                     </Link>
                 </div>
             )}
+
             <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6">
+                {/* Main Cart Content - Expands full width when empty */}
+                <div>
+
+                    {/* Cart Items Grid */}
+                    {userCart?.cartItems?.length > 0 && (
+                        <>
+                            <h1 className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
+                                Your Cart ({userCart?.cartItems?.length || 0})
+                            </h1>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                {userCart.cartItems.map(
+                                    ({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => (
+                                        <div
+                                            key={_id}
+                                            className="relative flex flex-col h-full p-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/50 hover:shadow-sm"
+                                        >
+                                            {/* Product Info - Top Section */}
+                                            <Link href={`/products/${slugify(name)}?id=${productId}`} className="flex gap-4">
+                                                <div className="flex-shrink-0">
+                                                    <Image
+                                                        width={120}
+                                                        height={120}
+                                                        src={image || "/placeholder-product.png"}
+                                                        alt={name}
+                                                        className="object-cover w-24 h-24 border rounded-lg dark:border-neutral-700"
+                                                    />
+                                                </div>
+                                                <div className="flex-1 min-h-[6rem]"> {/* Fixed height container */}
+                                                    <h2 className="w-3/4 font-medium text-gray-800 capitalize line-clamp-2 dark:text-neutral-100" title={name}>
+                                                        {name}
+                                                    </h2>
+                                                    <div className="mt-1 space-y-1 text-sm">
+                                                        <p className="text-gray-600 dark:text-neutral-300">
+                                                            <span className="font-medium">₹{(price - discount)?.toLocaleString()}</span>
+                                                            {discount > 0 && (
+                                                                <span className="ml-2 text-xs text-gray-400 line-through">
+                                                                    ₹{price?.toLocaleString()}
+                                                                </span>
+                                                            )}
+                                                        </p>
+                                                        <p className="text-gray-500 dark:text-neutral-400">
+                                                            Seller: <span className="capitalize">{sellerName}</span>
+                                                        </p>
+                                                        <p className="text-green-600 dark:text-green-400">
+                                                            <Truck className="inline w-4 h-4 mr-1" />
+                                                            Free delivery
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </Link>
+
+                                            {/* Quantity Controls - Bottom Section */}
+                                            <div className="pt-2 mt-auto dark:border-neutral-700">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setQuantityOperation("-");
+                                                                handelAddItemQuantity(_id, quantity);
+                                                            }}
+                                                            disabled={quantity <= 1}
+                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50"
+                                                        >
+                                                            <Minus className="w-4 h-4" />
+                                                        </button>
+                                                        <span className="w-8 text-center">{quantity}</span>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setQuantityOperation("+");
+                                                                handelAddItemQuantity(_id, quantity);
+                                                            }}
+                                                            disabled={quantity >= stock}
+                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50"
+                                                        >
+                                                            <Plus className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handelRemoveItem(_id);
+                                                        }}
+                                                        className="flex items-center gap-1 px-3 py-1.5 text-sm text-red-600 transition-colors bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {/* Stock Status Badge */}
+                                            <div className="absolute top-3 right-3">
+                                                {stock >= 10 ? (
+                                                    <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900/30 dark:text-green-400">
+                                                        In Stock
+                                                    </span>
+                                                ) : stock === 0 ? (
+                                                    <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full dark:bg-red-900/30 dark:text-red-400">
+                                                        Out of Stock
+                                                    </span>
+                                                ) : (
+                                                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                                        Only {stock} left
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
 
                 {/* Order Summary Sidebar - Only shows when cart has items */}
                 {userCart?.cartItems?.length > 0 && (

@@ -146,12 +146,12 @@ export const Navbar = () => {
                         <div className="border-b-[0.1px]  dark:bg-neutral-900 bg-white rounded border dark:border-zinc-700 p-2">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />
-                                <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed]">{dataLength !== 0 && data?.name.split(" ")[0]}</h1>
+                                <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed] text-sm">{dataLength !== 0 && data?.name.split(" ")[0]}</h1>
                             </li>
-                            <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <Info className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5" />Details</Link>
-                            <Link href={'/orders'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200"> <Box className="w-5 h-5" />Orders</Link>
+                            <Link href={'/profile'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200 text-sm"> <Info className="text-[#1a1a1a] dark:text-slate-200 h-5 w-5 text-sm" />Details</Link>
+                            <Link href={'/orders'} className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200 text-sm"> <Box className="w-5 h-5" />Orders</Link>
                             <div>
-                                <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200" onClick={() => { handelLogout() }}>
+                                <button className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded text-[#1a1a1a] dark:text-slate-200 text-sm" onClick={() => { handelLogout() }}>
                                     <LogOut className="w-5 h-5" />
                                     Logout
                                 </button>
