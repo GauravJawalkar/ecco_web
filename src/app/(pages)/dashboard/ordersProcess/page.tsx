@@ -19,6 +19,7 @@ export interface OrderItemType {
     pinCode: string;
     paymentMethod: string;
     orderQuantity: string;
+    orderPrice: number;
 }
 
 const page = () => {
@@ -75,7 +76,7 @@ const page = () => {
     return (
         <section className="min-h-screen py-8 dark:bg-neutral-900/50">
             <div className="container mx-auto px-4">
-                {/* Header Section */}
+                {/* Header Section*/}
                 <div className="flex flex-col md:flex-row items-center justify-between mb-8">
                     <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4 md:mb-0">
                         Manage Your Orders Here
