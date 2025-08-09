@@ -84,7 +84,7 @@ const ProductShowCase = () => {
                 return (
                   <Link href={`/products/${slugify(prodName)}?id=${productId}`} key={_id} className="relative border dark:border-neutral-700 rounded-3xl">
                     <Image
-                      src={prodImages?.[2]}
+                      src={prodImages?.[0]}
                       alt="splImage"
                       height={200} width={200}
                       className="object-contain w-full h-64" />

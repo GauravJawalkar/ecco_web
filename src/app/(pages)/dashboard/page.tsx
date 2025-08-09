@@ -10,6 +10,7 @@ import { FolderPlusIcon, LayoutGrid, LayoutList, Lock, PlusIcon, SparklesIcon, T
 import { userProps } from "@/interfaces/commonInterfaces";
 import StoreOnboardingModal from "@/components/Modals/StoreOnboardingModal";
 import Store from "@/components/Dashboard/Store";
+import ActionsSkeleton from "@/components/Skeletons/Dashboard/ActionsSkeleton";
 
 const Dashboard = () => {
     const { data }: { data: userProps } = useUserStore();
@@ -25,7 +26,7 @@ const Dashboard = () => {
                 <Store />
                 {/* Main dashboard content */}
                 <div className={`py-10 `}>
-                    <div className="flex items-center justify-start gap-3 p-4 dark:bg-neutral-850 rounded-lg border border-gray-150 dark:border-neutral-700 shadow-xs">
+                    {data?.bankDetails?.status === "Verified" ? <div className="flex items-center justify-start gap-3 p-4 dark:bg-neutral-850 rounded-lg border border-gray-150 dark:border-neutral-700 shadow-xs">
                         {/* My Products List */}
                         <div>
                             <button
@@ -49,25 +50,25 @@ const Dashboard = () => {
                         {/* specialShow button */}
                         {data?.isSuperAdmin && (
                             <div>
-                                <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
-                                    <SparklesIcon className="w-5 h-5 text-amber-500 dark:text-amber-400" />
-                                    <Link href={"/dashboard/specialShow"} className="hover:no-underline">
+                                <Link href={"/dashboard/specialShow"} className="hover:no-underline">
+                                    <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
+                                        <SparklesIcon className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                                         Special Appearance
-                                    </Link>
-                                </button>
+                                    </button>
+                                </Link>
                             </div>
                         )}
 
                         {/* Process Orders */}
                         <div>
-                            <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
-                                <TruckIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                <Link href={'/dashboard/ordersProcess'} className="hover:no-underline">
+                            <Link href={'/dashboard/ordersProcess'} className="hover:no-underline">
+                                <button className="px-4 py-2.5 rounded-md bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
+                                    <TruckIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                     Process Orders
-                                </Link>
-                            </button>
+                                </button>
+                            </Link>
                         </div>
-                    </div>
+                    </div> : <ActionsSkeleton data={data} />}
                     {(data._id) && (
                         <DashBoardStats
                             sellerId={data._id}
