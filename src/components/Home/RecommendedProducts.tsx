@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "../../app/globals.css";
 
@@ -32,11 +32,12 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
         }
     })
 
-    if (products?.length >= 1) {
-        useEffect(() => {
+
+    useEffect(() => {
+        if (products?.length >= 1) {
             mutation.mutate();
-        }, [products]);
-    }
+        }
+    }, [products]);
     const slugify = (prodName: string) => prodName.toLowerCase().replace(/\s+/g, '-');
 
 
@@ -53,7 +54,7 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
                     }}
                     spaceBetween={30}
                     navigation={false}
-                    loop={true}>
+                    loop={mutation?.data?.length > 5}>
                     {
                         mutation?.data?.length !== 0 && mutation?.data?.map(({ _id, images, name, price, discount }: { _id: string, images: [string], name: string, price: number, discount: number }) => {
                             return (
@@ -63,6 +64,7 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
                                             src={images?.[0] || ""}
                                             alt="recentViewImage"
                                             height={200} width={200}
+                                            loading="lazy"
                                             className="object-contain w-full h-64 p-2 dark:bg-neutral-800 rounded-t-3xl" />
                                         <div className="px-2 py-4 border-t dark:border-t-neutral-700 rounded-b-3xl space-y-2">
                                             <h1 className="text-lg font-normal text-center text-gray-700 dark:text-gray-300 capitalize line-clamp-1">{name}</h1>

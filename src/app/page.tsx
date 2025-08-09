@@ -8,7 +8,7 @@ import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
 import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Home() {
@@ -46,6 +46,10 @@ export default function Home() {
       setExistingRecentlyViewed(stored);
     }
   }, [isSuccess, isFetched]);
+
+  const memoizedProducts = useMemo(() => {
+    return existingRecentlyViewed?.product || [];
+  }, [existingRecentlyViewed?.product]);
 
   useEffect(() => {
     async function checkVaildCookies() {
@@ -90,8 +94,10 @@ export default function Home() {
         <ProductShowCase />
       </div>
 
-      {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
-        <RecentlyViewedProducts tag={true} products={existingRecentlyViewed?.product} />}
+      <div className="pb-10">
+        {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
+          <RecentlyViewedProducts tag={true} products={memoizedProducts} />}
+      </div>
     </div>
   );
 }
