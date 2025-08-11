@@ -1,4 +1,4 @@
-import { Eye, EyeOff, FileText, Package } from "lucide-react";
+import { Eye, EyeOff, FileText, Package, Tag } from "lucide-react";
 
 interface OrderHeaderProps {
     orderId: string;
@@ -15,7 +15,7 @@ export const OrderHeader = ({ orderId, showDetails, onShowDetails, onGenerateInv
             </div>
             <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Order ID</p>
-                <p className="font-medium text-gray-900 dark:text-white">{orderId}</p>
+                <p className="font-medium text-gray-900 dark:text-white text-sm flex items-center justify-center gap-1"><Tag className="h-3 w-3" /> {orderId}</p>
             </div>
         </div>
 

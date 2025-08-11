@@ -76,23 +76,24 @@ const Dashboard = () => {
                             kycVerified={data?.bankDetails?.status}
                         />
                     )}
-                    <div className="flex items-center justify-end gap-1 rounded-lg bg-gray-100 p-1 dark:bg-neutral-800">
+                    {/* List and Grid View */}
+                    <div className="flex items-center justify-end gap-2 rounded-lg bg-gray-100 p-1 dark:bg-neutral-800">
                         <button
                             onClick={() => setListView("grid")}
-                            className={`p-2 rounded-md transition-colors ${listView === "grid" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"}`}
+                            className={`p-2 rounded-md transition-colors ${listView === "grid" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"} flex items-center justify-center gap-2 text-sm capitalize`}
                             aria-label="Grid view"
                             title="Grid view"
                         >
-                            <LayoutGrid className={`h-5 w-5 transition-colors ${listView === "grid" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />
+                            <LayoutGrid className={`h-5 w-5 transition-colors ${listView === "grid" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />Grid View
                         </button>
 
                         <button
                             onClick={() => setListView("list")}
-                            className={`p-2 rounded-md transition-colors ${listView === "list" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"}`}
+                            className={`p-2 rounded-md transition-colors ${listView === "list" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"} flex items-center justify-center gap-2 text-sm capitalize`}
                             aria-label="List view"
                             title="List view"
                         >
-                            <LayoutList className={`h-5 w-5 transition-colors ${listView === "list" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />
+                            <LayoutList className={`h-5 w-5 transition-colors ${listView === "list" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />List View
                         </button>
                     </div>
                     {data._id && <AddProductModal

@@ -14,86 +14,86 @@ interface OrderTimelineProps {
     onStatusUpdate: (status: string) => void;
 }
 
-const timelineSteps = [
-    {
-        id: 1,
-        statusKey: 'confirmed',
-        title: 'Order Confirmed',
-        description: 'Your order has been confirmed and is being prepared',
-        icon: <Check className="h-5 w-5" />,
-        action: null,
-        completedStatus: (status: string) => status !== "Pending",
-        showTime: (order: any) => order.createdAt,
-        additionalInfo: null,
-        showAction: (currentStatus: string) => false // Never show action for confirmed
-    },
-    {
-        id: 2,
-        statusKey: 'processing',
-        title: 'Order Processing',
-        description: (status: string) =>
-            ["Order Processing", "Order Shipped", "Out For Delivery"].includes(status)
-                ? "Items are being prepared for shipment"
-                : "Waiting to begin processing",
-        icon: <ArrowRight className="h-5 w-5" />,
-        action: "Processing",
-        completedStatus: (status: string) =>
-            ["Order Processing", "Order Shipped", "Out For Delivery"].includes(status),
-        showTime: (order: any) => order.updatedAt,
-        additionalInfo: null,
-        showAction: (currentStatus: string) =>
-            currentStatus === "Pending" || currentStatus === "Order Confirmed"
-    },
-    {
-        id: 3,
-        statusKey: 'shipped',
-        title: 'Order Shipped',
-        description: (status: string) =>
-            ["Order Shipped", "Out For Delivery"].includes(status)
-                ? "Package has left our facility"
-                : "Will ship after processing",
-        icon: <Truck className="h-5 w-5" />,
-        action: "Ship",
-        completedStatus: (status: string) =>
-            ["Order Shipped", "Out For Delivery"].includes(status),
-        showTime: (order: any) => order.shippedAt,
-        additionalInfo: (order: any) => order.trackingNumber && (
-            <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
-                <Package className="h-5 w-5" />
-                Tracking #: {order.trackingNumber}
-            </div>
-        ),
-        showAction: (currentStatus: string) =>
-            currentStatus === "Order Processing"
-    },
-    {
-        id: 4,
-        statusKey: 'delivery',
-        title: 'Out for Delivery',
-        description: (status: string) =>
-            status === "Out For Delivery"
-                ? "Your package is with the delivery courier"
-                : "Will be dispatched for delivery soon",
-        icon: <PackageCheck className="h-5 w-5" />,
-        action: "Deliver",
-        completedStatus: (status: string) => status === "Out For Delivery",
-        showTime: (order: any) => order.outForDeliveryAt,
-        additionalInfo: (order: any) => (
-            <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
-                <Clock className="h-3.5 w-3.5 mr-2" />
-                Estimated delivery: {order.estimatedDelivery || "Today"}
-            </div>
-        ),
-        showAction: (currentStatus: string) =>
-            currentStatus === "Order Shipped"
-    }
-];
-
 const OrderTimeline: React.FC<OrderTimelineProps> = ({
     status,
     order,
     onStatusUpdate
 }) => {
+    console.log("Order is : ", order)
+    const timelineSteps = [
+        {
+            id: 1,
+            statusKey: 'confirmed',
+            title: 'Order Confirmed',
+            description: 'Your order has been confirmed and is being prepared',
+            icon: <Check className="h-5 w-5" />,
+            action: null,
+            completedStatus: (status: string) => status !== "Pending",
+            showTime: order.orderDate,
+            additionalInfo: null,
+            showAction: (currentStatus: string) => false // Never show action for confirmed
+        },
+        {
+            id: 2,
+            statusKey: 'processing',
+            title: 'Order Processing',
+            description: (status: string) =>
+                ["Order Processing", "Order Shipped", "Out For Delivery"].includes(status)
+                    ? "Items are being prepared for shipment"
+                    : "Waiting to begin processing",
+            icon: <ArrowRight className="h-5 w-5" />,
+            action: "Processing",
+            completedStatus: (status: string) =>
+                ["Order Processing", "Order Shipped", "Out For Delivery"].includes(status),
+            showTime: order.orderDate,
+            additionalInfo: null,
+            showAction: (currentStatus: string) =>
+                currentStatus === "Pending" || currentStatus === "Order Confirmed"
+        },
+        {
+            id: 3,
+            statusKey: 'shipped',
+            title: 'Order Shipped',
+            description: (status: string) =>
+                ["Order Shipped", "Out For Delivery"].includes(status)
+                    ? "Package has left our facility"
+                    : "Will ship after processing",
+            icon: <Truck className="h-5 w-5" />,
+            action: "Ship",
+            completedStatus: (status: string) =>
+                ["Order Shipped", "Out For Delivery"].includes(status),
+            showTime: order.orderDate,
+            additionalInfo: (order: any) => order.trackingNumber && (
+                <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
+                    <Package className="h-5 w-5" />
+                    Tracking #: {order.trackingNumber}
+                </div>
+            ),
+            showAction: (currentStatus: string) =>
+                currentStatus === "Order Processing"
+        },
+        {
+            id: 4,
+            statusKey: 'delivery',
+            title: 'Out for Delivery',
+            description: (status: string) =>
+                status === "Out For Delivery"
+                    ? "Your package is with the delivery courier"
+                    : "Will be dispatched for delivery soon",
+            icon: <PackageCheck className="h-5 w-5" />,
+            action: "Deliver",
+            completedStatus: (status: string) => status === "Out For Delivery",
+            showTime: order?.orderDate,
+            additionalInfo: (order: any) => (
+                <div className="mt-2 text-xs text-blue-600 dark:text-blue-400 flex items-center">
+                    <Clock className="h-3.5 w-3.5 mr-2" />
+                    Estimated delivery: {order.estimatedDelivery || "Today"}
+                </div>
+            ),
+            showAction: (currentStatus: string) =>
+                currentStatus === "Order Shipped"
+        }
+    ];
     return (
         <div className="relative">
             {/* Vertical timeline connector */}
@@ -108,8 +108,8 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({
                         <div key={step.id} className="flex items-start group">
                             {/* Status indicator circle */}
                             <div className={`relative flex-shrink-0 h-12 w-12 rounded-full flex items-center justify-center shadow-sm transition-colors ${isCompleted
-                                    ? "bg-green-500 text-white ring-4 ring-green-100 dark:ring-green-900/30"
-                                    : "bg-white dark:bg-neutral-800 text-gray-400 border-2 border-gray-300 dark:border-neutral-600"
+                                ? "bg-green-500 text-white ring-4 ring-green-200 dark:ring-green-900/30"
+                                : "bg-gray-200 dark:bg-neutral-800 text-gray-400 border-2 border-gray-300 dark:border-neutral-600"
                                 }`}>
                                 {isCompleted ? step.icon : <span className="text-sm font-medium">{step.id}</span>}
                             </div>
@@ -121,9 +121,9 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({
                                         }`}>
                                         {step.title}
                                     </h3>
-                                    {isCompleted && step.showTime(order) && (
+                                    {isCompleted && step.showTime && (
                                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                                            {new Date(step.showTime(order)).toLocaleTimeString()}
+                                            {new Date(step.showTime).toLocaleTimeString()}
                                         </span>
                                     )}
                                 </div>
