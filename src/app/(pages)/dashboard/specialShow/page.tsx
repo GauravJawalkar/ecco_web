@@ -30,6 +30,7 @@ const SpecialShowCase = () => {
         try {
             const response = await axios.get('../api/getSplAppReq')
             if (response.data.data) {
+                console.log("data is :", response.data.data);
                 setData(response.data.data)
             }
         } catch (error) {
@@ -184,13 +185,15 @@ const SpecialShowCase = () => {
                                         {/* Price */}
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900 dark:text-white">
                                             ₹{prodPrice}
+                                            <br />
+                                            {prodDiscount}
                                         </td>
 
                                         {/* Discount */}
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
                                             {prodDiscount ? (
                                                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                                    {discountPercentage(Number(prodPrice), Number(prodDiscount)).toFixed(2)}%
+                                                    {Math.round((discountPercentage(Number(prodPrice), Number(prodDiscount))))}%
                                                 </span>
                                             ) : (
                                                 <span className="text-xs text-gray-500 dark:text-neutral-400">-</span>
