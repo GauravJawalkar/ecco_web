@@ -30,11 +30,10 @@ const SpecialShowCase = () => {
         try {
             const response = await axios.get('../api/getSplAppReq')
             if (response.data.data) {
-                console.log("data is :", response.data.data);
                 setData(response.data.data)
             }
         } catch (error) {
-            console.log("Error Fetching the requests", error)
+            console.error("Error Fetching the requests", error)
             toast.error("Error Fetching requests")
         }
     }
