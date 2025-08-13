@@ -19,7 +19,6 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({
     order,
     onStatusUpdate
 }) => {
-    console.log("Order is : ", order)
     const timelineSteps = [
         {
             id: 1,
