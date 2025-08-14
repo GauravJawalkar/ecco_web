@@ -69,6 +69,16 @@ const orderSchema = new Schema(
                     default: Date.now,
                     required: true
                 },
+                orderShippedDate: {
+                    type: Date,
+                    default: "No Dates As Of Now",
+                    required: true
+                },
+                orderDeliveryDate: {
+                    type: Date,
+                    default: "No Dates As Of Now",
+                    required: true
+                },
                 seller: [
                     {
                         productId: {
