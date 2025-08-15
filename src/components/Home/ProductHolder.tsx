@@ -146,7 +146,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
                             handelCart();
                           }} className="py-2 px-4 border rounded-full text-sm flex items-center justify-center gap-3 dark:border-neutral-700 dark:hover:bg-neutral-800 hover:bg-gray-100">
                             <ShoppingCart className="h-5 w-5" />
-                            <span>Add To Cart</span>
+                            <span>Add</span>
                           </button>
                           <h1 className="font-semibold text-lg uppercase">
                             ₹ {(price - discount)?.toLocaleString()}

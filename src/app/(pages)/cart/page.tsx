@@ -121,7 +121,7 @@ const Cart = () => {
     }, [userCart]);
 
     return (
-        <section className="my-10">
+        <section className="py-10">
 
             {((!isPending && !isError) && (userCart?.length === 0 || userCart?.cartItems?.length === 0)) && (
                 <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl dark:border-neutral-700">
@@ -143,7 +143,6 @@ const Cart = () => {
             <div className="grid grid-cols-1 lg:grid-cols-[3fr_1fr] gap-6">
                 {/* Main Cart Content - Expands full width when empty */}
                 <div>
-
                     {/* Cart Items Grid */}
                     {userCart?.cartItems?.length > 0 && (
                         <>
@@ -203,7 +202,7 @@ const Cart = () => {
                                                                 handelAddItemQuantity(_id, quantity);
                                                             }}
                                                             disabled={quantity <= 1}
-                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50"
+                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                                         >
                                                             <Minus className="w-4 h-4" />
                                                         </button>
@@ -290,9 +289,9 @@ const Cart = () => {
                                 Proceed to Checkout
                             </button>
 
-                            <div className="flex items-center mt-4 text-sm text-gray-500 dark:text-neutral-400">
+                            <div className="flex items-center justify-center text-center w-full mt-4 text-sm text-gray-500 dark:text-neutral-400">
                                 <Lock className="w-4 h-4 mr-2" />
-                                Secure checkout
+                                Secure checkout with Razorpay
                             </div>
                         </div>
 

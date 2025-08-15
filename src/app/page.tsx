@@ -59,7 +59,7 @@ export default function Home() {
           return response.data.user
         } else {
           localStorage.removeItem('userLogin');
-          toast.success("clearing the localstorage")
+          toast.success("Authorizing...")
         }
       } catch (error: any) {
         console.error("Error clearing the localStorage", error)

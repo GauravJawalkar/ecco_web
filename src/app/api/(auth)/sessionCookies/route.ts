@@ -2,13 +2,13 @@ import connectDB from "@/db/dbConfig";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-connectDB();
 
 export async function GET() {
+    await connectDB();
     try {
         const cookieStore = await cookies();
 
-        const authToken: any = cookieStore.get('accessToken')?.value;
+        const authToken: string | undefined = cookieStore.get('accessToken')?.value;
         return NextResponse.json(
             {
                 message: "User Details",
@@ -20,8 +20,7 @@ export async function GET() {
         )
 
     } catch (error) {
-        console.log("Error in session cookies : ", error)
-        throw NextResponse.json(
+        return NextResponse.json(
             { error: `Error getting the session cookies : ${error}` },
             { status: 500 }
         )
