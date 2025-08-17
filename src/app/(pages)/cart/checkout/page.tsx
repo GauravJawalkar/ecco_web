@@ -245,21 +245,21 @@ const CartCeckOut = () => {
                     {(!isPending && !isError) &&
                         userCart?.cartItems?.map(({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => {
                             return (
-                                <div key={_id} className={`w-full grid grid-cols-[1.2fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-5`}>
+                                <div key={_id} className={`w-full grid grid-cols-[1.2fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 dark:bg-neutral-800/50 rounded-xl p-5`}>
                                     <div className={`${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-3`}>
                                         <Image src={image || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='object-contain w-full rounded-xl h-26' />
                                     </div>
 
-                                    <div className='content-center space-y-3'>
+                                    <div className='content-center space-y-1 '>
                                         <h1 title={name} className='text-xl font-semibold capitalize line-clamp-1'>{name}</h1>
                                         <h1 className='font-semibold'>
-                                            <span className='text-xl'>
+                                            <span className='text-lg'>
                                                 ₹ {price - discount}
                                             </span>
-                                            <span className='text-gray-500 line-through px-3 dark:text-gray-400'>₹ {price}</span>
-                                            <span className='text-green-500'>{Math.round(discountPercentage(price, discount))} % off</span>
+                                            <span className='text-gray-500 line-through px-3 dark:text-gray-400 text-sm'>₹ {price}</span>
+                                            <span className='text-green-500 text-sm'>{Math.round(discountPercentage(price, discount))} % off</span>
                                         </h1>
-                                        <div>
+                                        <div className="dark:text-gray-400">
                                             <h1 className='text-sm capitalize line-clamp-1'>Seller : 🧑‍🦰 {sellerName}</h1>
                                             <h1 className='text-sm capitalize line-clamp-1'>Store : 🏪 {sellerName}'s Store</h1>
                                             <h1 className='text-sm'>Quantity : {quantity}</h1>
@@ -342,7 +342,7 @@ const CartCeckOut = () => {
             {/* Grid Second half */}
             <div className='sticky p-5 border dark:border-neutral-700 rounded-xl top-24 h-fit'>
                 <h1 className='pb-2 font-semibold uppercase'>Price Details</h1>
-                <hr className='my-2 dark:text-neutral-700' />
+                <hr className='my-2 dark:border-neutral-700' />
                 <div className='py-4 space-y-5'>
                     <div className='flex items-center justify-between'>
                         <h1>Price ({userCart?.cartItems?.length || 0} Items)</h1>
@@ -356,7 +356,7 @@ const CartCeckOut = () => {
                         <h1>Delivery Charges</h1>
                         <h1>Free</h1>
                     </div>
-                    <hr className='my-2 dark:text-neutral-700' />
+                    <hr className='my-2 dark:border-neutral-700' />
                     <div className='flex items-center justify-between'>
                         <h1>Total Payable</h1>
                         <h1>₹{totalPrice?.toLocaleString() || 0}</h1>

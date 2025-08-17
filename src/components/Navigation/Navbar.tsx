@@ -51,6 +51,10 @@ export const Navbar = () => {
         const email = data?.email;
         const isEmailVerified = data?.isEmailVerified;
         const avatar = data?.avatar;
+        if (!data?._id) {
+            toast.error("Please Login");
+            return router.push('/login');
+        }
         try {
             const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified, avatar })
 
