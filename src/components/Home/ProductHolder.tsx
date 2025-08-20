@@ -30,7 +30,7 @@ interface holderProps {
   category: string
 }
 
-const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodData: any, loading: boolean, tag: string }) => {
+const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number, prodData: any, loading: boolean, tag: string, adImage: string }) => {
   const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, '-');
   const { data }: any = useUserStore();
   const cartOwnerId = data?._id;
@@ -88,7 +88,7 @@ const ProductHolder = ({ rank, prodData, loading, tag }: { rank: number, prodDat
       <div className="grid grid-cols-[1fr_2fr] gap-10 h-64"
         dir={`${rank % 2 ? "ltr" : "rtl"}`}>
         <div className="place-content-center text-center p-3 py-0 relative">
-          <Image src={"/Ads/Ad-1.png"} alt={"advertisement"} width={2000} height={1000} className="w-full h-full rounded-3xl" />
+          <Image src={`${adImage}`} alt={"advertisement"} width={2000} height={1000} className="w-full h-full rounded-3xl" />
           {tag.trim() !== "" && <h1 className={`absolute top-0 ${rank % 2 ? "right-3 rounded-tr-xl rounded-bl-xl border-t border-r" : "left-3 rounded-tl-xl rounded-br-xl border-t border-l"} bg-white px-3 py-1 dark:border-neutral-700 dark:text-black`}>{tag}</h1>}
         </div>
 

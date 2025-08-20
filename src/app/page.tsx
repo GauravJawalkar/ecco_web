@@ -76,10 +76,10 @@ export default function Home() {
         <HomeFilter />
       </div>
       <div className="py-10 mb-10">
-        <ProductHolder rank={1} tag="Great Deals" prodData={myData?.filter((product: { price: number, discount: number }) => (product?.price - product?.discount) >= 600)} loading={isLoading} />
+        <ProductHolder adImage="/Ads/Ad-1.png" rank={1} tag="Great Deals" prodData={myData?.filter((product: { price: number, discount: number }) => (product?.price - product?.discount) >= 600)} loading={isLoading} />
       </div>
       <div className="py-20 mb-10">
-        <ProductHolder rank={2} tag="Best Selling" prodData={[...(myData || [])].sort((a: { price: number, discount: number }, b: { price: number, discount: number }) => {
+        <ProductHolder adImage="/Ads/3971579.jpg" rank={2} tag="Best Selling" prodData={[...(myData || [])].sort((a: { price: number, discount: number }, b: { price: number, discount: number }) => {
           const priceA = a.price + (a.discount || 0);
           const priceB = b.price + (b.discount || 0);
           const discountPercentA = (a.discount || 0) / priceA * 100;
@@ -88,7 +88,7 @@ export default function Home() {
         })} loading={isLoading} />
       </div>
       <div className="py-20 mb-10">
-        <ProductHolder rank={3} tag="Top Rated" prodData={myData?.sort((a: { price: number, discount: number }, b: { price: number, discount: number }) => getAverageRating(b) - getAverageRating(a))?.slice(0, 10)} loading={isLoading} />
+        <ProductHolder adImage="/Ads/top-rated.png" rank={3} tag="Top Rated" prodData={myData?.sort((a: { price: number, discount: number }, b: { price: number, discount: number }) => getAverageRating(b) - getAverageRating(a))?.slice(0, 10)} loading={isLoading} />
       </div>
       <div className="py-20">
         <ProductShowCase />
