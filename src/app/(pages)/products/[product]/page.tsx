@@ -9,7 +9,7 @@ import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { CircleCheck, ShoppingCart, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { CheckCheck, CheckCircle, CircleCheck, ShoppingCart, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -293,33 +293,25 @@ const Product = () => {
                                 <ul className='mt-3 space-y-2'>
                                     <li className='flex items-start'>
                                         <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
+                                            <CircleCheck size={20} />
                                         </span>
                                         <span className='text-gray-600 dark:text-gray-300 text-sm'>Category: <span className='font-medium capitalize'>{product?.category}</span></span>
                                     </li>
                                     <li className='flex items-start'>
                                         <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
+                                            <CircleCheck size={20} />
                                         </span>
                                         <span className='text-gray-600 dark:text-gray-300 text-sm'>Container: <span className='font-medium capitalize'>{product?.containerType}</span></span>
                                     </li>
                                     <li className='flex items-start'>
                                         <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
+                                            <CircleCheck size={20} />
                                         </span>
                                         <span className='text-gray-600 dark:text-gray-300 text-sm'>Size: <span className='font-medium capitalize'>{product?.size}</span></span>
                                     </li>
                                     <li className='flex items-start'>
                                         <span className='flex-shrink-0 w-5 h-5 mt-0.5 mr-2 text-green-500'>
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                            </svg>
+                                            <CircleCheck size={20} />
                                         </span>
                                         <span className='text-gray-600 dark:text-gray-300 text-sm'>Non-Replaceable</span>
                                     </li>
