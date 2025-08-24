@@ -1,23 +1,24 @@
 "use client"
 
 import { useUserStore } from "@/store/UserStore"
-import { Box, Info, ListCollapse, LogOut, MoonStar, PackageOpen, Search, ShoppingCart, Sun, User } from "lucide-react"
+import { Box, Info, LogOut, MoonStar, Search, ShoppingCart, Sun, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { userProps } from "@/interfaces/commonInterfaces"
 
+interface UserStoreProps {
+    data: userProps;
+    logOut: () => void;
+    clearUser: () => void;
+}
 
 export const Navbar = () => {
-    const { data, logOut, clearUser } = useUserStore() as {
-        data: userProps;
-        logOut: () => void;
-        clearUser: () => void;
-    };
+    const { data, logOut, clearUser } = useUserStore() as UserStoreProps
     const [dark, setDark] = useState(false);
     const router = useRouter();
 
@@ -58,16 +59,18 @@ export const Navbar = () => {
         try {
             const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified, avatar })
 
-            if (response.data.data) {
+            if (response.data?.data) {
                 toast.success("Your request is being reviewed");
-                toast.success("Will get back to you shortly");
+                setTimeout(() => {
+                    toast.success("Will get back to you shortly");
+                }, 2000);
             } else {
                 toast.error("Failed to send request to Admin")
             }
 
         } catch (error) {
             toast.error("Failed to send request to Admin")
-            console.log("Error sending req to superAdmin", error)
+            console.error("Error sending req to superAdmin", error)
         }
     }
 
@@ -97,18 +100,21 @@ export const Navbar = () => {
         try {
             const response = await axios.get('/api/sessionCookies');
             if (!response.data?.user) {
-                clearUser();
+                return clearUser();
             } else {
-                toast.success("Logged In");
+                return toast.success("Logged In");
             }
         } catch (error) {
             console.error("Failed to authenticate the user validity");
         }
     }
 
-    useEffect(() => {
-        authenticationValidity();
-    }, []);
+    useQuery({
+        queryFn: authenticationValidity,
+        queryKey: ['authValidity'],
+        refetchOnWindowFocus: false,
+        enabled: !!data._id ? true : false
+    })
 
 
     return (
