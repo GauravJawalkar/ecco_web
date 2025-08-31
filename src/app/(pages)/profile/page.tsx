@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent, useState } from "react";
 import toast from "react-hot-toast";
+import ApiClient from "@/interceptors/ApiClient";
 
 const Home = () => {
     const { data, logOut }: any = useUserStore();
@@ -34,7 +35,7 @@ const Home = () => {
     const handelEmailVerify = async () => {
         try {
             setLoadOTP(true)
-            const response = await axios.post('/api/emailOtpValidation', { _id, email })
+            const response = await ApiClient.post('/api/emailOtpValidation', { _id, email })
             if (response.data.data) {
                 toast.success('Check Email For OTP');
                 setLoadOTP(false);

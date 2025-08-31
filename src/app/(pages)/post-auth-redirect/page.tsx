@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/UserStore';
 import axios from 'axios';
 import Loader from '@/components/Loaders/Loader';
+import ApiClient from '@/interceptors/ApiClient';
 
 export default function PostAuthRedirectPage() {
     const { setUser }: any = useUserStore();
@@ -12,7 +13,7 @@ export default function PostAuthRedirectPage() {
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await axios.get('/api/me'); // 👈 API that returns cookie user
+                const response = await ApiClient.get('/api/me'); // 👈 API that returns cookie user
                 if (response.data.data) {
                     setUser(response.data.data);
                 }

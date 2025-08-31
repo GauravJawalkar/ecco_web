@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUserStore } from '@/store/UserStore';
 import Image from 'next/image';
+import ApiClient from '@/interceptors/ApiClient';
 
 interface editDetailsProps {
     onClose: () => void;
@@ -67,7 +68,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
         }
 
         try {
-            const response = await axios.put('/api/editProductDetails', formData);
+            const response = await ApiClient.put('/api/editProductDetails', formData);
             if (response.data.data) {
                 return response.data.data || [];
             } else {
@@ -117,7 +118,7 @@ const EditDetailsModal = ({ isVisible, onClose, oldName, oldDescripion,
 
     async function getCategories() {
         try {
-            const response = await axios.get('/api/getCategories')
+            const response = await ApiClient.get('/api/getCategories')
             if (response.data.data) {
                 return response.data.data
             } else {

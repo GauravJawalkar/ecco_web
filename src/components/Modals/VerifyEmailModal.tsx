@@ -5,6 +5,7 @@ import { CircleX, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useUserStore } from '@/store/UserStore';
+import ApiClient from '@/interceptors/ApiClient';
 
 const VerifyEmailModal = ({ isVisible, onClose, id }: { isVisible: boolean, onClose: () => void, id: string }) => {
     const [OTP, setOTP] = useState("")
@@ -14,7 +15,7 @@ const VerifyEmailModal = ({ isVisible, onClose, id }: { isVisible: boolean, onCl
     const handelSubmit = async () => {
         try {
             setLoading(true)
-            const response = await axios.post('/api/verifyEmail', { id, OTP });
+            const response = await ApiClient.post('/api/verifyEmail', { id, OTP });
             if (response.data?.data) {
                 toast.success("Email Verified");
                 setUser(response.data?.data);

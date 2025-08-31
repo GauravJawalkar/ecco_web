@@ -2,6 +2,7 @@
 import StoreHero from '@/components/Stores/StoreHero';
 import StoreHeroSkeleton from '@/components/Stores/StoreHeroSkeleton';
 import StoreProductsShowcase from '@/components/Stores/StoreShowcase';
+import ApiClient from '@/interceptors/ApiClient';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
@@ -15,7 +16,7 @@ const StorePage = () => {
 
     const getStoreDetails = async () => {
         try {
-            const response = await axios.get(`/api/getPublicStore/${storeId}?page=${page}&limit=${limit}`);
+            const response = await ApiClient.get(`/api/getPublicStore/${storeId}?page=${page}&limit=${limit}`);
             if (response.status === 200) {
                 return response.data?.data
             }

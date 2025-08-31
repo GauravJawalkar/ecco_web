@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import NewOrdersSkeleton from '@/components/Skeletons/Orders/NewOrdersSkeleton';
+import ApiClient from '@/interceptors/ApiClient';
 
 interface myOrdersProps {
     _id: string,
@@ -70,7 +71,7 @@ const page = () => {
     async function getMyOrders() {
         const userId = data?._id
         try {
-            const response = await axios.get(`/api/getOrders/${userId}`);
+            const response = await ApiClient.get(`/api/getOrders/${userId}`);
             if (response.data.data) {
                 return response.data.data
             }

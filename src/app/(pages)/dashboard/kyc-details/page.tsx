@@ -1,5 +1,6 @@
 'use client';
 
+import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import axios from "axios";
@@ -37,7 +38,7 @@ export default function KYCDetails() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('/api/kyc', { accountName, accountNumber, IFSC, sellerId: data?._id });
+            const response = await ApiClient.post('/api/kyc', { accountName, accountNumber, IFSC, sellerId: data?._id });
             if (!response.data.success) {
                 toast.error("Submission failed");
             }
@@ -54,7 +55,7 @@ export default function KYCDetails() {
 
     const createRazorpayRecipient = async (kycId: string) => {
         try {
-            const response = await axios.post('/api/razorpay/create-recipient',
+            const response = await ApiClient.post('/api/razorpay/create-recipient',
                 { kycId, accountNumber: accountNumber, ifscCode: IFSC, name: accountName });
 
             if (!response.data.data) {

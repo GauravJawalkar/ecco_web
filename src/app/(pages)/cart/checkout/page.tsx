@@ -3,6 +3,7 @@
 import Loader from "@/components/Loaders/Loader";
 import AddAddressModal from "@/components/Modals/AddAddressModal";
 import { discountPercentage } from "@/helpers/discountPercentage";
+import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -42,7 +43,7 @@ const CartCeckOut = () => {
 
     async function getCartItems() {
         try {
-            const response = await axios.get(`../../api/getCart/${cartOwnerId}`);
+            const response = await ApiClient.get(`/api/getCart/${cartOwnerId}`);
             if (response.data.data) {
                 return response.data.data;
             }
@@ -56,7 +57,7 @@ const CartCeckOut = () => {
     async function getUserAddress() {
         const userId = data?._id;
         try {
-            const response = await axios.get(`/api/getAddress/${userId}`);
+            const response = await ApiClient.get(`/api/getAddress/${userId}`);
             if (response.data.data) {
                 return response.data.data
             }
@@ -96,7 +97,7 @@ const CartCeckOut = () => {
             const orderDetails = {
                 orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, seller, orderConfirmation, productId
             };
-            const response = await axios.post("/api/createOrder", { orderDetails });
+            const response = await ApiClient.post("/api/createOrder", { orderDetails });
             if (response.data.data) {
                 toast.success('Order Confirmed');
             }
@@ -134,7 +135,7 @@ const CartCeckOut = () => {
             const orderAmount = totalPrice;
 
             // Create order with commission details
-            const { data: order } = await axios.post('/api/razorpay/order', {
+            const { data: order } = await ApiClient.post('/api/razorpay/order', {
                 amount: orderAmount,
                 sellerId: userCart?.cartItems?.map((item: { sellerId: string }) => item?.sellerId),
             });
@@ -165,7 +166,7 @@ const CartCeckOut = () => {
                             throw new Error("Incomplete payment response from Razorpay");
                         }
                         // Verify payment
-                        const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                        const { data: verifyData } = await ApiClient.post('/api/razorpay/verify', {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
@@ -193,7 +194,7 @@ const CartCeckOut = () => {
                                 sellerAmount: orderAmount * 0.98,
                             };
 
-                            await axios.post('/api/createOrder', { orderDetails });
+                            await ApiClient.post('/api/createOrder', { orderDetails });
                             toast.success('Payment successful! Commission deducted');
                             router.push('/orders');
                         } else {

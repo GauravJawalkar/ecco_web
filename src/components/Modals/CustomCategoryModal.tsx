@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import Loader from '../Loaders/Loader'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import ApiClient from '@/interceptors/ApiClient'
 
 interface CustomCategoryModalProps {
     onClose: () => void,
@@ -21,7 +22,7 @@ const CustomCategoryModal = ({ onClose, isVisible, creator }: CustomCategoryModa
     async function addCategory() {
         try {
             if (categoryName.trim() !== "" && categoryName.length !== 0) {
-                const response = await axios.post('/api/addCategory', { categoryName, creator })
+                const response = await ApiClient.post('/api/addCategory', { categoryName, creator })
                 if (response.data?.data) {
                     onClose();
                 } else {

@@ -1,27 +1,25 @@
-import { User } from "@/models/user.model"
-import { NextResponse } from "next/server"
+import { User } from "@/models/user.model";
 
 export const generateAccessAndRefreshToken = async (userId: string) => {
-
     try {
-
-        const user: any = await User.findById(userId);
+        const user = await User.findById(userId);
 
         if (!user) {
-            return NextResponse.json({ error: "User not found" }, { status: 401 })
+            throw new Error("User not found");
         }
 
-        const accessToken: string = user?.generateAccessToken();
-        const refreshToken: string = user?.generateRefreshToken();
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        if (!accessToken || !refreshToken) {
+            throw new Error("Failed to generate tokens");
+        }
 
         user.refreshToken = refreshToken;
+        await user.save({ validateBeforeSave: false });
 
-        await user.save({ validateBeforeSave: false })
-
-        return { accessToken, refreshToken }
-
+        return { accessToken, refreshToken };
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 })
+        throw new Error("Token generation failed");
     }
-
-}
+};

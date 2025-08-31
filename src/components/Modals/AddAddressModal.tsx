@@ -1,4 +1,5 @@
 "use client"
+import ApiClient from '@/interceptors/ApiClient';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -25,7 +26,7 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
             const addressDetails = {
                 address, pinCode, landMark, contactNumber, userId
             }
-            const response = await axios.post("/api/addAddress", { addressDetails });
+            const response = await ApiClient.post("/api/addAddress", { addressDetails });
 
             if (response.data.data) {
                 return response.data.data

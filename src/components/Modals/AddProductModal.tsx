@@ -8,6 +8,7 @@ import Loader from '../Loaders/Loader';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { userProps } from '@/interfaces/commonInterfaces';
+import ApiClient from '@/interceptors/ApiClient';
 
 const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
     const queryClient = useQueryClient();
@@ -56,7 +57,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
             formData.append('category', category);
             formData.append('storeName', storeName);
             formData.append('storeId', storeId);
-            const response = await axios.post('/api/addProduct', formData);
+            const response = await ApiClient.post('/api/addProduct', formData);
             if (response.data.data) {
                 toast.success("Product Added Successfully");
                 onClose();
@@ -96,7 +97,7 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
 
     async function getCategories() {
         try {
-            const response = await axios.get('/api/getCategories')
+            const response = await ApiClient.get('/api/getCategories')
             if (response.data.data) {
                 return response.data.data;
             } else {

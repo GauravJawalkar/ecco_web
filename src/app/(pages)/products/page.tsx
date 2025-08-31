@@ -16,6 +16,7 @@ import { discountPercentage } from '@/helpers/discountPercentage';
 import { useRouter } from 'next/navigation';
 import { userProps } from '@/interfaces/commonInterfaces';
 import MainProductsPageSkeleton from '@/components/Skeletons/Products/MainProductsPageSkeleton';
+import ApiClient from '@/interceptors/ApiClient';
 interface searchParams {
     category?: string | "";
 }
@@ -106,7 +107,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
     async function getFilteredData(category: string) {
         try {
-            const response = await axios.post('/api/filteredProducts', { category, categoryPage });
+            const response = await ApiClient.post('/api/filteredProducts', { category, categoryPage });
             if (response.data.data) {
                 setCategoryTotalPages(response.data?.totalCategoryPages || 1);
                 return response.data.data
@@ -139,7 +140,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
     async function getAllProducts() {
         try {
-            const response = await axios.get(`/api/getAllProducts?page=${page}`);
+            const response = await ApiClient.get(`/api/getAllProducts?page=${page}`);
             if (response.data?.data) {
                 setTotalPages(response.data?.totalPages || 1);
                 return response.data.data
@@ -182,7 +183,7 @@ const ProductsPage = ({ searchParams }: any) => {
         try {
             const cartOwner = data?._id;
             const sellerName = vikreta;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
+            const response = await ApiClient.post('/api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
             if (response.data.data) {
                 return response.data.data;
             }
@@ -195,7 +196,7 @@ const ProductsPage = ({ searchParams }: any) => {
 
     async function getSellerDetails(id: string) {
         try {
-            const response = await axios.get(`../api/getSelletDetails/${id}`);
+            const response = await ApiClient.get(`/api/getSelletDetails/${id}`);
             if (response.data.data) {
                 return response.data.data
             }

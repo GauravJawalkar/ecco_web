@@ -15,6 +15,7 @@ import {
     ShieldCheck,
     BellElectric
 } from 'lucide-react';
+import ApiClient from '@/interceptors/ApiClient';
 
 interface Seller {
     _id: string
@@ -33,7 +34,7 @@ const SellerAuthorizationPage = () => {
         try {
             setProcessingId(_id);
             setLoading(true);
-            const response = await axios.post('/api/authorizeSeller', { sellerId, _id });
+            const response = await ApiClient.post('/api/authorizeSeller', { sellerId, _id });
 
             if (response.data.data) {
                 toast.success("Seller authorized successfully");
@@ -52,7 +53,7 @@ const SellerAuthorizationPage = () => {
 
     async function getSellerRequests() {
         try {
-            const response = await axios.get('/api/getSellerRequests');
+            const response = await ApiClient.get('/api/getSellerRequests');
             if (response.data.data) {
                 setSellers(response.data.data);
             } else {

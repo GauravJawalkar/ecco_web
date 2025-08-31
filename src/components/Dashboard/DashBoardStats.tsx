@@ -7,6 +7,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import StatsSkeleton from '../Skeletons/Dashboard/StatsSkeleton';
+import ApiClient from '@/interceptors/ApiClient';
 
 const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, isAdmin: boolean, kycVerified: string }) => {
     const { data }: any = useUserStore();
@@ -14,7 +15,7 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
 
     async function getSellerOrders() {
         try {
-            const response = await axios.get(`/api/getSellerOrders/${id}`);
+            const response = await ApiClient.get(`/api/getSellerOrders/${id}`);
             if (response.data.total) {
                 return response.data.total || 0;
             }
@@ -26,7 +27,7 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
 
     const getProductNumber = async () => {
         try {
-            const response = await axios.post('/api/getSellerProducts', { sellerId })
+            const response = await ApiClient.post('/api/getSellerProducts', { sellerId })
 
             if (response.data.data) {
                 return response.data?.totalCount || 0;
@@ -40,7 +41,7 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
 
     const getSellerRequestNumber = async () => {
         try {
-            const response = await axios.get('/api/getSellerRequests')
+            const response = await ApiClient.get('/api/getSellerRequests')
 
             if (response.data.data) {
                 return response.data.data.length || 0;
@@ -55,7 +56,7 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
 
     async function getSellerDetails() {
         try {
-            const response = await axios.get(`/api/getSelletDetails/${id}`);
+            const response = await ApiClient.get(`/api/getSelletDetails/${id}`);
             if (!response.data.data) {
                 return [];
             }

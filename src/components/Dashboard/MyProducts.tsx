@@ -14,6 +14,7 @@ import Loader from "../Loaders/Loader";
 import { useQuery } from "@tanstack/react-query";
 import DeleteProductModal from "../Modals/DeleteProductModal";
 import TableLayoutSkeleton from "../Skeletons/Dashboard/TableLayoutSkeleton";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface reqSpecialAppearenceProps {
     _id: string;
@@ -67,7 +68,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
 
     async function getSellerProducts() {
         try {
-            const response = await axios.post("/api/getSellerProducts", { sellerId, page });
+            const response = await ApiClient.post("/api/getSellerProducts", { sellerId, page });
             if (response.data?.data) {
                 setTotalPages(response.data?.totalPages || 1);
                 return response.data?.data || [];
@@ -84,7 +85,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
         const data = { _id, name, description, price, images, discount, seller };
         try {
             setReqLoader(true);
-            const response = await axios.post("api/reqSplAppear", { data });
+            const response = await ApiClient.post("/api/reqSplAppear", { data });
             if (response.data.data) {
                 toast.success("Request Sent");
                 setReqLoader(false);

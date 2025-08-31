@@ -5,6 +5,7 @@ import HomeHero from "@/components/Home/HomeHero";
 import ProductHolder from "@/components/Home/ProductHolder";
 import ProductShowCase from "@/components/Home/ProductShowCase";
 import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
+import ApiClient from "@/interceptors/ApiClient";
 import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -30,7 +31,7 @@ export default function Home() {
 
   async function getProducts() {
     try {
-      const response = await axios.get('../api/getProducts');
+      const response = await ApiClient.get('../api/getProducts');
       if (response.data.data) {
         return response.data.data
       } else {
@@ -69,7 +70,7 @@ export default function Home() {
   useEffect(() => {
     async function checkVaildCookies() {
       try {
-        const response = await axios.get('/api/sessionCookies');
+        const response = await ApiClient.get('/api/sessionCookies');
         if (response.data?.user !== "" || response.data?.user.trim() !== "") {
           return response.data.user
         } else {

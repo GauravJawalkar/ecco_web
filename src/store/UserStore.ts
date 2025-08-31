@@ -1,10 +1,11 @@
 "use client"
-import axios from "axios"
+
 import toast from "react-hot-toast";
 import { create } from "zustand"
 import { persist, createJSONStorage } from 'zustand/middleware';
 import Cookies from 'js-cookie';
 import { userProps } from "@/interfaces/commonInterfaces";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface UserStore {
     data: userProps;
@@ -23,28 +24,29 @@ export const useUserStore = create<UserStore>()(
                 data: {} as userProps,
                 login: async (user) => {
                     try {
-                        const response = await axios.post('/api/login', user);
+                        const response = await ApiClient.post('/api/login', user);
+                        localStorage.setItem("userLogin", "true");
+                        Cookies.set('accessToken', response.data.accessToken, { expires: 1 });
                         set(
                             () => ({ data: response.data.user })
                         );
                     } catch (error) {
                         toast.error("Invalid Credentials");
-                        console.log("Error logging in : ", error)
-                        throw new Error("Error logging in")
+                        console.error("Error logging in : ", error)
                     }
                 },
                 logOut: async () => {
                     try {
-                        await axios.get('/api/logout');
+                        await ApiClient.get('/api/logout');
                         localStorage.removeItem('userLogin');
                         Cookies.remove('accessToken');
+                        Cookies.remove('refreshToken');
                         Cookies.remove('user');
                         set(
                             () => ({ data: {} as userProps })
                         );
                     } catch (error) {
                         console.error("Error logging out : ", error)
-                        throw new Error("Error logging out")
                     }
                 },
                 clearUser: () => {
@@ -56,14 +58,14 @@ export const useUserStore = create<UserStore>()(
                 },
                 loginDetails: async () => {
                     try {
-                        const response = await axios.get('/api/logInDetails');
+                        const response = await ApiClient.get('/api/logInDetails');
                         set(
                             {
                                 data: response.data.user
                             }
                         )
                     } catch (error) {
-                        throw new Error("Error getting login details")
+                        console.error("Error getting login details")
                     }
                 },
                 googleLogin: async () => {

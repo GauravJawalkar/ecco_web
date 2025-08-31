@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Loader from "../Loaders/Loader";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface StoreOnboardingModalProps {
     isOpen: boolean;
@@ -32,7 +33,7 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
             formData.append("storeCoverImage", storeCoverImage);
             formData.append("owner", ownerId);
 
-            const response = await axios.post("/api/createStore", formData);
+            const response = await ApiClient.post("/api/createStore", formData);
 
             if (response.status === 201) {
                 toast.success("Store created successfully!");

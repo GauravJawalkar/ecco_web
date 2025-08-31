@@ -1,5 +1,6 @@
 "use client";
 
+import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ const Cart = () => {
 
     async function getCartItems() {
         try {
-            const response = await axios.get(`../../api/getCart/${cartOwnerId}`);
+            const response = await ApiClient.get(`../../api/getCart/${cartOwnerId}`);
             if (response.data?.data) {
                 return response.data.data;
             }
@@ -56,7 +57,7 @@ const Cart = () => {
     async function removeCartItem(_id: string) {
         try {
             const cartId = userCart?._id;
-            const response = await axios.put('/api/removeCartItem',
+            const response = await ApiClient.put('/api/removeCartItem',
                 { data: { cartId, _id, } });
             if (response.data.data) {
                 return response.data.data
@@ -84,7 +85,7 @@ const Cart = () => {
     async function addItemQuantity(_id: string, quantity: number) {
         try {
             const cartId = userCart?._id;
-            const response = await axios.put('api/updateCart', { data: { _id, quantityOperation, cartId, quantity } });
+            const response = await ApiClient.put('api/updateCart', { data: { _id, quantityOperation, cartId, quantity } });
             if (response.data.data) {
                 return response.data.data
             }

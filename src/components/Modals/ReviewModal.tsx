@@ -6,6 +6,7 @@ import { CircleX, X } from 'lucide-react'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import Loader from '../Loaders/Loader';
+import ApiClient from '@/interceptors/ApiClient';
 
 const ReviewModal = ({ onClose, isVisible, reviewedBy, reviewerName, reviewedProduct }: { onClose: () => void, isVisible: boolean, reviewedBy: string, reviewerName: string, reviewedProduct: string }) => {
     const [content, setContent] = useState("");
@@ -27,7 +28,7 @@ const ReviewModal = ({ onClose, isVisible, reviewedBy, reviewerName, reviewedPro
             if (imageTwo) formData.append('imageTwo', imageTwo);
             if (imageThree) formData.append('imageThree', imageThree);
             formData.append('title', title);
-            const response = await axios.post('/api/review/addReview', formData);
+            const response = await ApiClient.post('/api/review/addReview', formData);
             if (response.data.data) {
                 toast.success("Review Added");
                 return response.data.data;

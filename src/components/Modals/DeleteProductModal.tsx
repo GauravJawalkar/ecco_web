@@ -4,6 +4,7 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Loader from '../Loaders/Loader'
+import ApiClient from '@/interceptors/ApiClient'
 
 interface DeleteProductModalProps {
     isOpen: boolean
@@ -24,7 +25,7 @@ const DeleteProductModal: React.FC<DeleteProductModalProps> = ({
 
     async function deleteProduct() {
         try {
-            const response = await axios.delete("api/deleteProduct", {
+            const response = await ApiClient.delete("/api/deleteProduct", {
                 data: { sellerId, productId },
             });
             if (response.data?.product) {

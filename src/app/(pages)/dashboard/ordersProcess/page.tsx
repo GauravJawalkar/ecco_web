@@ -2,6 +2,7 @@
 
 import { OrderCard } from "@/components/OrdersProcess/OrderCard";
 import { generateInvoice } from "@/helpers/invoiceGenerator";
+import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -31,7 +32,7 @@ const page = () => {
 
     async function getSellerOrders() {
         try {
-            const response = await axios.get(`/api/getSellerOrders/${id}`);
+            const response = await ApiClient.get(`/api/getSellerOrders/${id}`);
             if (response.data.data) {
                 setTotalSellerOrders(response.data.total || 0);
                 return response.data;
@@ -44,7 +45,7 @@ const page = () => {
 
     async function updateOrderState({ orderDocId, orderID, processState }: { orderDocId: string, orderID: string, processState: string }) {
         try {
-            const response = await axios.put('/api/updateSellerOrderState', { processState, orderID, orderDocId });
+            const response = await ApiClient.put('/api/updateSellerOrderState', { processState, orderID, orderDocId });
             if (response.data.data) {
                 return response.data.data || []
             }

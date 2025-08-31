@@ -13,6 +13,8 @@ export async function PUT(request: NextRequest) {
         let storeCoverImage = formData.get("storeCoverImage") as any;
         const storeId = formData.get("storeId") as string;
 
+        console.log("The store id is : ", storeId);
+
         if (storeImage && (storeImage instanceof File)) {
             const newStoreImage: any = await uploadOnCloudinary(storeImage, "ecco_web_stores");
             storeImage = newStoreImage?.secure_url;

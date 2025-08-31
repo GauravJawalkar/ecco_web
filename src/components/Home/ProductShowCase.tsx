@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ProductShowcaseSkeleton from "../Skeletons/Products/ProductShowcaseSkeleton";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface dataProps {
   _id: string,
@@ -19,7 +20,7 @@ const ProductShowCase = () => {
 
   async function getSpecialShowCaseProducts() {
     try {
-      const response = await axios.get('../api/getSplProducts');
+      const response = await ApiClient.get('/api/getSplProducts');
 
       if (response.data.data) {
         return response.data.data

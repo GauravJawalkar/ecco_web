@@ -8,8 +8,6 @@ export async function PUT(request: NextRequest) {
 
         const { _id, productId } = reqBody;
 
-        console.log("Product Id is : ", reqBody);
-
         if (!_id || !productId) {
             return NextResponse.json({ error: "Product ID not provided" }, { status: 400 })
         }

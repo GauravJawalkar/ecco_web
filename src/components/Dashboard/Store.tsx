@@ -6,6 +6,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import EditStoreDetailsModal from '../Modals/EditStoreDetailsModal';
 import DashboardStoreHeroSkeleton from '../Skeletons/Dashboard/DashboardStoreHeroSkeleton';
+import ApiClient from '@/interceptors/ApiClient';
 
 const Store = () => {
     const { data } = useUserStore();
@@ -17,7 +18,7 @@ const Store = () => {
 
     async function fetchStoreData() {
         try {
-            const response = await axios.get(`/api/getStoreDetails/${storeId}`);
+            const response = await ApiClient.get(`/api/getStoreDetails/${storeId}`);
             if (response?.data?.data) {
                 setTotalProducts(response.data.totalProducts);
                 return response.data?.data;

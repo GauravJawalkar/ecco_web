@@ -6,6 +6,7 @@ import StoreCard from "@/components/Stores/StoreCard";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "@/components/Loaders/Loader";
 import MainStoreSkeleton from "@/components/Skeletons/Store/MainStoreSkeleton";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface StoreProps {
     _id: string;
@@ -26,7 +27,7 @@ const page = () => {
 
     async function fetchStores() {
         try {
-            const response = await axios.get(`/api/getStores?page=${page}`);
+            const response = await ApiClient.get(`/api/getStores?page=${page}`);
             if (response?.data?.data) {
                 return response.data?.data;
             }

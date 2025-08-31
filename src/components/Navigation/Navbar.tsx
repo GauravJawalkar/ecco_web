@@ -5,11 +5,12 @@ import { Box, Info, LogOut, MoonStar, Search, ShoppingCart, Sun, User } from "lu
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { userProps } from "@/interfaces/commonInterfaces"
+import ApiClient from "@/interceptors/ApiClient"
 
 interface UserStoreProps {
     data: userProps;
@@ -57,7 +58,7 @@ export const Navbar = () => {
             return router.push('/login');
         }
         try {
-            const response = await axios.post('/api/becomeSeller', { sellerId, email, isEmailVerified, avatar })
+            const response = await ApiClient.post('/api/becomeSeller', { sellerId, email, isEmailVerified, avatar })
 
             if (response.data?.data) {
                 toast.success("Your request is being reviewed");
@@ -78,7 +79,7 @@ export const Navbar = () => {
 
     async function getCartItems() {
         try {
-            const response = await axios.get(`../../api/getCart/${cartOwnerId}`);
+            const response = await ApiClient.get(`/api/getCart/${cartOwnerId}`);
             if (response.data.data) {
                 return response.data.data
             }
@@ -98,24 +99,20 @@ export const Navbar = () => {
 
     async function authenticationValidity() {
         try {
-            const response = await axios.get('/api/sessionCookies');
+            const response = await ApiClient.get('/api/sessionCookies');
             if (!response.data?.user) {
                 return clearUser();
             } else {
-                return toast.success("Logged In");
+                return toast.success("Authenticated");
             }
         } catch (error) {
-            console.error("Failed to authenticate the user validity");
+            return console.error("Failed to authenticate the user validity", error);
         }
     }
 
-    useQuery({
-        queryFn: authenticationValidity,
-        queryKey: ['authValidity'],
-        refetchOnWindowFocus: false,
-        enabled: !!data._id ? true : false
-    })
-
+    useEffect(() => {
+        authenticationValidity();
+    }, [])
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>

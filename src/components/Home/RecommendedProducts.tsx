@@ -9,12 +9,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "../../app/globals.css";
+import ApiClient from "@/interceptors/ApiClient";
 
 const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: boolean }) => {
 
     async function getRecentProducts() {
         try {
-            const response = await axios.post('/api/recentProducts', { products });
+            const response = await ApiClient.post('/api/recentProducts', { products });
             if (response.data.data) {
                 return response.data.data;
             }

@@ -81,7 +81,8 @@ const userSchema = new Schema(
             type: String
         },
         refreshToken: {
-            type: String
+            type: String,
+            default: null
         },
         forgotPasswordOTP: {
             type: String
@@ -123,7 +124,7 @@ userSchema.methods.generateAccessToken = function () {
         },
         process.env.ACCESS_TOKEN_SECRET as string,
         {
-            expiresIn: '4d'
+            expiresIn: '2m'
         }
     )
 }

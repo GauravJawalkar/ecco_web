@@ -2,6 +2,7 @@
 import Loader from '@/components/Loaders/Loader';
 import AddAddressModal from '@/components/Modals/AddAddressModal';
 import { discountPercentage } from '@/helpers/discountPercentage';
+import ApiClient from '@/interceptors/ApiClient';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -38,7 +39,7 @@ const page = () => {
 
     async function getProductDetails(id: string) {
         try {
-            const response = await axios.get(`/api/getProductDetails/${id}`);
+            const response = await ApiClient.get(`/api/getProductDetails/${id}`);
             if (response.data.data) {
                 return response.data.data;
             }
@@ -51,7 +52,7 @@ const page = () => {
 
     async function getSellerDetails(id: string) {
         try {
-            const response = await axios.get(`/api/getSelletDetails/${id}`);
+            const response = await ApiClient.get(`/api/getSelletDetails/${id}`);
             if (response.data.data) {
                 return response.data.data
             }
@@ -64,7 +65,7 @@ const page = () => {
 
     async function getUserAddress() {
         try {
-            const response = await axios.get(`/api/getAddress/${userId}`);
+            const response = await ApiClient.get(`/api/getAddress/${userId}`);
             if (response.data.data) {
                 return response.data.data
             }
@@ -104,7 +105,7 @@ const page = () => {
             const orderAmount = (productDetails.price - productDetails.discount) * quantity;
 
             // Create order with commission details
-            const { data: order } = await axios.post('/api/razorpay/order', {
+            const { data: order } = await ApiClient.post('/api/razorpay/order', {
                 amount: orderAmount,
                 sellerId: sellerDetails?._id,
             });
@@ -135,7 +136,7 @@ const page = () => {
                             throw new Error("Incomplete payment response from Razorpay");
                         }
                         // Verify payment
-                        const { data: verifyData } = await axios.post('/api/razorpay/verify', {
+                        const { data: verifyData } = await ApiClient.post('/api/razorpay/verify', {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature,
@@ -163,7 +164,7 @@ const page = () => {
                                 sellerAmount: orderAmount * 0.98,
                             };
 
-                            await axios.post('/api/createOrder', { orderDetails });
+                            await ApiClient.post('/api/createOrder', { orderDetails });
                             toast.success('Payment successful! Commission deducted');
                             router.push('/orders');
                         } else {
@@ -220,7 +221,7 @@ const page = () => {
             const orderDetails = {
                 orderName, orderPrice, orderDiscount, quantity, contactNumber, address, pinCode, landMark, orderImage, paymentMethod, paymentStatus, userId, sellerId, orderConfirmation, productId, seller
             };
-            const response = await axios.post("/api/createOrder", { orderDetails });
+            const response = await ApiClient.post("/api/createOrder", { orderDetails });
             if (response.data.data) {
                 toast.success('Order Confirmed');
             }

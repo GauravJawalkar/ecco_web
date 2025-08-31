@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Loader from "../Loaders/Loader";
 import { X, ChevronRight, ChevronLeft, Instagram, Facebook, Twitter } from "lucide-react";
+import ApiClient from "@/interceptors/ApiClient";
 
 interface EditStoreDetailsModalProps {
     isOpen: boolean;
@@ -73,7 +74,7 @@ const EditStoreDetailsModal: React.FC<EditStoreDetailsModalProps> = ({ isOpen, o
                 formData.append("storeCoverImage", store.storeCoverImage);
             }
 
-            const response = await axios.put("/api/updateStore", formData);
+            const response = await ApiClient.put("/api/updateStore", formData);
             if (response?.data?.data) {
                 toast.success("Store details updated successfully");
                 onClose();

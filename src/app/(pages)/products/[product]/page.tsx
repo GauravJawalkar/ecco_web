@@ -5,11 +5,12 @@ import ImagePreviewModal from '@/components/Modals/ImagePreviewModal';
 import ReviewModal from '@/components/Modals/ReviewModal';
 import SingleProductSkeleton from '@/components/Skeletons/Products/SingleProductSkeleton';
 import { discountPercentage } from '@/helpers/discountPercentage';
+import ApiClient from '@/interceptors/ApiClient';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { CheckCheck, CheckCircle, CircleCheck, ShoppingCart, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { CircleCheck, ShoppingCart, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -37,7 +38,7 @@ const Product = () => {
 
     async function getSpecificProduct(id: string) {
         try {
-            const response = await axios.get(`../api/getProductDetails/${id}`, { timeout: 2000 })
+            const response = await ApiClient.get(`/api/getProductDetails/${id}`, { timeout: 2000 })
             if (response.data.data) {
                 return response.data.data
             }
@@ -52,7 +53,7 @@ const Product = () => {
         const userID = data?._id;
         const productID = product?._id;
         try {
-            const response = await axios.post('/api/rating/rateProduct', { userID, productID, rateValue });
+            const response = await ApiClient.post('/api/rating/rateProduct', { userID, productID, rateValue });
             if (response.data.data) {
                 toast.success("Thanks For Rating");
                 return response.data.data;
@@ -69,7 +70,7 @@ const Product = () => {
 
     async function getSellerDetails(id: string) {
         try {
-            const response = await axios.get(`../api/getSelletDetails/${id}`);
+            const response = await ApiClient.get(`/api/getSelletDetails/${id}`);
             if (response.data?.data) {
                 return response.data?.data
             }
@@ -92,7 +93,7 @@ const Product = () => {
             const stock = product?.stock;
             const productId = product?._id;
             const sellerId = seller?._id;
-            const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
+            const response = await ApiClient.post('/api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
             if (response.data.data) {
                 toast.success("Item Added To Cart");
                 return response.data.data;
@@ -109,7 +110,7 @@ const Product = () => {
 
     async function getReviews() {
         try {
-            const response = await axios.get(`/api/review/getReviews/${id}?skip=${skip}`);
+            const response = await ApiClient.get(`/api/review/getReviews/${id}?skip=${skip}`);
             if (response.data.data) {
                 setTotalReviews(response.data?.total || 0);
                 setReviews([...reviews, ...response.data?.data]);
@@ -369,9 +370,8 @@ const Product = () => {
                                         </div>
                                     </div>
                                     <div className='flex-1'>
-                                        <div
-                                            onClick={() => { router.push(`/stores/${seller?.storeDetails?.storeName}?id=${seller?.storeDetails?.storeId}`) }}
-                                            className='flex items-center text-lg font-medium text-green-600 cursor-pointer hover:text-green-700'
+                                        <div onClick={() => { router.push(`/stores/${seller?.storeDetails?.storeName}?id=${seller?.storeDetails?.storeId}`) }}
+                                            className='flex items-center text-lg font-medium text-green-600 cursor-pointer hover:text-green-700 capitalize'
                                         >
                                             {seller?.storeDetails?.storeName}
                                             <span className='ml-2 text-xs font-normal text-gray-500 dark:text-gray-400'>

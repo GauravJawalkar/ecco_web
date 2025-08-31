@@ -16,6 +16,7 @@ import toast from "react-hot-toast";
 import { discountPercentage } from "@/helpers/discountPercentage";
 import { useRouter } from "next/navigation";
 import ProductHolderSkeleton from "../Skeletons/Products/ProductHolderSkeleton";
+import ApiClient from "@/interceptors/ApiClient";
 
 
 interface holderProps {
@@ -48,7 +49,7 @@ const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number
   async function addToCart() {
     try {
       const cartOwner = data?._id;
-      const response = await axios.post('../api/addToCart', { cartOwner, name, price, image, discount, stock, productId, sellerId });
+      const response = await ApiClient.post('/api/addToCart', { cartOwner, name, price, image, discount, stock, productId, sellerId });
       if (response.data.data) {
         toast.success("Item Added To Cart");
         return response.data.data;

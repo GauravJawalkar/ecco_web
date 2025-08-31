@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
         const { email, password } = reqBody;
 
         if ([email, password].some((field) => field.trim() === "")) {
-            return NextResponse.json({ error: "name email and password are required" }, { status: 401 })
+            return NextResponse.json({ error: "name email and password are required" }, { status: 403 })
         }
 
         const user = await User.findOne({ email })
@@ -33,23 +33,33 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "Password incorret" }, { status: 400 })
         }
 
-        const { accessToken, refreshToken }: any = await generateAccessAndRefreshToken(user._id)
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
         const loggedUser = await User.findById(user._id).select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
 
         if (!loggedUser) {
-            return NextResponse.json({ error: "Cannot find logged user" }, { status: 402 })
+            return NextResponse.json({ error: "Cannot find logged user" }, { status: 401 })
         }
 
-        const options = {
+        const accessTokenOptions = {
             httpOnly: true,
-            secure: true,
-            maxAge: 60 * 60 * 24,
-        }
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            sameSite: process.env.NODE_ENV === 'production'
+                ? 'strict' as const : 'lax' as const,
+            maxAge: 24 * 60 * 60,
+        };
+
+        const refreshTokenOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            sameSite: process.env.NODE_ENV === 'production'
+                ? 'strict' as const : 'lax' as const,
+            maxAge: 7 * 24 * 60 * 60, // 7 days
+        };
 
         const cookieStore = await cookies();
-        cookieStore.set('accessToken', accessToken, options);
-        cookieStore.set('refreshToken', refreshToken, options);
+        cookieStore.set('accessToken', accessToken, accessTokenOptions);
+        cookieStore.set('refreshToken', refreshToken, refreshTokenOptions);
 
         return NextResponse.json(
             {
@@ -61,7 +71,7 @@ export async function POST(request: NextRequest) {
         )
 
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 500 })
+        return NextResponse.json({ error: error }, { status: 401 })
     }
 
 }

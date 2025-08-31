@@ -1,5 +1,6 @@
 "use client"
 import Loader from '@/components/Loaders/Loader';
+import ApiClient from '@/interceptors/ApiClient';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Eye, EyeClosed } from 'lucide-react';
@@ -20,7 +21,7 @@ const ForgotPassword = () => {
     const handelSubmit = async () => {
         try {
             setLoading(true)
-            const response = await axios.post('/api/resetPassword', { email, newPassword, OTP });
+            const response = await ApiClient.post('/api/resetPassword', { email, newPassword, OTP });
             if (response.data.data) {
                 toast.success("Password Reset SuccessFully");
                 setLoading(false)
@@ -38,7 +39,7 @@ const ForgotPassword = () => {
             return;
         }
         try {
-            const res = await axios.post('/api/otpValidation', { email })
+            const res = await ApiClient.post('/api/otpValidation', { email })
             if (res.data.data) {
                 toast.success("Check email for OTP");
                 setGetOTP(true);

@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET as string, { expiresIn: '7d' });
+        const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET as string, { expiresIn: '1d' });
 
         // Set cookie (HttpOnly)
         (await

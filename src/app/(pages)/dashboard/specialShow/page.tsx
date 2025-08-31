@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css";
 import { CheckCircle, List, MoreVertical, PackageSearch, Plus, Search, Star, StarOff, Tag, XCircle } from 'lucide-react'
 import { discountPercentage } from '@/helpers/discountPercentage'
+import ApiClient from '@/interceptors/ApiClient'
 
 interface mapDataProps {
     _id: string,
@@ -28,7 +29,7 @@ const SpecialShowCase = () => {
 
     async function getSpecialAppearReq() {
         try {
-            const response = await axios.get('../api/getSplAppReq')
+            const response = await ApiClient.get('/api/getSplAppReq')
             if (response.data.data) {
                 setData(response.data.data)
             }
@@ -40,7 +41,7 @@ const SpecialShowCase = () => {
 
     const handelSplReq = async (_id: string, productId: string) => {
         try {
-            const response = await axios.put('../api/setSplAppearence', { _id, productId })
+            const response = await ApiClient.put('/api/setSplAppearence', { _id, productId })
             if (response.data.data) {
                 toast.success("Special Product Updated")
                 getSpecialAppearReq()
@@ -55,7 +56,7 @@ const SpecialShowCase = () => {
 
     const handelUnsetSplReq = async (_id: string, productId: string) => {
         try {
-            const response = await axios.put('../api/unSetSplAppearence', { _id, productId })
+            const response = await ApiClient.put('/api/unSetSplAppearence', { _id, productId })
 
             if (response.data.data) {
                 toast.success("Special Product Removed")

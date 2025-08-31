@@ -1,6 +1,7 @@
 "use client"
 
 import Loader from '@/components/Loaders/Loader';
+import ApiClient from '@/interceptors/ApiClient';
 import axios from 'axios';
 import { Eye, EyeClosed } from 'lucide-react';
 import Image from 'next/image';
@@ -31,7 +32,7 @@ const Signup = () => {
                 return toast.error("Please Select Avatar Image")
             }
 
-            const response = await axios.post('/api/signup', formData)
+            const response = await ApiClient.post('/api/signup', formData)
 
             if (!response.data) {
                 setLoading(false)
