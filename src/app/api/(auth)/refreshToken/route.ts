@@ -1,11 +1,11 @@
 import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
 import { User } from "@/models/user.model";
 import connectDB from "@/db/dbConfig";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
 
-export async function POST(request: NextRequest) {
+export async function POST(_: NextRequest) {
     await connectDB();
     console.log('Refresh token endpoint called');
     try {

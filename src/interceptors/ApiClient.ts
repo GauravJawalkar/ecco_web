@@ -1,5 +1,5 @@
 import axios from "axios";
-import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
 
 
 const ApiClient = axios.create({
@@ -23,26 +23,32 @@ const processQueue = (error: any = null) => {
 // Function to check if token is expired
 const isTokenExpired = (token: string) => {
     try {
-        const decoded: any = jwt.decode(token);
+        const decoded: any = jwtDecode(token);
         return decoded.exp * 1000 < Date.now();
     } catch {
         return true;
     }
 };
 
+const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return null;
+};
+
+
 // Request interceptor
 ApiClient.interceptors.request.use(
     async (config) => {
-        const accessToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('accessToken='))
-            ?.split('=')[1];
+
+        const accessToken = getCookie('accessToken');
 
         if (accessToken && isTokenExpired(accessToken)) {
             if (!isRefreshing) {
                 isRefreshing = true;
                 try {
-                    await axios.post('/api/refresh');
+                    await axios.post('/api/refreshToken', {}, { withCredentials: true });
                     processQueue();
                 } catch (error) {
                     processQueue(error);
