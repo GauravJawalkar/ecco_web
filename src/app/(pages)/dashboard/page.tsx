@@ -30,7 +30,7 @@ const Dashboard = () => {
                         {/* My Products List */}
                         <div>
                             <button
-                                className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2"
+                                className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2 hover:bg-gradient-to-tl"
                                 onClick={() => { setShowProductModal(true) }}>
                                 <PlusIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                 Add Product
@@ -40,7 +40,7 @@ const Dashboard = () => {
                         {/* Custom Category */}
                         <div>
                             <button
-                                className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border-gray-200 dark:border-neutral-700 text-gray-800 border dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2"
+                                className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border-gray-200 dark:border-neutral-700 text-gray-800 border dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2 hover:bg-gradient-to-tl"
                                 onClick={() => setShowCustomCategoryModal(true)}>
                                 <FolderPlusIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                                 Add Category
@@ -51,7 +51,7 @@ const Dashboard = () => {
                         {data?.isSuperAdmin && (
                             <div>
                                 <Link href={"/dashboard/specialShow"} className="hover:no-underline">
-                                    <button className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
+                                    <button className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2 hover:bg-gradient-to-tl">
                                         <SparklesIcon className="w-5 h-5 text-amber-500 dark:text-amber-400" />
                                         Special Appearance
                                     </button>
@@ -62,7 +62,7 @@ const Dashboard = () => {
                         {/* Process Orders */}
                         <div>
                             <Link href={'/dashboard/ordersProcess'} className="hover:no-underline">
-                                <button className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2">
+                                <button className="px-4 py-2.5 rounded-md bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 border border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium hover:bg-gray-50 dark:hover:bg-neutral-750 duration-200 flex items-center gap-2 hover:bg-gradient-to-tl">
                                     <TruckIcon className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                                     Process Orders
                                 </button>
