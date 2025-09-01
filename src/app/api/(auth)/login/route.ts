@@ -4,7 +4,7 @@ import { User } from "@/models/user.model";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-connectDB()
+connectDB();
 
 export async function POST(request: NextRequest) {
 

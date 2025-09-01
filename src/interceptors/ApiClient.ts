@@ -1,6 +1,4 @@
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode';
-
 
 const ApiClient = axios.create({
     baseURL: process.env.NODE_ENV === 'development'
@@ -20,53 +18,7 @@ const processQueue = (error: any = null) => {
     failedQueue = [];
 };
 
-// Function to check if token is expired
-const isTokenExpired = (token: string) => {
-    try {
-        const decoded: any = jwtDecode(token);
-        return decoded.exp * 1000 < Date.now();
-    } catch {
-        return true;
-    }
-};
-
-const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift();
-    return null;
-};
-
-
 // Request interceptor
-ApiClient.interceptors.request.use(
-    async (config) => {
-
-        const accessToken = getCookie('accessToken');
-
-        if (accessToken && isTokenExpired(accessToken)) {
-            if (!isRefreshing) {
-                isRefreshing = true;
-                try {
-                    await axios.post('/api/refreshToken', {}, { withCredentials: true });
-                    processQueue();
-                } catch (error) {
-                    processQueue(error);
-                    window.location.href = '/login';
-                } finally {
-                    isRefreshing = false;
-                }
-            }
-            return new Promise((resolve) => {
-                failedQueue.push({ resolve: () => resolve(config) });
-            });
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
-
-// Response interceptor for handling token refresh
 ApiClient.interceptors.response.use(
     (response) => response,
     async (error) => {
@@ -74,31 +26,23 @@ ApiClient.interceptors.response.use(
 
         if (error.response?.status === 401 && !originalRequest._retry) {
             if (isRefreshing) {
-                // Queue the requests if a refresh is already in progress
                 return new Promise((resolve, reject) => {
                     failedQueue.push({ resolve, reject });
                 })
-                    .then(() => {
-                        return ApiClient(originalRequest);
-                    })
-                    .catch(err => {
-                        return Promise.reject(err);
-                    });
+                    .then(() => ApiClient(originalRequest))
+                    .catch(err => Promise.reject(err));
             }
 
             originalRequest._retry = true;
             isRefreshing = true;
             try {
-                console.log("Refreshing token...");
-                await axios.post('/api/refreshToken');
+                await axios.post('http://localhost:3000/api/refreshToken');
                 processQueue();
-                console.log("Token refreshed, retrying original request...");
-
-                return ApiClient(originalRequest)
-            } catch (error) {
-                processQueue(error);
+                return ApiClient(originalRequest);
+            } catch (err) {
+                processQueue(err);
                 window.location.href = '/login';
-                return Promise.reject(error);
+                return Promise.reject(err);
             } finally {
                 isRefreshing = false;
             }
@@ -106,6 +50,6 @@ ApiClient.interceptors.response.use(
 
         return Promise.reject(error);
     }
-)
+);
 
 export default ApiClient;

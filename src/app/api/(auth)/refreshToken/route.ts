@@ -8,32 +8,46 @@ import { cookies } from "next/headers";
 export async function POST(_: NextRequest) {
     await connectDB();
     console.log('Refresh token endpoint called');
+
     try {
         const cookieStore = await cookies();
         const refreshToken = cookieStore.get('refreshToken')?.value;
 
         if (!refreshToken) {
+            console.log('No refresh token found');
             return NextResponse.json(
                 { error: "Refresh token missing" },
                 { status: 401 }
             );
         }
 
-        const decoded: any = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
-        console.log("Decoded Refresh Token is : ", decoded);
-        const user = await User.findById(decoded?._id);
-
-        if (!user || user?.refreshToken !== refreshToken) {
+        let decoded: any;
+        try {
+            decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+            console.log("Decoded Refresh Token ID:", decoded._id);
+        } catch (jwtError) {
+            console.error('JWT verification failed:', jwtError);
             return NextResponse.json({ error: "Invalid refresh token" }, { status: 403 });
+        }
+
+        const user = await User.findById(decoded._id);
+
+        if (!user) {
+            console.log('User not found for refresh token');
+            return NextResponse.json({ error: "User not found" }, { status: 403 });
+        }
+
+        if (user.refreshToken !== refreshToken) {
+            console.log('Refresh token mismatch');
+            return NextResponse.json({ error: "Refresh token does not match" }, { status: 403 });
         }
 
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             await generateAccessAndRefreshToken(user._id);
 
-        // Set development-friendly cookie options
         const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production' ? true : false,
+            secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production'
                 ? 'strict' as const : 'lax' as const,
             path: '/',
@@ -41,15 +55,21 @@ export async function POST(_: NextRequest) {
 
         cookieStore.set('accessToken', newAccessToken, {
             ...cookieOptions,
-            maxAge: 24 * 60 * 60
+            maxAge: 24 * 60 * 60 // 1 day
         });
 
         cookieStore.set('refreshToken', newRefreshToken, {
             ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60
+            maxAge: 7 * 24 * 60 * 60 // 7 days
         });
 
-        return NextResponse.json({ success: true, message: "Tokens refreshed successfully" }, { status: 200 });
+        console.log('Tokens refreshed successfully');
+        return NextResponse.json({
+            success: true,
+            message: "Tokens refreshed successfully",
+            data: { accessToken: newAccessToken, refreshToken: newRefreshToken }
+        }, { status: 200 });
+
     } catch (error) {
         console.error('Refresh token error:', error);
         return NextResponse.json(

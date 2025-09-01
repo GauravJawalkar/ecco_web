@@ -13,8 +13,6 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const [forgotLoading, setForgotLoading] = useState(false)
-    const [required, setRequired] = useState(true);
     const { login, googleLogin }: any = useUserStore()
     const router = useRouter()
     const clearUser = useUserStore((state: any) => state.clearUser);
@@ -89,7 +87,7 @@ const Login = () => {
                     </div>
                     <div className='relative w-full'>
                         <label className='text-sm'>Password :</label>
-                        <input type={showPassword ? "text" : "password"} className='w-full px-3 py-2 text-sm text-black rounded' placeholder='Enter Your Password' required={required} onChange={(e) => setPassword(e.target.value)} />
+                        <input type={showPassword ? "text" : "password"} className='w-full px-3 py-2 text-sm text-black rounded' placeholder='Enter Your Password' required onChange={(e) => setPassword(e.target.value)} />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
