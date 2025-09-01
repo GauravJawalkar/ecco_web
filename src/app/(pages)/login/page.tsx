@@ -35,15 +35,12 @@ const Login = () => {
             localStorage.setItem("login", "true");
             router.push('/')
 
-
         } catch (error) {
             console.log("Error logging in", error)
         } finally {
             setLoading(false)
         }
     }
-
-
 
     const handelGoogleLogin = async () => {
         try {

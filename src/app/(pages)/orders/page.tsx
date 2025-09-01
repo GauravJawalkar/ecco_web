@@ -3,7 +3,6 @@ import React from 'react';
 import { Package, CreditCard, MapPin, CheckCircle, Clock, Truck, XCircle, BadgeCheck, PackageOpen, Search, Pin, Split, AlertCircle } from 'lucide-react';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import NewOrdersSkeleton from '@/components/Skeletons/Orders/NewOrdersSkeleton';

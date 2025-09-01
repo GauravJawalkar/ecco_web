@@ -235,6 +235,7 @@ const page = () => {
     const createOrderMutation = useMutation({
         mutationFn: createOrder,
         onSuccess: () => {
+            toast.success('Order Placed Successfully');
             router.push('/orders');
         }
     })
