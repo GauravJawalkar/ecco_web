@@ -65,7 +65,7 @@ export async function POST(_: NextRequest) {
         // Set cookies with correct expiration times
         cookieStore.set('accessToken', newAccessToken, {
             ...cookieOptions,
-            maxAge: 60 // 1 day
+            maxAge: 60 * 60 // 1 hour
         });
 
         cookieStore.set('refreshToken', newRefreshToken, {

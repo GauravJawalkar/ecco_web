@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production'
                 ? 'strict' as const : 'lax' as const,
-            maxAge: 60,
+            maxAge: 60 * 60 // 1 hour
         };
 
         const refreshTokenOptions = {
