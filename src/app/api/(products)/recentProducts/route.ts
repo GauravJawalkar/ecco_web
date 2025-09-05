@@ -11,8 +11,8 @@ export async function POST(request: NextRequest) {
 
         const results = await Product.find({ _id: { $in: products } });
 
-        if (!results) {
-            return NextResponse.json({ error: 'Failed to find the recent results' }, { status: 401 })
+        if (results?.length === 0) {
+            return NextResponse.json({ message: 'No Recent products Found' }, { status: 200 })
         }
 
         return NextResponse.json({ data: results }, { status: 200 })

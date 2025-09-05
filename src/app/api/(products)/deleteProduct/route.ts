@@ -19,7 +19,7 @@ export async function DELETE(request: NextRequest) {
         console.log("sellerId is : ", sellerId);
 
         if (!productId || !sellerId) {
-            return NextResponse.json({ error: "productId and sellerId are required" }, { status: 401 })
+            return NextResponse.json({ error: "productId and sellerId are required" }, { status: 400 })
         }
 
         const user = await User.findById(sellerId);
@@ -41,7 +41,7 @@ export async function DELETE(request: NextRequest) {
 
         if (existsInSpecialAppearence) {
             if (existsInSpecialAppearence.requestedBy.toString() !== sellerId) {
-                return NextResponse.json({ error: "You are not authorized to delete this product from special appearance" }, { status: 403 });
+                return NextResponse.json({ error: "You are not authorized to delete this product from special appearance" }, { status: 400 });
             }
             // Delete from SpecialAppearence
             deleteFromSpecialAppearence = await SpecialAppearence.findOneAndDelete({ productId });

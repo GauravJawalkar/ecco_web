@@ -20,8 +20,6 @@ export async function POST(request: NextRequest) {
         // Check if already requested for becoming a seller
         const existingRequest = await BecomeSeller.findOne({ email });
 
-        console.log("Existing request is : ", existingRequest)
-
         if (existingRequest) {
             return NextResponse.json({ error: "You have already requested for becoming an seller" }, { status: 400 })
         }
@@ -34,7 +32,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (!becomeSellerRequest) {
-            return NextResponse.json({ error: "Failed to send the request to SuperAdmin" }, { status: 401 })
+            return NextResponse.json({ error: "Failed to send the request to SuperAdmin" }, { status: 500 })
         }
 
         return NextResponse.json({ data: becomeSellerRequest }, { status: 200 })

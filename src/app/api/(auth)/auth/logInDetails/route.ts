@@ -27,7 +27,7 @@ export async function GET() {
         const userDetails = await User.findById(userLoggedId).select("-password -refreshToken -accessToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry");
 
         if (!userDetails) {
-            return NextResponse.json({ error: "" }, { status: 401 })
+            return NextResponse.json({ error: "No User Details Found" }, { status: 404 })
         }
         return NextResponse.json(
             {

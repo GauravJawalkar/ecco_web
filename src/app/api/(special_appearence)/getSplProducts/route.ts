@@ -13,7 +13,7 @@ export async function GET() {
         }
 
         if (splProducts.length === 0) {
-            return NextResponse.json({ error: "No SPl products found" }, { status: 401 })
+            return NextResponse.json({ message: "No SPl products found" }, { status: 200 })
         }
 
         return NextResponse.json({ data: splProducts }, { status: 200 })

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const validationOTP = await mailValidator({ email: email, emailType: "verifyEmail" });
 
         if (!validationOTP) {
-            return NextResponse.json({ error: "Failed to send the OTP for credentials" }, { status: 401 })
+            return NextResponse.json({ error: "Failed to send the OTP for credentials" }, { status: 500 })
         }
 
         return NextResponse.json({ data: validationOTP }, { status: 200 })

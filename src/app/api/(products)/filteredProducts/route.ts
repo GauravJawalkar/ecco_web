@@ -19,8 +19,8 @@ export async function POST(request: NextRequest) {
 
         const filteredProducts = await Product.find({ category: category }).skip(skip).limit(limit);
 
-        if (!filteredProducts) {
-            return NextResponse.json({ error: "Failed to fetch the filtered Products" }, { status: 401 })
+        if (filteredProducts.length === 0) {
+            return NextResponse.json({ message: "No products found in this category" }, { status: 200 })
         }
 
         return NextResponse.json(

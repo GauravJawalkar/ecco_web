@@ -24,7 +24,7 @@ export const useUserStore = create<UserStore>()(
                 data: {} as userProps,
                 login: async (user) => {
                     try {
-                        const response = await ApiClient.post('/api/login', user);
+                        const response = await ApiClient.post('/api/auth/login', user);
                         localStorage.setItem("userLogin", "true");
                         Cookies.set('accessToken', response.data.accessToken, { expires: 1 });
                         set(
@@ -37,7 +37,7 @@ export const useUserStore = create<UserStore>()(
                 },
                 logOut: async () => {
                     try {
-                        await ApiClient.get('/api/logout');
+                        await ApiClient.get('/api/auth/logout');
                         localStorage.removeItem('userLogin');
                         set(
                             () => ({ data: {} as userProps })
@@ -55,7 +55,7 @@ export const useUserStore = create<UserStore>()(
                 },
                 loginDetails: async () => {
                     try {
-                        const response = await ApiClient.get('/api/logInDetails');
+                        const response = await ApiClient.get('/api/auth/logInDetails');
                         set(
                             {
                                 data: response.data.user

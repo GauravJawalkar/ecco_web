@@ -13,37 +13,46 @@ export async function POST(_: NextRequest) {
         const cookieStore = await cookies();
         const refreshToken = cookieStore.get('refreshToken')?.value;
 
-        if (!refreshToken) {
+        // No refresh token - should logout
+        if (!refreshToken || refreshToken.trim() === "") {
             console.log('No refresh token found');
             return NextResponse.json(
-                { error: "Refresh token missing" },
-                { status: 401 }
+                { error: "No Refresh Token - Please Login" },
+                { status: 403 }
             );
         }
 
         let decoded: any;
         try {
             decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
-            console.log("Decoded Refresh Token ID:", decoded._id);
         } catch (jwtError) {
-            console.error('JWT verification failed:', jwtError);
+            // Invalid/expired refresh token - should logout
             return NextResponse.json({ error: "Invalid refresh token" }, { status: 403 });
         }
 
         const user = await User.findById(decoded._id);
 
         if (!user) {
-            console.log('User not found for refresh token');
+            // User doesn't exist - should logout
             return NextResponse.json({ error: "User not found" }, { status: 403 });
         }
 
-        if (user.refreshToken !== refreshToken) {
-            console.log('Refresh token mismatch');
+        if (user?.refreshToken !== refreshToken) {
+            // Token mismatch - security issue, should logout
             return NextResponse.json({ error: "Refresh token does not match" }, { status: 403 });
         }
 
+        // Generate new tokens
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             await generateAccessAndRefreshToken(user._id);
+
+        // Updating user's refresh token in database
+        try {
+            await User.findByIdAndUpdate(user?._id, { refreshToken: newRefreshToken });
+        } catch (error) {
+            console.error('Failed to update refresh token in database:', error);
+            return NextResponse.json({ error: "Failed to update tokens" }, { status: 500 })
+        }
 
         const cookieOptions = {
             httpOnly: true,
@@ -53,6 +62,7 @@ export async function POST(_: NextRequest) {
             path: '/',
         };
 
+        // Set cookies with correct expiration times
         cookieStore.set('accessToken', newAccessToken, {
             ...cookieOptions,
             maxAge: 60 // 1 day
@@ -63,18 +73,16 @@ export async function POST(_: NextRequest) {
             maxAge: 7 * 24 * 60 * 60 // 7 days
         });
 
-        console.log('Tokens refreshed successfully');
         return NextResponse.json({
             success: true,
-            message: "Tokens refreshed successfully",
-            data: { accessToken: newAccessToken, refreshToken: newRefreshToken }
+            message: "Tokens refreshed successfully"
         }, { status: 200 });
 
     } catch (error) {
-        console.error('Refresh token error:', error);
+        console.error('Unexpected refresh token error:', error);
         return NextResponse.json(
             { error: "Token refresh failed" },
-            { status: 403 }
+            { status: 500 }
         );
     }
 }

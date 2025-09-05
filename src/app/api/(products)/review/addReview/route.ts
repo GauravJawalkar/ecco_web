@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
         });
 
         if (!isAuthenticReview) {
-            return NextResponse.json({ error: "Unauthorized Review" }, { status: 401 })
+            return NextResponse.json({ error: "Unauthorized Review" }, { status: 422 })
         }
 
         const img1: any = await uploadOnCloudinary(imageOne, 'ecco_web');

@@ -12,7 +12,19 @@ export async function GET() {
         if (!refreshToken || refreshToken.trim() === "") {
             return NextResponse.json(
                 { error: "No refresh token - please login again" },
-                { status: 403 } // 403 Forbidden - no retry needed
+                { status: 403 }
+            );
+        }
+
+        // Case 1.1: Check if refresh token is expired
+        try {
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+            // Token is valid, continue with other checks...
+        } catch (jwtError) {
+            // Token is expired, invalid, or malformed - logout user
+            return NextResponse.json(
+                { error: "Refresh token expired - please login again" },
+                { status: 403 }
             );
         }
 
@@ -20,7 +32,7 @@ export async function GET() {
         if (!accessToken || accessToken.trim() === "") {
             return NextResponse.json(
                 { message: "Access token missing - refresh needed" },
-                { status: 401 } // 401 - will trigger refresh
+                { status: 401 }
             );
         }
 

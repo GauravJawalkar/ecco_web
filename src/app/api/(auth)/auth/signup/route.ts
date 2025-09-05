@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         const avatar = formData.get('avatar')
 
         if (!name || !email || !password) {
-            return NextResponse.json({ "error": "All the above fields are required" }, { status: 401 })
+            return NextResponse.json({ "error": "All the above fields are required" }, { status: 400 })
         }
 
         const existingUser = await User.findOne({ email })

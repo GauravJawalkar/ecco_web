@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         const accessToken = cookieStore.get('accessToken')?.value;
 
         if (!accessToken || accessToken.trim() === "" || accessToken === undefined) {
-            return NextResponse.json({ error: "Unauthorized Access" }, { status: 403 });
+            return NextResponse.json({ error: "Unauthorized Access" }, { status: 422 });
         }
         const reqBody = await request.json();
 
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (!name || !price || !image || !discount || !productId || !sellerId) {
-            return NextResponse.json({ error: "Product Details Not Found" }, { status: 401 })
+            return NextResponse.json({ error: "Product Details Not Found" }, { status: 400 })
         }
 
         const seller = await User.findById(sellerId);

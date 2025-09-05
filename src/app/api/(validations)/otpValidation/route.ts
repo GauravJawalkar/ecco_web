@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const validationOTP = await mailValidator({ email: email, emailType: "forgotPassword" });
 
         if (!validationOTP) {
-            return NextResponse.json({ error: "Failed to send the validation OTP" }, { status: 401 })
+            return NextResponse.json({ error: "Failed to send the validation OTP" }, { status: 500 })
         }
 
         return NextResponse.json({ data: validationOTP }, { status: 200 })

@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return NextResponse.json({ error: "No such user found in the database" }, { status: 401 })
+            return NextResponse.json({ error: "No such user found in the database" }, { status: 404 })
         }
 
         const userOTP = user?.forgotPasswordOTP;
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
                 }
             )
         } else {
-            return NextResponse.json({ error: "Please Enter A valid OTP" }, { status: 401 })
+            return NextResponse.json({ error: "Please Enter A valid OTP" }, { status: 400 })
         }
 
         return NextResponse.json({ data: updatedPassword }, { status: 200 })

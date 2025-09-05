@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const validateEmailOTP = user?.emailVerificationOTP;
 
         if (validateEmailOTP !== OTP) {
-            return NextResponse.json({ error: "Invalid OTP" }, { status: 401 })
+            return NextResponse.json({ error: "Invalid OTP" }, { status: 400 })
         }
 
         const userEmailValidation = await User.findByIdAndUpdate(

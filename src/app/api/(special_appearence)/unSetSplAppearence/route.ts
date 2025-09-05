@@ -37,7 +37,7 @@ export async function PUT(request: NextRequest) {
         if (!removedFromUnset) {
             return NextResponse.json(
                 { error: "Failed to unset the product" },
-                { status: 401 }
+                { status: 500 }
             );
         }
 

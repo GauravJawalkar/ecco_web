@@ -9,13 +9,13 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
         const { id } = await params.params;
 
         if (!id) {
-            return NextResponse.json({ error: "Id is required" }, { status: 401 })
+            return NextResponse.json({ error: "Id is required" }, { status: 400 })
         }
 
         const product = await Product.findById(id);
 
         if (!product) {
-            return NextResponse.json({ error: "Product Not found in the database" }, { status: 402 })
+            return NextResponse.json({ error: "Product Not found in the database" }, { status: 404 })
         }
 
         return NextResponse.json({ data: product }, { status: 200 })

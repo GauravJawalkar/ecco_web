@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest) {
         }
 
         if (!name || !description || !category || !container) {
-            return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 403 })
+            return NextResponse.json({ error: "All the mentioned fields are required" }, { status: 400 })
         }
 
         const updatedDetails = await Product.findByIdAndUpdate(id,
@@ -70,7 +70,7 @@ export async function PUT(request: NextRequest) {
         )
 
         if (!updatedDetails) {
-            return NextResponse.json({ error: "Failed to update the product details" }, { status: 401 })
+            return NextResponse.json({ error: "Failed to update the product details" }, { status: 500 })
         }
 
         return NextResponse.json({ data: updatedDetails }, { status: 200 })

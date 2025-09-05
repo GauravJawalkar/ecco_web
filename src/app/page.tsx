@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     async function checkVaildCookies() {
       try {
-        const response = await ApiClient.get('/api/sessionCookies');
+        const response = await ApiClient.get('/api/auth/sessionCookies');
         if (response.data?.user !== "" || response.data?.user.trim() !== "") {
           return response.data.user
         } else {

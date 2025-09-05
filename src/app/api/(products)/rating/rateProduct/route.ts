@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         );
 
         if (!order) {
-            return NextResponse.json({ error: "You haven't ordered this product you cant rate it" }, { status: 401 })
+            return NextResponse.json({ error: "You haven't ordered this product you cant rate it" }, { status: 422 })
         }
 
         let updatedProduct = await Product.findOneAndUpdate(
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (!updatedProduct) {
-            return NextResponse.json({ error: "Product not found or not updated/created." }, { status: 402 })
+            return NextResponse.json({ error: "Product not found or not updated/created." }, { status: 500 })
         }
 
         return NextResponse.json({ data: updatedProduct }, { status: 200 })

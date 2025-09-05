@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
         const { categoryName, creator } = reqBody;
 
         if (!categoryName || !creator) {
-            return NextResponse.json({ "error": "Category Name is required" }, { status: 401 })
+            return NextResponse.json({ "error": "Category Name is required" }, { status: 400 })
         }
 
         const existingCategory = await Category.findOne({ categoryName });

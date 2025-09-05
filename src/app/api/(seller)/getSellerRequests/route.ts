@@ -6,8 +6,8 @@ export async function GET() {
 
         const sellers = await BecomeSeller.find();
 
-        if (!sellers) {
-            return NextResponse.json({ error: "No seller requests found in database" }, { status: 401 })
+        if (sellers?.length === 0) {
+            return NextResponse.json({ message: "No seller requests found in database" }, { status: 200 })
         }
 
         return NextResponse.json({ data: sellers }, { status: 200 })

@@ -17,13 +17,13 @@ export async function POST(request: NextRequest) {
         const checkExistingReq = await SpecialAppearence.find({ productId: _id })
 
         if (checkExistingReq.length !== 0) {
-            return NextResponse.json({ error: "You have already requested for this product" }, { status: 401 })
+            return NextResponse.json({ error: "You have already requested for this product" }, { status: 422 })
         }
 
         const Seller = await User.findById(seller);
 
         if (!Seller) {
-            return NextResponse.json({ error: "No Seller Found" }, { status: 401 })
+            return NextResponse.json({ error: "No Seller Found" }, { status: 404 })
         }
 
         const splReq = await SpecialAppearence.create(

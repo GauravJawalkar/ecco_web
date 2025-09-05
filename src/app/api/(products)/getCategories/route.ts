@@ -5,8 +5,8 @@ export async function GET() {
     try {
         const categories = await Category.find({});
 
-        if (!categories) {
-            return NextResponse.json({ error: "Failed to fetch the categories" }, { status: 401 })
+        if (categories.length === 0) {
+            return NextResponse.json({ message: "No categories found" }, { status: 200 });
         }
 
         Array.from(categories);

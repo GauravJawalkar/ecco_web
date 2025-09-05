@@ -43,21 +43,21 @@ const DashBoardStats = ({ sellerId, isAdmin, kycVerified }: { sellerId: string, 
         try {
             const response = await ApiClient.get('/api/getSellerRequests')
 
-            if (response.data.data) {
-                return response.data.data.length || 0;
-            } else {
-                toast.error("Error Fetching Seller Requests");
+            if (response.data?.data) {
+                return response.data?.data.length || 0;
             }
+            return 0;
         } catch (error) {
             console.error("Failed to get products", error);
             toast.error("Error Fetching Seller Requests")
+            return 0;
         }
     }
 
     async function getSellerDetails() {
         try {
             const response = await ApiClient.get(`/api/getSelletDetails/${id}`);
-            if (!response.data.data) {
+            if (!response.data?.data) {
                 return [];
             }
             return response.data.data

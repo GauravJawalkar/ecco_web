@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const sellerAccount = await User.findById(sellerId);
 
         if (!sellerAccount) {
-            return NextResponse.json({ error: "Seller Haven't completed the kyc process Yet" }, { status: 401 })
+            return NextResponse.json({ error: "Seller Haven't completed the kyc process Yet" }, { status: 404 })
         }
 
         if (!sellerAccount?.bankDetails?.razorpayFundAccountId) {

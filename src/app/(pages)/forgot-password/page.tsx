@@ -21,7 +21,7 @@ const ForgotPassword = () => {
     const handelSubmit = async () => {
         try {
             setLoading(true)
-            const response = await ApiClient.post('/api/resetPassword', { email, newPassword, OTP });
+            const response = await ApiClient.post('/api/auth/resetPassword', { email, newPassword, OTP });
             if (response.data.data) {
                 toast.success("Password Reset SuccessFully");
                 setLoading(false)

@@ -99,7 +99,7 @@ export const Navbar = () => {
 
     async function authenticationValidity() {
         try {
-            const response = await ApiClient.get('/api/sessionCookies');
+            const response = await ApiClient.get('/api/auth/sessionCookies');
             if (!response.data?.user) {
                 return clearUser();
             } else {

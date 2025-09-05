@@ -90,11 +90,9 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                 toast.success("Request Sent");
                 setReqLoader(false);
             } else {
-                console.log("logging ", response.data.error);
                 setReqLoader(false);
             }
-            if (response.data.status === 401) {
-                console.log("logging ", response.data.error);
+            if (response.data.status === 422) {
                 toast.success("already requested");
             }
         } catch (error: any) {

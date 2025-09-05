@@ -71,7 +71,7 @@ export async function PUT(request: NextRequest) {
 
             return NextResponse.json({ data: "Delivered" }, { status: 200 })
         } else {
-            return NextResponse.json({ error: "Error updating the order process status" }, { status: 401 });
+            return NextResponse.json({ error: "Error updating the order process status" }, { status: 500 });
         }
 
     } catch (error) {

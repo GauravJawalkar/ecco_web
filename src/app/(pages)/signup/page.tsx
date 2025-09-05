@@ -32,7 +32,7 @@ const Signup = () => {
                 return toast.error("Please Select Avatar Image")
             }
 
-            const response = await ApiClient.post('/api/signup', formData)
+            const response = await ApiClient.post('/api/auth/signup', formData)
 
             if (!response.data) {
                 setLoading(false)

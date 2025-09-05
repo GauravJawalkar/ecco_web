@@ -23,7 +23,7 @@ export async function PUT(request: NextRequest) {
         );
 
         if (!cart) {
-            return NextResponse.json({ error: "Cart with the given cartId not found" }, { status: 401 })
+            return NextResponse.json({ error: "Cart with the given cartId not found" }, { status: 404 })
         }
 
         return NextResponse.json({ data: cart }, { status: 200 });

@@ -61,7 +61,7 @@ const Product = () => {
             return [];
         } catch (error: any) {
             console.error("Failed to rate the product : ", error);
-            if (error.status === 401) {
+            if (error.status === 422) {
                 toast.error("Can't Rate Unordered Product");
             }
             return [];
@@ -94,14 +94,14 @@ const Product = () => {
             const productId = product?._id;
             const sellerId = seller?._id;
             const response = await ApiClient.post('/api/addToCart', { cartOwner, name, price, image, sellerName, discount, stock, productId, sellerId });
-            if (response.data.data) {
+            if (response.data?.data) {
                 toast.success("Item Added To Cart");
-                return response.data.data;
+                return response.data?.data;
             }
             return [];
         } catch (error: any) {
             console.error("Error Adding the product to cart ", error);
-            if (error.response.status === 403) {
+            if (error.response?.data?.error === "Unauthorized Access") {
                 toast.error("Unauthorized!");
                 return router.push('/login');
             }

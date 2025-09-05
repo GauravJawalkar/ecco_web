@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
         const { email, password } = reqBody;
 
         if ([email, password].some((field) => field.trim() === "")) {
-            return NextResponse.json({ error: "name email and password are required" }, { status: 403 })
+            return NextResponse.json({ error: "name email and password are required" }, { status: 400 })
         }
 
         const user = await User.findOne({ email })
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         const loggedUser = await User.findById(user._id).select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
 
         if (!loggedUser) {
-            return NextResponse.json({ error: "Cannot find logged user" }, { status: 401 })
+            return NextResponse.json({ error: "Cannot find logged user" }, { status: 404 })
         }
 
         const accessTokenOptions = {
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         )
 
     } catch (error) {
-        return NextResponse.json({ error: error }, { status: 401 })
+        return NextResponse.json({ error: error }, { status: 500 })
     }
 
 }

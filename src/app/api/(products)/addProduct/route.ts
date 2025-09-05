@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
         const decodedUser: any = jwt.verify(encodedUser, process.env.ACCESS_TOKEN_SECRET as string)
 
         if (decodedUser.isSeller === false) {
-            return NextResponse.json({ error: "Unauthorized User: Your are not a seller" }, { status: 401 })
+            return NextResponse.json({ error: "Unauthorized User: Your are not a seller" }, { status: 400 })
         }
 
         const userId = decodedUser?._id || decodedUser?.id;
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (!primeImage || !secondaryImage || !thirdImage) {
-            return NextResponse.json({ error: "All three Images are required" }, { status: 401 })
+            return NextResponse.json({ error: "All three Images are required" }, { status: 400 })
         }
 
         const mainImageUrl: any = await uploadOnCloudinary(primeImage, 'ecco_web');
