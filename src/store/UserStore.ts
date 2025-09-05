@@ -39,9 +39,6 @@ export const useUserStore = create<UserStore>()(
                     try {
                         await ApiClient.get('/api/logout');
                         localStorage.removeItem('userLogin');
-                        Cookies.remove('accessToken');
-                        Cookies.remove('refreshToken');
-                        Cookies.remove('user');
                         set(
                             () => ({ data: {} as userProps })
                         );

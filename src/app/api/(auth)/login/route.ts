@@ -43,15 +43,15 @@ export async function POST(request: NextRequest) {
 
         const accessTokenOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production' ? true : false,
+            secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production'
                 ? 'strict' as const : 'lax' as const,
-            maxAge: 24 * 60 * 60,
+            maxAge: 60,
         };
 
         const refreshTokenOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production' ? true : false,
+            secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production'
                 ? 'strict' as const : 'lax' as const,
             maxAge: 7 * 24 * 60 * 60, // 7 days

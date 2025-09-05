@@ -14,7 +14,7 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
         const addresses = await Address.find({ userId: id });
 
         if (!addresses) {
-            return NextResponse.json({ error: 'Failed to get the addresses' }, { status: 401 });
+            return NextResponse.json({ error: 'Failed to get the addresses' }, { status: 404 });
         }
 
         if (addresses.length === 0) {

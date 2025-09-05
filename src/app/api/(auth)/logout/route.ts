@@ -1,30 +1,37 @@
-import connectDB from "@/db/dbConfig";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-connectDB();
-
 export async function GET() {
     try {
-
         const cookieStore = await cookies();
 
-        const accessToken: any = cookieStore.get('accessToken')?.value
-        const refreshToken: any = cookieStore.get('refreshToken')?.value
-        const user: any = cookieStore.get('user')?.value
+        // Cookie options matching your login settings
+        const cookieOptions = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' as const : 'lax' as const,
+            path: '/',
+            maxAge: 0 // Immediate expiration
+        };
 
+        // Always clear cookies regardless of their current state
+        cookieStore.set('accessToken', '', cookieOptions);
+        cookieStore.set('refreshToken', '', cookieOptions);
+        cookieStore.set('user', '', cookieOptions);
 
-        accessToken && cookieStore.delete('accessToken');
-        refreshToken && cookieStore.delete('refreshToken');
-        user && cookieStore.delete('user');
+        return NextResponse.json({
+            success: true,
+            message: "Logged out successfully"
+        });
 
-        return NextResponse.json(
-            { data: "Logout Successful" },
-            { status: 200 }
-        )
 
     } catch (error) {
-        console.error(error)
-        return NextResponse.json({ error: error }, { status: 500 })
+        console.error("Logout error:", error);
+        return NextResponse.json({
+            success: false,
+            error: "Failed to logout"
+        }, {
+            status: 500
+        });
     }
 }

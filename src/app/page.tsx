@@ -8,7 +8,6 @@ import RecentlyViewedProducts from "@/components/Home/RecommendedProducts";
 import ApiClient from "@/interceptors/ApiClient";
 import { useUserStore } from "@/store/UserStore";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -31,7 +30,7 @@ export default function Home() {
 
   async function getProducts() {
     try {
-      const response = await ApiClient.get('../api/getProducts');
+      const response = await ApiClient.get('/api/getProducts');
       if (response.data.data) {
         return response.data.data
       } else {

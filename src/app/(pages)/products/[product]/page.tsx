@@ -38,7 +38,7 @@ const Product = () => {
 
     async function getSpecificProduct(id: string) {
         try {
-            const response = await ApiClient.get(`/api/getProductDetails/${id}`, { timeout: 2000 })
+            const response = await ApiClient.get(`/api/getProductDetails/${id}`)
             if (response.data.data) {
                 return response.data.data
             }
