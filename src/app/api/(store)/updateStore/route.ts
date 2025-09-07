@@ -13,8 +13,6 @@ export async function PUT(request: NextRequest) {
         let storeCoverImage = formData.get("storeCoverImage") as any;
         const storeId = formData.get("storeId") as string;
 
-        console.log("The store id is : ", storeId);
-
         if (storeImage && (storeImage instanceof File)) {
             const newStoreImage: any = await uploadOnCloudinary(storeImage, "ecco_web_stores");
             storeImage = newStoreImage?.secure_url;
@@ -32,8 +30,6 @@ export async function PUT(request: NextRequest) {
         const twitter = formData.get("twitter");
         const isStoreOpen = formData.get("isStoreOpen");
         const isOpen = isStoreOpen === "true" ? true : false;
-
-        console.log("The store is : ", isOpen);
 
         const updatedStore = await Store.findByIdAndUpdate(
             storeId,
