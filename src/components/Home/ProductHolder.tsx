@@ -149,9 +149,12 @@ const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number
                             <ShoppingCart className="h-5 w-5" />
                             <span>Add</span>
                           </button>
-                          <h1 className="font-semibold text-lg uppercase">
-                            ₹ {(price - discount)?.toLocaleString()}
-                          </h1>
+                          <div className="flex items-center justify-center gap-3">
+                            <h1 className="text-base text-gray-400 line-through font-light">{price}</h1>
+                            <h1 className="font-semibold text-lg uppercase">
+                              ₹ {(price - discount)?.toLocaleString()}
+                            </h1>
+                          </div>
                         </div>
                       </div>
                     </Link>
