@@ -19,6 +19,7 @@ const Dashboard = () => {
     const [listView, setListView] = useState("list");
     const [storeOnboarding, setStoreOnboarding] = useState(false);
     const isStoreLocked = data?.store;
+    const bankDetailsStatus = data?.bankDetails?.status;
 
     return (
         <div className="relative min-h-screen">
@@ -26,7 +27,7 @@ const Dashboard = () => {
                 <Store />
                 {/* Main dashboard content */}
                 <div className={`py-10 `}>
-                    {data?.bankDetails?.status === "Verified" ? <div className="flex items-center justify-start gap-3 p-4 border rounded-lg shadow-xs dark:bg-neutral-850 border-gray-150 dark:border-neutral-700">
+                    {data?.storeDetails?.storeName.trim()?.length > 0 ? <div className="flex items-center justify-start gap-3 p-4 border rounded-lg shadow-xs dark:bg-neutral-850 border-gray-150 dark:border-neutral-700">
                         {/* My Products List */}
                         <div>
                             <button
