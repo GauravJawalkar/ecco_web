@@ -60,7 +60,7 @@ const DeleteProductModal: React.FC<DeleteProductModalProps> = ({
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 bg-white/5 dark:bg-black/5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
             <div className="relative w-full max-w-md p-8 bg-white border dark:bg-neutral-900 rounded-xl dark:border-neutral-800">
                 <button
                     className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:hover:text-white"
