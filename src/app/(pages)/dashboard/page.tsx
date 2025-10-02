@@ -74,8 +74,7 @@ const Dashboard = () => {
                         <DashBoardStats
                             sellerId={data._id}
                             isAdmin={data?.isSuperAdmin}
-                            kycVerified={data?.bankDetails?.status}
-                        />
+                            kycVerified={data?.bankDetails?.status} />
                     )}
                     {/* List and Grid View */}
                     <div className="flex items-center justify-end gap-2 p-1 bg-gray-100 rounded-lg dark:bg-neutral-800">
@@ -83,8 +82,7 @@ const Dashboard = () => {
                             onClick={() => setListView("grid")}
                             className={`p-2 rounded-md transition-colors ${listView === "grid" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"} flex items-center justify-center gap-2 text-sm capitalize`}
                             aria-label="Grid view"
-                            title="Grid view"
-                        >
+                            title="Grid view">
                             <LayoutGrid className={`h-5 w-5 transition-colors ${listView === "grid" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />Grid View
                         </button>
 
@@ -92,8 +90,7 @@ const Dashboard = () => {
                             onClick={() => setListView("list")}
                             className={`p-2 rounded-md transition-colors ${listView === "list" ? "bg-white shadow-sm dark:bg-neutral-700" : "hover:bg-gray-200 dark:hover:bg-neutral-700/50"} flex items-center justify-center gap-2 text-sm capitalize`}
                             aria-label="List view"
-                            title="List view"
-                        >
+                            title="List view">
                             <LayoutList className={`h-5 w-5 transition-colors ${listView === "list" ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-neutral-400"}`} />List View
                         </button>
                     </div>

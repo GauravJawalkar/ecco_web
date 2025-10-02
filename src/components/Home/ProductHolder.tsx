@@ -7,10 +7,8 @@ import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import "swiper/css";
 import "../../app/globals.css";
 import { useState } from "react";
-import Loader from "../Loaders/Loader";
 import Link from "next/link";
 import { useUserStore } from "@/store/UserStore";
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { discountPercentage } from "@/helpers/discountPercentage";
@@ -106,9 +104,7 @@ const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number
             loop={prodData?.length > 3}
             onSwiper={(swiper) => {
               setSwiperInstance(swiper); // store swiper instance in state
-            }}
-          >
-
+            }}>
             {
               prodData?.map(({ _id, name, price, images, discount, seller, stock, rating, category }: holderProps) => {
                 return (
@@ -167,15 +163,13 @@ const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number
           {swiperInstance && (rank % 2 ? (
             <button
               onClick={() => swiperInstance.slideNext()}
-              className="absolute top-1/2 -right-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-neutral-700"
-            >
+              className="absolute top-1/2 -right-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-neutral-700">
               <ChevronRight />
             </button>
           ) : (
             <button
               onClick={() => swiperInstance.slideNext()}
-              className="absolute top-1/2 left-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-neutral-700"
-            >
+              className="absolute top-1/2 left-5 z-10 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 hover:bg-gray-200 transition-all ease-linear duration-200 py-5 px-2 text-neutral-800 rounded border border-gray-300 dark:bg-neutral-800 dark:text-gray-300 dark:border-neutral-700">
               <ChevronLeft />
             </button>
           ))}

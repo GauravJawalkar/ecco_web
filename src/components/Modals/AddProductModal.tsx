@@ -1,6 +1,5 @@
 "use client"
 import { useUserStore } from '@/store/UserStore';
-import axios from 'axios';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { X } from 'lucide-react';
@@ -242,8 +241,6 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
                                 </button>
                             </div>
                         </div>
-
-
                     </form>
                 </div >
             </section >
