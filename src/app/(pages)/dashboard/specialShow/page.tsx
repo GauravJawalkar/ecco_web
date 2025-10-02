@@ -184,9 +184,9 @@ const SpecialShowCase = () => {
 
                                         {/* Price */}
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900 dark:text-white">
-                                            ₹{prodPrice}
+                                            ₹{(Number(prodPrice) - Number(prodDiscount)).toFixed(2)}
                                             <br />
-                                            {prodDiscount}
+                                            <span className='line-through decoration-gray-600 text-gray-500'>{prodPrice}</span>
                                         </td>
 
                                         {/* Discount */}
