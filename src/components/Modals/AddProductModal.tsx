@@ -27,7 +27,6 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
     const storeId = data?.storeDetails?.storeId ?? "";
     const sellerId = data?._id;
 
-
     async function addProduct() {
         if (size === "Select Size") {
             toast.success("Select Proper Size", { icon: "▄︻══━一💥" })
@@ -86,7 +85,6 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
         mutation.mutate()
     }
 
-    // Image Preview
     const getPreviewUrl = (file: File | null) => {
         if (!file) {
             return null;
@@ -114,18 +112,20 @@ const AddProductModal = ({ isVisible, onClose }: { isVisible: boolean, onClose: 
         refetchOnWindowFocus: false,
     })
 
+    const handleClose = () => {
+        onClose();
+        setPrimeImage(null);
+        setSecondImage(null);
+        setThirdImage(null);
+    }
+
     if (!isVisible) return null;
 
     return (
         <>
             <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
                 <div className='relative w-full max-w-3xl p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
-                    <button onClick={() => {
-                        onClose();
-                        setPrimeImage(null);
-                        setSecondImage(null);
-                        setThirdImage(null);
-                    }} title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" aria-label="Close" >
+                    <button onClick={handleClose} title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" aria-label="Close" >
                         <X className="w-6 h-6" />
                     </button>
                     <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Add New Product</h2>
