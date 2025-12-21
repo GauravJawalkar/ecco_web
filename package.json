@@ -19,7 +19,7 @@
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.474.0",
     "mongoose": "^8.9.5",
-    "next": "15.1.6",
+    "next": "^16.1.0",
     "next-client-cookies": "^2.0.1",
     "nodemailer": "^6.10.0",
     "persist-and-sync": "^1.2.2",
