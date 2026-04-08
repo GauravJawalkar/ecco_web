@@ -305,7 +305,7 @@ const page = () => {
                                         setLandMark(landMark);
                                         setContactNumber(contactNumber);
                                         setOrderImage(productDetails?.images?.[0]);
-                                    }} key={_id} className='relative p-5 py-3 my-4 space-y-1 border cursor-pointer dark:border-neutral-700 rounded-xl'>
+                                    }} key={_id} className={`relative p-5 py-3 my-4 space-y-1 cursor-pointer rounded-xl ${select === _id ? "border-2 border-green-300 dark:border-neutral-700/50" : "border-2 border-dashed dark:border-neutral-700"}`}>
                                         <h1 title='main address of street city village'>🗺️ : {mainAddress}</h1>
                                         <h1 title='pincode of the area'>📍 : {pinCode}</h1>
                                         <h1 title='landmark of the area'>🌍 : {landMark}</h1>
@@ -339,7 +339,7 @@ const page = () => {
                     </button>
 
                     {/* Cash on Delivery */}
-                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 border dark:border-neutral-700 w-full rounded-xl relative disabled:cursor-not-allowed cursor-pointer`} type='button'>
+                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 dark:border-neutral-700 w-full rounded-xl relative ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"} ${isCOD ? "border-2 border-green-300 dark:border-neutral-700/50" : "border-2 border-dashed dark:border-neutral-700"} `} type='button'>
                         Cash On Delivery
                         {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500'><CheckCircle2 /></span>}
                     </button>

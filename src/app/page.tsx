@@ -17,7 +17,7 @@ interface PricingProps {
 }
 
 export default function Home() {
-  const { data }: any = useUserStore();
+  const { data, isAuthenticated, setUser }: any = useUserStore();
   const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
 
   const calculateDiscountedPrice = (a: PricingProps, b: PricingProps) => {
@@ -67,21 +67,23 @@ export default function Home() {
   }, [existingRecentlyViewed?.product]);
 
   useEffect(() => {
-    async function checkVaildCookies() {
+    if (!isAuthenticated) return; // Guest user — skip entirely, zero wasted requests
+
+    async function checkValidCookies() {
       try {
         const response = await ApiClient.get('/api/auth/sessionCookies');
-        if (response.data?.user !== "" || response.data?.user.trim() !== "") {
-          return response.data.user
-        } else {
-          localStorage.removeItem('userLogin');
-          toast.success("Authorizing...")
+        if (response.data?.user) {
+          setUser(response.data.user); // Re-hydrate store with fresh payload from token
         }
-      } catch (error: any) {
-        console.error("Error clearing the localStorage", error)
+      } catch (error) {
+        // 401 → ApiClient interceptor auto-refreshes and retries
+        // 403 → ApiClient interceptor calls handleLogout() which clears everything
+        console.error("Session check failed:", error);
       }
     }
-    checkVaildCookies();
-  }, [])
+
+    checkValidCookies();
+  }, []);
 
 
   return (
