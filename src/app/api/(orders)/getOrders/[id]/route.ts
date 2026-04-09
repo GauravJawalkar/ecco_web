@@ -1,5 +1,6 @@
 import connectDB from "@/db/dbConfig";
 import { Order } from "@/models/orders.model";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(_: NextRequest, params: { params: { id: string } }) {
@@ -11,7 +12,19 @@ export async function GET(_: NextRequest, params: { params: { id: string } }) {
             return NextResponse.json({ error: "Unauthorized Cant access the orders" }, { status: 400 })
         }
 
-        const userOrders = await Order.find({ orderBy: id }).sort({ createdAt: -1 });
+        const userOrders = await Order.aggregate([
+            { $match: { orderBy: new mongoose.Types.ObjectId(id) } },
+            {
+                $addFields: {
+                    orders: {
+                        $sortArray: {
+                            input: "$orders",
+                            sortBy: { orderDate: -1 }
+                        }
+                    }
+                }
+            }
+        ]);
 
         if (userOrders?.length === 0) {
             return NextResponse.json({ data: [], message: "No orders found for this user." }, { status: 200 });

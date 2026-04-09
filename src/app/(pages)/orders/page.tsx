@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+
 import { Package, CreditCard, MapPin, CheckCircle, Clock, Truck, XCircle, BadgeCheck, PackageOpen, Search, Pin, Split, AlertCircle } from 'lucide-react';
 import { userProps } from '@/interfaces/commonInterfaces';
 import { useUserStore } from '@/store/UserStore';
@@ -126,107 +126,112 @@ const page = () => {
                     </div>
                 )}
                 <div className="space-y-6">
-                    {myOrders[0]?.orders?.map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity, paymentMethod, orderDate }: myOrdersProps) => (
-                        <div key={_id} className="bg-white dark:bg-neutral-800/50 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-700 overflow-hidden">
-                            {/* Order Header */}
-                            <div className="border-b border-gray-200 dark:border-neutral-700 px-6 py-4 grid grid-cols-3 gap-4 ">
-                                <div className="mb-2 sm:mb-0">
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Order Placed</p>
-                                    <p className="font-medium text-sm dark:text-white">{formatDate(orderDate)}</p>
-                                </div>
-                                <div className="mb-2 sm:mb-0 place-items-center">
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">Total</p>
-                                    <p className="font-medium dark:text-white">
-                                        ₹{((orderPrice - orderDiscount) * orderQuantity).toFixed(2)}
-                                        {orderDiscount > 0 && (
-                                            <span className="ml-2 text-sm text-green-600 dark:text-green-400">
-                                                (Saved ₹{((orderPrice * orderQuantity) - ((orderPrice - orderDiscount) * orderQuantity)).toFixed(2)})
-                                            </span>
-                                        )}
-                                    </p>
-                                </div>
-                                <div className="mb-2 sm:mb-0 place-items-end">
-                                    <div className='w-fit'>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400"># Order Id</p>
-                                        <p className="font-medium text-gray-700 dark:text-gray-300 text-sm">{_id.toUpperCase()}</p>
+                    {myOrders[0]?.orders
+                        ?.slice()
+                        .sort((a: myOrdersProps, b: myOrdersProps) =>
+                            new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
+                        )
+                        .map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity, paymentMethod, orderDate }: myOrdersProps) => (
+                            <div key={_id} className="bg-white dark:bg-neutral-800/50 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-700 overflow-hidden">
+                                {/* Order Header */}
+                                <div className="border-b border-gray-200 dark:border-neutral-700 px-6 py-4 grid grid-cols-3 gap-4 ">
+                                    <div className="mb-2 sm:mb-0">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Order Placed</p>
+                                        <p className="font-medium text-sm dark:text-white">{formatDate(orderDate)}</p>
                                     </div>
+                                    <div className="mb-2 sm:mb-0 place-items-center">
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Total</p>
+                                        <p className="font-medium dark:text-white">
+                                            ₹{((orderPrice - orderDiscount) * orderQuantity).toFixed(2)}
+                                            {orderDiscount > 0 && (
+                                                <span className="ml-2 text-sm text-green-600 dark:text-green-400">
+                                                    (Saved ₹{((orderPrice * orderQuantity) - ((orderPrice - orderDiscount) * orderQuantity)).toFixed(2)})
+                                                </span>
+                                            )}
+                                        </p>
+                                    </div>
+                                    <div className="mb-2 sm:mb-0 place-items-end">
+                                        <div className='w-fit'>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400"># Order Id</p>
+                                            <p className="font-medium text-gray-700 dark:text-gray-300 text-sm">{_id.toUpperCase()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Order Content */}
+                                <div className="p-6">
+                                    <div className="flex flex-col md:flex-row">
+                                        {/* Order Image and Details */}
+                                        <div className="flex flex-1 mb-4 md:mb-0">
+                                            <div className="w-24 h-24 bg-gray-100 dark:bg-neutral-700 rounded-md overflow-hidden flex-shrink-0">
+                                                <Image
+                                                    height={1000}
+                                                    width={1000}
+                                                    src={orderImage}
+                                                    alt={orderName}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="ml-4">
+                                                <h3 className="font-medium text-gray-800 dark:text-white capitalize">{orderName}</h3>
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm">Quantity: {orderQuantity}</p>
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                                    Price: ₹{orderPrice.toFixed(2)} each
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Order Status and Actions */}
+                                        <div className="flex flex-col items-start md:items-end">
+                                            <div className="flex items-center mb-2 text-xs">
+                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${getStatusStyles(processingStatus)} `}>
+                                                    Delivery Status : &nbsp;{getStatusIcon(processingStatus)}
+                                                    {processingStatus}
+                                                </span>
+                                            </div>
+                                            <div className="mb-2 text-xs">
+                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${paymentStatus === 'Done'
+                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200'
+                                                    : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
+                                                    }`}>
+                                                    Payment Status : &nbsp;{paymentStatus === 'Done' ? <CheckCircle className="mr-1 w-4 h-4" /> : <Clock className="mr-1 w-4 h-4" />}
+                                                    {paymentStatus}
+                                                </span>
+                                            </div>
+                                            <button className="px-3 py-1 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm mt-1 flex items-center justify-center">
+                                                <Split className="mr-1 w-4 h-4" /> Track Package
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Delivery Information */}
+                                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700">
+                                        <div className="grid grid-cols-3 gap-4 ">
+                                            <div className="w-full mb-4 md:mb-0">
+                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
+                                                    <MapPin className="mr-2 w-4 h-4" /> Delivery Address
+                                                </h4>
+                                                <p className="text-gray-800 dark:text-gray-200 text-sm">{deliveryAddress}</p>
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm">PIN: {pinCode}</p>
+                                            </div>
+                                            <div className="w-full place-items-center">
+                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
+                                                    <CreditCard className="mr-2 w-4 h-4" /> Payment Method
+                                                </h4>
+                                                <p className="text-gray-800 dark:text-gray-200 text-sm">{paymentMethod === "COD" ? "Cash on Delivery" : "Online"}</p>
+                                            </div>
+                                            <div className="w-full place-items-end">
+                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
+                                                    <Pin className="mr-2 w-4 h-4" /> Delivery Date
+                                                </h4>
+                                                <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">{formatDate(orderDate)}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-
-                            {/* Order Content */}
-                            <div className="p-6">
-                                <div className="flex flex-col md:flex-row">
-                                    {/* Order Image and Details */}
-                                    <div className="flex flex-1 mb-4 md:mb-0">
-                                        <div className="w-24 h-24 bg-gray-100 dark:bg-neutral-700 rounded-md overflow-hidden flex-shrink-0">
-                                            <Image
-                                                height={1000}
-                                                width={1000}
-                                                src={orderImage}
-                                                alt={orderName}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
-                                        <div className="ml-4">
-                                            <h3 className="font-medium text-gray-800 dark:text-white capitalize">{orderName}</h3>
-                                            <p className="text-gray-600 dark:text-gray-400 text-sm">Quantity: {orderQuantity}</p>
-                                            <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                                Price: ₹{orderPrice.toFixed(2)} each
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {/* Order Status and Actions */}
-                                    <div className="flex flex-col items-start md:items-end">
-                                        <div className="flex items-center mb-2 text-xs">
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${getStatusStyles(processingStatus)} `}>
-                                                Delivery Status : &nbsp;{getStatusIcon(processingStatus)}
-                                                {processingStatus}
-                                            </span>
-                                        </div>
-                                        <div className="mb-2 text-xs">
-                                            <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${paymentStatus === 'Done'
-                                                ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200'
-                                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
-                                                }`}>
-                                                Payment Status : &nbsp;{paymentStatus === 'Done' ? <CheckCircle className="mr-1 w-4 h-4" /> : <Clock className="mr-1 w-4 h-4" />}
-                                                {paymentStatus}
-                                            </span>
-                                        </div>
-                                        <button className="px-3 py-1 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm mt-1 flex items-center justify-center">
-                                            <Split className="mr-1 w-4 h-4" /> Track Package
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Delivery Information */}
-                                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700">
-                                    <div className="grid grid-cols-3 gap-4 ">
-                                        <div className="w-full mb-4 md:mb-0">
-                                            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                <MapPin className="mr-2 w-4 h-4" /> Delivery Address
-                                            </h4>
-                                            <p className="text-gray-800 dark:text-gray-200 text-sm">{deliveryAddress}</p>
-                                            <p className="text-gray-600 dark:text-gray-400 text-sm">PIN: {pinCode}</p>
-                                        </div>
-                                        <div className="w-full place-items-center">
-                                            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                <CreditCard className="mr-2 w-4 h-4" /> Payment Method
-                                            </h4>
-                                            <p className="text-gray-800 dark:text-gray-200 text-sm">{paymentMethod === "COD" ? "Cash on Delivery" : "Online"}</p>
-                                        </div>
-                                        <div className="w-full place-items-end">
-                                            <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                <Pin className="mr-2 w-4 h-4" /> Delivery Date
-                                            </h4>
-                                            <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">{formatDate(orderDate)}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             </div>
         </div>
