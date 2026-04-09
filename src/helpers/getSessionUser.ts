@@ -1,7 +1,9 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import connectDB from "@/db/dbConfig";
+import { User } from "@/models/user.model";
 
-export async function getSessionUser(): Promise<JwtPayload | null> {
+export async function getSessionUser(): Promise<Record<string, any> | null> {
     try {
         const cookieStore = await cookies();
         const accessToken = cookieStore.get("accessToken")?.value;
@@ -9,7 +11,6 @@ export async function getSessionUser(): Promise<JwtPayload | null> {
 
         if (!refreshToken?.trim()) return null;
 
-        // Verify refresh token is still valid
         try {
             jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
         } catch {
@@ -18,16 +19,25 @@ export async function getSessionUser(): Promise<JwtPayload | null> {
 
         if (!accessToken?.trim()) return null;
 
-        // Verify and decode access token
         try {
             const decoded = jwt.verify(
                 accessToken,
                 process.env.ACCESS_TOKEN_SECRET!
             ) as JwtPayload;
-            const { iat, exp, ...userPayload } = decoded;
-            return userPayload;
+
+            await connectDB();
+
+            const user = await User.findById(decoded._id)
+                .select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
+                .lean(); // Returns plain JS object, no Mongoose methods
+
+            if (!user) return null;
+
+            // Serialize manually — converts ObjectId, Date, Buffer to primitives
+            return JSON.parse(JSON.stringify(user));
+
         } catch {
-            return null; // Expired — client interceptor will refresh on first real API call
+            return null;
         }
     } catch {
         return null;

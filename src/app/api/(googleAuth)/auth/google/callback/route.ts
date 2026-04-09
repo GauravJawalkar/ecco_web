@@ -1,21 +1,16 @@
 import connectDB from '@/db/dbConfig';
+import { generateAccessAndRefreshToken } from '@/helpers/tokensGenerator';
 import { User } from '@/models/user.model';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
 
-    const {
-        GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET,
-        GOOGLE_REDIRECT_URI,
-        ACCESS_TOKEN_SECRET,
-    } = process.env;
+    const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } = process.env;
 
     try {
         const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
@@ -26,8 +21,7 @@ export async function GET(request: NextRequest) {
             grant_type: 'authorization_code',
         });
 
-        const { id_token } = tokenRes.data;
-        const googleUser: any = jwt.decode(id_token);
+        const googleUser: any = jwt.decode(tokenRes.data.id_token);
 
         await connectDB();
 
@@ -44,33 +38,32 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        const token = jwt.sign({ id: user._id }, ACCESS_TOKEN_SECRET as string, { expiresIn: '1d' });
+        // ✅ Use shared generator — sets refreshToken on user doc and returns both tokens
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-        // Set cookie (HttpOnly)
-        (await
-            cookies()).set({
-                name: 'user',
-                value: JSON.stringify({ _id: user._id, name: user.name, email: user.email, avatar: user.avatar || "", token: user.accessToken, isSeller: user.isSeller, isEmailVerified: user.isEmailVerified, isSuperAdmin: user.isSuperAdmin, bankDetails: user?.bankDetails, store: user?.store, storeDetails: user?.storeDetails }),
-                httpOnly: true,
-                path: '/',
-            });
+        const cookieStore = await cookies();
 
-        (await
-            cookies()).set({
-                name: 'accessToken',
-                value: token,
-                httpOnly: true,
-                path: '/',
-                maxAge: 60 * 60 * 24 // 1 day
-            });
+        // ✅ Remove stale 'user' cookie — layout decodes JWT directly, this was never read
+        cookieStore.delete('user');
 
-
-        return new Response(null, {
-            status: 302,
-            headers: {
-                Location: '/post-auth-redirect',
-            },
+        cookieStore.set('accessToken', accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+            maxAge: 60 * 60, // 1 hour — matches email/password login
         });
+
+        // ✅ Set refreshToken — without this getSessionUser() always returns null
+        cookieStore.set('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+            maxAge: 7 * 24 * 60 * 60, // 7 days
+        });
+
+        // ✅ Go straight to home — UserStoreInitializer in layout handles hydration
+        return NextResponse.redirect(new URL('/', request.url));
+
     } catch (err) {
         console.error(err);
         return NextResponse.json({ error: 'Auth failed' }, { status: 500 });

@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { Navbar } from "@/components/Navigation/Navbar";
 import Provider from "@/components/ReactQuery/Provider";
+import { getSessionUser } from "@/helpers/getSessionUser";
+import UserStoreInitializer from "@/components/ReactQuery/UserStoreInitializer";
 
 
 const inter = Inter({
@@ -15,14 +17,16 @@ export const metadata: Metadata = {
   description: "Made with ❤ by gaurav jawalkar",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getSessionUser()
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased selection:bg-emerald-100 selection:text-emerald-900 dark:selection:bg-emerald-900/80 dark:selection:text-emerald-50`}>
+        <UserStoreInitializer user={user} />
         <Provider>
           <div className="bg-white text-[#1a1a1a] dark:bg-[#1a1a1a] dark:text-[#ededed] min-h-screen h-auto">
             <div className="max-w-[85rem] mx-auto ">
