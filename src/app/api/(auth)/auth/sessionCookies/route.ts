@@ -9,16 +9,21 @@ export async function GET() {
         const refreshToken = cookieStore.get("refreshToken")?.value;
 
         // Case 1: No refresh token — user must log in
-        if (!refreshToken?.trim()) {
+        if (refreshToken?.trim() === "" || refreshToken?.trim() === undefined) {
             return NextResponse.json(
                 { error: "No refresh token - please login again" },
                 { status: 403 }
             );
         }
 
+        console.log("Got till here");
+
         // Case 2: Validate refresh token — if expired/invalid, force logout
         try {
-            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+            console.log("token checkting")
+            console.log("🚀 ~ GET ~ process.env.REFRESH_TOKEN_SECRET:", process.env.REFRESH_TOKEN_SECRET)
+            const token = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+            console.log("TTtoken:", token)
         } catch {
             // Covers: TokenExpiredError, JsonWebTokenError, NotBeforeError
             return NextResponse.json(
@@ -28,7 +33,7 @@ export async function GET() {
         }
 
         // Case 3: No access token but refresh token is valid — trigger refresh
-        if (!accessToken?.trim()) {
+        if (accessToken?.trim() === "" || accessToken?.trim() === undefined) {
             return NextResponse.json(
                 { message: "Access token missing - refresh needed" },
                 { status: 401 }
