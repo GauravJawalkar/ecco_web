@@ -9,7 +9,7 @@ import ApiClient from "@/interceptors/ApiClient";
 interface UserStore {
     data: userProps;
     isAuthenticated: boolean;
-    login: (user: userProps) => Promise<void>;
+    login: (user: any) => Promise<void>;
     logOut: () => Promise<void>;
     clearUser: () => void;
     loginDetails: () => Promise<void>;
@@ -22,6 +22,7 @@ export const useUserStore = create<UserStore>()(
         (set) => ({
             data: {} as userProps,
             isAuthenticated: false,
+
             login: async (user) => {
                 try {
                     const response = await ApiClient.post('/api/auth/login', user);
@@ -35,6 +36,7 @@ export const useUserStore = create<UserStore>()(
                     throw error;
                 }
             },
+
             logOut: async () => {
                 try {
                     await ApiClient.get('/api/auth/logout');
@@ -43,11 +45,12 @@ export const useUserStore = create<UserStore>()(
                     console.error("Error logging out : ", error)
                 }
             },
+
             clearUser: () => {
-                // Only called on confirmed logout (403 - refresh token expired/missing)
-                // NOT called when accessToken merely expires
+                // Called on confirmed logout (403 - refresh token expired/missing)
                 set({ data: {} as userProps, isAuthenticated: false });
             },
+
             loginDetails: async () => {
                 try {
                     const response = await ApiClient.get('/api/auth/logInDetails');
@@ -58,9 +61,11 @@ export const useUserStore = create<UserStore>()(
                     console.error("Error getting login details")
                 }
             },
+
             googleLogin: async () => {
                 window.location.href = '/api/auth/google';
             },
+
             setUser: (user) => set({ data: user, isAuthenticated: true })
         }),
         {
@@ -70,5 +75,3 @@ export const useUserStore = create<UserStore>()(
         }
     )
 )
-
-// export const useUserStoreHydration = () => useUserStore.persist.hasHydrated();

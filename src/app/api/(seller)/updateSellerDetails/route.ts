@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
         );
 
         if (!seller) {
-            return NextResponse.json({ error: "Seller Not Found In DB" }, { status: 403 })
+            return NextResponse.json({ error: "Seller Not Found In DB" }, { status: 404 })
         }
 
         return NextResponse.json({ data: "KYC Verified" }, { status: 200 })

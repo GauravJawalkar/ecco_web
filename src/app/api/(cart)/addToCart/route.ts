@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         const accessToken = cookieStore.get('accessToken')?.value;
 
         if (!accessToken || accessToken.trim() === "" || accessToken === undefined) {
-            return NextResponse.json({ error: "Unauthorized Access" }, { status: 422 });
+            return NextResponse.json({ error: "Unauthorized Access" }, { status: 401 });
         }
         const reqBody = await request.json();
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         const quantity = 1;
 
         if (!cartOwner) {
-            return NextResponse.json({ error: "Unauthorized User" }, { status: 400 })
+            return NextResponse.json({ error: "Unauthorized User" }, { status: 401 })
         }
 
         if (!name || !price || !image || !discount || !productId || !sellerId) {

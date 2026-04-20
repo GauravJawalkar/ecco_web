@@ -18,18 +18,22 @@ const processQueue = (error: unknown = null) => {
 };
 
 const handleLogout = () => {
-    const publicPaths = ["/", "/login", "/signup", "/products", "/stores", "/about", "/contact"];
+    const publicPaths = [
+        '/login',
+        '/signup',
+        '/',
+        '/products',
+        '/stores',
+        '/about',
+        '/contact'
+    ];
     const isAlreadyPublic = publicPaths.some(
         (p) => window.location.pathname === p || window.location.pathname.startsWith(p + "/")
     );
 
     // Clear Zustand store AND its persisted localStorage key
-    // getState() works outside React components
     useUserStore.getState().clearUser();
-
-    isRefreshing = false;
-    failedQueue = [];
-
+    
     if (!isAlreadyPublic) {
         window.location.href = "/login";
     }
@@ -62,10 +66,10 @@ ApiClient.interceptors.response.use(
             return Promise.reject(error);
         }
 
-        // Case 2: 401 — Access token expired, attempt refresh (skip if already retried)
+        // Case 2: 401 — Access token expired, attempt refresh
         if (status === 401 && !originalRequest?._retry) {
             // Skip refresh loop for the refresh endpoint itself
-            if (url.includes('/api/auth/refreshToken')) {
+            if (url.includes('/api/auth/refreshToken') || url.includes('/api/auth/sessionCookies')) {
                 handleLogout();
                 return Promise.reject(error);
             }
@@ -83,9 +87,10 @@ ApiClient.interceptors.response.use(
             isRefreshing = true;
 
             try {
+                // Attempt token refresh
                 await axios.post('/api/auth/refreshToken', {}, { withCredentials: true });
-                // After successful refresh, re-sync the Zustand store
-                // so UI reflects the still-logged-in state
+                
+                // After successful refresh, re-sync Zustand store
                 try {
                     const sessionRes = await axios.get("/api/auth/sessionCookies", {
                         withCredentials: true,
@@ -102,7 +107,6 @@ ApiClient.interceptors.response.use(
             } catch (err) {
                 console.log('Refresh token invalid or expired, logging out', err);
                 processQueue(err);
-
                 handleLogout();
                 return Promise.reject(err);
             } finally {

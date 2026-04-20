@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         ];
 
         if (requiredFields.some((elem: string) => elem.trim() === "")) {
-            await session.abortTransaction(); // ✅ abort before returning
+            await session.abortTransaction(); // abort before returning
             session.endSession();
             return NextResponse.json(
                 { error: "Required Fields cannot be empty" },
@@ -34,16 +34,16 @@ export async function POST(request: NextRequest) {
         const product = await Product.findById(productId).session(session);
 
         if (!product) {
-            await session.abortTransaction(); // ✅ abort before returning
+            await session.abortTransaction(); // abort before returning
             session.endSession();
             return NextResponse.json(
                 { error: "Product not found" },
-                { status: 403 }
+                { status: 404 }
             );
         }
 
         if (product.stock < quantity) {
-            await session.abortTransaction(); // ✅ abort before returning
+            await session.abortTransaction(); // abort before returning
             session.endSession();
             return NextResponse.json(
                 { error: "Not enough stock available" },
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
             await Order.updateOne(
                 { _id: existingOrder._id },
                 { $push: { orders: { $each: [newOrderItem], $position: 0 } } },
-                { session: session } // ✅ correctly scoped to transaction
+                { session: session } // correctly scoped to transaction
             );
 
             await session.commitTransaction();

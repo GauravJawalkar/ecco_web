@@ -1,11 +1,7 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
     try {
-        const cookieStore = await cookies();
-
-        // Cookie options matching your login settings
         const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
@@ -14,24 +10,23 @@ export async function GET() {
             maxAge: 0 // Immediate expiration
         };
 
-        // Always clear cookies regardless of their current state
-        cookieStore.set('accessToken', '', cookieOptions);
-        cookieStore.set('refreshToken', '', cookieOptions);
-        cookieStore.set('user', '', cookieOptions);
-
-        return NextResponse.json({
+        // Create response FIRST, then set cookies on it
+        const response = NextResponse.json({
             success: true,
             message: "Logged out successfully"
         });
 
+        // Use response.cookies.set() (works in Route Handlers)
+        response.cookies.set('accessToken', '', cookieOptions);
+        response.cookies.set('refreshToken', '', cookieOptions);
+
+        return response;
 
     } catch (error) {
         console.error("Logout error:", error);
         return NextResponse.json({
             success: false,
             error: "Failed to logout"
-        }, {
-            status: 500
-        });
+        }, { status: 500 });
     }
 }

@@ -2,11 +2,10 @@
 
 import Loader from '@/components/Loaders/Loader';
 import { useUserStore } from '@/store/UserStore';
-import axios from 'axios';
-import { Eye, EyeClosed, EyeOff, LoaderCircle } from 'lucide-react';
+import { Eye, EyeClosed } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 
 const Login = () => {

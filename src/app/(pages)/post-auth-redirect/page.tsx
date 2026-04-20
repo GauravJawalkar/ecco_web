@@ -13,7 +13,7 @@ export default function PostAuthRedirectPage() {
     useEffect(() => {
         async function fetchUser() {
             try {
-                const response = await ApiClient.get('/api/me'); // 👈 API that returns cookie user
+                const response = await ApiClient.get('/api/me'); // Endpoint that returns user data from cookies 
                 if (response.data.data) {
                     setUser(response.data.data);
                 }
