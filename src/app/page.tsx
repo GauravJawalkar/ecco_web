@@ -17,7 +17,7 @@ interface PricingProps {
 }
 
 export default function Home() {
-  const { data, isAuthenticated, setUser }: any = useUserStore();
+  const { data }: any = useUserStore();
   const [existingRecentlyViewed, setExistingRecentlyViewed] = useState<any | null>({});
 
   const calculateDiscountedPrice = (a: PricingProps, b: PricingProps) => {
@@ -65,26 +65,6 @@ export default function Home() {
   const memoizedProducts = useMemo(() => {
     return existingRecentlyViewed?.product || [];
   }, [existingRecentlyViewed?.product]);
-
-  useEffect(() => {
-    if (!isAuthenticated) return; // Guest user — skip entirely, zero wasted requests
-
-    async function checkValidCookies() {
-      try {
-        const response = await ApiClient.get('/api/auth/sessionCookies');
-        if (response.data?.user) {
-          setUser(response.data.user); // Re-hydrate store with fresh payload from token
-        }
-      } catch (error) {
-        // 401 → ApiClient interceptor auto-refreshes and retries
-        // 403 → ApiClient interceptor calls handleLogout() which clears everything
-        console.error("Session check failed:", error);
-      }
-    }
-
-    checkValidCookies();
-  }, []);
-
 
   return (
     <div>

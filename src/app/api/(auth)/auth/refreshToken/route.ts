@@ -37,6 +37,9 @@ export async function POST(_: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 403 });
         }
 
+        console.log("DB token:", user?.refreshToken?.slice(-10));
+        console.log("Cookie token:", refreshToken?.slice(-10));
+
         if (user?.refreshToken !== refreshToken) {
             // Token mismatch - security issue, should logout
             return NextResponse.json({ error: "Refresh token does not match" }, { status: 403 });
@@ -62,21 +65,24 @@ export async function POST(_: NextRequest) {
             path: '/',
         };
 
-        // Set cookies with correct expiration times
-        cookieStore.set('accessToken', newAccessToken, {
+        // ✅ Create response FIRST, then set cookies on it
+        const response = NextResponse.json({
+            success: true,
+            message: "Tokens refreshed successfully"
+        }, { status: 200 });
+
+        // ✅ Explicitly set cookies on the response object
+        response.cookies.set('accessToken', newAccessToken, {
             ...cookieOptions,
             maxAge: 60 * 60 // 1 hour
         });
 
-        cookieStore.set('refreshToken', newRefreshToken, {
+        response.cookies.set('refreshToken', newRefreshToken, {
             ...cookieOptions,
             maxAge: 7 * 24 * 60 * 60 // 7 days
         });
 
-        return NextResponse.json({
-            success: true,
-            message: "Tokens refreshed successfully"
-        }, { status: 200 });
+        return response;
 
     } catch (error) {
         console.error('Unexpected refresh token error:', error);

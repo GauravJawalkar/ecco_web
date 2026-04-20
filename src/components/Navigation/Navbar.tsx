@@ -5,9 +5,8 @@ import { Box, Info, LogOut, MoonStar, Search, ShoppingCart, Sun, User } from "lu
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import toast from "react-hot-toast"
-import axios from "axios"
 import { useQuery } from "@tanstack/react-query"
 import { userProps } from "@/interfaces/commonInterfaces"
 import ApiClient from "@/interceptors/ApiClient"
@@ -16,10 +15,13 @@ interface UserStoreProps {
     data: userProps;
     logOut: () => void;
     clearUser: () => void;
+    setUser: (user: userProps) => void;
 }
 
 export const Navbar = () => {
-    const { data, logOut, clearUser } = useUserStore() as UserStoreProps
+    const { data, logOut, setUser } = useUserStore() as UserStoreProps;
+    console.log("🚀 ~ Navbar ~ data:", data)
+
     const [dark, setDark] = useState(false);
     const router = useRouter();
 
@@ -96,23 +98,6 @@ export const Navbar = () => {
         enabled: !!cartOwnerId,
         refetchOnWindowFocus: false,
     });
-
-    async function authenticationValidity() {
-        try {
-            const response = await ApiClient.get('/api/auth/sessionCookies');
-            if (!response.data?.user) {
-                return clearUser();
-            } else {
-                return toast.success("Authenticated");
-            }
-        } catch (error) {
-            return console.error("Failed to authenticate the user validity", error);
-        }
-    }
-
-    useEffect(() => {
-        authenticationValidity();
-    }, [])
 
     return (
         <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>

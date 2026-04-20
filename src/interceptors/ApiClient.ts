@@ -1,3 +1,4 @@
+import { useUserStore } from "@/store/UserStore";
 import axios, { AxiosError } from "axios";
 
 const ApiClient = axios.create({
@@ -17,19 +18,20 @@ const processQueue = (error: unknown = null) => {
 };
 
 const handleLogout = () => {
-    // Don't redirect if already on a public/auth page — prevents redirect loops
-    const publicPaths = ['/', '/login', '/signup', '/products', '/stores', '/about', '/contact'];
-    const isAlreadyPublic = publicPaths.some(p =>
-        window.location.pathname === p || window.location.pathname.startsWith(p + '/')
+    const publicPaths = ["/", "/login", "/signup", "/products", "/stores", "/about", "/contact"];
+    const isAlreadyPublic = publicPaths.some(
+        (p) => window.location.pathname === p || window.location.pathname.startsWith(p + "/")
     );
 
-    localStorage.clear();
-    sessionStorage.clear();
+    // Clear Zustand store AND its persisted localStorage key
+    // getState() works outside React components
+    useUserStore.getState().clearUser();
+
     isRefreshing = false;
     failedQueue = [];
 
     if (!isAlreadyPublic) {
-        window.location.href = '/login';
+        window.location.href = "/login";
     }
 };
 
@@ -82,10 +84,25 @@ ApiClient.interceptors.response.use(
 
             try {
                 await axios.post('/api/auth/refreshToken', {}, { withCredentials: true });
+                // After successful refresh, re-sync the Zustand store
+                // so UI reflects the still-logged-in state
+                try {
+                    const sessionRes = await axios.get("/api/auth/sessionCookies", {
+                        withCredentials: true,
+                    });
+                    if (sessionRes.data?.user) {
+                        useUserStore.getState().setUser(sessionRes.data.user);
+                    }
+                } catch {
+                    // Non-critical — store sync failed but request can still retry
+                }
+
                 processQueue();
                 return ApiClient(originalRequest!);
             } catch (err) {
+                console.log('Refresh token invalid or expired, logging out', err);
                 processQueue(err);
+
                 handleLogout();
                 return Promise.reject(err);
             } finally {
