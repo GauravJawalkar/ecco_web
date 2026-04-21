@@ -2,7 +2,7 @@ import connectDB from "@/db/dbConfig";
 import { Reviews } from "@/models/review.models";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_request: NextRequest, params: { params: { id: string } }) {
+export async function GET(_request: NextRequest, params: { params: Promise<{ id: string }> }) {
     await connectDB();
     try {
 

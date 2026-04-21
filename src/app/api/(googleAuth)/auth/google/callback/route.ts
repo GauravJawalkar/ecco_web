@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-            maxAge: 60 * 60, // 1 hour — matches email/password login
+            maxAge: 24 * 60 * 60, // 1 day — matches email/password login
         });
 
         // Set refreshToken — without this getSessionUser() always returns null

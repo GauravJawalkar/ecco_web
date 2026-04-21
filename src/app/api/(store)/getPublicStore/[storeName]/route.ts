@@ -4,13 +4,9 @@ import { Store } from "@/models/store.model";
 import { User } from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
-interface StoreProps {
-    params: {
-        storeName: string;
-    }
-}
-
-export async function GET(request: NextRequest, { params }: StoreProps) {
+export async function GET(request: NextRequest, { params }: {
+    params: Promise<{ storeName: string }>
+}) {
     await connectDB();
     try {
         const { storeName } = await params;

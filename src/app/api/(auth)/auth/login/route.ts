@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
         // ✅ Use response.cookies.set() — this actually sends Set-Cookie headers
         response.cookies.set('accessToken', accessToken, {
             ...cookieOptions,
-            maxAge: 60 * 60, // 1 hour
+            maxAge: 24 * 60 * 60, // 1 day
         });
 
         response.cookies.set('refreshToken', refreshToken, {

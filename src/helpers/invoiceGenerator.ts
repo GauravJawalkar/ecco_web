@@ -75,7 +75,7 @@ export function generateInvoice(orderItem: any, sellerName: string) {
     const priceAfterDiscount = orderItem.orderPrice - orderItem.orderDiscount;
     const total = priceAfterDiscount * orderItem.orderQuantity;
 
-    const tableData = [{
+    const tableData: any[] = [{
         product: orderItem.orderName,
         quantity: orderItem.orderQuantity,
         price: orderItem.orderPrice.toFixed(2),

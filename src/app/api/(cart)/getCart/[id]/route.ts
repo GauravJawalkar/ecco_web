@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 connectDB();
-export async function GET(_: NextRequest, params: { params: { id: string } }) {
+export async function GET(_: NextRequest, params: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params?.params;
 

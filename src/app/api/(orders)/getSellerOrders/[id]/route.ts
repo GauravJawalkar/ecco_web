@@ -2,7 +2,7 @@ import connectDB from "@/db/dbConfig";
 import { Order } from "@/models/orders.model";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(_: NextRequest, params: { params: { id: string } }) {
+export async function GET(_: NextRequest, params: { params: Promise<{ id: string }> }) {
     await connectDB();
     try {
         const { id } = await params.params;
