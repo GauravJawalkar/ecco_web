@@ -19,7 +19,7 @@ interface UserStore {
 
 export const useUserStore = create<UserStore>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             data: {} as userProps,
             isAuthenticated: false,
 
@@ -66,7 +66,23 @@ export const useUserStore = create<UserStore>()(
                 window.location.href = '/api/auth/google';
             },
 
-            setUser: (user) => set({ data: user, isAuthenticated: true })
+            // FIXED: Replaces redundant loginDetails with smarter setUser
+            setUser: (user: userProps) => {
+                // Prevent unnecessary updates (memory leak prevention)
+                const currentData = get().data;
+
+                // Skip if user data hasn't changed
+                if (JSON.stringify(currentData) === JSON.stringify(user)) {
+                    return;
+                }
+
+                // Only update if user has valid _id
+                if (user?._id) {
+                    set({ data: user, isAuthenticated: true });
+                } else {
+                    console.warn("Invalid user data provided to setUser");
+                }
+            },
         }),
         {
             name: 'userLogin',

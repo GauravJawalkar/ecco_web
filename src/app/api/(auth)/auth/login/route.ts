@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // ✅ Generate tokens
+        // Generate tokens
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
         const loggedUser = await User.findById(user._id)
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
             path: '/',
         };
 
-        // ✅ CREATE RESPONSE FIRST, then set cookies on it
+        // CREATE RESPONSE FIRST, then set cookies on it
         const response = NextResponse.json(
             {
                 user: loggedUser,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
             { status: 200 }
         );
 
-        // ✅ Use response.cookies.set() — this actually sends Set-Cookie headers
+        // Use response.cookies.set() — this actually sends Set-Cookie headers
         response.cookies.set('accessToken', accessToken, {
             ...cookieOptions,
             maxAge: 24 * 60 * 60, // 1 day

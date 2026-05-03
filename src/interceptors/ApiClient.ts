@@ -10,14 +10,20 @@ const ApiClient = axios.create({
 });
 
 let isRefreshing = false;
+// PROBLEM: failedQueue grows infinitely if refresh fails repeatedly
 let failedQueue: { resolve: () => void; reject: (err: unknown) => void }[] = [];
 
 const processQueue = (error: unknown = null) => {
     failedQueue.forEach(prom => error ? prom.reject(error) : prom.resolve());
+    // FIXED: Explicitly clear array
     failedQueue = [];
 };
 
 const handleLogout = () => {
+    // FIXED: Add these three lines
+    failedQueue = [];
+    isRefreshing = false;
+
     const publicPaths = [
         '/login',
         '/signup',
@@ -27,14 +33,14 @@ const handleLogout = () => {
         '/about',
         '/contact'
     ];
+
     const isAlreadyPublic = publicPaths.some(
-        (p) => window.location.pathname === p || window.location.pathname.startsWith(p + "/")
+        (p) => typeof window !== 'undefined' && (window.location.pathname === p || window.location.pathname.startsWith(p + "/"))
     );
 
-    // Clear Zustand store AND its persisted localStorage key
     useUserStore.getState().clearUser();
-    
-    if (!isAlreadyPublic) {
+
+    if (!isAlreadyPublic && typeof window !== 'undefined') {
         window.location.href = "/login";
     }
 };
@@ -80,37 +86,39 @@ ApiClient.interceptors.response.use(
                     failedQueue.push({ resolve, reject });
                 })
                     .then(() => ApiClient(originalRequest!))
-                    .catch(err => Promise.reject(err));
+                    .catch(err => {
+                        // FIXED: Clear queue on error
+                        failedQueue = [];
+                        return Promise.reject(err);
+                    });
             }
 
             originalRequest!._retry = true;
             isRefreshing = true;
 
             try {
-                // Attempt token refresh
-                await axios.post('/api/auth/refreshToken', {}, { withCredentials: true });
-                
-                // After successful refresh, re-sync Zustand store
-                try {
-                    const sessionRes = await axios.get("/api/auth/sessionCookies", {
-                        withCredentials: true,
-                    });
-                    if (sessionRes.data?.user) {
-                        useUserStore.getState().setUser(sessionRes.data.user);
-                    }
-                } catch {
-                    // Non-critical — store sync failed but request can still retry
+                // Attempt token refresh via the new sessionCookies endpoint
+                // This endpoint now handles auto-refresh + returns user data
+                const sessionRes = await axios.get("/api/auth/sessionCookies", {
+                    withCredentials: true,
+                });
+
+                // Update Zustand store with fresh user data
+                if (sessionRes.data?.user) {
+                    useUserStore.getState().setUser(sessionRes.data.user);
                 }
 
+                // Process queued requests
                 processQueue();
+                isRefreshing = false;
+                // Retry original request with new tokens
                 return ApiClient(originalRequest!);
             } catch (err) {
-                console.log('Refresh token invalid or expired, logging out', err);
+                console.log('Refresh failed, logging out', err);
                 processQueue(err);
+                isRefreshing = false; // FIXED: Reset flag
                 handleLogout();
                 return Promise.reject(err);
-            } finally {
-                isRefreshing = false;
             }
         }
 

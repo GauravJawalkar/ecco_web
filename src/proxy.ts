@@ -1,13 +1,24 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 const middleware = async (request: NextRequest) => {
-    const cookieStore = await cookies();
+    const path = request.nextUrl.pathname;
 
+    // Skip middleware for static files and next internals
+    if (
+        path.startsWith('/_next/') ||
+        path.startsWith('/api/public/') ||
+        path.includes('.') ||
+        path === '/favicon.ico'
+    ) {
+        return NextResponse.next();
+    }
+
+    const cookieStore = await cookies();
     const accessToken = cookieStore.get('accessToken')?.value;
     const refreshToken = cookieStore.get('refreshToken')?.value;
 
-    const path = request.nextUrl.pathname;
 
     // Define public paths (accessible without authentication)
     const publicPaths = [
@@ -36,7 +47,7 @@ const middleware = async (request: NextRequest) => {
         '/settings'
     ];
 
-    // Define secure API routes --> These are the API routes that should only be accessible to authenticated users.(Logged In Users)
+    // Define secure API routes
     const secureApiPaths = [
         '/api/auth/sessionCookies',
         '/api/auth/refreshToken',
@@ -71,7 +82,6 @@ const middleware = async (request: NextRequest) => {
         '/api/updateStore',
     ];
 
-    // Check if current path matches any pattern
     const isPublicPath = publicPaths.some(publicPath =>
         path === publicPath || path.startsWith(publicPath + '/')
     );
@@ -84,24 +94,44 @@ const middleware = async (request: NextRequest) => {
         path === apiPath || path.startsWith(apiPath + '/')
     );
 
-    // User has tokens and tries to access login/signup → redirect to home
-    if ((accessToken || refreshToken) && (path === '/login' || path === '/signup')) {
+    // Check if refresh token exists and is valid
+    let hasValidRefreshToken = false;
+
+    if (refreshToken && refreshToken.trim() !== "") {
+        try {
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+            hasValidRefreshToken = true;
+        } catch {
+            hasValidRefreshToken = false;
+        }
+    }
+
+    // MAIN LOGIC - Check all scenarios
+
+    // Scenario A: User trying to access SECURE PATH or SECURE API
+    if (isSecurePath || isSecureApiPath) {
+        // NO REFRESH TOKEN → Must redirect to login
+        if (!hasValidRefreshToken) {
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+        // Has valid refresh token → Allow (SessionInitializer will sync user data)
+        return NextResponse.next();
+    }
+
+    // Scenario B: User trying to access LOGIN/SIGNUP while ALREADY LOGGED IN
+    if ((path === '/login' || path === '/signup') && hasValidRefreshToken) {
+        // Redirect authenticated users away from login page
         return NextResponse.redirect(new URL('/', request.nextUrl));
     }
 
-    // User has no tokens and tries to access secure routes → redirect to login
-    if ((!accessToken && !refreshToken) && (isSecurePath || isSecureApiPath)) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // For all other cases, allow the request to continue
+    // Scenario C: Public paths or other routes
     return NextResponse.next();
-}
+};
 
 export const config = {
     matcher: [
-        '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)$).*)',
-    ]
-}
+        '/((?!_next/static|_next/image|favicon.ico).*)',
+    ],
+};
 
 export default middleware;

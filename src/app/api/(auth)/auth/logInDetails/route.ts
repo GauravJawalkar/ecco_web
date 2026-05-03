@@ -9,7 +9,6 @@ connectDB();
 export async function GET() {
     try {
         const cookieStore = await cookies();
-
         const authToken: any = cookieStore.get('accessToken')?.value;
 
         if (!authToken) {
@@ -24,24 +23,23 @@ export async function GET() {
 
         const userLoggedId = await decodedToken?._id;
 
-        const userDetails = await User.findById(userLoggedId).select("-password -refreshToken -accessToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry");
+        const userDetails = await User.findById(userLoggedId)
+            .select("-password -refreshToken -accessToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
+            .lean();
 
         if (!userDetails) {
             return NextResponse.json({ error: "No User Details Found" }, { status: 404 })
         }
+
         return NextResponse.json(
             {
                 message: "User Details",
                 user: userDetails,
             },
-            {
-                status: 200
-            }
+            { status: 200 }
         )
-
     } catch (error) {
-        console.log("Error in login Details : ", error)
-        throw NextResponse.json({ error: `Error getting the user details : ${error}` }, { status: 500 })
+        console.error("Error fetching login details:", error);
+        return NextResponse.json({ error: "Failed to fetch user details" }, { status: 500 })
     }
-
 }

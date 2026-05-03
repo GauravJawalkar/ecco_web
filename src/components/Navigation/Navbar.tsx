@@ -20,7 +20,6 @@ interface UserStoreProps {
 
 export const Navbar = () => {
     const { data, logOut, setUser } = useUserStore() as UserStoreProps;
-    console.log("🚀 ~ Navbar ~ data:", data)
 
     const [dark, setDark] = useState(false);
     const router = useRouter();

@@ -55,7 +55,7 @@ const ProductHolder = ({ rank, prodData, loading, tag, adImage }: { rank: number
       return [];
     } catch (error: any) {
       console.error("Error Adding the product to cart ", error);
-      if (error.response?.data?.error === "Unauthorized Access") {
+      if (error.response?.data?.error === "Unauthorized Access" || error.response?.status === 401) {
         toast.error("Unauthorized!");
         return router.push('/login');
       }
