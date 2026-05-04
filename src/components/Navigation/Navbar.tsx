@@ -119,7 +119,7 @@ export const Navbar = () => {
             </div>
 
             {/* Search Bar */}
-            <div className="w-full md:w-[50%] flex items-center bg-gray-100/80 dark:bg-neutral-800/80 rounded-full border border-transparent focus-within:border-gray-300 dark:focus-within:border-neutral-600 focus-within:bg-white dark:focus-within:bg-neutral-900 px-4 md:px-5 py-2.5 transition-all duration-300 hidden md:flex">
+            <div className="w-full md:w-[50%] items-center bg-gray-100/80 dark:bg-neutral-800/80 rounded-full border border-transparent focus-within:border-gray-300 dark:focus-within:border-neutral-600 focus-within:bg-white dark:focus-within:bg-neutral-900 px-4 md:px-5 py-2.5 transition-all duration-300 hidden md:flex">
                 <Search className="w-5 h-5 mr-3 text-gray-400 shrink-0" />
                 <input
                     type="text"
@@ -129,7 +129,7 @@ export const Navbar = () => {
             </div>
 
             {/* Account details ,Orders and Cart */}
-            <div className='hidden md:flex w-[30%] items-center justify-center gap-4'>
+            <div className='hidden md:flex w-[35%] items-center justify-center gap-4'>
                 {dataLength !== 0 && data.isSeller ?
                     <Link href={'/dashboard'} className="dark:text-neutral-300 flex items-center min-h-[44px]">
                         Dashboard

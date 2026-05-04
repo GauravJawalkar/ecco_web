@@ -25,80 +25,95 @@ const ProductShowCase = () => {
     }
   }
 
-  const {
-    data: specialProducts = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: specialProducts = [], isLoading, isError, } = useQuery({
     queryFn: getSpecialShowCaseProducts,
     queryKey: ["specialProducts"],
     refetchOnWindowFocus: false,
   });
 
+  const firstTwoProducts = specialProducts?.slice(0, 2);
+  const lastTwoProducts = specialProducts?.slice(2, 4);
   const slugify = (prodName: string) =>
     prodName.toLowerCase().replace(/\s+/g, "-");
 
-  if (isLoading) return <ProductShowcaseSkeleton />;
-
-  if (isError)
-    return (
-      <div className="flex items-center justify-center py-10 px-4">
-        <p className="text-sm text-gray-400 dark:text-neutral-500">
-          Something went wrong
-        </p>
+  const ProductCard = ({ prodImages, sellerName, prodName, productId, _id }: dataProps) => (
+    <Link
+      href={`/products/${slugify(prodName)}?id=${productId}`}
+      key={_id}
+      className="relative border dark:border-neutral-700 rounded-2xl lg:rounded-xl touch-manipulation group flex flex-col h-full overflow-hidden active:scale-[0.97] lg:active:scale-100 transition-transform duration-150">
+      {/* Image */}
+      <div className="w-full relative bg-white dark:bg-transparent aspect-square lg:aspect-auto lg:h-64">
+        <Image
+          src={prodImages?.[0]}
+          alt={prodName}
+          fill
+          sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 20vw"
+          className="object-contain p-3 sm:p-4 lg:p-0 transition-transform duration-300 group-hover:scale-105 mix-blend-multiply dark:mix-blend-normal"
+        />
       </div>
-    );
 
-  if (specialProducts.length === 0)
-    return (
-      <div className="flex items-center justify-center py-10 px-4">
-        <p className="text-sm text-gray-400 dark:text-neutral-500">
-          No products here
-        </p>
+      {/* Info */}
+      <div className="p-2 sm:p-3 lg:p-4 bg-gray-100 dark:bg-neutral-800 rounded-b-2xl lg:rounded-b-xl shrink-0 mt-auto">
+        <h1 className="capitalize font-medium sm:font-semibold text-xs sm:text-sm lg:text-lg text-center my-1 lg:my-1.5 line-clamp-1">
+          {prodName}
+        </h1>
+        <h1 className="text-[10px] sm:text-xs lg:text-base text-center text-gray-500 dark:text-gray-400 capitalize truncate">
+          Seller: {sellerName}
+        </h1>
       </div>
-    );
+
+      {/* Badge — pill on mobile/tablet, original green tab on desktop */}
+      <span className=" absolute z-10 lg:top-0 lg:right-0 lg:left-auto lg:bottom-auto lg:px-4 lg:py-0.5 lg:rounded-tr-lg lg:rounded-bl-xl lg:rounded-tl-none lg:rounded-br-none lg:bg-green-600 lg:text-white lg:text-sm lg:font-normal lg:tracking-normal top-2 left-2 px-2 py-1 rounded-xl bg-green-600 dark:bg-green-600 text-white dark:text-white text-[9px] font-medium leading-none tracking-wide">
+        Today's Special
+      </span>
+    </Link>
+  );
 
   return (
     <div className="px-4 sm:px-6 lg:px-0">
-      {/* 
-        Mobile:  2-col grid, all 4 cards in one row-wrapped grid
-        Desktop: 2 side-by-side panels each holding 2 cards
-      */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-        {specialProducts.slice(0, 4).map(
-          ({ _id, prodImages, sellerName, prodName, productId }: dataProps) => (
-            <Link
-              href={`/products/${slugify(prodName)}?id=${productId}`}
-              key={_id}
-              className=" relative flex flex-col border border-gray-100 dark:border-neutral-800 rounded-2xl overflow-hidden bg-white dark:bg-neutral-950 touch-manipulation group active:scale-[0.97] transition-transform duration-150">
-              {/* Image */}
-              <div className="relative w-full aspect-square bg-white dark:bg-neutral-900 flex items-center justify-center">
-                <Image
-                  src={prodImages?.[0]}
-                  alt={prodName}
-                  width={500}
-                  height={500}
-                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 25vw, 20vw"
-                  className="object-contain h-[150px] w-[150px] p-3 sm:p-4 transition-transform duration-300 group-hover:scale-105 mix-blend-multiply dark:mix-blend-normal"
-                />
-                {/* Badge */}
-                <span className=" absolute top-2 left-2 text-[9px] font-medium leading-none tracking-wide bg-green-600 dark:bg-green-300 text-white dark:text-green-600 px-2 py-1 rounded-full z-10">
-                  Today's Special
-                </span>
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10">
 
-              {/* Info */}
-              <div className="px-2.5 py-2 sm:p-3 bg-gray-50 dark:bg-neutral-900 border-t border-gray-100 dark:border-neutral-800">
-                <p className=" capitalize text-center font-medium text-[11px] sm:text-xs lg:text-sm text-gray-900 dark:text-gray-100 line-clamp-1 mb-0.5">
-                  {prodName}
-                </p>
-                <p className=" text-center text-[9px] sm:text-[10px] lg:text-xs text-gray-400 dark:text-neutral-500 capitalize truncate">
-                  {sellerName}
-                </p>
+        {/* Panel 1 */}
+        <div className="h-auto p-0 sm:p-4 lg:p-5 md:border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-lg relative">
+          {isLoading && <ProductShowcaseSkeleton />}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
+            {!isLoading && firstTwoProducts.length === 0 && (
+              <div className="flex items-center justify-center col-span-2 py-10">
+                <p className="text-sm">No Products Here</p>
               </div>
-            </Link>
-          )
-        )}
+            )}
+            {isError && (
+              <div className="flex items-center justify-center col-span-2 py-10">
+                <p className="text-sm">Something Went Wrong</p>
+              </div>
+            )}
+            {firstTwoProducts.length !== 0 &&
+              firstTwoProducts.map((product: dataProps) => (
+                <ProductCard key={product._id} {...product} />
+              ))}
+          </div>
+        </div>
+
+        {/* Panel 2 */}
+        <div className="h-auto p-0 sm:p-4 lg:p-5 md:border dark:border-neutral-700 dark:bg-neutral-950/20 rounded-lg relative">
+          {isLoading && <ProductShowcaseSkeleton />}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5">
+            {!isLoading && lastTwoProducts.length === 0 && (
+              <div className="flex items-center justify-center col-span-2 py-10">
+                <p className="text-sm">No Products Here</p>
+              </div>
+            )}
+            {isError && (
+              <div className="flex items-center justify-center col-span-2 py-10">
+                <p className="text-sm">Something Went Wrong</p>
+              </div>
+            )}
+            {lastTwoProducts.length !== 0 &&
+              lastTwoProducts.map((product: dataProps) => (
+                <ProductCard key={product._id} {...product} />
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
