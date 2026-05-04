@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { Navbar } from "@/components/Navigation/Navbar";
 import Provider from "@/components/ReactQuery/Provider";
 import SessionInitializer from "@/helpers/SessionInitializer";
+import { BottomNav } from "@/components/Navigation/BottomNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default async function RootLayout({
             <div className="max-w-[85rem] mx-auto">
               <Navbar />
               {children}
+              <BottomNav />
               <Toaster position="top-center" reverseOrder={false} />
             </div>
           </div>

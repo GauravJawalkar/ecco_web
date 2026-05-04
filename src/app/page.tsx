@@ -72,7 +72,7 @@ export default function Home() {
       <div className="pt-10">
         <HomeFilter />
       </div>
-      <div className="py-10 mb-10">
+      <div className="py-0 mb-2 sm:py-20 sm:mb-10">
         <ProductHolder
           adImage="/Ads/Ad-1.png"
           rank={1}
@@ -80,7 +80,7 @@ export default function Home() {
           prodData={myData?.filter((product: PricingProps) => (product?.price - product?.discount) >= 600)}
           loading={isLoading} />
       </div>
-      <div className="py-20 mb-10">
+      <div className="py-0 mb-2 sm:py-20 sm:mb-10">
         <ProductHolder
           adImage="/Ads/3971579.jpg"
           rank={2}
@@ -88,14 +88,14 @@ export default function Home() {
           prodData={[...(myData || [])].sort((a: PricingProps, b: PricingProps) => calculateDiscountedPrice(a, b))}
           loading={isLoading} />
       </div>
-      <div className="py-20 mb-10">
+      <div className="py-0 mb-2 sm:py-20 sm:mb-10">
         <ProductHolder
           adImage="/Ads/Ad-3.png"
           rank={3}
           tag="Top Rated"
           prodData={myData?.sort((a: PricingProps, b: PricingProps) => getAverageRating(b) - getAverageRating(a))?.slice(0, 10)} loading={isLoading} />
       </div>
-      <div className="py-20">
+      <div className=" py-0 md:py-20">
         <ProductShowCase />
       </div>
 

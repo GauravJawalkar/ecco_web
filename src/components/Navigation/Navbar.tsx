@@ -99,42 +99,52 @@ export const Navbar = () => {
     });
 
     return (
-        <section className='flex items-center justify-between py-5 border-b-[0.1px] dark:border-zinc-700 sticky top-0 z-20 backdrop-blur-md'>
+        <section className="flex flex-col md:flex-row items-center justify-between pt-[env(safe-area-inset-top)] px-4 sm:px-6 lg:px-8 py-4 md:py-5 border-b border-gray-200 dark:border-zinc-800 bg-white/80 dark:bg-neutral-900/80 sticky top-0 z-30 backdrop-blur-xl gap-4 md:gap-0 transition-colors">
 
-            {/* Logo or name */}
-            <div className='w-[10%] flex items-center justify-start'>
-                <Link href={'/'} className="text-xl font-bold uppercase">
+            {/* Logo and Mobile Theme Toggle */}
+            <div className="w-full md:w-auto md:min-w-[10%] flex items-center justify-between md:justify-start gap-4 pt-4 md:pt-0">
+                <Link href={'/'} className="text-lg md:text-xl font-bold uppercase flex items-center min-h-[44px]">
                     Ecomm_Store
                 </Link>
+                <button
+                    onClick={toogleTheme}
+                    className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors active:scale-95"
+                    aria-label="Toggle Theme">
+                    {dark ?
+                        <MoonStar className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+                        :
+                        <Sun className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+                    }
+                </button>
             </div>
 
             {/* Search Bar */}
-            <div className='w-[50%] flex items-center bg-white dark:bg-neutral-800 rounded-lg border dark:border-neutral-700 px-4 py-2'>
-                <Search className="w-5 h-5 mr-2 text-gray-400" />
+            <div className="w-full md:w-[50%] flex items-center bg-gray-100/80 dark:bg-neutral-800/80 rounded-full border border-transparent focus-within:border-gray-300 dark:focus-within:border-neutral-600 focus-within:bg-white dark:focus-within:bg-neutral-900 px-4 md:px-5 py-2.5 transition-all duration-300 hidden md:flex">
+                <Search className="w-5 h-5 mr-3 text-gray-400 shrink-0" />
                 <input
                     type="text"
                     placeholder="Search For Plants Decoratables And More"
-                    className="w-full text-gray-700 bg-transparent outline-none dark:text-white"
+                    className="w-full text-sm md:text-base text-gray-800 bg-transparent outline-none dark:text-neutral-100 placeholder:text-gray-500 dark:placeholder:text-neutral-400"
                 />
             </div>
 
             {/* Account details ,Orders and Cart */}
-            <div className='w-[30%] flex items-center justify-center gap-4'>
+            <div className='hidden md:flex w-[30%] items-center justify-center gap-4'>
                 {dataLength !== 0 && data.isSeller ?
-                    <Link href={'/dashboard'} className="dark:text-neutral-300">
+                    <Link href={'/dashboard'} className="dark:text-neutral-300 flex items-center min-h-[44px]">
                         Dashboard
                     </Link> :
-                    <button onClick={handelBecomeSeller}>Become Seller</button>}
-                <Link href={'/products'} className="dark:text-neutral-300">Products</Link>
-                <Link href={'/stores'} className="dark:text-neutral-300">Stores</Link>
+                    <button onClick={handelBecomeSeller} className="dark:text-neutral-300 flex items-center min-h-[44px]">Become Seller</button>}
+                <Link href={'/products'} className="dark:text-neutral-300 flex items-center min-h-[44px]">Products</Link>
+                <Link href={'/stores'} className="dark:text-neutral-300 flex items-center min-h-[44px]">Stores</Link>
                 <div className="relative flex items-center justify-center text-neutral-300 group">
-                    <span>
-                        {dataLength !== 0 && data?.avatar?.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} alt="Profile-Img" className="object-cover w-10 h-10 border rounded-full border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
+                    <span className="flex items-center min-h-[44px]">
+                        {dataLength !== 0 && data?.avatar?.length > 3 ? < Image src={data.avatar || ''} height={500} width={500} sizes="40px" alt="Profile-Img" className="object-cover w-10 h-10 border rounded-full border-neutral-800" title={data.name} /> : <Link href={'/login'} className="text-[#1a1a1a] dark:text-slate-300">Login</Link>}
                     </span>
                     <div className={`absolute top-10  w-fit hidden group-hover:block py-1 
                     ${dataLength !== 0 && data.email.length <= 0 ? "group-hover:hidden" : "block"} 
                     ${dataLength === 0 ? "group-hover:hidden" : "block"}`}>
-                        <div className="border-b-[0.1px]  dark:bg-neutral-900 bg-white rounded border dark:border-zinc-700 p-2">
+                        <div className="border-b-[0.1px]  dark:bg-neutral-900 bg-white rounded border dark:border-zinc-700 p-2 text-[#1a1a1a] dark:text-slate-200">
                             <li className="py-1 flex items-center justify-start gap-2 hover:bg-gray-100 dark:hover:bg-[#5a5a5a] px-2 rounded">
                                 <User className="text-[#1a1a1a] dark:text-slate-200 h-4 w-4" />
                                 <h1 className="capitalize text-[#5a5a5a] dark:text-[#ededed] text-sm">{dataLength !== 0 && data?.name.split(" ")[0]}</h1>
@@ -151,11 +161,11 @@ export const Navbar = () => {
                         </div>
                     </div>
                 </div>
-                <Link href={'/cart'} className="relative text-neutral-300">
-                    <span className="absolute -top-2.5 right-0 px-1 text-[10px] font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? `${userCart?.cartItems?.length === undefined ? 0 : userCart?.cartItems?.length}` : "?"}</span>
+                <Link href={'/cart'} className="relative text-neutral-300 flex items-center min-h-[44px]">
+                    <span className="absolute top-1.5 -right-2 px-1 text-[10px] font-normal bg-red-500 text-white rounded-full">{dataLength !== 0 ? `${userCart?.cartItems?.length === undefined ? 0 : userCart?.cartItems?.length}` : "?"}</span>
                     <ShoppingCart className="w-6 h-6 text-slate-700 dark:text-slate-200" />
                 </Link>
-                <button onClick={toogleTheme}>
+                <button onClick={toogleTheme} className="flex items-center justify-center min-h-[44px] min-w-[44px]">
                     {dark ?
                         <MoonStar className="w-6 h-6 text-slate-700 dark:text-slate-200" />
                         :
@@ -163,6 +173,6 @@ export const Navbar = () => {
                     }
                 </button>
             </div>
-        </section >
+        </section>
     )
 }
