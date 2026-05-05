@@ -103,17 +103,17 @@ export const Navbar = () => {
 
             {/* Logo and Mobile Theme Toggle */}
             <div className="w-full md:w-auto md:min-w-[10%] flex items-center justify-between md:justify-start gap-4 pt-4 md:pt-0">
-                <Link href={'/'} className="text-lg md:text-xl font-bold uppercase flex items-center min-h-[44px]">
+                <Link href={'/'} className="text-lg md:text-xl font-bold uppercase flex items-center min-h-[30px]">
                     Ecomm_Store
                 </Link>
                 <button
                     onClick={toogleTheme}
-                    className="md:hidden flex items-center justify-center w-11 h-11 rounded-full bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors active:scale-95"
+                    className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 transition-colors active:scale-95"
                     aria-label="Toggle Theme">
                     {dark ?
-                        <MoonStar className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+                        <MoonStar className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                         :
-                        <Sun className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+                        <Sun className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                     }
                 </button>
             </div>

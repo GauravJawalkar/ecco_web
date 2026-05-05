@@ -26,7 +26,9 @@ export default async function RootLayout({
           <div className="bg-white text-[#1a1a1a] dark:bg-[#1a1a1a] dark:text-[#ededed] min-h-screen h-auto">
             <div className="max-w-[85rem] mx-auto">
               <Navbar />
-              {children}
+              <main className="pb-20 md:pb-0">
+                {children}
+              </main>
               <BottomNav />
               <Toaster position="top-center" reverseOrder={false} />
             </div>

@@ -1,10 +1,6 @@
 "use client"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SliderOneImage from '../../../public/SliderOneImage.png'
-import SliderTwoImage from '../../../public/SliderTwoImage.png'
-import SliderThreeImage from '../../../public/SliderThreeImage.png'
-
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -19,8 +15,7 @@ import Image from 'next/image';
 const HomeHero = () => {
 
     return (
-        // Full Screen Slider
-        <div className='pt-4 '>
+        <div className='pt-4'>
             <Swiper
                 spaceBetween={30}
                 centeredSlides={true}
@@ -37,7 +32,7 @@ const HomeHero = () => {
                 modules={[Autoplay, Pagination, Navigation]}
                 className="mySwiper">
                 <SwiperSlide>
-                    <div>
+                    <div className='px-4 md:px-0'>
                         <Image src={'/Slider/1.png'}
                             priority
                             width={2000}
@@ -46,7 +41,7 @@ const HomeHero = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div>
+                    <div className='px-4 md:px-0'>
                         <Image src={'/Slider/2.png'}
                             priority
                             width={2000}
@@ -55,7 +50,7 @@ const HomeHero = () => {
                     </div>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <div>
+                    <div className='px-4 md:px-0'>
                         <Image src={'/Slider/4.png'}
                             priority
                             width={2000}
