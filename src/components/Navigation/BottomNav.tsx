@@ -70,7 +70,7 @@ export const BottomNav = () => {
                                         }`}
                                 />
                                 {item.badge !== undefined && item.badge > 0 && (
-                                    <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 text-[9px] font-bold text-white dark:text-black bg-black dark:bg-white rounded-full ring-2 ring-white dark:ring-neutral-900">
+                                    <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[16px] h-4 px-1 text-[9px] font-bold text-white dark:text-white bg-green-600 dark:bg-green-600 rounded-full ring-2 ring-white dark:ring-neutral-900">
                                         {item.badge > 99 ? '99+' : item.badge}
                                     </span>
                                 )}

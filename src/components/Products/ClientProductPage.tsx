@@ -490,7 +490,7 @@ const ClientProductPage = () => {
                         {(existingRecentlyViewed?.product?.length > 0 && existingRecentlyViewed?.user === data?._id) &&
                             <RecentlyViewedProducts tag={false} products={existingRecentlyViewed?.product} />
                         }
-                        <h1 className="absolute z-10 top-2 left-2 px-2 py-1 rounded-full text-[9px] font-medium leading-none tracking-wide bg-green-600 dark:bg-green-600 text-white dark:text-white lg:top-0 lg:right-0 lg:left-auto lg:rounded-tr-xl lg:rounded-bl-xl lg:rounded-tl-none lg:rounded-br-none lg:rounded-none lg:bg-green-600 lg:dark:bg-green-600 lg:text-white lg:dark:text-white lg:px-3 lg:py-0 lg:text-sm lg:font-normal lg:tracking-normal lg:leading-normal">Recently Viewed</h1>
+                        <h1 className="absolute z-10 top-2 left-2 px-2 py-1 lg:py-1.5 rounded-full text-[9px] font-medium leading-none tracking-wide bg-green-600 dark:bg-green-600 text-white dark:text-white lg:top-0 lg:right-0 lg:left-auto lg:rounded-tr-xl lg:rounded-bl-xl lg:rounded-tl-none lg:rounded-br-none lg:rounded-none lg:bg-green-600 lg:dark:bg-green-600 lg:text-white lg:dark:text-white lg:px-3 lg:text-sm lg:font-normal lg:tracking-normal lg:leading-normal">Recently Viewed</h1>
                     </div>
                 </div>
             }

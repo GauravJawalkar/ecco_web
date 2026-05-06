@@ -70,9 +70,8 @@ const RecentlyViewedProducts = ({ products, tag }: { products: [string], tag: bo
                                                 src={images?.[0] || ""}
                                                 alt="recentViewImage"
                                                 height={200} width={200}
-                                                sizes="(max-width: 480px) 50vw, (max-width: 1024px) 33vw, 20vw"
                                                 loading="lazy"
-                                                className="object-contain w-full h-32 sm:h-48 lg:h-64 p-2 dark:bg-neutral-800 rounded-t-2xl sm:rounded-t-3xl" />
+                                                className="object-contain pb-10 lg:pb-16 w-full h-[150px] sm:h-48 lg:h-64 p-2 dark:bg-neutral-800 rounded-t-2xl sm:rounded-t-3xl" />
                                         </div>
                                         <div className="px-2 sm:px-3 py-3 sm:py-4 border-t dark:border-t-neutral-700 rounded-b-2xl sm:rounded-b-3xl space-y-1 sm:space-y-2 bg-white dark:bg-neutral-900 absolute bottom-0 left-0 right-0">
                                             <h1 className="text-xs sm:text-base lg:text-lg font-normal text-center text-gray-700 dark:text-gray-300 capitalize line-clamp-1">{name}</h1>
