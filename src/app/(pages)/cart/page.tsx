@@ -4,7 +4,6 @@ import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
 import { ArrowLeft, Lock, MessageSquare, Minus, PackageOpen, Plus, ShoppingBag, ShoppingCart, Trash2, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -122,7 +121,7 @@ const Cart = () => {
     }, [userCart]);
 
     return (
-        <section className="py-10">
+        <section className="py-6 sm:py-8 lg:py-10 px-4 sm:px-6 lg:px-0 pb-24 md:pb-10">
 
             {((!isPending && !isError) && (userCart?.length === 0 || userCart?.cartItems?.length === 0)) && (
                 <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl dark:border-neutral-700">
@@ -133,7 +132,7 @@ const Cart = () => {
                     </p>
                     <Link
                         href="/products"
-                        className="flex items-center gap-2 px-8 py-2 mt-8 text-sm text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700 hover:shadow-md"
+                        className="flex items-center justify-center gap-2 px-8 py-3 sm:py-2 mt-8 text-sm font-medium text-white transition-colors bg-green-600 rounded-xl sm:rounded-lg hover:bg-green-700 hover:shadow-md min-h-[44px] touch-manipulation"
                     >
                         <ArrowLeft className="w-5 h-5" />
                         Continue Shopping
@@ -147,7 +146,7 @@ const Cart = () => {
                     {/* Cart Items Grid */}
                     {userCart?.cartItems?.length > 0 && (
                         <>
-                            <h1 className="mb-4 text-2xl font-bold text-gray-800 dark:text-white">
+                            <h1 className="hidden mb-4 text-2xl font-bold text-gray-800 dark:text-white">
                                 Your Cart ({userCart?.cartItems?.length || 0})
                             </h1>
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -158,25 +157,25 @@ const Cart = () => {
                                             className="relative flex flex-col h-full p-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/50 hover:shadow-sm"
                                         >
                                             {/* Product Info - Top Section */}
-                                            <Link href={`/products/${slugify(name)}?id=${productId}`} className="flex gap-4">
+                                            <Link href={`/products/${slugify(name)}?id=${productId}`} className="flex gap-3 sm:gap-4 touch-manipulation">
                                                 <div className="flex-shrink-0">
                                                     <Image
                                                         width={120}
                                                         height={120}
                                                         src={image || "/placeholder-product.png"}
                                                         alt={name}
-                                                        className="object-cover w-24 h-24 border rounded-lg dark:border-neutral-700"
+                                                        className="object-cover w-20 h-24 sm:w-auto sm:h-auto border rounded-lg dark:border-neutral-700"
                                                     />
                                                 </div>
-                                                <div className="flex-1 min-h-[6rem]"> {/* Fixed height container */}
-                                                    <h2 className="w-3/4 font-medium text-gray-800 capitalize line-clamp-2 dark:text-neutral-100" title={name}>
+                                                <div className="flex-1 min-h-[5rem] sm:min-h-[6rem]"> {/* Fixed height container */}
+                                                    <h2 className="w-4/5 sm:w-3/4 text-sm sm:text-base font-medium text-gray-800 capitalize line-clamp-2 dark:text-neutral-100" title={name}>
                                                         {name}
                                                     </h2>
-                                                    <div className="mt-1 space-y-1 text-sm">
+                                                    <div className="mt-1 space-y-0.5 sm:space-y-1 text-xs sm:text-sm">
                                                         <p className="text-gray-600 dark:text-neutral-300">
-                                                            <span className="font-medium">₹{(price - discount)?.toLocaleString()}</span>
+                                                            <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">₹{(price - discount)?.toLocaleString()}</span>
                                                             {discount > 0 && (
-                                                                <span className="ml-2 text-xs text-gray-400 line-through">
+                                                                <span className="ml-1.5 sm:ml-2 text-[10px] sm:text-xs text-gray-400 line-through">
                                                                     ₹{price?.toLocaleString()}
                                                                 </span>
                                                             )}
@@ -184,8 +183,8 @@ const Cart = () => {
                                                         <p className="text-gray-500 dark:text-neutral-400">
                                                             Seller: <span className="capitalize">{sellerName}</span>
                                                         </p>
-                                                        <p className="text-green-600 dark:text-green-400">
-                                                            <Truck className="inline w-4 h-4 mr-1" />
+                                                        <p className="text-green-600 dark:text-green-400 flex items-center">
+                                                            <Truck className="w-3.5 h-3.5 mr-1" />
                                                             Free delivery
                                                         </p>
                                                     </div>
@@ -193,9 +192,9 @@ const Cart = () => {
                                             </Link>
 
                                             {/* Quantity Controls - Bottom Section */}
-                                            <div className="pt-2 mt-auto dark:border-neutral-700">
+                                            <div className="pt-3 sm:pt-2 mt-auto dark:border-neutral-700">
                                                 <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-2">
+                                                    <div className="flex items-center gap-1 sm:gap-2">
                                                         <button
                                                             onClick={(e) => {
                                                                 e.preventDefault();
@@ -203,11 +202,11 @@ const Cart = () => {
                                                                 handelAddItemQuantity(_id, quantity);
                                                             }}
                                                             disabled={quantity <= 1}
-                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            className="flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation"
                                                         >
-                                                            <Minus className="w-4 h-4" />
+                                                            <Minus className="w-4 h-4 sm:w-3 sm:h-3" />
                                                         </button>
-                                                        <span className="w-8 text-center">{quantity}</span>
+                                                        <span className="w-8 text-center text-sm sm:text-base font-medium">{quantity}</span>
                                                         <button
                                                             onClick={(e) => {
                                                                 e.preventDefault();
@@ -215,9 +214,9 @@ const Cart = () => {
                                                                 handelAddItemQuantity(_id, quantity);
                                                             }}
                                                             disabled={quantity >= stock}
-                                                            className="p-1.5 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50"
+                                                            className="flex items-center justify-center w-10 h-10 sm:w-8 sm:h-8 rounded-full border dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-700 disabled:opacity-50 touch-manipulation"
                                                         >
-                                                            <Plus className="w-4 h-4" />
+                                                            <Plus className="w-4 h-4 sm:w-3 sm:h-3" />
                                                         </button>
                                                     </div>
                                                     <button
@@ -225,26 +224,28 @@ const Cart = () => {
                                                             e.preventDefault();
                                                             handelRemoveItem(_id);
                                                         }}
-                                                        className="flex items-center gap-1 px-3 py-1.5 text-sm text-red-600 transition-colors bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-900/50 dark:text-red-400"
+                                                        className="flex items-center justify-center gap-1.5 px-4 py-4 sm:px-3 sm:py-1.5 text-xs sm:text-sm font-medium text-red-600 transition-colors bg-red-50 rounded-full sm:rounded-lg hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 dark:text-red-400 sm:min-h-0 touch-manipulation"
                                                     >
-                                                        <Trash2 className="w-4 h-4" />
-                                                        Remove
+                                                        <Trash2 className="w-4 h-4 " />
+                                                        <span className="max-sm:hidden">
+                                                            Remove
+                                                        </span>
                                                     </button>
                                                 </div>
                                             </div>
 
                                             {/* Stock Status Badge */}
-                                            <div className="absolute top-3 right-3">
+                                            <div className="absolute top-0 right-2 md:top-3 md:right-3 pointer-events-none">
                                                 {stock >= 10 ? (
-                                                    <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900/30 dark:text-green-400">
+                                                    <span className="px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900/30 dark:text-green-400">
                                                         In Stock
                                                     </span>
                                                 ) : stock === 0 ? (
-                                                    <span className="px-2 py-1 text-xs font-medium text-red-800 bg-red-100 rounded-full dark:bg-red-900/30 dark:text-red-400">
+                                                    <span className="px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium text-red-800 bg-red-100 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                                         Out of Stock
                                                     </span>
                                                 ) : (
-                                                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+                                                    <span className="px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
                                                         Only {stock} left
                                                     </span>
                                                 )}
@@ -262,7 +263,6 @@ const Cart = () => {
                     <div className="sticky top-24 h-fit">
                         <div className="p-6 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/50">
                             <h2 className="text-xl font-bold text-gray-800 dark:text-white">Order Summary</h2>
-
                             <div className="mt-6 space-y-3">
                                 <div className="flex justify-between">
                                     <span className="text-gray-600 dark:text-neutral-300">Subtotal</span>
@@ -285,23 +285,22 @@ const Cart = () => {
 
                             <button
                                 onClick={() => router.push('/cart/checkout')}
-                                className="w-full py-2 mt-3 text-sm font-medium text-white transition-colors rounded-lg shadow-sm bg-green-600/90 hover:bg-green-700 hover:shadow-md"
-                            >
+                                className="w-full py-3 sm:py-2 mt-4 text-sm sm:text-base font-medium text-white transition-colors rounded-full shadow-sm bg-green-600 hover:bg-green-700 hover:shadow-md touch-manipulation flex items-center justify-center">
                                 Proceed to Checkout
                             </button>
 
-                            <div className="flex items-center justify-center text-center w-full mt-4 text-sm text-gray-500 dark:text-neutral-400">
-                                <Lock className="w-4 h-4 mr-2" />
+                            <div className="flex items-center justify-center text-center w-full mt-4 text-xs sm:text-sm text-gray-500 dark:text-neutral-400">
+                                <Lock className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                                 Secure checkout with Razorpay
                             </div>
                         </div>
 
-                        <div className="p-6 mt-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/50">
-                            <h3 className="font-medium text-gray-800 dark:text-white">Need help?</h3>
-                            <p className="mt-2 text-sm text-gray-600 dark:text-neutral-300">
+                        <div className="p-5 sm:p-6 mt-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/50">
+                            <h3 className="font-medium text-sm sm:text-base text-gray-800 dark:text-white">Need help?</h3>
+                            <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-gray-600 dark:text-neutral-300">
                                 Contact our customer support for assistance with your order.
                             </p>
-                            <button className="flex items-center gap-2 mt-3 text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                            <button className="flex items-center justify-center sm:justify-start gap-2 mt-4 sm:mt-3 px-4 py-2.5 sm:px-0 sm:py-0 w-full sm:w-auto text-sm font-medium sm:font-normal text-green-600 bg-green-50 sm:bg-transparent rounded-full sm:rounded-none dark:text-green-400 dark:bg-green-900/20 sm:dark:bg-transparent hover:underline sm:min-h-0 touch-manipulation transition-colors">
                                 <MessageSquare className="w-4 h-4" />
                                 Contact Support
                             </button>
