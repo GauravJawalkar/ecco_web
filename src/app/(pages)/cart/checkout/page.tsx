@@ -7,7 +7,6 @@ import ApiClient from "@/interceptors/ApiClient";
 import { userProps } from "@/interfaces/commonInterfaces";
 import { useUserStore } from "@/store/UserStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -238,32 +237,31 @@ const CartCeckOut = () => {
     };
 
     return (
-        <div className='grid grid-cols-[3fr_1fr] py-5 gap-4'>
-            <div className='p-5 border dark:border-neutral-700 rounded-xl'>
+        <div className='grid grid-cols-1 lg:grid-cols-[3fr_1fr] px-4 sm:px-6 py-6 sm:py-8 lg:py-10 max-w-7xl mx-auto pb-24 md:pb-10 gap-4 sm:gap-6'>
+            <div className='p-4 sm:p-5 border dark:border-neutral-700 rounded-xl'>
                 <h1 className='pb-5 text-lg font-semibold uppercase text-start'>Order Summary</h1>
                 {isPending && <div className='flex items-center justify-center w-full'><Loader title='Loading...' /></div>}
-                <div className="grid grid-cols-2 gap-4" >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4" >
                     {(!isPending && !isError) &&
                         userCart?.cartItems?.map(({ name, price, image, quantity, discount, sellerName, _id, stock, productId }: cartMappingProps) => {
                             return (
-                                <div key={_id} className={`w-full grid grid-cols-[1.2fr_3fr] gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 dark:bg-neutral-800/50 rounded-xl p-5`}>
-                                    <div className={`${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-3`}>
-                                        <Image src={image || "/userProfile.png"} alt={"product-image"} height={200} width={200} className='object-contain w-full rounded-xl h-26' />
+                                <div key={_id} className={`w-full flex gap-3 sm:gap-4 ${isPending ? "border-none" : "border"} dark:border-neutral-700 dark:bg-neutral-800/50 rounded-xl p-3 sm:p-4`}>
+                                    <div className={`flex-shrink-0 ${isPending ? "border-none" : "border"} dark:border-neutral-700 rounded-xl p-2`}>
+                                        <Image src={image || "/userProfile.png"} alt={"product-image"} height={120} width={120} className='object-contain w-20 h-20 sm:w-24 sm:h-24 rounded-lg' />
                                     </div>
 
-                                    <div className='content-center space-y-1 '>
-                                        <h1 title={name} className='text-xl font-semibold capitalize line-clamp-1'>{name}</h1>
-                                        <h1 className='font-semibold'>
-                                            <span className='text-lg'>
-                                                ₹ {price - discount}
-                                            </span>
-                                            <span className='text-gray-500 line-through px-3 dark:text-gray-400 text-sm'>₹ {price}</span>
-                                            <span className='text-green-500 text-sm'>{Math.round(discountPercentage(price, discount))} % off</span>
-                                        </h1>
-                                        <div className="dark:text-gray-400">
-                                            <h1 className='text-sm capitalize line-clamp-1'>Seller : 🧑‍🦰 {sellerName}</h1>
-                                            <h1 className='text-sm capitalize line-clamp-1'>Store : 🏪 {sellerName}'s Store</h1>
-                                            <h1 className='text-sm'>Quantity : {quantity}</h1>
+                                    <div className='flex-1 flex flex-col justify-center space-y-1'>
+                                        <h1 title={name} className='text-sm sm:text-base font-medium text-gray-800 dark:text-neutral-100 capitalize line-clamp-2'>{name}</h1>
+                                        <div className='mt-1 space-y-0.5 sm:space-y-1 text-xs sm:text-sm'>
+                                            <p className='text-gray-600 dark:text-neutral-300'>
+                                                <span className='font-bold text-gray-900 dark:text-white text-sm sm:text-base'>
+                                                    ₹ {(price - discount)?.toLocaleString()}
+                                                </span>
+                                                {discount > 0 && <span className='ml-1.5 sm:ml-2 text-[10px] sm:text-xs text-gray-400 line-through'>₹ {price?.toLocaleString()}</span>}
+                                                {discount > 0 && <span className='ml-1.5 sm:ml-2 text-green-600 dark:text-green-500 text-[10px] sm:text-xs font-medium'>{Math.round(discountPercentage(price, discount))}% off</span>}
+                                            </p>
+                                            <p className='text-gray-500 dark:text-neutral-400 capitalize line-clamp-1'>Seller: {sellerName}</p>
+                                            <p className='text-gray-500 dark:text-neutral-400'>Quantity: {quantity}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -273,12 +271,14 @@ const CartCeckOut = () => {
                 </div>
 
                 {/* Address Details */}
-                <div className='flex items-center justify-between pt-10'>
+                <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between pt-8 sm:pt-10 gap-4 sm:gap-0'>
                     <div>
-                        <h1 className='text-lg font-semibold uppercase text-start '>Delivery Address</h1>
-                        <p className='text-sm text-gray-600 dark:text-gray-400'>Select your delivery address below</p>
+                        <h1 className='text-base sm:text-lg font-semibold uppercase text-start'>Delivery Address</h1>
+                        <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-0'>Select your delivery address below</p>
                     </div>
-                    <button className='font-semibold capitalize border bg-gray-50 dark:bg-neutral-800 dark:hover:bg-neutral-800/50 hover:bg-gray-100 dark:border-neutral-700 p-2 rounded-lg ' onClick={() => { setShowModal(!showModal) }}>🏠 Add Address</button>
+                    <button className='w-full sm:w-auto font-medium capitalize border bg-white dark:bg-neutral-800 dark:hover:bg-neutral-700 hover:bg-gray-50 dark:border-neutral-700 px-4 py-2.5 rounded-xl sm:rounded-lg text-sm transition-colors min-h-[44px] touch-manipulation flex items-center justify-center gap-2 shadow-sm' onClick={() => { setShowModal(!showModal) }}>
+                        <span>🏠</span> Add Address
+                    </button>
                 </div>
                 <div className='w-full'>
                     <div>
@@ -294,14 +294,14 @@ const CartCeckOut = () => {
                                         setLandMark(landMark);
                                         setContactNumber(contactNumber);
                                         setOrderImage(userCart?.cartItems?.[0]?.image);
-                                    }} key={_id} className={`relative p-5 py-3 my-4 space-y-1 cursor-pointer rounded-xl ${select === _id ? "border-2 border-green-300 dark:border-neutral-700/50" : "border-2 border-dashed dark:border-neutral-700"}`}>
+                                    }} key={_id} className={`relative p-5 py-3 my-4 space-y-1 cursor-pointer rounded-xl transition-colors ${select === _id ? "border-2 border-green-500 dark:border-green-500/50 bg-green-50 dark:bg-green-900/10" : "border-2 border-dashed dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"}`}>
                                         <h1 title='main address of street city village'>🗺️ : {mainAddress}</h1>
                                         <h1 title='pincode of the area'>📍 : {pinCode}</h1>
                                         <h1 title='landmark of the area'>🌍 : {landMark}</h1>
                                         <h1 title='contact phone number'>📱 : {contactNumber}</h1>
-                                        {select === _id && <div className='absolute -right-1 -top-4'>
-                                            <CheckCircle2 className='text-green-500 h-7 w-7 bg-white dark:bg-[#1a1a1a]' />
-                                        </div>}
+                                        {select === _id && <span className='absolute -right-2 -top-3 bg-white dark:bg-[#1a1a1a] text-green-500 rounded-full'>
+                                            <CheckCircle2 className='w-5 h-5 sm:w-6 sm:h-6' />
+                                        </span>}
                                     </div>
                                 )
                             })
@@ -314,30 +314,25 @@ const CartCeckOut = () => {
                     <h1 className='text-lg font-semibold uppercase text-start'>Payment Options</h1>
                     <p className='text-sm text-gray-600 dark:text-gray-400'>Select a payment type below</p>
                 </div>
-                <div className='flex items-center justify-between w-full gap-4'>
+                <div className='flex flex-col sm:flex-row items-stretch sm:items-center justify-between w-full gap-3 sm:gap-4 mt-4'>
                     {/* UPI */}
-                    <button disabled={select.trim() === ""} className={`p-5 border-2 border-dashed dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"}`} type='button'
+                    <button disabled={select.trim() === ""} className={`p-4 sm:p-5 border-2 border-dashed dark:border-neutral-700 w-full rounded-xl min-h-[44px] touch-manipulation transition-colors ${select.trim() === "" ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-gray-50 dark:hover:bg-neutral-800"}`} type='button'
                         onClick={() => { setUpiLoading(true); handlePayment(); }}>
                         {upiLoading ? <Loader title='Processing...' /> : "UPI"}
                     </button>
 
                     {/* Credit/Debit Card */}
-                    <button disabled={select.trim() === ""} className={`p-5 border-2 border-dashed dark:border-neutral-700 w-full rounded-xl ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"} `} type='button'
+                    <button disabled={select.trim() === ""} className={`p-4 sm:p-5 border-2 border-dashed dark:border-neutral-700 w-full rounded-xl min-h-[44px] touch-manipulation transition-colors ${select.trim() === "" ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-gray-50 dark:hover:bg-neutral-800"} `} type='button'
                         onClick={() => { setCardLoading(true); handlePayment(); }}>
                         {cardLoading ? <Loader title='Processing...' /> : "Credit / Debit Card"}
                     </button>
 
                     {/* Cash on Delivery */}
-                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-5 dark:border-neutral-700 w-full rounded-xl relative ${select.trim() === "" ? "cursor-not-allowed" : "cursor-pointer"} ${isCOD ? "border-2 border-green-300 dark:border-neutral-700/50" : "border-2 border-dashed dark:border-neutral-700"} `} type='button'>
+                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-4 sm:p-5 dark:border-neutral-700 w-full rounded-xl relative min-h-[44px] touch-manipulation transition-colors ${select.trim() === "" ? "cursor-not-allowed opacity-50" : "cursor-pointer"} ${isCOD ? "border-2 border-green-500 dark:border-green-500/50 bg-green-50 dark:bg-green-900/10" : "border-2 border-dashed dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"} `} type='button'>
                         Cash On Delivery
-                        {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500'><CheckCircle2 /></span>}
+                        {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500 rounded-full'><CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /></span>}
                     </button>
                 </div>
-                {
-                    (isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='p-3 my-5 text-sm text-white bg-green-500 border rounded-full w-fit hover:bg-green-500/80'>
-                        Confirm Order
-                    </button>
-                }
             </div>
 
             {/* Grid Second half */}
@@ -363,8 +358,13 @@ const CartCeckOut = () => {
                         <h1>₹{totalPrice?.toLocaleString() || 0}</h1>
                     </div>
                 </div>
-            </div >
-        </div >
+                {
+                    (isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='w-full sm:w-full px-8 py-3 sm:py-2 my-1 text-sm font-medium text-white transition-colors bg-green-600 rounded-full hover:bg-green-700 touch-manipulation shadow-sm'>
+                        Confirm Order
+                    </button>
+                }
+            </div>
+        </div>
     )
 }
 
