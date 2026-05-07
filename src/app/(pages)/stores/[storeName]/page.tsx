@@ -4,9 +4,8 @@ import StoreHeroSkeleton from '@/components/Stores/StoreHeroSkeleton';
 import StoreProductsShowcase from '@/components/Stores/StoreShowcase';
 import ApiClient from '@/interceptors/ApiClient';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 const StorePage = () => {
     const searchParams = useSearchParams();

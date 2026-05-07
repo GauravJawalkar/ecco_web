@@ -23,10 +23,11 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
         <>
             <div className="group bg-white dark:bg-neutral-800 rounded-2xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border border-gray-200 dark:border-neutral-700">
                 {/* Cover Image with gradient overlay */}
-                <div className="relative w-full h-40 md:h-48 overflow-hidden">
+                <div className="relative w-full h-32 sm:h-40 lg:h-48 overflow-hidden">
                     <Image
                         height={1000}
                         width={1000}
+                        sizes="(max-width: 480px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         src={store.storeCoverImage || 'https://via.placeholder.com/800x400?text=Store+Cover'}
                         alt="Store Cover"
                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
@@ -34,14 +35,15 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 {/* Store Logo Container - Now properly positioned */}
-                <div className="px-4 -mt-12 z-10">
-                    <div className="relative w-20 h-20 rounded-xl border-2 border-green-400 dark:border-neutral-700 shadow-lg bg-white dark:bg-neutral-800">
+                <div className="px-4 sm:px-5 -mt-10 sm:-mt-12 z-10">
+                    <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl border-2 border-green-400 dark:border-neutral-700 shadow-lg bg-white dark:bg-neutral-800 flex-shrink-0">
                         <Image
                             height={1000}
                             width={1000}
+                            sizes="(max-width: 480px) 64px, 80px"
                             src={store.storeImage || 'https://via.placeholder.com/150?text=Store'}
                             alt="Store Logo"
-                            className="w-full h-full object-cover overflow-hidden rounded-xl"
+                            className="w-full h-full object-cover overflow-hidden rounded-lg sm:rounded-xl"
                         />
                         {store && (
                             <div className="absolute -top-2 -right-2 bg-green-500 dark:bg-green-600 rounded-full p-1 overflow-hidden">
@@ -54,20 +56,20 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
                 </div>
 
                 {/* Store Info - Added padding top to accommodate the store image */}
-                <div className="py-5 pb-5 px-4">
-                    <div className="flex justify-between items-start">
-                        <div>
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white truncate">
+                <div className="pt-3 sm:pt-5 pb-4 sm:pb-5 px-4 sm:px-5">
+                    <div className="flex justify-between items-start gap-2">
+                        <div className="min-w-0 flex-1">
+                            <h2 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-white truncate">
                                 {store?.storeName}
                             </h2>
-                            <div className="flex items-center mt-1">
+                            <div className="flex items-center mt-1 sm:mt-1.5 flex-wrap gap-y-1">
                                 <div className="flex items-center">
-                                    <StarIcon className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                                    <span className="ml-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <StarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" />
+                                    <span className="ml-1 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
                                         {store?.rating || '4.8'}
                                     </span>
-                                    <span className="mx-1 text-gray-400">•</span>
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                                    <span className="mx-1.5 text-gray-400">•</span>
+                                    <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                                         {store?.reviewCount || '128'} reviews
                                     </span>
                                 </div>
@@ -75,23 +77,23 @@ const StoreCard = ({ store }: { store: StoreProps }) => {
                         </div>
 
                         {store && (
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200`}>
+                            <span className={`px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 whitespace-nowrap flex-shrink-0 mt-0.5`}>
                                 Live Now
                             </span>
                         )}
                     </div>
 
-                    <p className="mt-3 text-gray-600 dark:text-gray-300 line-clamp-2 text-sm">
+                    <p className="mt-2 sm:mt-3 text-gray-600 dark:text-gray-300 line-clamp-2 text-xs sm:text-sm sm:leading-relaxed">
                         {store?.storeDescription || 'Discover amazing products at this store.'}
                     </p>
 
-                    <div className="mt-4 pt-3 border-t border-gray-100 dark:border-neutral-700 flex items-center justify-between">
-                        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                            <MapPin className="w-4 h-4 mr-1" />
-                            <span>{store?.location || '1.2 miles away'}</span>
+                    <div className="mt-4 pt-3 sm:pt-4 border-t border-gray-100 dark:border-neutral-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                        <div className="flex items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400 w-full sm:w-auto truncate">
+                            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 flex-shrink-0" />
+                            <span className="truncate">{store?.location || '1.2 miles away'}</span>
                         </div>
 
-                        <Link href={`/stores/${slugify(store?.storeName)}?id=${store?._id}`} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center">
+                        <Link href={`/stores/${slugify(store?.storeName)}?id=${store?._id}`} className="w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center touch-manipulation shadow-sm">
                             <ShoppingBag className="w-4 h-4 mr-2" />
                             Visit Store
                         </Link>
