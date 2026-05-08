@@ -81,13 +81,13 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="relative w-full max-w-md p-8 bg-white shadow-lg dark:bg-neutral-900 rounded-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 sm:p-0">
+            <div className="relative w-full max-w-md p-6 sm:p-8 bg-white shadow-lg dark:bg-neutral-900 rounded-xl max-h-[90vh] overflow-y-auto no-scrollbar">
                 <button
                     type="reset"
-                    className="absolute text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white"
+                    className="absolute text-gray-500 top-3 right-3 sm:top-4 sm:right-4 hover:text-gray-700 dark:hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
                     onClick={onClose}>
-                    <X />
+                    <X className="w-5 h-5" />
                 </button>
                 <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">
                     Store Onboarding
@@ -99,7 +99,7 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
                         </label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white min-h-[44px]"
                             value={storeName}
                             onChange={(e) => setStoreName(e.target.value)}
                             required
@@ -110,7 +110,7 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
                             Store Description
                         </label>
                         <textarea
-                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white"
+                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white min-h-[44px]"
                             value={storeDescription}
                             onChange={(e) => setStoreDescription(e.target.value)}
                             required
@@ -165,7 +165,7 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
                     )}
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded outline-none hover:bg-green-700"
+                        className="w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded outline-none hover:bg-green-700 min-h-[44px] touch-manipulation flex items-center justify-center"
                         disabled={createStoreMutation.isPending}
                     >
                         {createStoreMutation.isPending ? <Loader title="Creating..." /> : "Create Store"}

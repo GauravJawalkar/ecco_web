@@ -1,6 +1,5 @@
 import { useUserStore } from '@/store/UserStore';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Edit3, Package } from 'lucide-react';
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -42,7 +41,7 @@ const Store = () => {
         <>
             {isLoading && (<DashboardStoreHeroSkeleton />)}
             {(!isLoading && !isError) &&
-                <section className="relative w-full mx-auto my-5 rounded-xl">
+                <section className="relative w-full my-5 rounded-xl">
                     {/* Cover Image */}
                     <div className="relative w-full h-48 overflow-hidden md:h-64 rounded-xl">
                         <Image
@@ -55,48 +54,47 @@ const Store = () => {
                         />
                     </div>
                     {/* Profile + Info Row */}
-                    <div className="relative z-10 flex items-center gap-4 my-5">
+                    <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-start lg:items-center gap-4 my-5">
                         {/* Profile Image */}
-                        <div className="w-32 h-32 bg-white border-4 border-white rounded-full dark:border-neutral-900 dark:bg-neutral-900">
+                        <div className="w-28 h-28 bg-white border-4 border-white rounded-full dark:border-neutral-900 dark:bg-neutral-900 -mt-12 sm:-mt-0 sm:-translate-y-8 lg:translate-y-0 z-20 shadow-sm relative">
                             <Image
                                 alt="Store Profile"
                                 src={`${StoreData?.[0]?.storeImage || "https://dummyimage.com/squarepopup"}`}
                                 width={1000}
                                 height={1000}
-                                className="object-cover w-full h-full border rounded-full border-neutral-300 dark:border-neutral-700"
+                                className="object-cover w-full h-full border rounded-full border-neutral-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800"
                                 priority
                             />
                         </div>
                         {/* Store Info */}
-                        <div className="flex flex-col justify-center space-y-1">
-                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{StoreData?.[0]?.storeName || "Store Name"}</h2>
-                            <div>
-                                <p className={`text-[15px] text-gray-500 dark:text-gray-400 max-w-lg leading-tight font-normal transition-all ${showFullDescription ? '' : 'line-clamp-2'}`} >
+                        <div className="flex flex-col justify-center items-start sm:items-start space-y-1 text-start sm:text-left w-full">
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white line-clamp-1 break-all">{StoreData?.[0]?.storeName || "Store Name"}</h2>
+                            <div className="w-full">
+                                <p className={`text-sm sm:text-[15px] text-gray-500 dark:text-gray-400 max-w-lg leading-tight font-normal transition-all ${showFullDescription ? '' : 'line-clamp-2'}`} >
                                     {StoreData?.[0]?.storeDescription ||
                                         "Store description goes here. You can add more info or stats below."}
                                 </p>
                                 {StoreData?.[0]?.storeDescription &&
                                     StoreData[0].storeDescription.length > 0 && (
-                                        <button className="text-sm text-blue-500 hover:underline"
+                                        <button className="text-sm text-green-500 hover:underline px-2 -mx-2 touch-manipulation"
                                             onClick={() => setShowFullDescription((prev) => !prev)}
                                             type="button">
                                             {showFullDescription ? 'Read less' : 'Read more'}
                                         </button>
                                     )}
                             </div>
-                            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                                <span className="flex items-center gap-1">
+                            <div className="hidden lg:flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 pt-2 sm:pt-0 justify-center sm:justify-start w-full">
+                                <span className="flex items-center gap-1.5">
                                     <Package className="w-4 h-4" />
                                     {totalProducts} Products
                                 </span>
-                                {/* Add more store stats here if needed */}
                             </div>
                         </div>
                         <div className="absolute top-0 right-0 flex items-center gap-2">
                             <div className="flex">
-                                <button disabled={!StoreData?.[0]} onClick={() => { setShowEditStoreModal(true) }} title='Edit Store Details' className='flex items-center gap-2 p-2 transition-colors text-sm bg-white border rounded-full right-2 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed text-black/50 hover:text-black dark:text-white/50 hover:dark:text-white'>
-                                    <Edit3 className='w-5 h-5' />
-                                    Edit Store Details
+                                <button disabled={!StoreData?.[0]} onClick={() => { setShowEditStoreModal(true) }} title='Edit Store Details' className='flex items-center gap-2 p-2 sm:px-4 transition-colors text-sm bg-white border rounded-full right-2 dark:bg-neutral-800 border-neutral-300 dark:border-neutral-700 hover:bg-gray-100 dark:hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed text-black/50 hover:text-black dark:text-white/50 hover:dark:text-white sm:min-h-0 touch-manipulation shadow-sm'>
+                                    <Edit3 className='w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0' />
+                                    <span className="hidden sm:block">Edit Store Details</span>
                                 </button>
                             </div>
                         </div>

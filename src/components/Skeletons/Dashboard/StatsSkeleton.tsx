@@ -2,63 +2,32 @@ import React from 'react'
 
 const StatsSkeleton = ({ isAdmin }: { isAdmin: boolean }) => {
     return (
-        <div className={`grid ${isAdmin ? "grid-cols-5" : "grid-cols-4"} gap-6 my-8`}>
-            {/* Total Products Skeleton */}
-            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 group animate-pulse'>
-                <div className='flex flex-col items-center justify-center gap-3'>
-                    <div className='p-3 rounded-full bg-gray-200 dark:bg-neutral-700 transition-all duration-300'>
-                        <div className='size-6 bg-gray-300 dark:bg-neutral-600 rounded-full'></div>
-                    </div>
-                    <div className='h-4 w-24 bg-gray-200 dark:bg-neutral-700 rounded'></div>
-                    <div className='h-8 w-12 bg-gray-300 dark:bg-neutral-600 rounded'></div>
-                </div>
-            </div>
-
-            {/* Orders Received Skeleton */}
-            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 group animate-pulse'>
-                <div className='flex flex-col items-center justify-center gap-3'>
-                    <div className='p-3 rounded-full bg-gray-200 dark:bg-neutral-700 transition-all duration-300'>
-                        <div className='size-6 bg-gray-300 dark:bg-neutral-600 rounded-full'></div>
-                    </div>
-                    <div className='h-4 w-24 bg-gray-200 dark:bg-neutral-700 rounded'></div>
-                    <div className='h-8 w-12 bg-gray-300 dark:bg-neutral-600 rounded'></div>
-                </div>
-            </div>
-
-            {/* Estimated Revenue Skeleton */}
-            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 group animate-pulse'>
-                <div className='flex flex-col items-center justify-center gap-3'>
-                    <div className='p-3 rounded-full bg-gray-200 dark:bg-neutral-700 transition-all duration-300'>
-                        <div className='size-6 bg-gray-300 dark:bg-neutral-600 rounded-full'></div>
-                    </div>
-                    <div className='h-4 w-24 bg-gray-200 dark:bg-neutral-700 rounded'></div>
-                    <div className='h-8 w-16 bg-gray-300 dark:bg-neutral-600 rounded'></div>
-                </div>
-            </div>
-
-            {/* KYC Status Skeleton */}
-            <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 group animate-pulse'>
-                <div className='flex flex-col items-center justify-center gap-3'>
-                    <div className='p-3 rounded-full bg-gray-200 dark:bg-neutral-700 transition-all duration-300'>
-                        <div className='size-6 bg-gray-300 dark:bg-neutral-600 rounded-full'></div>
-                    </div>
-                    <div className='h-4 w-24 bg-gray-200 dark:bg-neutral-700 rounded'></div>
-                    <div className='h-8 w-20 bg-gray-300 dark:bg-neutral-600 rounded'></div>
-                </div>
-            </div>
-
-            {/* Seller Requests Skeleton (Admin Only) */}
-            {isAdmin && (
-                <div className='bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900 p-5 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 group animate-pulse'>
-                    <div className='flex flex-col items-center justify-center gap-3'>
-                        <div className='p-3 rounded-full bg-gray-200 dark:bg-neutral-700 transition-all duration-300'>
-                            <div className='size-6 bg-gray-300 dark:bg-neutral-600 rounded-full'></div>
+        <div className="my-4">
+            {/* ── MOBILE: horizontal compact rows ── */}
+            <div className="grid grid-cols-2 gap-2 sm:hidden">
+                {[...Array(isAdmin ? 5 : 4)].map((_, i) => (
+                    <div key={i} className="flex flex-col gap-2 p-2.5 rounded-xl border border-gray-100 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900 animate-pulse">
+                        <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 bg-gray-200 dark:bg-neutral-700 rounded-md"></div>
+                            <div className="h-3 w-16 bg-gray-200 dark:bg-neutral-700 rounded"></div>
                         </div>
-                        <div className='h-4 w-24 bg-gray-200 dark:bg-neutral-700 rounded'></div>
-                        <div className='h-8 w-12 bg-gray-300 dark:bg-neutral-600 rounded'></div>
+                        <div className="h-6 w-12 bg-gray-300 dark:bg-neutral-600 rounded mt-1"></div>
                     </div>
-                </div>
-            )}
+                ))}
+            </div>
+
+            {/* ── DESKTOP: horizontal flex wrap ── */}
+            <div className="hidden sm:flex flex-wrap items-center gap-3 w-full lg:w-fit">
+                {[...Array(isAdmin ? 5 : 4)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-neutral-900 animate-pulse">
+                        <div className="w-8 h-8 bg-gray-200 dark:bg-neutral-700 rounded-md"></div>
+                        <div className="flex flex-col gap-1.5">
+                            <div className="h-3 w-20 bg-gray-200 dark:bg-neutral-700 rounded"></div>
+                            <div className="h-5 w-16 bg-gray-300 dark:bg-neutral-600 rounded"></div>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
