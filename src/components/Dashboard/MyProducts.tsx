@@ -174,7 +174,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
 
                                     {/* Info */}
                                     <div className="p-1.5 sm:p-4 flex flex-col flex-grow bg-gradient-to-br from-white/90 to-gray-100 dark:border-neutral-700 border-t dark:from-neutral-800/90 dark:to-neutral-900">
-                                        <h3 title={name} className="text-[10px] sm:text-base font-normal text-gray-900 line-clamp-2 dark:text-white capitalize mb-0.5 h-7 lg:h-12 sm:mb-0">
+                                        <h3 title={name} className="text-xs sm:text-base font-normal text-gray-900 line-clamp-2 dark:text-white capitalize mb-0.5 h-7 lg:h-12 sm:mb-0">
                                             {name}
                                         </h3>
 
@@ -182,8 +182,7 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                         <div className="my-2 hidden sm:block">
                                             <button
                                                 onClick={() => setShowMore(showMore === _id ? null : _id)}
-                                                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white"
-                                            >
+                                                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-neutral-400 dark:hover:text-white">
                                                 {showMore === _id ? (
                                                     <>Hide details <ChevronUp className="w-4 h-4 ml-1" /></>
                                                 ) : (
@@ -196,9 +195,9 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                         </div>
 
                                         {/* Pricing — mobile: compact single line */}
-                                        <div className="sm:hidden flex items-center justify-between my-1">
-                                            <span className="text-[9px] text-gray-400 dark:text-neutral-500 line-through">₹{Number(price)?.toLocaleString()}</span>
-                                            <span className="text-[10px] font-bold text-green-600 dark:text-green-400">₹{(Number(price) - Number(discount))?.toLocaleString()}</span>
+                                        <div className="sm:hidden flex items-center justify-between my-2">
+                                            <span className="text-[10px] text-gray-400 dark:text-neutral-500 line-through">₹{Number(price)?.toLocaleString()}</span>
+                                            <span className="text-xs font-bold text-green-600 dark:text-green-400">₹{(Number(price) - Number(discount))?.toLocaleString()}</span>
                                         </div>
 
                                         {/* Pricing — desktop: full 3-col grid */}
@@ -226,19 +225,19 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                                     disabled={reqLoader}
                                                     title="Feature"
                                                     className="flex-1 flex items-center justify-center py-1.5 rounded-md bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border border-green-100 dark:border-green-900/40 hover:bg-green-100 transition-colors disabled:opacity-50">
-                                                    {reqLoader ? <LoaderCircle className="w-3 h-3 animate-spin" /> : <Star className="w-3 h-3" />}
+                                                    {reqLoader ? <LoaderCircle className="w-3 h-3 animate-spin" /> : <Star className="w-4 h-4" />}
                                                 </button>
                                                 <button
                                                     onClick={() => openEditModal(product)}
                                                     title="Edit"
                                                     className="flex-1 flex items-center justify-center py-1.5 rounded-md bg-gray-50 dark:bg-neutral-700/50 text-gray-500 dark:text-neutral-400 border border-gray-200 dark:border-neutral-600 hover:bg-gray-100 transition-colors">
-                                                    <PenLine className="w-3 h-3" />
+                                                    <PenLine className="w-4 h-4" />
                                                 </button>
                                                 <button
                                                     onClick={() => openDeleteModal(name, _id)}
                                                     title="Delete"
                                                     className="flex-1 flex items-center justify-center py-1.5 rounded-md bg-red-50 dark:bg-red-900/20 text-red-500 dark:text-red-400 border border-red-100 dark:border-red-900/30 hover:bg-red-100 transition-colors">
-                                                    <Trash2 className="w-3 h-3" />
+                                                    <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
 

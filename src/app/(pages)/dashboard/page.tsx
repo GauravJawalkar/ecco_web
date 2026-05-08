@@ -36,14 +36,14 @@ const Dashboard = () => {
                     {data?.storeDetails?.storeName.trim()?.length > 0 ? (
                         <div className="my-4 flex overflow-x-auto no-scrollbar items-center gap-2 sm:gap-3 p-3 sm:p-4 border rounded-xl shadow-xs dark:bg-neutral-850 border-gray-150 dark:border-neutral-700 relative z-10 sm:flex-wrap">
                             <button
-                                className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-full sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none"
+                                className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none"
                                 onClick={() => setShowProductModal(true)}>
                                 <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600 dark:text-green-400 flex-shrink-0" />
                                 Add Product
                             </button>
 
                             <button
-                                className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-full sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none"
+                                className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none"
                                 onClick={() => setShowCustomCategoryModal(true)}>
                                 <FolderPlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
                                 Add Category
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
                             {data?.isSuperAdmin && (
                                 <Link href="/dashboard/specialShow" className="contents">
-                                    <button className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-full sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none">
+                                    <button className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none">
                                         <SparklesIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 dark:text-amber-400 flex-shrink-0" />
                                         Special Show
                                     </button>
@@ -59,7 +59,7 @@ const Dashboard = () => {
                             )}
 
                             <Link href="/dashboard/ordersProcess" className="contents">
-                                <button className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-full sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none">
+                                <button className="flex-shrink-0 flex items-center justify-center gap-1.5 px-3 py-2 sm:px-3 sm:py-2.5 rounded-lg sm:rounded-lg bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-750 transition-colors text-xs sm:text-sm font-medium text-gray-700 dark:text-neutral-200 shadow-sm sm:shadow-none">
                                     <TruckIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                                     Orders
                                 </button>
