@@ -1,26 +1,28 @@
 import connectDB from "@/db/dbConfig";
 import { User } from "@/models/user.model";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { JwtPayload } from "jsonwebtoken";
 import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
+
+const ACCESS_MAX_AGE = 15 * 60;
+const REFRESH_MAX_AGE = 7 * 24 * 60 * 60;
 
 export async function GET() {
     try {
         const cookieStore = await cookies();
-        const accessToken = cookieStore.get("accessToken")?.value;
-        const refreshToken = cookieStore.get("refreshToken")?.value;
+        const accessToken = cookieStore.get("accessToken")?.value?.trim();
+        const refreshToken = cookieStore.get("refreshToken")?.value?.trim();
 
-        // Case 1: No refresh token — user is logged out
-        if (!refreshToken || refreshToken.trim() === "") {
+        // Case 1: No refresh token — fully logged out
+        if (!refreshToken) {
             return NextResponse.json(
                 { error: "No refresh token - please login again" },
                 { status: 403 }
             );
         }
 
-        // Case 2: Validate refresh token
+        // Case 2: Verify refresh token is cryptographically valid
         let refreshPayload: JwtPayload;
         try {
             refreshPayload = jwt.verify(
@@ -28,26 +30,32 @@ export async function GET() {
                 process.env.REFRESH_TOKEN_SECRET!
             ) as JwtPayload;
         } catch {
-            // Refresh token expired/invalid
             return NextResponse.json(
                 { error: "Refresh token expired - please login again" },
                 { status: 403 }
             );
         }
 
+        if (!refreshPayload._id) {
+            return NextResponse.json(
+                { error: "Malformed token - please login again" },
+                { status: 403 }
+            );
+        }
+
         await connectDB();
 
-        // Case 3: Access token is valid — return user immediately
-        if (accessToken && accessToken.trim() !== "") {
+        // Case 3: Access token valid — fast path, no DB write needed
+        if (accessToken) {
             try {
                 const decoded = jwt.verify(
                     accessToken,
                     process.env.ACCESS_TOKEN_SECRET!
                 ) as JwtPayload;
 
-                const user = await User.findById(decoded._id)
-                    .select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
-                    .lean();
+                const user = await User.findById(decoded._id).select(
+                    "-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry"
+                ).lean();
 
                 if (user) {
                     return NextResponse.json(
@@ -56,85 +64,64 @@ export async function GET() {
                     );
                 }
             } catch {
-                // Access token invalid, proceed to refresh below
+                // Access token expired — fall through to refresh
             }
         }
 
-        // Case 4: Access token expired/missing but refresh is valid
-        // AUTO-REFRESH the access token and return user
+        // Case 4: Access token expired/missing — refresh using refresh token
         const dbUser = await User.findById(refreshPayload._id);
 
         if (!dbUser) {
             return NextResponse.json(
-                { error: "User not found" },
+                { error: "User not found - please login again" },
                 { status: 403 }
             );
         }
 
-        // Verify refresh token in database matches cookie
-        if (dbUser.refreshToken !== refreshToken) {
+        // Rotation check — if tokens don't match, session was invalidated
+        if (!dbUser.refreshToken || dbUser.refreshToken !== refreshToken) {
+            console.error("Rotation check failed — DB:", dbUser.refreshToken, "| Cookie:", refreshToken);
             return NextResponse.json(
                 { error: "Session invalid - please login again" },
                 { status: 403 }
             );
         }
 
-        // Step 5: Generate NEW tokens
+        // generateAccessAndRefreshToken saves new refreshToken to DB internally
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
             await generateAccessAndRefreshToken(dbUser._id);
 
-        // Step 6: Update refresh token in database
-        try {
-            await User.findByIdAndUpdate(dbUser._id, { refreshToken: newRefreshToken });
-        } catch (error) {
-            console.error('Failed to update refresh token in database:', error);
-            return NextResponse.json(
-                { error: "Failed to update tokens" },
-                { status: 500 }
-            );
-        }
+        const freshUser = await User.findById(dbUser._id).select(
+            "-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry"
+        ).lean();
 
+        const isProd = process.env.NODE_ENV === "production";
         const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production'
-                ? 'strict' as const
-                : 'lax' as const,
-            path: '/',
+            secure: isProd,
+            sameSite: isProd ? ("strict" as const) : ("lax" as const),
+            path: "/",
         };
 
-        // Step 7: Fetch fresh user data and return with new tokens in cookies
-        const freshUser = await User.findById(dbUser._id)
-            .select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry")
-            .lean()
-            .exec();
-
         const response = NextResponse.json(
-            {
-                message: "Session refreshed and user returned",
-                user: freshUser
-            },
+            { message: "Session refreshed", user: freshUser },
             { status: 200 }
         );
 
-        // Step 8: Set new tokens in cookies
-        response.cookies.set('accessToken', newAccessToken, {
+        response.cookies.set("accessToken", newAccessToken, {
             ...cookieOptions,
-            maxAge: 60 * 60 // 1 hour
+            maxAge: ACCESS_MAX_AGE,
         });
 
-        response.cookies.set('refreshToken', newRefreshToken, {
+        response.cookies.set("refreshToken", newRefreshToken, {
             ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60 // 7 days
+            maxAge: REFRESH_MAX_AGE,
         });
 
         return response;
 
     } catch (error) {
         console.error("Session check error:", error);
-        return NextResponse.json(
-            { error: "Session check failed" },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: "Session check failed" }, { status: 500 });
     }
 }

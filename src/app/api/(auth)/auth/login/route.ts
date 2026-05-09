@@ -1,19 +1,20 @@
 import connectDB from "@/db/dbConfig";
 import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
 import { User } from "@/models/user.model";
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-connectDB();
+const ACCESS_MAX_AGE = 15 * 60;          // 15 minutes — matches generateAccessToken
+const REFRESH_MAX_AGE = 7 * 24 * 60 * 60; // 7 days — matches generateRefreshToken
 
 export async function POST(request: NextRequest) {
     try {
-        const reqBody = await request.json();
-        const { email, password } = reqBody;
+        await connectDB();
 
-        if ([email, password].some((field) => field.trim() === "")) {
+        const { email, password } = await request.json();
+
+        if (!email?.trim() || !password?.trim()) {
             return NextResponse.json(
-                { error: "email and password are required" },
+                { error: "Email and password are required" },
                 { status: 400 }
             );
         }
@@ -21,70 +22,51 @@ export async function POST(request: NextRequest) {
         const user = await User.findOne({ email });
 
         if (!user) {
-            return NextResponse.json(
-                { error: "User not found" },
-                { status: 404 }
-            );
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
         const validPassword = await user.isPasswordCorrect(password);
-
         if (!validPassword) {
-            return NextResponse.json(
-                { error: "Password incorrect" },
-                { status: 400 }
-            );
+            return NextResponse.json({ error: "Password incorrect" }, { status: 400 });
         }
 
-        // Generate tokens
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-        const loggedUser = await User.findById(user._id)
-            .select("-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry");
+        const loggedUser = await User.findById(user._id).select(
+            "-password -refreshToken -forgotPasswordOTP -forgotPasswordOTPexpiry -emailVerificationOTP -emailVerificationOTPexpiry"
+        );
 
         if (!loggedUser) {
-            return NextResponse.json(
-                { error: "Cannot find logged user" },
-                { status: 404 }
-            );
+            return NextResponse.json({ error: "Cannot find logged user" }, { status: 404 });
         }
 
+        const isProd = process.env.NODE_ENV === "production";
         const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production'
-                ? 'strict' as const
-                : 'lax' as const,
-            path: '/',
+            secure: isProd,
+            sameSite: isProd ? ("strict" as const) : ("lax" as const),
+            path: "/",
         };
 
-        // CREATE RESPONSE FIRST, then set cookies on it
         const response = NextResponse.json(
-            {
-                user: loggedUser,
-                accessToken,
-                refreshToken,
-            },
+            { user: loggedUser, accessToken, refreshToken },
             { status: 200 }
         );
 
-        // Use response.cookies.set() — this actually sends Set-Cookie headers
-        response.cookies.set('accessToken', accessToken, {
+        response.cookies.set("accessToken", accessToken, {
             ...cookieOptions,
-            maxAge: 24 * 60 * 60, // 1 day
+            maxAge: ACCESS_MAX_AGE,
         });
 
-        response.cookies.set('refreshToken', refreshToken, {
+        response.cookies.set("refreshToken", refreshToken, {
             ...cookieOptions,
-            maxAge: 7 * 24 * 60 * 60, // 7 days
+            maxAge: REFRESH_MAX_AGE,
         });
 
         return response;
 
     } catch (error) {
-        return NextResponse.json(
-            { error: error },
-            { status: 500 }
-        );
+        console.error("Login error:", error);
+        return NextResponse.json({ error: "Login failed" }, { status: 500 });
     }
 }

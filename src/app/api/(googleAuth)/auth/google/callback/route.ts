@@ -1,24 +1,26 @@
-import connectDB from '@/db/dbConfig';
-import { generateAccessAndRefreshToken } from '@/helpers/tokensGenerator';
-import { User } from '@/models/user.model';
-import axios from 'axios';
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
+import connectDB from "@/db/dbConfig";
+import { generateAccessAndRefreshToken } from "@/helpers/tokensGenerator";
+import { User } from "@/models/user.model";
+import axios from "axios";
+import jwt from "jsonwebtoken";
+import { NextRequest, NextResponse } from "next/server";
+
+const ACCESS_MAX_AGE = 15 * 60;
+const REFRESH_MAX_AGE = 7 * 24 * 60 * 60;
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
-    const code = searchParams.get('code');
+    const code = searchParams.get("code");
 
     const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } = process.env;
 
     try {
-        const tokenRes = await axios.post('https://oauth2.googleapis.com/token', {
+        const tokenRes = await axios.post("https://oauth2.googleapis.com/token", {
             code,
             client_id: GOOGLE_CLIENT_ID,
             client_secret: GOOGLE_CLIENT_SECRET,
             redirect_uri: GOOGLE_REDIRECT_URI,
-            grant_type: 'authorization_code',
+            grant_type: "authorization_code",
         });
 
         const googleUser: any = jwt.decode(tokenRes.data.id_token);
@@ -38,34 +40,33 @@ export async function GET(request: NextRequest) {
             });
         }
 
-        // Use shared generator — sets refreshToken on user doc and returns both tokens
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-        const cookieStore = await cookies();
-
-        // Remove stale 'user' cookie — layout decodes JWT directly, this was never read
-        cookieStore.delete('user');
-
-        cookieStore.set('accessToken', accessToken, {
+        const isProd = process.env.NODE_ENV === "production";
+        const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-            maxAge: 24 * 60 * 60, // 1 day — matches email/password login
+            secure: isProd,
+            sameSite: isProd ? ("strict" as const) : ("lax" as const),
+            path: "/",
+        };
+
+        // Must use response.cookies.set — cookieStore.set is unreliable on redirects
+        const response = NextResponse.redirect(new URL("/", request.url));
+
+        response.cookies.set("accessToken", accessToken, {
+            ...cookieOptions,
+            maxAge: ACCESS_MAX_AGE,
         });
 
-        // Set refreshToken — without this getSessionUser() always returns null
-        cookieStore.set('refreshToken', refreshToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-            maxAge: 7 * 24 * 60 * 60, // 7 days
+        response.cookies.set("refreshToken", refreshToken, {
+            ...cookieOptions,
+            maxAge: REFRESH_MAX_AGE,
         });
 
-        // Go straight to home — UserStoreInitializer in layout handles hydration
-        return NextResponse.redirect(new URL('/', request.url));
+        return response;
 
     } catch (err) {
-        console.error(err);
-        return NextResponse.json({ error: 'Auth failed' }, { status: 500 });
+        console.error("Google auth error:", err);
+        return NextResponse.json({ error: "Auth failed" }, { status: 500 });
     }
 }
