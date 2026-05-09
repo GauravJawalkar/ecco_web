@@ -1,22 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import { useUserStore } from '@/store/UserStore';
-import ApiClient from '@/interceptors/ApiClient';
+import { useEffect, useRef } from "react";
+import { useUserStore } from "@/store/UserStore";
+import ApiClient from "@/interceptors/ApiClient";
+import axios from "axios";
 
-/**
- * PROBLEM: No cleanup, no dependency array check
- * This causes:
- * 1. Multiple simultaneous API calls
- * 2. Memory leak from pending promises
- * 3. Zustand subscriber memory accumulation
- */
 export default function SessionInitializer() {
     const { setUser } = useUserStore();
     const initAttempted = useRef(false);
 
     useEffect(() => {
-        // FIXED: Prevent re-initialization
         if (initAttempted.current) return;
         initAttempted.current = true;
 
@@ -24,15 +17,33 @@ export default function SessionInitializer() {
 
         const initializeSession = async () => {
             try {
-                const response = await ApiClient.get('/api/auth/sessionCookies');
-
+                // Step 1: Check if session is valid
+                const response = await ApiClient.get("/api/auth/sessionCookies");
                 if (isMounted && response.data?.user) {
                     setUser(response.data.user);
                 }
             } catch (error: any) {
                 if (!isMounted) return;
 
-                if (error.response?.status === 401 || error.response?.status === 403) {
+                const status = error.response?.status;
+
+                if (status === 401) {
+                    // Access token expired — refresh then fetch user
+                    try {
+                        await axios.post("/api/auth/refreshToken", {}, {
+                            withCredentials: true,
+                        });
+                        // Now fetch user with new access token
+                        const retryRes = await ApiClient.get("/api/auth/sessionCookies");
+                        if (isMounted && retryRes.data?.user) {
+                            setUser(retryRes.data.user);
+                        }
+                    } catch {
+                        // Refresh failed — user stays logged out
+                        useUserStore.getState().clearUser();
+                    }
+                } else if (status === 403) {
+                    // No token or fully expired — clear silently
                     useUserStore.getState().clearUser();
                 }
             }
@@ -40,11 +51,10 @@ export default function SessionInitializer() {
 
         initializeSession();
 
-        // FIXED: Cleanup function
         return () => {
             isMounted = false;
         };
-    }, []); // FIXED: Empty dependency array
+    }, []);
 
     return null;
 }

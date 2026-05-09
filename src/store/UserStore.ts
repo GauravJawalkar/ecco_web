@@ -39,10 +39,13 @@ export const useUserStore = create<UserStore>()(
 
             logOut: async () => {
                 try {
-                    await ApiClient.get('/api/auth/logout');
-                    set({ data: {} as userProps, isAuthenticated: false });
+                    // POST — matches the updated logout route
+                    await ApiClient.post("/api/auth/logout", {}, { withCredentials: true });
                 } catch (error) {
-                    console.error("Error logging out : ", error)
+                    console.error("Logout error:", error);
+                } finally {
+                    // Always clear local state even if server call fails
+                    set({ data: {} as userProps, isAuthenticated: false });
                 }
             },
 

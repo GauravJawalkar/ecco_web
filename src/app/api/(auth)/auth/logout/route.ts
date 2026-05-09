@@ -1,32 +1,45 @@
+import connectDB from "@/db/dbConfig";
+import { User } from "@/models/user.model";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function POST() {
     try {
-        const cookieOptions = {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'strict' as const : 'lax' as const,
-            path: '/',
-            maxAge: 0 // Immediate expiration
-        };
+        const cookieStore = await cookies();
+        const refreshToken = cookieStore.get("refreshToken")?.value?.trim();
 
-        // Create response FIRST, then set cookies on it
-        const response = NextResponse.json({
-            success: true,
-            message: "Logged out successfully"
-        });
+        if (refreshToken) {
+            try {
+                const decoded = jwt.verify(
+                    refreshToken,
+                    process.env.REFRESH_TOKEN_SECRET!
+                ) as JwtPayload;
 
-        // Use response.cookies.set() (works in Route Handlers)
-        response.cookies.set('accessToken', '', cookieOptions);
-        response.cookies.set('refreshToken', '', cookieOptions);
+                if (decoded._id) {
+                    await connectDB();
+                    await User.findByIdAndUpdate(decoded._id, { refreshToken: null });
+                }
+            } catch {
+                // Token already expired — DB cleanup not needed
+            }
+        }
+
+        const response = NextResponse.json(
+            { success: true, message: "Logged out successfully" },
+            { status: 200 }
+        );
+
+        response.cookies.set("accessToken", "", { maxAge: 0, path: "/" });
+        response.cookies.set("refreshToken", "", { maxAge: 0, path: "/" });
 
         return response;
 
     } catch (error) {
         console.error("Logout error:", error);
-        return NextResponse.json({
-            success: false,
-            error: "Failed to logout"
-        }, { status: 500 });
+        return NextResponse.json(
+            { success: false, error: "Failed to logout" },
+            { status: 500 }
+        );
     }
 }
