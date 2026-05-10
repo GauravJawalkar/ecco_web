@@ -37,15 +37,15 @@ const page = () => {
     const getStatusStyles = (status: string) => {
         switch (status) {
             case 'Out For Delivery':
-                return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200';
+                return 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800/50';
             case 'Order Processing':
-                return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-200';
+                return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800/50';
             case 'Order Shipped':
-                return 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-200';
+                return 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800/50';
             case 'Order Cancelled':
-                return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200';
+                return 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800/50';
             default:
-                return 'bg-gray-100 text-gray-800 dark:bg-gray-900/50 dark:text-gray-200';
+                return 'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-900/30 dark:text-gray-300 dark:border-gray-800/50';
         }
     };
 
@@ -89,18 +89,18 @@ const page = () => {
     })
 
     return (
-        <div className="min-h-screen">
-            <div className="container mx-auto px-4 py-4">
-                <div className='flex items-center justify-between my-6'>
-                    <div className="text-3xl font-bold text-gray-800 dark:text-white">Track Your Orders</div>
-                    <div className="relative">
+        <div className="min-h-screen pb-24 md:pb-8">
+            <div className="container mx-auto px-4 py-4 md:py-8 ">
+                <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4 my-4 sm:my-6'>
+                    <div className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Track Your Orders</div>
+                    <div className="relative w-full sm:w-auto min-w-[280px]">
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Search className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                         </div>
                         <input
                             type="text"
                             placeholder="Search your orders..."
-                            className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none"
+                            className="block w-full pl-10 pr-4 py-2.5 sm:py-2 border border-gray-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800/50 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-shadow text-base sm:text-sm min-h-[44px]"
                         />
                     </div>
                 </div>
@@ -109,126 +109,133 @@ const page = () => {
                 {isError && (
                     <div className="p-6 text-center bg-red-50 border border-red-200 rounded-xl dark:bg-red-900/20 dark:border-red-800">
                         <AlertCircle className="w-12 h-12 mx-auto text-red-500 dark:text-red-400" />
-                        <h2 className="mt-3 text-xl font-medium text-red-700 dark:text-red-300">Something Went Wrong</h2>
-                        <p className="mt-2 text-gray-600 dark:text-neutral-300">
+                        <h2 className="mt-3 text-lg sm:text-xl font-medium text-red-700 dark:text-red-300">Something Went Wrong</h2>
+                        <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-neutral-300">
                             We couldn't load your orders. Please try again later.
                         </p>
                     </div>
                 )}
 
                 {(!isPending && !isError) && myOrders?.length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-16 border-2 border-dashed rounded-xl dark:border-neutral-700">
-                        <PackageOpen className="w-16 h-16 text-gray-400 dark:text-neutral-500" />
-                        <h3 className="mt-4 text-xl font-medium text-gray-900 dark:text-white">No Orders Found</h3>
-                        <p className="mt-2 text-gray-600 dark:text-neutral-400 max-w-md text-center">
+                    <div className="flex flex-col items-center justify-center py-12 sm:py-16 border-2 border-dashed rounded-xl border-gray-200 dark:border-neutral-700 bg-gray-50/50 dark:bg-neutral-800/20">
+                        <PackageOpen className="w-12 h-12 sm:w-16 sm:h-16 text-gray-400 dark:text-neutral-500" />
+                        <h3 className="mt-4 text-lg sm:text-xl font-medium text-gray-900 dark:text-white">No Orders Found</h3>
+                        <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-neutral-400 max-w-md text-center px-4">
                             You haven't placed any orders yet. Start shopping to see your orders here.
                         </p>
                     </div>
                 )}
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                     {myOrders[0]?.orders
                         ?.slice()
                         .sort((a: myOrdersProps, b: myOrdersProps) =>
                             new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
                         )
                         .map(({ _id, orderName, orderImage, orderPrice, orderDiscount, deliveryAddress, pinCode, processingStatus, paymentStatus, orderQuantity, paymentMethod, orderDate }: myOrdersProps) => (
-                            <div key={_id} className="bg-white dark:bg-neutral-800/50 rounded-lg shadow-sm border border-gray-200 dark:border-neutral-700 overflow-hidden">
+                            <div key={_id} className="bg-white dark:bg-neutral-800/50 rounded-xl shadow-sm border border-gray-200 dark:border-neutral-700 overflow-hidden">
                                 {/* Order Header */}
-                                <div className="border-b border-gray-200 dark:border-neutral-700 px-6 py-4 grid grid-cols-3 gap-4 ">
-                                    <div className="mb-2 sm:mb-0">
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Order Placed</p>
-                                        <p className="font-medium text-sm dark:text-white">{formatDate(orderDate)}</p>
+                                <div className="border-b border-gray-100 dark:border-neutral-700/80 px-4 sm:px-6 py-4 bg-gray-50/50 dark:bg-neutral-800/80 flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-4">
+                                    <div className="flex justify-between sm:block">
+                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Order Placed</p>
+                                        <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-white">{formatDate(orderDate)}</p>
                                     </div>
-                                    <div className="mb-2 sm:mb-0 place-items-center">
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Total</p>
-                                        <p className="font-medium dark:text-white">
+                                    <div className="flex justify-between sm:block sm:place-items-center">
+                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Total</p>
+                                        <p className="font-medium text-sm sm:text-base text-gray-900 dark:text-white">
                                             ₹{((orderPrice - orderDiscount) * orderQuantity).toFixed(2)}
                                             {orderDiscount > 0 && (
-                                                <span className="ml-2 text-sm text-green-600 dark:text-green-400">
+                                                <span className="block sm:inline sm:ml-2 text-[10px] sm:text-xs text-green-600 dark:text-green-400 text-right sm:text-left">
                                                     (Saved ₹{((orderPrice * orderQuantity) - ((orderPrice - orderDiscount) * orderQuantity)).toFixed(2)})
                                                 </span>
                                             )}
                                         </p>
                                     </div>
-                                    <div className="mb-2 sm:mb-0 place-items-end">
-                                        <div className='w-fit'>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400"># Order Id</p>
-                                            <p className="font-medium text-gray-700 dark:text-gray-300 text-sm">{_id.toUpperCase()}</p>
+                                    <div className="flex flex-col sm:place-items-end pt-3 border-t border-gray-200 dark:border-neutral-700 sm:border-0 sm:pt-0">
+                                        <div className="flex justify-between sm:block sm:text-right">
+                                            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Order Id</p>
+                                            <p className="font-medium text-gray-700 dark:text-gray-300 text-xs sm:text-sm uppercase tracking-wide">{_id}</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Order Content */}
-                                <div className="p-6">
-                                    <div className="flex flex-col md:flex-row">
+                                <div className="p-4 sm:p-6">
+                                    <div className="flex flex-col sm:flex-row gap-5">
                                         {/* Order Image and Details */}
-                                        <div className="flex flex-1 mb-4 md:mb-0">
-                                            <div className="w-24 h-24 bg-gray-100 dark:bg-neutral-700 rounded-md overflow-hidden flex-shrink-0">
+                                        <div className="flex flex-1 gap-4">
+                                            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-50 dark:bg-neutral-700/50 rounded-lg overflow-hidden flex-shrink-0 border border-gray-100 dark:border-neutral-700/50">
                                                 <Image
-                                                    height={1000}
-                                                    width={1000}
+                                                    height={200}
+                                                    width={200}
                                                     src={orderImage}
                                                     alt={orderName}
+                                                    sizes="(max-width: 640px) 80px, 96px"
                                                     className="w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="ml-4">
-                                                <h3 className="font-medium text-gray-800 dark:text-white capitalize">{orderName}</h3>
-                                                <p className="text-gray-600 dark:text-gray-400 text-sm">Quantity: {orderQuantity}</p>
-                                                <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                                    Price: ₹{orderPrice.toFixed(2)} each
-                                                </p>
+                                            <div className="flex flex-col justify-center">
+                                                <h3 className="font-medium text-base sm:text-lg text-gray-900 dark:text-white capitalize line-clamp-2 leading-snug">{orderName}</h3>
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-1.5 sm:mt-2">
+                                                    <p className="text-gray-600 dark:text-gray-400 text-sm">Qty: {orderQuantity}</p>
+                                                    <span className="hidden sm:inline text-gray-300 dark:text-neutral-600">•</span>
+                                                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                                                        ₹{orderPrice.toFixed(2)} each
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
 
                                         {/* Order Status and Actions */}
-                                        <div className="flex flex-col items-start md:items-end">
-                                            <div className="flex items-center mb-2 text-xs">
-                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${getStatusStyles(processingStatus)} `}>
-                                                    Delivery Status : &nbsp;{getStatusIcon(processingStatus)}
+                                        <div className="flex flex-col items-start sm:items-end space-y-2.5 sm:min-w-[180px]">
+                                            <div className="w-full sm:w-auto">
+                                                <span className={`inline-flex items-center px-3 py-1.5 rounded-full font-medium text-xs sm:text-sm border ${getStatusStyles(processingStatus)}`}>
+                                                    {getStatusIcon(processingStatus)}
                                                     {processingStatus}
                                                 </span>
                                             </div>
-                                            <div className="mb-2 text-xs">
-                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-medium ${paymentStatus === 'Done'
-                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200'
-                                                    : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-200'
+                                            <div className="w-full sm:w-auto">
+                                                <span className={`inline-flex items-center px-3 py-1.5 rounded-full font-medium text-xs sm:text-sm border ${paymentStatus === 'Done'
+                                                    ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800/50'
+                                                    : 'bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:border-yellow-800/50'
                                                     }`}>
-                                                    Payment Status : &nbsp;{paymentStatus === 'Done' ? <CheckCircle className="mr-1 w-4 h-4" /> : <Clock className="mr-1 w-4 h-4" />}
+                                                    {paymentStatus === 'Done' ? <CheckCircle className="mr-1.5 w-3 h-3 sm:w-4 sm:h-4" /> : <Clock className="mr-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                                                     {paymentStatus}
                                                 </span>
                                             </div>
-                                            <button className="px-3 py-1 text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm mt-1 flex items-center justify-center">
-                                                <Split className="mr-1 w-4 h-4" /> Track Package
+                                            <button className="w-full sm:w-auto sm:min-h-0 mt-3 sm:mt-1 px-4 sm:px-3 py-2 sm:py-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 rounded-lg sm:rounded-md border border-blue-200 dark:border-blue-800/50 font-medium text-sm flex items-center justify-center transition-colors">
+                                                <Split className="mr-2 w-4 h-4" /> Track Package
                                             </button>
                                         </div>
                                     </div>
 
                                     {/* Delivery Information */}
-                                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-neutral-700">
-                                        <div className="grid grid-cols-3 gap-4 ">
-                                            <div className="w-full mb-4 md:mb-0">
-                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                    <MapPin className="mr-2 w-4 h-4" /> Delivery Address
+                                    <div className="mt-5 pt-5 border-t border-gray-100 dark:border-neutral-700">
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-4">
+                                            <div className="w-full">
+                                                <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center">
+                                                    <MapPin className="mr-1.5 w-4 h-4 text-gray-400" /> Delivery Address
                                                 </h4>
-                                                <p className="text-gray-800 dark:text-gray-200 text-sm">{deliveryAddress}</p>
-                                                <p className="text-gray-600 dark:text-gray-400 text-sm">PIN: {pinCode}</p>
+                                                <p className="text-gray-900 dark:text-gray-200 text-sm leading-relaxed">{deliveryAddress}</p>
+                                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">PIN: {pinCode}</p>
                                             </div>
-                                            <div className="w-full place-items-center">
-                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                    <CreditCard className="mr-2 w-4 h-4" /> Payment Method
-                                                </h4>
-                                                <p className="text-gray-800 dark:text-gray-200 text-sm">{paymentMethod === "COD" ? "Cash on Delivery" : "Online"}</p>
+                                            <div className="w-full sm:place-items-center border-t border-gray-100 dark:border-neutral-800 pt-4 sm:pt-0 sm:border-0">
+                                                <div className="sm:text-center">
+                                                    <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center sm:justify-center">
+                                                        <CreditCard className="mr-1.5 w-4 h-4 text-gray-400" /> Payment Method
+                                                    </h4>
+                                                    <p className="text-gray-900 dark:text-gray-200 text-sm font-medium">{paymentMethod === "COD" ? "Cash on Delivery" : "Online Paid"}</p>
+                                                </div>
                                             </div>
-                                            <div className="w-full place-items-end">
-                                                <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center">
-                                                    <Pin className="mr-2 w-4 h-4" /> Delivery Date
-                                                </h4>
-                                                <p className="text-gray-800 dark:text-gray-200 text-sm font-medium">{formatDate(orderDate)}</p>
+                                            <div className="w-full sm:place-items-end border-t border-gray-100 dark:border-neutral-800 pt-4 sm:pt-0 sm:border-0">
+                                                <div className="sm:text-right">
+                                                    <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-1.5 flex items-center sm:justify-end">
+                                                        <Pin className="mr-1.5 w-4 h-4 text-gray-400" /> Estimated Delivery
+                                                    </h4>
+                                                    <p className="text-gray-900 dark:text-gray-200 text-sm font-medium">{formatDate(orderDate)}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         ))}
