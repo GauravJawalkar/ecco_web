@@ -81,18 +81,11 @@ const Home = () => {
                                 {dataLength !== 0 && data.isSeller && (
                                     <button
                                         onClick={() => router.push('/dashboard')}
-                                        className="text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/50 active:scale-95 transition-transform"
+                                        className="text-sm font-medium px-2.5 py-1.5 rounded-lg border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/50 active:scale-95 transition-transform"
                                     >
                                         Dashboard
                                     </button>
                                 )}
-                                <button
-                                    onClick={handleLogout}
-                                    className="p-2 rounded-xl border dark:border-neutral-700 text-gray-500 dark:text-gray-400 active:scale-90 transition-transform"
-                                    aria-label="Logout"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                </button>
                             </div>
                         </div>
 
