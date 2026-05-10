@@ -2,7 +2,7 @@ import { useUserStore } from '@/store/UserStore';
 import { useQuery } from '@tanstack/react-query';
 import { Edit3, Package } from 'lucide-react';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import EditStoreDetailsModal from '../Modals/EditStoreDetailsModal';
 import DashboardStoreHeroSkeleton from '../Skeletons/Dashboard/DashboardStoreHeroSkeleton';
 import ApiClient from '@/interceptors/ApiClient';
