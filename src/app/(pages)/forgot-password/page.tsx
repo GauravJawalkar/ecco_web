@@ -63,48 +63,76 @@ const ForgotPassword = () => {
         handelOTPMutation.mutate();
     }
     return (
-        <section className='flex items-center justify-center min-h-screen '>
-            <div className='w-[500px] flex items-center justify-center px-10 py-16 rounded-xl dark:bg-white/5 bg-slate-600/5 backdrop-blur-md'>
-                <form onSubmit={(e) => { e.preventDefault(); handelSubmit() }} className='flex flex-col items-center justify-center min-w-full gap-5'>
-                    <h1 className='text-2xl font-semibold text-center uppercase'>RESET Password</h1>
-                    <div className='w-full space-y-2 text-sm'>
-                        <label>Registered Email :</label>
-                        <input type="text" className='w-full px-3 py-2 text-black rounded' placeholder='Email' required onChange={(e) => setEmail(e.target.value)} />
-                    </div>
-                    {getOTP && <>
-                        <div className='w-full space-y-2 text-sm'>
-                            <label>OTP :</label>
-                            <input type="number" className='w-full px-3 py-2 text-black rounded ' placeholder='One Time Password' required onChange={(e) => setOTP(e.target.value)} />
-                        </div>
-                    </>}
-                    {getOTP && <div className='relative w-full space-y-2 text-sm'>
-                        <label>New Password :</label>
-                        <input type={showPassword ? "text" : "password"} className='w-full px-3 py-2 text-black rounded' placeholder='Password' required onChange={(e) => setnewPassword(e.target.value)} />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute pt-3 text-gray-500 -translate-y-1/2 outline-none cursor-pointer top-1/2 right-3 dark:text-gray-400">
-                            {showPassword ? <Eye size={20} /> : <EyeClosed size={20} />}
-                        </button>
-                    </div>}
-                    {getOTP && <button type='submit' className='w-full bg-[#0a0a0a] text-[#ededed] rounded text-sm py-3 hover:bg-[#1a1a1a] transition-all ease-linear duration-200 uppercase '>
-                        {
-                            loading ?
-                                <Loader title='Setting...' /> :
-                                "Reset Password"
-                        }
-                    </button>}
-                    {!getOTP && <button type='submit' onClick={(e) => { e.preventDefault(); e.stopPropagation(); handelOTP() }} className='w-full bg-[#0a0a0a] text-[#ededed] rounded text-sm py-3 hover:bg-[#1a1a1a] transition-all ease-linear duration-200 uppercase '>
-                        {
-                            handelOTPMutation.isPending ?
-                                <Loader title='Sending OTP...' /> :
-                                "Get Otp"
-                        }
-                    </button>}
+        <section className='flex items-center justify-center min-h-screen p-4 bg-gray-50/50 dark:bg-[#1a1a1a]'>
+            <div className='w-full max-w-[440px] flex flex-col px-6 py-8 sm:px-10 sm:py-10 bg-white dark:bg-neutral-900/50 border border-gray-200 dark:border-neutral-800/60 rounded-[28px] shadow-sm dark:shadow-2xl backdrop-blur-xl'>
+                <div className="mb-8 text-center">
+                    <h1 className='text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight'>Reset Password</h1>
+                    <p className="text-gray-500 dark:text-neutral-400 mt-2 text-[13px] sm:text-sm">
+                        {!getOTP ? "Enter your email to receive a One Time Password." : "Enter your OTP and choose a new password."}
+                    </p>
+                </div>
 
+                <form onSubmit={(e) => { e.preventDefault(); handelSubmit() }} className='flex flex-col w-full gap-5'>
+
+                    <div className='flex flex-col space-y-2'>
+                        <label className='text-[13px] font-medium text-gray-700 dark:text-neutral-300 ml-1'>Registered Email</label>
+                        <input
+                            type="email"
+                            className='w-full h-12 px-4 text-[15px] text-gray-900 dark:text-white bg-gray-50/50 dark:bg-neutral-800/40 border border-gray-200 dark:border-neutral-700/60 rounded-2xl placeholder:text-gray-400 dark:placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-black/5 dark:focus:ring-white/5 focus:border-gray-400 dark:focus:border-neutral-500 transition-all'
+                            placeholder='name@example.com'
+                            required
+                            readOnly={getOTP}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+
+                    {getOTP && (
+                        <div className='flex flex-col space-y-2 animate-in fade-in slide-in-from-top-4 duration-300'>
+                            <label className='text-[13px] font-medium text-gray-700 dark:text-neutral-300 ml-1'>OTP</label>
+                            <input
+                                type="text"
+                                className='w-full h-12 px-4 text-[15px] tracking-widest text-gray-900 dark:text-white bg-gray-50/50 dark:bg-neutral-800/40 border border-gray-200 dark:border-neutral-700/60 rounded-2xl placeholder:text-gray-400 dark:placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-black/5 dark:focus:ring-white/5 focus:border-gray-400 dark:focus:border-neutral-500 transition-all'
+                                placeholder='••••••'
+                                required
+                                onChange={(e) => setOTP(e.target.value)}
+                            />
+                        </div>
+                    )}
+
+                    {getOTP && (
+                        <div className='flex flex-col space-y-2 relative animate-in fade-in slide-in-from-top-4 duration-300'>
+                            <label className='text-[13px] font-medium text-gray-700 dark:text-neutral-300 ml-1'>New Password</label>
+                            <div className="relative w-full">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className='w-full h-12 pl-4 pr-12 text-[15px] text-gray-900 dark:text-white bg-gray-50/50 dark:bg-neutral-800/40 border border-gray-200 dark:border-neutral-700/60 rounded-2xl placeholder:text-gray-400 dark:placeholder:text-neutral-500 focus:outline-none focus:ring-4 focus:ring-black/5 dark:focus:ring-white/5 focus:border-gray-400 dark:focus:border-neutral-500 transition-all'
+                                    placeholder='Create a new password'
+                                    required
+                                    onChange={(e) => setnewPassword(e.target.value)}
+                                />
+                                <button
+                                    type='button'
+                                    onClick={() => { setShowPassword(!showPassword) }}
+                                    className='absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-neutral-300 transition-colors outline-none rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-700/50 touch-manipulation'>
+                                    {showPassword ? <Eye size={18} strokeWidth={1.5} /> : <EyeClosed size={18} strokeWidth={1.5} />}
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    <button
+                        type={getOTP ? 'submit' : 'button'}
+                        onClick={!getOTP ? (e) => { e.preventDefault(); e.stopPropagation(); handelOTP() } : undefined}
+                        className='w-full h-12 mt-4 bg-green-700 dark:bg-white text-white dark:text-gray-900 font-medium rounded-2xl text-[15px] hover:bg-green-800 dark:hover:bg-gray-200 active:scale-[0.98] transition-all flex items-center justify-center shadow-md shadow-gray-900/10 dark:shadow-white/5'>
+                        {getOTP ? (
+                            loading ? <Loader title='Setting...' /> : "Reset Password"
+                        ) : (
+                            handelOTPMutation.isPending ? <Loader title='Sending OTP...' /> : "Get OTP"
+                        )}
+                    </button>
                 </form>
-            </div >
-        </section >
+            </div>
+        </section>
     )
 }
 
