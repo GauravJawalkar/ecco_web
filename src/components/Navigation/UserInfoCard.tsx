@@ -1,4 +1,4 @@
-import { Pencil, ShieldCheck } from 'lucide-react'
+import { Pencil, ShieldCheck, Lock } from 'lucide-react'
 
 interface UserInfoCardProps {
     dataLength: number,
@@ -7,29 +7,31 @@ interface UserInfoCardProps {
 }
 
 const UserInfoCard = ({ dataLength, dataValue, cardTitle }: UserInfoCardProps) => {
+    if (dataLength === 0) return null;
+
+    const isPassword = cardTitle.toLowerCase().includes("password");
+
     return (
-        <div className="flex flex-col items-start justify-start gap-3 p-4 sm:p-5 mb-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/30">
-            <div className="font-normal capitalize text-sm sm:text-base">
-                {dataLength !== 0 && cardTitle} :
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+            <div>
+                <p className="text-sm font-medium text-gray-900 dark:text-white capitalize">{cardTitle}</p>
+                <div className="mt-1 flex items-center gap-2">
+                    <p className={`text-sm text-gray-500 dark:text-neutral-400 truncate max-w-[200px] sm:max-w-xs capitalize ${isPassword ? 'tracking-[0.2em] pt-1' : ''}`}>
+                        {dataValue}
+                    </p>
+                </div>
             </div>
-            <div className="w-full sm:w-2/3 lg:w-1/3 p-3 border rounded-md dark:border-neutral-700 hover:cursor-not-allowed">
-                <span className="font-normal text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-                    {dataLength !== 0 && dataValue}
-                </span>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3">
-                <button className="text-red-500 border hover:bg-gray-200 dark:hover:bg-[#3a3a3a] dark:border-neutral-700 transition ease-in-out duration-200 px-3 sm:px-4 py-1 rounded-lg text-sm font-normal flex items-center justify-center gap-2">
-                    <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors active:scale-95">
+                    {isPassword ? <Lock className="w-3.5 h-3.5" /> : <Pencil className="w-3.5 h-3.5" />}
                     Edit
                 </button>
-                <button
-                    disabled
-                    type="button"
-                    className="text-green-500 border hover:bg-gray-200 dark:hover:bg-[#3a3a3a] dark:border-neutral-700 transition ease-in-out duration-200 px-3 sm:px-4 py-1 rounded-lg text-sm font-normal flex items-center justify-center gap-2 cursor-not-allowed opacity-60"
-                >
-                    <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    Verified
-                </button>
+                {!isPassword && (
+                    <div className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-lg opacity-80 cursor-default">
+                        <ShieldCheck className="w-3.5 h-3.5" />
+                        Verified
+                    </div>
+                )}
             </div>
         </div>
     );

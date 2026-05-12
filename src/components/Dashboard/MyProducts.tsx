@@ -312,57 +312,80 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
             {/* List View */}
             {view === "list" && isLoading && <TableLayoutSkeleton />}
             {view === "list" && !isLoading && (
-                <div className="py-6">
-                    <div className="overflow-hidden border rounded-lg dark:border-neutral-700">
-                        <div className="overflow-auto no-scrollbar">
-                            <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                                <thead className="bg-gradient-to-br from-white/90 to-gray-100 dark:from-neutral-800/90 dark:to-neutral-900">
-                                    <tr>
-                                        <th className="px-4 py-4 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-neutral-400">Product</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-left text-gray-500 uppercase dark:text-neutral-400">Description</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">Images</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">Stock</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">MRP</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">Discount</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">Price</th>
-                                        <th className="px-6 py-4 text-xs font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-400">Actions</th>
+                <div className="py-6 animate-in fade-in duration-300">
+                    <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden">
+                        <div className="overflow-x-auto no-scrollbar">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-gray-100 dark:border-neutral-800/60 bg-gray-50/50 dark:bg-neutral-900/30">
+                                        <th className="px-6 py-4 text-[11px] font-semibold tracking-wider text-gray-500 uppercase dark:text-neutral-500">Product</th>
+                                        <th className="px-6 py-4 text-[11px] font-semibold tracking-wider text-gray-500 uppercase dark:text-neutral-500 hidden md:table-cell">Description</th>
+                                        <th className="px-6 py-4 text-[11px] font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-500">Stock</th>
+                                        <th className="px-6 py-4 text-[11px] font-semibold tracking-wider text-right text-gray-500 uppercase dark:text-neutral-500">Pricing</th>
+                                        <th className="px-6 py-4 text-[11px] font-semibold tracking-wider text-center text-gray-500 uppercase dark:text-neutral-500">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-200 dark:bg-neutral-850 dark:divide-neutral-700">
+                                <tbody className="divide-y divide-gray-100 dark:divide-neutral-800/60">
                                     {prodData.length > 0 ? (
                                         prodData.map((product: prodDataProps) => {
                                             const { _id, name, description, images, price, discount, size, stock, category, containerType } = product;
                                             return (
-                                                <tr key={_id} className="hover:bg-gray-50 dark:hover:bg-neutral-800/50">
-                                                    <td className="px-4 py-4 whitespace-nowrap">
-                                                        <div className="font-medium text-gray-900 dark:text-white capitalize">{name}</div>
-                                                        <div className="text-sm text-gray-500 dark:text-neutral-400 capitalize">{category}</div>
+                                                <tr key={_id} className="hover:bg-gray-50/50 dark:hover:bg-neutral-800/20 transition-colors group">
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="relative w-12 h-12 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 overflow-hidden shrink-0 flex items-center justify-center">
+                                                                <Image src={images[0] || '/placeholder.png'} alt={name} fill className="object-contain p-1 group-hover:scale-110 transition-transform duration-300" sizes="48px" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="font-semibold text-gray-900 dark:text-white capitalize text-sm">{name}</div>
+                                                                <div className="text-[11px] font-medium px-2 py-0.5 rounded-md bg-gray-100 dark:bg-neutral-800 text-gray-600 dark:text-neutral-400 capitalize w-fit mt-1">{category}</div>
+                                                            </div>
+                                                        </div>
                                                     </td>
-                                                    <td className="px-6 py-4 max-w-xs">
-                                                        <p title={description} className={`text-gray-600 dark:text-neutral-300 text-sm ${showFullDescription ? '' : 'line-clamp-2'}`}>
+                                                    <td className="px-6 py-4 hidden md:table-cell max-w-[240px]">
+                                                        <p title={description} className="text-gray-500 dark:text-neutral-400 text-xs line-clamp-2 leading-relaxed">
                                                             {description}
                                                         </p>
                                                     </td>
-                                                    <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="flex justify-center gap-2">
-                                                            {images.slice(0, 3).map((img, idx) => (
-                                                                <div key={idx} className="relative w-10 h-10 overflow-hidden border rounded-md border-gray-200 dark:border-neutral-700">
-                                                                    <Image src={img} alt={`Product image ${idx + 1}`} fill className="object-cover" sizes="40px" />
-                                                                </div>
-                                                            ))}
+                                                    <td className="px-6 py-4 text-center">
+                                                        <span className="inline-flex items-center justify-center px-2.5 py-1 text-xs font-medium rounded-full bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-neutral-300">
+                                                            {stock}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-4 text-right">
+                                                        <div className="flex flex-col items-end justify-center">
+                                                            <div className="text-sm font-bold text-gray-900 dark:text-white">
+                                                                ₹{(Number(price) - Number(discount))?.toLocaleString()}
+                                                            </div>
+                                                            <div className="flex items-center gap-1.5 text-[10px] mt-0.5">
+                                                                <span className="text-gray-400 line-through">₹{Number(price)?.toLocaleString()}</span>
+                                                                <span className="text-green-600 dark:text-green-400 font-medium">-₹{Number(discount)?.toLocaleString()}</span>
+                                                            </div>
                                                         </div>
                                                     </td>
-                                                    <td className="px-6 py-4 text-sm text-center text-gray-500 dark:text-neutral-400 whitespace-nowrap">{stock}</td>
-                                                    <td className="px-6 py-4 text-sm text-center text-gray-900 dark:text-white whitespace-nowrap">₹{Number(price)?.toLocaleString()}</td>
-                                                    <td className="px-6 py-4 text-sm text-center text-gray-900 dark:text-white whitespace-nowrap">₹{Number(discount)?.toLocaleString()}</td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-center text-gray-900 dark:text-white whitespace-nowrap">₹{(Number(price) - Number(discount))?.toLocaleString()}</td>
-                                                    <td className="px-6 py-4 text-sm font-medium text-center whitespace-nowrap">
-                                                        <div className="flex justify-center space-x-3">
-                                                            <button onClick={() => openEditModal(product)} className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300" title="Edit">
-                                                                <Edit className="w-5 h-5" />
+                                                    <td className="px-6 py-4">
+                                                        <div className="flex justify-center items-center gap-2">
+                                                            <button 
+                                                                onClick={() => reqSpecialAppearence({ _id, name, description, price, images, discount, seller: product.seller })}
+                                                                disabled={reqLoader}
+                                                                title="Feature"
+                                                                className="p-2 text-amber-500 hover:bg-amber-50 rounded-lg dark:text-amber-400 dark:hover:bg-amber-500/10 transition-colors disabled:opacity-50"
+                                                            >
+                                                                {reqLoader ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <Star className="w-4 h-4" />}
                                                             </button>
-                                                            <button onClick={() => openDeleteModal(name, _id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300" title="Delete">
-                                                                <Trash2 className="w-5 h-5" />
+                                                            <button 
+                                                                onClick={() => openEditModal(product)} 
+                                                                title="Edit"
+                                                                className="p-2 text-gray-500 hover:bg-gray-100 rounded-lg dark:text-neutral-400 dark:hover:bg-neutral-800 transition-colors"
+                                                            >
+                                                                <PenLine className="w-4 h-4" />
+                                                            </button>
+                                                            <button 
+                                                                onClick={() => openDeleteModal(name, _id)} 
+                                                                title="Delete"
+                                                                className="p-2 text-red-500 hover:bg-red-50 rounded-lg dark:text-red-400 dark:hover:bg-red-500/10 transition-colors"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -371,11 +394,13 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
                                         })
                                     ) : (
                                         <tr>
-                                            <td colSpan={8} className="px-6 py-4 text-center">
-                                                <div className="flex flex-col items-center justify-center py-8">
-                                                    <PackageSearch className="w-12 h-12 text-gray-400 dark:text-neutral-600" />
-                                                    <p className="mt-2 text-sm font-medium text-gray-500 dark:text-neutral-400">No products found</p>
-                                                    <p className="text-xs text-gray-400 dark:text-neutral-500">Add products to see them listed here</p>
+                                            <td colSpan={5} className="px-6 py-12 text-center">
+                                                <div className="flex flex-col items-center justify-center">
+                                                    <div className="p-4 rounded-full bg-gray-50 dark:bg-neutral-800/50 mb-3">
+                                                        <PackageSearch className="w-8 h-8 text-gray-400 dark:text-neutral-500" />
+                                                    </div>
+                                                    <p className="text-sm font-medium text-gray-900 dark:text-white">No products found</p>
+                                                    <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">Add products to see them listed here</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -386,16 +411,24 @@ const MyProducts = ({ sellerId, view }: MyProductsProps) => {
 
                         {/* List Pagination */}
                         {prodData.length > 0 && (
-                            <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-neutral-800 border-t dark:border-neutral-700">
-                                <div className="text-sm text-gray-500 dark:text-neutral-400">
-                                    Page <span className="font-medium">{page}</span> of <span className="font-medium">{totalPages}</span>
+                            <div className="flex items-center justify-between px-6 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-gray-100 dark:border-neutral-800/60">
+                                <div className="text-xs font-medium text-gray-500 dark:text-neutral-400">
+                                    Page <span className="text-gray-900 dark:text-white">{page}</span> of <span className="text-gray-900 dark:text-white">{totalPages}</span>
                                 </div>
-                                <div className="flex space-x-2">
-                                    <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1} className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                                        <ChevronLeft className="w-4 h-4 mr-1" />Previous
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => setPage(prev => Math.max(prev - 1, 1))} 
+                                        disabled={page === 1} 
+                                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-[#1a1a1a] dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95"
+                                    >
+                                        <ChevronLeft className="w-3.5 h-3.5 mr-1" /> Previous
                                     </button>
-                                    <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages} className="inline-flex items-center px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                                        Next<ChevronRight className="w-4 h-4 ml-1" />
+                                    <button 
+                                        onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} 
+                                        disabled={page === totalPages} 
+                                        className="inline-flex items-center px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-lg dark:bg-[#1a1a1a] dark:border-neutral-700 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95"
+                                    >
+                                        Next <ChevronRight className="w-3.5 h-3.5 ml-1" />
                                     </button>
                                 </div>
                             </div>

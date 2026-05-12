@@ -1,6 +1,5 @@
 import { useUserStore } from "@/store/UserStore";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
 import { X } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -81,98 +80,145 @@ const StoreOnboardingModal: React.FC<StoreOnboardingModalProps> = ({ isOpen, onC
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 sm:p-0">
-            <div className="relative w-full max-w-md p-6 sm:p-8 bg-white shadow-lg dark:bg-neutral-900 rounded-xl max-h-[90vh] overflow-y-auto no-scrollbar">
-                <button
-                    type="reset"
-                    className="absolute text-gray-500 top-3 right-3 sm:top-4 sm:right-4 hover:text-gray-700 dark:hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center touch-manipulation"
-                    onClick={onClose}>
-                    <X className="w-5 h-5" />
-                </button>
-                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">
-                    Store Onboarding
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
+        <>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-50 bg-[#0a0a0a]/40 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+                aria-hidden="true"
+            />
+
+            {/* Slide-over Panel */}
+            <div className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-md flex-col bg-white dark:bg-[#1a1a1a] shadow-2xl border-l border-gray-200 dark:border-neutral-800 animate-in slide-in-from-right duration-300">
+
+                {/* Header (Sticky) */}
+                <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-neutral-800/60 bg-white/95 dark:bg-[#1a1a1a] backdrop-blur z-10 shrink-0">
                     <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Store Name
-                        </label>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Create Your Store</h2>
+                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Let's set up your brand profile.</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 outline-none"
+                        aria-label="Close panel"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Form Body (Scrollable) */}
+                <form id="store-onboarding-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Store Name</label>
                         <input
                             type="text"
-                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white min-h-[44px]"
+                            className="w-full h-11 rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent px-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none"
+                            placeholder="My Awesome Store"
+                            required
                             value={storeName}
                             onChange={(e) => setStoreName(e.target.value)}
-                            required
                         />
                     </div>
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Store Description
-                        </label>
+
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Store Description</label>
                         <textarea
-                            className="w-full px-3 py-2 text-sm border rounded outline-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white min-h-[44px]"
+                            className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent p-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none resize-none min-h-[100px]"
+                            placeholder="What do you sell?"
+                            required
                             value={storeDescription}
                             onChange={(e) => setStoreDescription(e.target.value)}
-                            required
                         />
                     </div>
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Store Image
-                        </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-                            onChange={(e) => setStoreImage(e.target.files?.[0] || null)}
-                            required
-                        />
-                        {storeImage && (
-                            <div className="flex items-center gap-2 mt-2">
-                                <img
-                                    src={URL.createObjectURL(storeImage)}
-                                    alt="Store Preview"
-                                    className="object-cover w-16 h-16 border rounded"
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 pt-2">
+                        {/* Profile Image */}
+                        <div className="space-y-2">
+                            <label className="text-[11px] font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Profile Image</label>
+                            <div className="relative flex flex-col items-center justify-center w-full aspect-square border-2 border-dashed border-gray-300 dark:border-neutral-700 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors cursor-pointer overflow-hidden group">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                    onChange={(e) => setStoreImage(e.target.files?.[0] || null)}
+                                    required
                                 />
-                                <span className="text-xs text-gray-500 dark:text-gray-400">{storeImage.name}</span>
+                                {storeImage ? (
+                                    <>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={URL.createObjectURL(storeImage)}
+                                            alt="Profile Preview"
+                                            className="w-full h-full object-contain p-2 group-hover:opacity-60 transition-opacity"
+                                        />
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 dark:bg-black/40 z-0">
+                                            <span className="text-[10px] text-white font-medium drop-shadow-md">Change</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center text-gray-400 dark:text-neutral-500">
+                                        <svg className="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        <span className="text-[10px] font-medium">Upload</span>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Store Cover Image
-                        </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className="w-full text-sm border rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 dark:border-neutral-700 dark:bg-neutral-800 dark:text-white"
-                            onChange={(e) => setStoreCoverImage(e.target.files?.[0] || null)}
-                            required
-                        />
-                        {storeCoverImage && (
-                            <div className="flex items-center gap-2 mt-2">
-                                <img
-                                    src={URL.createObjectURL(storeCoverImage)}
-                                    alt="Cover Preview"
-                                    className="object-cover w-32 h-16 border rounded"
+                        </div>
+
+                        {/* Cover Image */}
+                        <div className="space-y-2">
+                            <label className="text-[11px] font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Cover Image</label>
+                            <div className="relative flex flex-col items-center justify-center w-full aspect-square border-2 border-dashed border-gray-300 dark:border-neutral-700 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors cursor-pointer overflow-hidden group">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                    onChange={(e) => setStoreCoverImage(e.target.files?.[0] || null)}
+                                    required
                                 />
-                                <span className="text-xs text-gray-500 dark:text-gray-400">{storeCoverImage.name}</span>
+                                {storeCoverImage ? (
+                                    <>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={URL.createObjectURL(storeCoverImage)}
+                                            alt="Cover Preview"
+                                            className="w-full h-full object-cover group-hover:opacity-60 transition-opacity"
+                                        />
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 dark:bg-black/40 z-0">
+                                            <span className="text-[10px] text-white font-medium drop-shadow-md">Change</span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center text-gray-400 dark:text-neutral-500">
+                                        <svg className="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                        <span className="text-[10px] font-medium">Upload</span>
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </div>
-                    {createStoreMutation.isError && (
-                        <div className="text-sm text-red-500">Something Went Wrong</div>
-                    )}
+                </form>
+
+                {/* Footer (Sticky) */}
+                <div className="border-t border-gray-100 dark:border-neutral-800/60 bg-gray-50 dark:bg-neutral-900/50 px-6 py-4 shrink-0 flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="px-4 h-10 text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    >
+                        Cancel
+                    </button>
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded outline-none hover:bg-green-700 min-h-[44px] touch-manipulation flex items-center justify-center"
+                        form="store-onboarding-form"
+                        className="px-6 h-10 bg-green-700 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-lg hover:bg-green-800 dark:hover:bg-gray-200 transition-all active:scale-[0.98] shadow-sm flex items-center justify-center min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={createStoreMutation.isPending}
                     >
-                        {createStoreMutation.isPending ? <Loader title="Creating..." /> : "Create Store"}
+                        {createStoreMutation.isPending ? <Loader title='Creating...' /> : "Create Store"}
                     </button>
-                </form>
+                </div>
             </div>
-        </div >
+        </>
     );
 };
 

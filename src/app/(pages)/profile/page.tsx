@@ -3,16 +3,16 @@
 import UserInfoCard from "@/components/Navigation/UserInfoCard";
 import VerifyEmailModal from "@/components/Modals/VerifyEmailModal";
 import { useUserStore } from "@/store/UserStore";
-import { LoaderCircle, LogOut, ShieldCheck, ShieldQuestion, Trash2 } from "lucide-react";
+import { Camera, Copy, LayoutDashboard, LoaderCircle, LogOut, ShieldAlert, ShieldCheck, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { MouseEvent, useState } from "react";
 import toast from "react-hot-toast";
 import ApiClient from "@/interceptors/ApiClient";
 
-const Home = () => {
+const ProfilePage = () => {
     const { data, logOut }: any = useUserStore();
-    const dataLength = Object.keys(data)?.length;
+    const dataLength = Object.keys(data || {})?.length;
     const [loadOTP, setLoadOTP] = useState(false);
     const email = dataLength !== 0 && data?.email;
     const _id = dataLength !== 0 && data?._id;
@@ -26,7 +26,7 @@ const Home = () => {
             router.push("/login");
         } catch (error) {
             console.log("Logout Failed", error);
-            throw new Error("Failed to logout");
+            toast.error("Failed to logout");
         }
     };
 
@@ -46,159 +46,184 @@ const Home = () => {
         }
     };
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(data._id);
+        toast.success("Profile ID copied!");
+    }
+
+    if (dataLength === 0) return null;
+
     return (
-        <section>
-            <div className="flex flex-col lg:flex-row gap-5 py-6 px-4 lg:px-0 sm:py-8 lg:py-10">
+        <section className="min-h-screen bg-gray-50/50 dark:bg-[#1a1a1a] pb-20">
+            {/* Top Banner Background */}
+            <div className="px-4 sm:px-6 lg:px-8 relative z-10 pt-10 sm:pt-12">
+                <div className="flex flex-col lg:flex-row gap-8">
 
-                {/* ── Sidebar: avatar + name + logout ── */}
-                <div className="w-full lg:w-[30%]">
-                    <div className="lg:sticky lg:top-24 flex flex-col items-center sm:flex-row lg:flex-col sm:gap-5 lg:gap-0">
+                    {/* Left Sidebar: Profile Card */}
+                    <div className="w-full lg:w-[320px] shrink-0">
+                        <div className="bg-white dark:bg-[#0a0a0a]/50 rounded-2xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden lg:sticky lg:top-24">
 
-                        {/* Mobile: avatar row with logout icon */}
-                        <div className="w-full flex items-center justify-between sm:hidden mb-2 gap-3">
-                            <div className="flex items-center gap-3 min-w-0">
-                                <Image
-                                    src={(dataLength !== 0 && data.avatar) || "/userProfile.png"}
-                                    width={200}
-                                    height={200}
-                                    loading="lazy"
-                                    className="w-14 h-14 rounded-xl object-cover flex-shrink-0"
-                                    alt="userProfileImage"
-                                />
-                                <div className="min-w-0">
-                                    <h1 className="text-base font-semibold capitalize truncate">
-                                        {data.name}
-                                    </h1>
-                                    {dataLength !== 0 && data.isSeller && (
-                                        <span className="text-sm font-medium text-green-600 dark:text-green-400 tracking-wide">
-                                            Seller
-                                        </span>
-                                    )}
+                            {/* Profile Header Image */}
+                            <div className="h-24 bg-gray-100 dark:bg-[#1b1b1b]/50 w-full relative">
+                                <div className="absolute -bottom-10 left-6">
+                                    <div className="relative w-20 h-20 rounded-2xl bg-white dark:bg-[#1a1a1a] p-1 shadow-md border border-gray-100 dark:border-neutral-800">
+                                        <Image
+                                            src={data.avatar || "/userProfile.png"}
+                                            width={200}
+                                            height={200}
+                                            className="w-full h-full rounded-xl object-cover"
+                                            alt="Profile"
+                                        />
+                                        <button className="absolute -bottom-2 -right-2 p-1.5 bg-white dark:bg-neutral-800 rounded-full shadow-sm border border-gray-200 dark:border-neutral-700 hover:scale-105 transition-transform text-gray-500">
+                                            <Camera className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2 flex-shrink-0">
-                                {dataLength !== 0 && data.isSeller && (
-                                    <button
-                                        onClick={() => router.push('/dashboard')}
-                                        className="text-sm font-medium px-2.5 py-1.5 rounded-lg border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/50 active:scale-95 transition-transform"
-                                    >
-                                        Dashboard
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Tablet + Desktop: original layout */}
-                        <Image
-                            src={(dataLength !== 0 && data.avatar) || "/userProfile.png"}
-                            width={200}
-                            height={200}
-                            loading="lazy"
-                            className="hidden sm:block w-32 sm:w-32 lg:w-full lg:h-auto h-32 rounded-xl object-cover"
-                            alt="userProfileImage"
-                        />
-                        <div className="hidden sm:block w-full px-4">
-                            <div className="py-2 lg:py-3 text-center">
-                                <h1 className="text-lg sm:text-xl font-semibold capitalize">
-                                    Hello 👋 {data.name}
+                            {/* User Info */}
+                            <div className="pt-14 pb-6 px-6">
+                                <h1 className="text-xl font-bold text-gray-900 dark:text-white capitalize tracking-tight flex items-center gap-2">
+                                    {data.name}
                                 </h1>
-                            </div>
-                            <button
-                                className="w-full bg-[#1a1a1a] py-2 text-[#ededed] dark:bg-[#3a3a3a] rounded-lg flex items-center justify-center gap-2 text-sm sm:text-base active:scale-[0.97] transition-transform"
-                                onClick={handleLogout}
-                            >
-                                <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
-                                Logout
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                                <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">{data.email}</p>
 
-                {/* ── Main content ── */}
-                <div className="w-full p-4 sm:p-6 lg:p-10 border dark:bg-neutral-900 dark:border-neutral-700 rounded-xl">
-
-                    {/* Personal Information */}
-                    <div className="pb-5">
-                        <div className="pb-4 sm:pb-6">
-                            <h1 className="text-base sm:text-xl font-bold uppercase">Personal Information</h1>
-                        </div>
-
-                        {/* Profile ID */}
-                        <div className="flex flex-col items-start justify-start gap-3 p-4 sm:p-5 mb-4 border rounded-xl dark:bg-neutral-800/30 dark:border-neutral-700">
-                            <div className="font-normal capitalize text-sm sm:text-base">Unique Profile Id :</div>
-                            <div className="w-full sm:w-2/3 lg:w-1/3 p-3 border rounded-md dark:border-neutral-700 hover:cursor-not-allowed overflow-hidden">
-                                <h1 className="font-normal text-gray-500 capitalize text-xs sm:text-sm truncate">
-                                    {dataLength !== 0 && data._id}
-                                </h1>
-                            </div>
-                        </div>
-
-                        <UserInfoCard dataLength={dataLength} dataValue={data.name} cardTitle="name" />
-
-                        {/* Email */}
-                        <div className="flex flex-col items-start justify-start gap-3 p-4 sm:p-5 mb-4 border rounded-xl dark:bg-neutral-800/30 dark:border-neutral-700">
-                            <div className="font-normal capitalize text-sm sm:text-base">Email :</div>
-                            <div className="w-full sm:w-2/3 lg:w-1/3 p-3 border rounded-md dark:border-neutral-700 hover:cursor-not-allowed overflow-hidden">
-                                <span className="font-normal text-gray-500 dark:text-gray-400 text-xs sm:text-sm truncate block">
-                                    {dataLength !== 0 && data.email}
-                                </span>
-                            </div>
-                            <div>
-                                <div className="text-green-500 border hover:bg-gray-200 dark:hover:bg-[#3a3a3a] dark:border-neutral-700 transition ease-in-out duration-200 px-3 sm:px-4 py-1 rounded-lg text-sm font-normal flex items-center justify-center gap-2">
-                                    {dataLength !== 0 && data.isEmailVerified ? (
-                                        <div className="flex items-center justify-center gap-2 font-normal">
-                                            <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
-                                            Verified
-                                        </div>
-                                    ) : (
-                                        <button onClick={handelEmailVerify} className="flex items-center justify-center gap-2 font-normal">
-                                            {loadOTP
-                                                ? <LoaderCircle className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                                                : <ShieldQuestion className="w-4 h-4 sm:w-5 sm:h-5" />
-                                            }
-                                            Verify Now
+                                <div className="mt-6 space-y-2">
+                                    {data.isSeller && (
+                                        <button
+                                            onClick={() => router.push('/dashboard')}
+                                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-green-700 dark:bg-white text-white dark:text-gray-900 rounded-xl text-sm font-medium hover:bg-green-800 dark:hover:bg-gray-200 transition-colors"
+                                        >
+                                            <LayoutDashboard className="w-4 h-4" />
+                                            Dashboard
                                         </button>
                                     )}
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-100 dark:bg-neutral-800/50 text-gray-700 dark:text-neutral-300 rounded-xl text-sm font-medium hover:bg-gray-200 dark:hover:bg-neutral-800 transition-colors active:scale-[0.98]"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                        Logout
+                                    </button>
                                 </div>
-                                <VerifyEmailModal
-                                    isVisible={verifyEmailModal}
-                                    onClose={() => setVerifyEmailModal(false)}
-                                    id={dataLength !== 0 && data?._id}
-                                />
                             </div>
                         </div>
                     </div>
 
-                    {/* Account Settings */}
-                    <div>
-                        <div className="my-4 sm:my-6">
-                            <h1 className="text-base sm:text-xl font-bold uppercase">Account Settings</h1>
-                        </div>
+                    {/* Right Content: Settings */}
+                    <div className="flex-1 space-y-6">
 
-                        {/* Is Seller */}
-                        <div className="flex flex-col items-start justify-start gap-3 p-4 sm:p-5 mb-4 border rounded-xl dark:border-neutral-700 dark:bg-neutral-800/30">
-                            <div className="font-normal capitalize text-sm sm:text-base">Is Seller :</div>
-                            <div className="w-full sm:w-2/3 lg:w-1/3 p-3 border rounded-md dark:border-neutral-700 hover:cursor-not-allowed">
-                                <h1 className="font-normal text-gray-500 capitalize text-sm">
-                                    {dataLength !== 0 && data.isSeller === true ? "Yes" : "No"}
-                                </h1>
+                        {/* Personal Information */}
+                        <div className="bg-white dark:bg-[#0a0a0a]/50 rounded-2xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden">
+                            <div className="px-6 py-5 border-b border-gray-100 dark:border-neutral-800/60">
+                                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Personal Information</h2>
+                                <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Manage your personal details and identity.</p>
+                            </div>
+
+                            <div className="divide-y divide-gray-100 dark:divide-neutral-800/60 flex flex-col w-full">
+                                {/* Unique Profile ID */}
+                                <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Profile ID</p>
+                                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Your unique platform identifier</p>
+                                    </div>
+                                    <button
+                                        onClick={copyToClipboard}
+                                        className="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-neutral-900 hover:bg-gray-100 dark:hover:bg-neutral-800 border border-gray-200 dark:border-neutral-800 rounded-lg transition-colors group-hover:border-gray-300 dark:group-hover:border-neutral-700 text-left active:scale-95"
+                                    >
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 font-mono truncate max-w-[150px] sm:max-w-xs">{data._id}</p>
+                                        <Copy className="w-3.5 h-3.5 text-gray-400" />
+                                    </button>
+                                </div>
+
+                                {/* Component for Name */}
+                                <div className="p-6">
+                                    <UserInfoCard dataLength={dataLength} dataValue={data.name} cardTitle="name" />
+                                </div>
+
+                                {/* Email Status */}
+                                <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Email Address</p>
+                                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1 truncate max-w-[200px] sm:max-w-xs">{data.email}</p>
+                                    </div>
+                                    <div className="shrink-0">
+                                        {data.isEmailVerified ? (
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-50 dark:bg-green-500/10 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-500/20 text-sm font-medium cursor-default">
+                                                <ShieldCheck className="w-4 h-4" />
+                                                Verified
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={handelEmailVerify}
+                                                disabled={loadOTP}
+                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 text-sm font-medium hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-colors active:scale-95 disabled:opacity-50"
+                                            >
+                                                {loadOTP ? <LoaderCircle className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
+                                                Verify Email
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <UserInfoCard dataLength={dataLength} dataValue="**********" cardTitle="change password" />
+                        {/* Account Settings */}
+                        <div className="bg-white dark:bg-[#0a0a0a]/50 rounded-2xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden">
+                            <div className="px-6 py-5 border-b border-gray-100 dark:border-neutral-800/60">
+                                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Account Settings</h2>
+                                <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Security and platform preferences.</p>
+                            </div>
 
-                        <div className="py-3">
-                            <button className="flex items-center justify-center gap-2 px-3 py-2 text-sm text-white transition-all duration-200 ease-in-out bg-red-500 rounded-lg hover:bg-red-600 active:scale-[0.97]">
-                                <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
-                                Delete Account
-                            </button>
+                            <div className="divide-y divide-gray-100 dark:divide-neutral-800/60">
+                                {/* Is Seller */}
+                                <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Seller Account</p>
+                                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Status of your marketplace store.</p>
+                                    </div>
+                                    <div className="px-3 py-1.5 bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg shrink-0">
+                                        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{data.isSeller ? "Active" : "Inactive"}</p>
+                                    </div>
+                                </div>
+
+                                {/* Password Change */}
+                                <div className="p-6">
+                                    <UserInfoCard dataLength={dataLength} dataValue="••••••••••••" cardTitle="password" />
+                                </div>
+                            </div>
                         </div>
+
+                        {/* Danger Zone */}
+                        <div className="bg-white dark:bg-[#0a0a0a]/50 rounded-2xl shadow-sm border border-red-100 dark:border-red-900/30 overflow-hidden">
+                            <div className="px-6 py-5 border-b border-red-50 dark:border-red-900/20">
+                                <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">Danger Zone</h2>
+                                <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Irreversible account actions.</p>
+                            </div>
+
+                            <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-red-50/50 dark:bg-red-500/5">
+                                <div>
+                                    <p className="text-sm font-medium text-gray-900 dark:text-white">Delete Account</p>
+                                    <p className="text-sm text-gray-500 dark:text-neutral-400 mt-1">Permanently remove your account and data.</p>
+                                </div>
+                                <button className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-500/10 rounded-xl hover:bg-red-200 dark:hover:bg-red-500/20 transition-colors shrink-0 active:scale-95">
+                                    <Trash2 className="w-4 h-4" />
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
+
+            <VerifyEmailModal
+                isVisible={verifyEmailModal}
+                onClose={() => setVerifyEmailModal(false)}
+                id={dataLength !== 0 && data?._id}
+            />
         </section>
     );
 };
 
-export default Home;
+export default ProfilePage;

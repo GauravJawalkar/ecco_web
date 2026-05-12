@@ -338,7 +338,7 @@ const CheckoutContent = () => {
                     </button>
 
                     {/* Cash on Delivery */}
-                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-4 sm:p-5 dark:border-neutral-700 w-full rounded-xl relative min-h-[44px] touch-manipulation transition-colors ${select.trim() === "" ? "cursor-not-allowed opacity-50" : "cursor-pointer"} ${isCOD ? "border-2 border-green-500 dark:border-green-500/50 bg-green-50 dark:bg-green-900/10" : "border-2 border-dashed dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"} `} type='button'>
+                    <button disabled={select.trim() === ""} onClick={() => { setIsCOD((prev) => !prev) }} className={`p-4 sm:p-5 w-full rounded-xl relative min-h-[44px] touch-manipulation transition-colors ${select.trim() === "" ? "cursor-not-allowed opacity-50" : "cursor-pointer"} ${isCOD ? "border-2   border-green-500 dark:border-green-500/50 bg-green-50 dark:bg-green-900/10" : "border-2 border-dashed dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"} `} type='button'>
                         Cash On Delivery
                         {isCOD && <span className='absolute -right-2 -top-2 bg-white dark:bg-[#1a1a1a] text-green-500 rounded-full'><CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /></span>}
                     </button>
@@ -348,7 +348,7 @@ const CheckoutContent = () => {
             {/* Grid Second half */}
             <div className='sticky p-5 border dark:border-neutral-700 rounded-xl top-24 h-fit'>
                 <h1 className='pb-2 font-semibold uppercase'>Price Details</h1>
-                <hr className='my-2 dark:text-neutral-700' />
+                <hr className='my-2 dark:border-neutral-700' />
                 <div className='py-4 space-y-5'>
                     <div className='flex items-center justify-between'>
                         <h1>Price ({quantity} item)</h1>
@@ -362,14 +362,14 @@ const CheckoutContent = () => {
                         <h1>Delivery Charges</h1>
                         <h1>Free</h1>
                     </div>
-                    <hr className='my-2 dark:text-neutral-700' />
+                    <hr className='my-2 dark:border-neutral-700' />
                     <div className='flex items-center justify-between'>
                         <h1>Toatal Payable</h1>
                         <h1>₹{((productDetails?.price - productDetails?.discount) * quantity)?.toLocaleString() || 0}</h1>
                     </div>
                 </div>
                 {
-                    (isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='w-full sm:w-auto px-8 py-3 sm:py-2.5 my-2 text-sm font-medium text-white transition-colors bg-green-600 rounded-full hover:bg-green-700 min-h-[44px] touch-manipulation shadow-sm'>
+                    (isCOD && select.trim() !== "") && <button onClick={handelOrderConfirmation} className='w-full px-8 py-3 sm:py-2.5 my-2 text-sm font-medium text-white transition-colors bg-green-600 rounded-full hover:bg-green-700 touch-manipulation shadow-sm'>
                         Confirm Order
                     </button>
                 }

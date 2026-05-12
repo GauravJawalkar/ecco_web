@@ -62,40 +62,118 @@ const ReviewModal = ({ onClose, isVisible, reviewedBy, reviewerName, reviewedPro
 
     if (!isVisible) return null;
     return (
-        <section className='fixed inset-0 z-[70] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 sm:p-6'>
-            <div className='relative w-full max-w-md p-6 sm:p-8 bg-white shadow-xl dark:bg-neutral-800 rounded-2xl max-h-[90vh] overflow-y-auto no-scrollbar'>
-                <button title="close" className="absolute text-gray-500 top-4 right-4 sm:top-5 sm:right-5 hover:text-gray-700 dark:hover:text-white p-2 touch-manipulation" onClick={onClose} aria-label="Close" >
-                    <X className="w-5 h-5 sm:w-6 sm:h-6" />
-                </button>
-                <h2 className="mb-5 sm:mb-6 text-xl sm:text-2xl font-bold text-gray-800 dark:text-white text-center">Add Your Review</h2>
-                <form onSubmit={handelReviewPost} className='flex items-center justify-center space-y-4 sm:space-y-5 flex-col min-w-full text-sm sm:text-base'>
-                    <div className='w-full space-y-1.5 sm:space-y-2'>
-                        <label className="font-medium text-gray-700 dark:text-gray-300">Review Title</label>
-                        <input type="text" className='text-black dark:text-white dark:bg-neutral-900 px-3 sm:px-4 py-2.5 sm:py-3 w-full rounded-lg border dark:border-neutral-700 outline-none focus:ring-2 focus:ring-green-500 min-h-[44px]' placeholder='Enter Review Title' required onChange={(e) => { setTitle(e.target.value) }} />
+        <>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-50 bg-[#0a0a0a]/40 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+                aria-hidden="true"
+            />
+
+            {/* Slide-over Panel */}
+            <div className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-md flex-col bg-white dark:bg-[#1a1a1a] shadow-2xl border-l border-gray-200 dark:border-neutral-800 animate-in slide-in-from-right duration-300">
+
+                {/* Header (Sticky) */}
+                <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-neutral-800/60 bg-white/95 dark:bg-[#1a1a1a] backdrop-blur z-10 shrink-0">
+                    <div>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Add Your Review</h2>
+                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Share your experience with this product.</p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 outline-none"
+                        aria-label="Close panel"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Form Body (Scrollable) */}
+                <form id="add-review-form" onSubmit={handelReviewPost} className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Review Title</label>
+                        <input
+                            type="text"
+                            className="w-full h-11 rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent px-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none"
+                            placeholder="Sum up your experience"
+                            required
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
                     </div>
 
-                    <div className='w-full space-y-1.5 sm:space-y-2'>
-                        <label className="font-medium text-gray-700 dark:text-gray-300">Review Description</label>
-                        <textarea className='text-black dark:text-white dark:bg-neutral-900 px-3 sm:px-4 py-2.5 sm:py-3 w-full rounded-lg border dark:border-neutral-700 outline-none focus:ring-2 focus:ring-green-500 min-h-[80px] resize-none' placeholder='Enter Review Description' required onChange={(e) => { setContent(e.target.value) }} />
+                    <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Review Description</label>
+                        <textarea
+                            className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent p-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none resize-none min-h-[120px]"
+                            placeholder="What did you like or dislike? What should other buyers know?"
+                            required
+                            onChange={(e) => setContent(e.target.value)}
+                        />
                     </div>
 
-                    <div className='w-full space-y-1.5 sm:space-y-2'>
-                        <label className="font-medium text-gray-700 dark:text-gray-300">Review Images</label>
-                        <div className='space-y-3 sm:space-y-4'>
-                            {[setImageOne, setImageTwo, setImageThree].map((setImage, idx) => (
-                                <input key={idx} type="file" className='w-full text-xs sm:text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-neutral-900 border dark:border-neutral-700 rounded-lg file:px-3 sm:file:px-4 file:py-2 sm:file:py-2.5 file:border-0 file:bg-gray-200 file:dark:bg-neutral-700 file:text-gray-700 file:dark:text-gray-200 file:mr-3 sm:file:mr-4 file:hover:cursor-pointer hover:cursor-pointer file:font-medium file:transition-colors min-h-[44px] flex items-center' required onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    setImage(e.target.files?.[0] || null);
-                                }} />
+                    <div className="space-y-3">
+                        <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Add Photos (Optional)</label>
+                        <div className="grid grid-cols-3 gap-3">
+                            {[
+                                { file: imageOne, setFile: setImageOne, label: "Photo 1" },
+                                { file: imageTwo, setFile: setImageTwo, label: "Photo 2" },
+                                { file: imageThree, setFile: setImageThree, label: "Photo 3" }
+                            ].map((item, idx) => (
+                                <div key={idx} className="space-y-1.5">
+                                    <label className="text-[11px] font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">{item.label}</label>
+                                    <div className="relative flex flex-col items-center justify-center w-full aspect-square border-2 border-dashed border-gray-300 dark:border-neutral-700 rounded-xl hover:bg-gray-50 dark:hover:bg-neutral-900/50 transition-colors cursor-pointer overflow-hidden group">
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                            onChange={(e) => item.setFile(e.target.files?.[0] || null)}
+                                        />
+                                        {item.file ? (
+                                            <>
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={URL.createObjectURL(item.file)}
+                                                    alt={`Preview ${idx + 1}`}
+                                                    className="w-full h-full object-cover group-hover:opacity-60 transition-opacity"
+                                                />
+                                                <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 dark:bg-black/40 z-0">
+                                                    <span className="text-[10px] text-white font-medium drop-shadow-md">Change</span>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center text-gray-400 dark:text-neutral-500">
+                                                <svg className="w-5 h-5 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v16m8-8H4" /></svg>
+                                                <span className="text-[10px] font-medium">Add</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             ))}
                         </div>
                     </div>
-
-                    <button type='submit' className='w-full px-4 py-3 sm:py-3.5 mt-2 font-semibold text-white transition bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation text-sm sm:text-base'>
-                        {postReviewMutation.isPending ? <Loader title={'Adding...'} /> : "Submit Review"}
-                    </button>
                 </form>
-            </div >
-        </section >
+
+                {/* Footer (Sticky) */}
+                <div className="border-t border-gray-100 dark:border-neutral-800/60 bg-gray-50 dark:bg-neutral-900/50 px-6 py-4 shrink-0 flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="px-4 h-10 text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        form="add-review-form"
+                        className="px-6 h-10 bg-green-700 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-lg hover:bg-green-800 dark:hover:bg-gray-200 transition-all active:scale-[0.98] shadow-sm flex items-center justify-center min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={postReviewMutation.isPending}
+                    >
+                        {postReviewMutation.isPending ? <Loader title='Submitting...' /> : "Submit Review"}
+                    </button>
+                </div>
+            </div>
+        </>
     )
 }
 

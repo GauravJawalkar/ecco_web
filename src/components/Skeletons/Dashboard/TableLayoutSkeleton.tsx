@@ -2,79 +2,77 @@ import React from 'react'
 
 const TableLayoutSkeleton = () => {
     return (
-        <div className="py-6">
-            <div className="overflow-hidden border rounded-lg dark:border-neutral-700 animate-pulse">
-                {/* Table Header Skeleton */}
-                <div className="hidden md:block">
-                    <div className="grid grid-cols-8 gap-4 px-4 py-3 bg-gray-100 dark:bg-neutral-800">
-                        {[...Array(8)].map((_, i) => (
-                            <div key={i} className="h-4 bg-gray-300 rounded dark:bg-neutral-700"></div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Table Rows Skeleton */}
-                <div className="divide-y divide-gray-200 dark:divide-neutral-700">
-                    {[...Array(5)].map((_, rowIndex) => (
-                        <div key={rowIndex} className="grid grid-cols-1 gap-4 p-4 md:grid-cols-8 md:gap-4 md:p-0">
-                            {/* Product Name & Category */}
-                            <div className="md:px-4 md:py-4 md:whitespace-nowrap">
-                                <div className="h-5 w-3/4 bg-gray-300 rounded dark:bg-neutral-700 mb-2"></div>
-                                <div className="h-4 w-1/2 bg-gray-200 rounded dark:bg-neutral-600"></div>
-                            </div>
-
-                            {/* Description */}
-                            <div className="md:px-6 md:py-4 space-y-2">
-                                <div className="h-4 w-full bg-gray-300 rounded dark:bg-neutral-700"></div>
-                                <div className="h-4 w-4/5 bg-gray-300 rounded dark:bg-neutral-700"></div>
-                            </div>
-
-                            {/* Images */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="flex justify-center gap-2">
-                                    {[...Array(3)].map((_, imgIndex) => (
-                                        <div key={imgIndex} className="w-10 h-10 bg-gray-300 rounded-md dark:bg-neutral-700"></div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Stock */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="h-5 w-8 mx-auto bg-gray-300 rounded dark:bg-neutral-700"></div>
-                            </div>
-
-                            {/* MRP */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="h-5 w-16 mx-auto bg-gray-300 rounded dark:bg-neutral-700"></div>
-                            </div>
-
-                            {/* Discount */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="h-5 w-12 mx-auto bg-gray-300 rounded dark:bg-neutral-700"></div>
-                            </div>
-
-                            {/* Price */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="h-5 w-16 mx-auto bg-gray-300 rounded dark:bg-neutral-700"></div>
-                            </div>
-
-                            {/* Actions */}
-                            <div className="md:px-6 md:py-4">
-                                <div className="flex justify-center gap-4">
-                                    <div className="w-5 h-5 bg-gray-300 rounded-full dark:bg-neutral-700"></div>
-                                    <div className="w-5 h-5 bg-gray-300 rounded-full dark:bg-neutral-700"></div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+        <div className="py-6 animate-in fade-in duration-300">
+            <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-200 dark:border-neutral-800 overflow-hidden animate-pulse">
+                <div className="overflow-x-auto no-scrollbar">
+                    <table className="w-full text-left border-collapse">
+                        <thead>
+                            <tr className="border-b border-gray-100 dark:border-neutral-800/60 bg-gray-50/50 dark:bg-neutral-900/30">
+                                <th className="px-6 py-4 w-[30%]">
+                                    <div className="h-3 w-16 bg-gray-200 dark:bg-neutral-700 rounded-md"></div>
+                                </th>
+                                <th className="px-6 py-4 hidden md:table-cell w-[35%]">
+                                    <div className="h-3 w-20 bg-gray-200 dark:bg-neutral-700 rounded-md"></div>
+                                </th>
+                                <th className="px-6 py-4 w-[10%] text-center">
+                                    <div className="h-3 w-12 bg-gray-200 dark:bg-neutral-700 rounded-md mx-auto"></div>
+                                </th>
+                                <th className="px-6 py-4 w-[15%] text-right">
+                                    <div className="h-3 w-14 bg-gray-200 dark:bg-neutral-700 rounded-md ml-auto"></div>
+                                </th>
+                                <th className="px-6 py-4 w-[10%] text-center">
+                                    <div className="h-3 w-16 bg-gray-200 dark:bg-neutral-700 rounded-md mx-auto"></div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 dark:divide-neutral-800/60">
+                            {[...Array(5)].map((_, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-neutral-800 shrink-0"></div>
+                                            <div className="space-y-2 flex-1">
+                                                <div className="h-4 w-3/4 bg-gray-200 dark:bg-neutral-800 rounded-md max-w-[120px]"></div>
+                                                <div className="h-3 w-1/3 bg-gray-100 dark:bg-neutral-800/60 rounded-md mt-1.5"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 hidden md:table-cell">
+                                        <div className="space-y-2 max-w-[240px]">
+                                            <div className="h-3 w-full bg-gray-200 dark:bg-neutral-800 rounded-md"></div>
+                                            <div className="h-3 w-4/5 bg-gray-200 dark:bg-neutral-800 rounded-md"></div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-center">
+                                            <div className="h-5 w-10 bg-gray-200 dark:bg-neutral-800 rounded-full"></div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex flex-col items-end gap-1.5">
+                                            <div className="h-4 w-16 bg-gray-200 dark:bg-neutral-800 rounded-md"></div>
+                                            <div className="h-3 w-20 bg-gray-100 dark:bg-neutral-800/60 rounded-md"></div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex justify-center items-center gap-2">
+                                            <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-neutral-800"></div>
+                                            <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-neutral-800"></div>
+                                            <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-neutral-800"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
 
                 {/* Pagination Skeleton */}
-                <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-neutral-800">
-                    <div className="h-4 w-24 bg-gray-200 rounded dark:bg-neutral-700"></div>
-                    <div className="flex space-x-2">
-                        <div className="h-8 w-20 bg-gray-200 rounded-md dark:bg-neutral-700"></div>
-                        <div className="h-8 w-20 bg-gray-200 rounded-md dark:bg-neutral-700"></div>
+                <div className="flex items-center justify-between px-6 py-4 bg-gray-50/50 dark:bg-neutral-900/30 border-t border-gray-100 dark:border-neutral-800/60">
+                    <div className="h-3 w-24 bg-gray-200 dark:bg-neutral-800 rounded-md"></div>
+                    <div className="flex gap-2">
+                        <div className="h-8 w-20 bg-gray-200 dark:bg-neutral-800 rounded-lg"></div>
+                        <div className="h-8 w-20 bg-gray-200 dark:bg-neutral-800 rounded-lg"></div>
                     </div>
                 </div>
             </div>

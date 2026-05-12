@@ -56,37 +56,105 @@ const AddAddressModal = ({ onClose, isVisible }: addressModalProps) => {
 
     if (!isVisible) return null;
     return (
-        <section className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40'>
-            <div className='relative w-full max-w-3xl p-8 bg-white shadow-lg dark:bg-neutral-800 rounded-xl'>
-                <button title="close" className="absolute text-2xl text-gray-500 top-4 right-4 hover:text-gray-700 dark:hover:text-white" onClick={onClose} aria-label="Close" >
-                    <X className="w-5 h-5" />
-                </button>
-                <h2 className="mb-6 text-2xl font-bold text-gray-800 dark:text-white">Add New Address</h2>
-                <form onSubmit={handelAddress} className='grid min-w-full grid-cols-2 gap-5 text-sm'>
-                    <div className='w-full space-y-1'>
-                        <label>Address :</label>
-                        <textarea rows={1} className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Your Full Address' required onChange={(e) => setAddress(e.target.value)} />
+        <>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-50 bg-[#0a0a0a]/40 backdrop-blur-sm transition-opacity"
+                onClick={onClose}
+                aria-hidden="true"
+            />
+
+            {/* Slide-over Panel */}
+            <div className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-md flex-col bg-white dark:bg-[#1a1a1a] shadow-2xl border-l border-gray-200 dark:border-neutral-800 animate-in slide-in-from-right duration-300">
+
+                {/* Header (Sticky) */}
+                <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-neutral-800/60 bg-white/95 dark:bg-[#1a1a1a] backdrop-blur z-10 shrink-0">
+                    <div>
+                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white tracking-tight">Add New Address</h2>
+                        <p className="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">Where should we deliver your plants?</p>
                     </div>
-                    <div className='w-full space-y-1'>
-                        <label>PinCode :</label>
-                        <input type='text' className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Your Pincode' required onChange={(e) => setPinCode(e.target.value)} />
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-neutral-800 outline-none"
+                        aria-label="Close panel"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Form Body (Scrollable) */}
+                <form id="add-address-form" onSubmit={handelAddress} className="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar">
+
+                    <div className="space-y-5">
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Full Address</label>
+                            <textarea
+                                rows={3}
+                                className="w-full rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent p-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none resize-none"
+                                placeholder="House/Flat No., Building Name, Street"
+                                required
+                                onChange={(e) => setAddress(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">PIN Code</label>
+                                <input
+                                    type="text"
+                                    className="w-full h-11 rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent px-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none"
+                                    placeholder="e.g. 400001"
+                                    required
+                                    onChange={(e) => setPinCode(e.target.value)}
+                                />
+                            </div>
+                            <div className="space-y-1.5">
+                                <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Landmark</label>
+                                <input
+                                    type="text"
+                                    className="w-full h-11 rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent px-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none"
+                                    placeholder="Near local store"
+                                    required
+                                    onChange={(e) => setLandMark(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-medium text-gray-700 dark:text-neutral-300">Contact Number</label>
+                            <input
+                                type="tel"
+                                className="w-full h-11 rounded-lg border border-gray-200 dark:border-neutral-800 bg-transparent px-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white transition-all shadow-sm outline-none"
+                                placeholder="+91 9876543210"
+                                required
+                                onChange={(e) => setContactNumber(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className='w-full space-y-1'>
-                        <label>LandMark :</label>
-                        <input type="text" className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Stock' required onChange={(e) => setLandMark(e.target.value)} />
-                    </div>
-                    <div className='w-full space-y-1'>
-                        <label>Contact Number :</label>
-                        <input type="number" className='w-full px-3 py-2 text-black border rounded' placeholder='Enter Discount' required onChange={(e) => setContactNumber(e.target.value)} />
-                    </div>
-                    <div className='w-full space-y-1'>
-                        <button type='submit' className='w-full px-4 py-2 font-semibold text-white transition bg-green-600 rounded hover:bg-green-700 disabled:cursor-not-allowed'>
-                            Add Address
-                        </button>
-                    </div>
+
                 </form>
-            </div >
-        </section >
+
+                {/* Footer (Sticky) */}
+                <div className="border-t border-gray-100 dark:border-neutral-800/60 bg-gray-50 dark:bg-neutral-900/50 px-6 py-4 shrink-0 flex items-center justify-end gap-3">
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="px-4 h-10 text-sm font-medium text-gray-700 dark:text-neutral-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        form="add-address-form"
+                        className="px-6 h-10 bg-green-700 dark:bg-white text-white dark:text-gray-900 text-sm font-medium rounded-lg hover:bg-green-800 dark:hover:bg-gray-200 transition-all active:scale-[0.98] shadow-sm flex items-center justify-center min-w-[120px] disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={addAddressMutation.isPending}
+                    >
+                        {addAddressMutation.isPending ? "Adding..." : "Add Address"}
+                    </button>
+                </div>
+            </div>
+        </>
     )
 }
 
