@@ -507,7 +507,8 @@ const ClientProductPage = () => {
 
                         {/* Ratings & Reviews Section */}
                         <div className='w-full mt-8 border border-gray-200 dark:border-neutral-800 rounded-2xl p-6'>
-                            <div className='flex flex-wrap items-center justify-between border-b border-gray-200 dark:border-neutral-800 pb-4 mb-4 gap-4'>
+                            <div className={`flex flex-wrap items-center justify-between 
+                                ${reviews?.length > 0 ? 'pb-4 mb-4 border-b border-gray-200 dark:border-neutral-800' : 'border-none'} gap-4`}>
                                 <div>
                                     <h2 className='text-xl sm:text-2xl font-bold text-gray-900 dark:text-white pb-0.5'>Customer Reviews</h2>
                                     <div className='flex items-center gap-2 mt-1'>
