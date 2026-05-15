@@ -103,8 +103,8 @@ const ClientProductPage = () => {
 
     const handleImageClick = () => {
         if (window.innerWidth < 1024) {
-            setZoom(prev => prev === 1 ? 2.5 : 1);
-            if (zoom > 1) setTransformOrigin("center center");
+            setPreviewImage(product?.images);
+            setPreviewImageModal(true);
         }
     };
 
@@ -287,8 +287,8 @@ const ClientProductPage = () => {
                 {(!isLoading && !isError) && <div className='grid grid-cols-1 lg:grid-cols-[0.5fr_3fr_3.5fr] w-full gap-5 lg:gap-0 lg:space-x-4'>
 
                     {/* Images Tray For More Clear Inspection */}
-                    <div className="order-2 lg:order-1 flex lg:block overflow-x-auto lg:overflow-visible gap-3 lg:gap-0 px-5 py-2 lg:py-0 lg:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                        <div className='lg:sticky w-max lg:w-full top-24 flex lg:block gap-3 lg:gap-0'>
+                    <div className="order-2 lg:order-1 flex lg:block overflow-x-auto lg:overflow-visible gap-3 lg:gap-0 px-5 py-2 lg:py-0 lg:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-10">
+                        <div className='lg:sticky w-max lg:w-full lg:top-24 flex lg:block gap-3 lg:gap-0'>
                             {
                                 product?.images?.map((image: string, index: number) => {
                                     return (
@@ -310,7 +310,7 @@ const ClientProductPage = () => {
                     <div className="order-1 lg:order-2 px-5 lg:px-0">
                         <div
                             ref={imageContainerRef}
-                            className='relative lg:sticky w-full overflow-hidden no-scrollbar top-24 border rounded-xl dark:border-neutral-800 dark:bg-neutral-900/90 cursor-crosshair touch-pan-y'
+                            className='relative lg:sticky w-full overflow-hidden no-scrollbar lg:top-24 border rounded-xl dark:border-neutral-800 dark:bg-neutral-900/90 cursor-crosshair touch-pan-y isolate z-0'
                             onMouseMove={handleMouseMove}
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
@@ -338,7 +338,7 @@ const ClientProductPage = () => {
                             <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-none bg-black/60 text-white text-[10px] sm:text-xs px-3 py-1.5 rounded-full backdrop-blur-sm shadow-lg transition-opacity duration-300 z-10 flex items-center gap-1.5 ${zoom > 1 ? 'opacity-0' : 'opacity-80'}`}>
                                 <ZoomIn className='h-3.5 w-3.5' />
                                 <span className="hidden lg:inline">Hover to zoom, scroll to adjust</span>
-                                <span className="lg:hidden">Tap to zoom</span>
+                                <span className="lg:hidden">Tap to view full screen</span>
                             </div>
                         </div>
                     </div>
