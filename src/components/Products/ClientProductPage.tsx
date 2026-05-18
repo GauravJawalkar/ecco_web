@@ -154,6 +154,7 @@ const ClientProductPage = () => {
         }
     }
 
+    // Learning Redis for Banner APIS
     async function addToCart() {
         try {
             const cartOwner = data?._id;
